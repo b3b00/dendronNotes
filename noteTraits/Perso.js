@@ -46,7 +46,7 @@ module.exports = {
       return {
         // luxon is available for Date functions. See
         // https://moment.github.io/luxon/api-docs/index.html for documentation
-        name: "Perso.CSLY",
+        name: "Perso." ,
         promptUserForModification: true,
       };
     },
