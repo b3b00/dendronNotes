@@ -2,7 +2,7 @@
 id: r2yjys60zq4xdw7ereczrhu
 title: Online Dendron-like
 desc: ''
-updated: 1659516575839
+updated: 1659535335582
 created: 1658997866134
 traitIds:
   - Perso
@@ -41,10 +41,8 @@ GH :
 
 ## backend
 
- - GH PAT  
-    - où stocker ce PAT ? 
-        - en db : clé = oauthid
-        - ne pas stocker mais demander à chaque connection : **lourdingue** mais *simple*
+ 
 
  - [OAuth app](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps)    
 
+Ecriture d'un middleware custom de gestion de l'OAuth pour avoir accès à l'accesstoken OAuth. On l'utilisera ensuite avec [octokit.net](https://github.com/octokit/octokit.net) pour accéder au repo github
