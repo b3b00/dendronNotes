@@ -11,3 +11,5 @@ this is the root node for notes.
 **this is an edit from dendronline**
 
 *this is another edit from dendronline*
+
+~~this is still another edit from dendronline~~
