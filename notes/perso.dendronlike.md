@@ -2,7 +2,7 @@
 id: r2yjys60zq4xdw7ereczrhu
 title: Online Dendron-like
 desc: ''
-updated: 1659022437778
+updated: 1659516575839
 created: 1658997866134
 traitIds:
   - Perso
@@ -36,16 +36,15 @@ heroku
 ## backend
 
 GH : 
- - [OAuth app](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps)
-    - pas de problème de stockage. 
-        - Comment gérer le renewal
-        - Comment conserver côté backend (API) l'access token (session ?)
 
 
 
+## backend
 
  - GH PAT  
-    - où stocker ce PAT ?
+    - où stocker ce PAT ? 
+        - en db : clé = oauthid
+        - ne pas stocker mais demander à chaque connection : **lourdingue** mais *simple*
 
-
+ - [OAuth app](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps)    
 

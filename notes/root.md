@@ -1,11 +1,8 @@
 ---
-id: root
+id: pk6wtq8v9nogvg98e3lops7
 title: root
-desc: ""
-updated: 1658923505703
-created: 1595961348801
+desc: ''
+updated: 1659449155335
+created: 1658923179318
 ---
-
-This is the root for your Dendron vault.
-
-
+this is the root node for notes. 
