@@ -6,7 +6,7 @@ updated: 1659419704008
 created: 1659345052280
 ---
 
-les POST aboutisse à des ``400`` si on ne configure pas correctement l'antiforgery.
+Les POST aboutissent à des ``400`` si on ne configure pas correctement l'antiforgery.
 
 
 
