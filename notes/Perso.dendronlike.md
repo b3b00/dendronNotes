@@ -1,8 +1,8 @@
 ---
 id: r2yjys60zq4xdw7ereczrhu
-title: Online Dendron-like
+title: Online Dendron
 desc: ''
-updated: 1659535335582
+updated: 1659618592279
 created: 1658997866134
 traitIds:
   - Perso
