@@ -11,7 +11,7 @@ traitIds:
  pour pouvoir utiliser correctement le ```asp-for```
  il faut avoir déclarer un binding sur l'attribut du modele
 
-```html
+```xml
 <input type="text"
        asp-for="Query"
        id="query"
