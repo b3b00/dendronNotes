@@ -6,4 +6,4 @@ updated: 1659627279760
 created: 1659627279760
 ---
 
-* empty *
+*empty*
