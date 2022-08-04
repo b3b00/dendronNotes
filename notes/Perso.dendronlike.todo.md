@@ -10,7 +10,7 @@ traitIds:
 
 ## github
 
-- [ ] save file
+- [X] save file
 - [X] create file
 
 ## UI
@@ -19,9 +19,15 @@ traitIds:
 
   - [X] se positionner sur la note parent
   - [X] clic sur le bouton ajouter une note  
-  - [ ] NotesService.CreateNote(parent,name) : attention ⚠️
-  - [ ] creer le header dendron ⚠️
-  - [ ] updateNotes 
+  - [X] NotesService.CreateNote(parent,name) : attention ⚠️
+  - [X] creer le header dendron ⚠️
+  - [X] updateNotes 
 
-- [] sauvegarde d'une note
-   - [ ] : mise à jour du meta updated
+- [X] sauvegarde d'une note
+   - [X] : mise à jour du meta updated
+
+- [ ] suppression de note
+
+- better :
+   - [ ] icon to add
+   - [ ] icon to del 
