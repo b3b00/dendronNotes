@@ -2,11 +2,43 @@
 id: cf8jysrvqjkfxhklg0dfgr8
 title: iterativeParse
 desc: ''
-updated: 1660154999072
+updated: 1660214349531
 created: 1660119483602
 ---
 
 
-Does it really mak sense ?
+## backtracking
 
-yes just for the fun
+
+### Rule stack item
+
+#### fini
+
+backtrack ko
+
+#### en cours
+
+si Children[index] tous OK
+    retourner SyntaxNode(children)
+sinon
+    index++
+
+### clause Stack Item
+
+______________________________________________
+
+primary: INT
+primary: LPAREN [d] expression RPAREN [d]
+
+expression : term PLUS expression
+expression : term MINUS expression
+expression : term
+
+term : factor TIMES term
+term : factor DIVIDE term
+term : factor
+
+factor : primary
+factor : MINUS factor
+
+
