@@ -16,6 +16,7 @@ cli for testing lexer and parser :
 ## from textual specification
 
 The tester generates a dynamic enum and parser class. than it uses it to build the parser with the csly runtime.
+[generate enum](https://stackoverflow.com/questions/857414/dynamically-create-an-enum)
 
 ALA yacc/lex
 
