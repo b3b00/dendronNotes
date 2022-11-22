@@ -17,14 +17,15 @@ commands:
         enableMultiSelect: false
     insertNoteIndex:
         enableMarker: false
-    copyNoteLink: {}
+    copyNoteLink:
+        aliasMode: title
     templateHierarchy: template
 workspace:
     vaults:
         -
             fsPath: .
             selfContained: true
-            name: DendronNotes            
+            name: DendronNotes
     journal:
         dailyDomain: daily
         name: journal

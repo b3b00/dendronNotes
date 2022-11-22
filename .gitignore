@@ -7,3 +7,5 @@ pods/service-connections
 Sage*
 Secrets*
 */*.secrets.md
+
+.backup
