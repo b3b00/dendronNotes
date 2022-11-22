@@ -14,6 +14,7 @@ traitIds:
 - [X] create file
 
 ## UI
+- [ ] recherche insensible à la casse 
 
 - [ ] ajout d'une note 
 
