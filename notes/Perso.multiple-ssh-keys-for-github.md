@@ -74,9 +74,5 @@ Remplacer le github.com par github.com-<XXX> où <XXX> est le nom du compte
 
 # Références
 
-
-https://gist.github.com/jexchan/2351996
-
-
 [https://gist.github.com/jexchan/2351996](https://gist.github.com/jexchan/2351996)
 
