@@ -16,7 +16,7 @@ traitIds:
 ## UI
 - [ ] recherche repository insensible à la casse 
 
-- [ ] recherche de note (case insensitive)
+- [X] recherche de note (case insensitive)
 
 - [ ] ajout d'une note 
 
