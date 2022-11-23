@@ -14,9 +14,9 @@ traitIds:
 - [X] create file
 
 ## UI
-- [ ] recherche repository insensible à la casse 
+- [X] recherche repository insensible à la casse 
 
-- [X] recherche de note (case insensitive)
+- [ ] recherche de note (case insensitive)
 
 - [ ] ajout d'une note 
 
