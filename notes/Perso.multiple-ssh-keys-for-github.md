@@ -64,11 +64,18 @@ Remplacer le github.com par github.com-<XXX> où <XXX> est le nom du compte
 
 
     git clone git@github.com-pro:GreatestCompany/awesomeCompanyRepo.git
-## Modifier la config git du repo pour forcer le user et donc la clé SSH
-## 
+## Modifier la config git du repo pour forcer le user
+### forcer le user 
+```
     $ cd mypersonalRepo
     $ git config user.name "perso"
     $ git config user.email "perso@gmail.com" 
+```
+### forcer la clé SSH (utilisation de l'alias gtihub)
+```
+[remote "origin"]
+	url = git@github.com-perso:perso/MyPersonalRepo.git
+```
     
 
 
