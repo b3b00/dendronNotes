@@ -15,43 +15,42 @@ comment jongler entre plusieurs clé SSH selon les repo github (entre perso et p
 
 ## Créer plusieurs clés publiques
 
-
-     ssh-keygen -f ~/.ssh/id_perso -t rsa -C "perso@gmail.com"
-
-
-     ssh-keygen -f ~/.ssh/id_pro -t rsa -C "pro@pro.com"
-
+```
+   $  ssh-keygen -f ~/.ssh/id_perso -t rsa -C "perso@gmail.com"
+   $  ssh-keygen -f ~/.ssh/id_pro -t rsa -C "pro@pro.com"
+```
 ⚠️ sous windows term + powershell la commande échoue avec un 
 
     Saving key "~/.ssh/id_perso" failed: No such file or directory
 
 Sous Powershell il faut donc utiliser le chemin complet
-
-     ssh-keygen -f c:/users/perso/.ssh/id_perso -t rsa -C "perso@gmail.com"
-
+```
+      $ ssh-keygen -f c:/users/perso/.ssh/id_perso -t rsa -C "perso@gmail.com"
+```
 
 ## ajouter les clés
-
-
-     ssh-add ~/.ssh/perso.ppk
-     ssh-add ~/.ssh/pro.ppk
-
+```
+   $  ssh-add ~/.ssh/perso.ppk
+   $  ssh-add ~/.ssh/pro.ppk
+```
 
 ## Modifier .ssh/config
 
 
     # perso account
+```
     Host github.com-perso # <- -perso pour préciser le compte
             HostName github.com
             User git
             IdentityFile ~/.ssh/id_perso 
-            
+```            
     # pro account
+```
     Host github.com-pro # <- -pro pour préciser le compte
             HostName github.com
             User git
             IdentityFile ~/.ssh/id_pro 
-
+```
 Autant de fois que de clés.
 le suffixe -xxxx n’est pas forcément le nom de l’utilisateur. il sert juste à identifier la clé lors du clone.
 
@@ -76,8 +75,6 @@ Remplacer le github.com par github.com-<XXX> où <XXX> est le nom du compte
 [remote "origin"]
 	url = git@github.com-perso:perso/MyPersonalRepo.git
 ```
-    
-
 
 # Références
 
