@@ -33,4 +33,10 @@ traitIds:
 
 - better :
    - [ ] icon to add
-   - [ ] icon to del 
+   - [ ] icon to del
+
+
+
+- editor and preview :
+   - [ ] display editor and preview in 2 different tabs for better accessibility
+   - [ ] only when coming from smartphone ?
