@@ -1,7 +1,7 @@
 ---
 id: eafo36iywegvpr8pq9p7vd4
 title: LL(k) where k > 1
-desc: ''
+desc: 'greater lookahead if grammar is LL(k) with k > 1'
 updated: 1660139784094
 created: 1660120066934
 ---
