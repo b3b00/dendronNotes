@@ -1,7 +1,7 @@
 ---
 id: eurzrk1bhilnotouzsfg36q
 title: dendronlike-foundings-razorbindings
-desc: ''
+desc: 'Bindings Razor'
 updated: 1659527371015
 created: 1659527230794
 traitIds:
