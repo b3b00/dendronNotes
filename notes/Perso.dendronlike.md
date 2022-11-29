@@ -1,7 +1,7 @@
 ---
 id: r2yjys60zq4xdw7ereczrhu
 title: Online Dendron
-desc: ''
+desc: 'Online Dendron'
 updated: 1659618592279
 created: 1658997866134
 traitIds:
