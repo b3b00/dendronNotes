@@ -1,7 +1,7 @@
 ---
 id: cf8jysrvqjkfxhklg0dfgr8
 title: iterativeParse
-desc: ''
+desc: 'use a hand managed stack instead of recursivity?'
 updated: 1660214349531
 created: 1660119483602
 ---
