@@ -1,7 +1,7 @@
 ---
 id: s12gtefpi6u4ztdni3andaz
 title: tips 'n tricks
-desc: ''
+desc: 'Tips 'n Tricks'
 updated: 1669105817452
 created: 1660218991601
 ---
