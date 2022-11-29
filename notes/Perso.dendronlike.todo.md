@@ -1,7 +1,7 @@
 ---
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: perso-dendronlike-todo
-desc: 'DendrOnline TODOs'
+desc: 'DendrOnline todo list'
 updated: 1659551506303
 created: 1659535376026
 traitIds:
