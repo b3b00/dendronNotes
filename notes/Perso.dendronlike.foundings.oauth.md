@@ -1,7 +1,7 @@
 ---
 id: lc11vatl9v4rm8kocfm0ke6
 title: oauth
-desc: ''
+desc: 'middleware OAuth2 GitHub'
 updated: 1659685587316
 created: 1659685379252
 tags: oauth
