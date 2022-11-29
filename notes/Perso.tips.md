@@ -11,7 +11,7 @@ created: 1660218991601
 
 `Shift` + `Caps Lock` + `AltGr` 
 
-## chanegement de mot de passe mRemoteNG
+## changement de mot de passe mRemoteNG
 
 osk.exe => lance le clavier virtuel
 ctrl + alt au clavier
