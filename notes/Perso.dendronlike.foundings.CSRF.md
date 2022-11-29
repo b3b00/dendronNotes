@@ -1,7 +1,7 @@
 ---
 id: g0w13acdrwuhj9po0aa9wnr
 title: CSRF
-desc: ''
+desc: 'CSRF and HTMX.net tag helper'
 updated: 1659419704008
 created: 1659345052280
 ---
