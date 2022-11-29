@@ -31,18 +31,14 @@ aspnet core + htmx
 
 ## hébérgement 
 
-heroku
+~~heroku~~ [railway.app](https://railway.app)
+
+[dendronline.up.railway.app](https://dendronline.up.railway.app)
+
 
 ## backend
 
 GH : 
-
-
-
-## backend
-
- 
-
  - [OAuth app](https://docs.github.com/en/developers/apps/building-oauth-apps/scopes-for-oauth-apps)    
 
 Ecriture d'un middleware custom de gestion de l'OAuth pour avoir accès à l'accesstoken OAuth. On l'utilisera ensuite avec [octokit.net](https://github.com/octokit/octokit.net) pour accéder au repo github
