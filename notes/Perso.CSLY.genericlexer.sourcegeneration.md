@@ -1,7 +1,7 @@
 ---
 id: w9j2fscv265kn9tpf592npv
 title: sourcegeneration
-desc: 'generic lexer performance : generate C# sources'
+desc: 'generic lexer performance : generate C# sources.'
 updated: 1661847365149
 created: 1661844068516
 ---
