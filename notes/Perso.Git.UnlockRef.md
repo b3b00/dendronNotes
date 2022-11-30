@@ -6,4 +6,12 @@ updated: 1669805390347
 created: 1669805390347
 ---
 
-*empty*
+# how to
+
+```
+git gc --prune=now
+
+git remote orune origin
+
+```
+
