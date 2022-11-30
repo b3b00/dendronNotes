@@ -11,7 +11,7 @@ created: 1669805390347
 ```
 git gc --prune=now
 
-git remote orune origin
+git remote prune origin
 
 ```
 
