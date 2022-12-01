@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: perso-dendronlike-todo
 desc: 'DendrOnline todo list'
-updated: 1659551506303
+updated: 1669890002847
 created: 1659535376026
 traitIds:
   - Perso
@@ -43,5 +43,5 @@ traitIds:
 
 
 - editor and preview :
-   - [ ] display editor and preview in 2 different tabs for better accessibility
+   - [X] display editor and preview in 2 different tabs for better accessibility
    - [ ] only when coming from smartphone ?
