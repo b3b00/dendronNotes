@@ -1,11 +1,12 @@
 ---
 id: ts1k8crs82j8fxdag3j4389
 title: CSLY CLI
-desc: 'CLI Companion tool for CSLY'
+desc: CLI Companion tool for CSLY
 updated: 1662976945346
 created: 1659685379252
 tags: oauth
 ---
+
 
 cli for testing lexer and parser :
 
