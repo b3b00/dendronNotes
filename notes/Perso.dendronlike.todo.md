@@ -38,7 +38,7 @@ traitIds:
 
 ```html 
 <script src="https://kit.fontawesome.com/a5f446fe93.js" crossorigin="anonymous"></script>
-```html
+```
 
 
 
