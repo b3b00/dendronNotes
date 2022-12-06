@@ -2,7 +2,7 @@
 id: 3m8g1sl5bu2bkehp9a456ms
 title: extension
 desc: 'generic lexer extension support'
-updated: 1670245474586
+updated: 1670254093437
 created: 1670243953387
 ---
 
@@ -17,7 +17,7 @@ created: 1670243953387
 [Extension]
 HEXA_COLOR 
 >>>
--> # [start_color] -> [0-9,A-F] {6} -> END
+-> # @start_color -> [0-9,A-F] {6} -> END
 <<<
 ```
 produces :
@@ -96,3 +96,12 @@ between square bracket. start and end are separated by - (dash). Many range may 
 ```
 
 
+# grammar
+
+```
+pattern : STRING repeater?
+pattern : LEFTBRACKET[d] range (COMMA[d] range)* RBRACK[d]
+# pattern : NOT PATTERN ⚠️ 
+range : CHAR DASH CHAR
+repeater : STAR | PLUS | LEFTCURL RIGHTCURL
+```
