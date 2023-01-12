@@ -109,3 +109,4 @@ publishing:
     enableTaskNotes: true
     enablePrettyLinks: true
     siteUrl: https://b3b00.github.io/dendronNotes/
+    searchMode: lookup

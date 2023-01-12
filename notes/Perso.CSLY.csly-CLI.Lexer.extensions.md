@@ -2,7 +2,7 @@
 id: 3m8g1sl5bu2bkehp9a456ms
 title: extension
 desc: 'generic lexer extension support'
-updated: 1670254093437
+updated: 1672046961960
 created: 1670243953387
 ---
 
@@ -60,14 +60,18 @@ leading @ (node name must be an identifier)
 between square bracket. start and end are separated by - (dash). Many range may be specified separated by ; (semicolon)
 
 ```
--> [a-z;A-Z;0-9]
+-> [a-z,A-Z,0-9] 
 ```
+, pas ; comme il s'agit du marqueur de fin de ligne.
 
 ### exclusion
 
 ```
 -> ^ pattern
 ```
+
+non pas de récursion car cela poserait problème pour ```^^a``` par exemple. 
+
 
 ### repetition
 
@@ -83,11 +87,17 @@ between square bracket. start and end are separated by - (dash). Many range may 
 -> pattern*
 ```
 
+#### any ?
+```
+-> . ->
+```
+
 #### count
 
 ```
 -> pattern {n}
 ```
+
 
 ### ending 
 
