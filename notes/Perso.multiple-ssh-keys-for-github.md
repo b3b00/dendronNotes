@@ -70,7 +70,7 @@ Remplacer le github.com par github.com-<XXX> où <XXX> est le nom du compte
     $ git config user.name "perso"
     $ git config user.email "perso@gmail.com" 
 ```
-### forcer la clé SSH (utilisation de l'alias gtihub)
+### forcer la clé SSH (utilisation de l'alias github)
 ```
 [remote "origin"]
 	url = git@github.com-perso:perso/MyPersonalRepo.git
