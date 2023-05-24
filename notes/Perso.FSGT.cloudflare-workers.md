@@ -2,7 +2,7 @@
 id: y6nyisoi5tajk6mb5knke3k
 title: cloudflare-workers
 desc: 'FSGT Calendars on cloudFlare workers'
-updated: 1681293282295
+updated: 1681393569623
 created: 1663922310241
 ---
 
@@ -13,7 +13,7 @@ created: 1663922310241
 
 ## static assets folder
 
-creat folder `./public` that will contain static assets
+create folder `./public` that will contain static assets
 
 ## wrangler.toml configuration
 
@@ -103,4 +103,62 @@ router.get('/assets/:name', GetAssetHandler)
 
 # better dev experience
 
-use `npx wrangler@beta dev` 
+use `npx wrangler@beta dev ` 
+
+# D1 databases
+
+[D1 getting started](https://developers.cloudflare.com/d1/get-started/)
+
+
+
+
+[[d1_databases]]
+binding = "<BINDING_NAME>"
+database_name = "<DATABASE_NAME>"
+database_id = "<UUID>"
+
+⚠️ utiliser les worker ES6 Module
+pour avoir accès à l'environnement et donc la base D1.
+
+```javascript
+
+import { Router } from 'itty-router'
+
+const router = Router()
+
+const table = async function(request, env, context) {
+  const { results } = await env.MYBASE.prepare(
+    "SELECT * FROM myTable"
+  )    
+    .all();
+  return Response.json(results);
+}
+
+router.get('/table',table);
+
+
+export default {
+  async fetch(request, environment, context) {
+    return router.handle(request, environment, context);
+  },
+  async scheduled(controller, environment, context) {
+    // await doATask();
+  }
+}
+
+```
+
+et donc pour également accéder au KV : 
+
+```javascript
+const GetAssetHandler = async function(request, env, context) {
+    const assetName = request.params.name
+    return await GetAsset(assetName, env)
+}
+
+const GetAsset = async function(assetName, env) {  
+    const assets = await env.DEVASSETS.list()    
+    console.log(env.DEVASSETS);
+    ....
+}
+```
