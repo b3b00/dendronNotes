@@ -2,7 +2,7 @@
 id: z9ut4zvimgofxdj5ry1rpik
 title: todo
 desc: ''
-updated: 1689952506776
+updated: 1689952675017
 created: 1689943392141
 ---
 
@@ -18,3 +18,9 @@ created: 1689943392141
  - [ ] GitHub OAuth middleware
  - [ ] GitHub API client [Octokit.js](https://github.com/octokit/octokit.js) ?
  - [ ] Htmx views
+   - [ ] repository view (with filter)
+   - [ ] note tree view (with filter)
+   - [ ] preview 
+   - [ ] edit
+   - [ ] add 
+   - [ ] delete
