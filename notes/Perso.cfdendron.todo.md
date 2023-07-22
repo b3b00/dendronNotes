@@ -2,7 +2,7 @@
 id: z9ut4zvimgofxdj5ry1rpik
 title: todo
 desc: ''
-updated: 1689952675017
+updated: 1690010676614
 created: 1689943392141
 ---
 
@@ -19,8 +19,10 @@ created: 1689943392141
  - [ ] GitHub API client [Octokit.js](https://github.com/octokit/octokit.js) ?
  - [ ] Htmx views
    - [ ] repository view (with filter)
-   - [ ] note tree view (with filter)
-   - [ ] preview 
+   - [ ] note tree view (with filter)  
+   - [ ] note preview. find JS library for markdown to HTML 
+     - [ ] try to render link between notes  
+     - [ ] try to render images.
    - [ ] edit
    - [ ] add 
    - [ ] delete
