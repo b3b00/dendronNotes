@@ -19,7 +19,8 @@ created: 1689943392141
  - [ ] GitHub API client [Octokit.js](https://github.com/octokit/octokit.js) ?
  - [ ] Htmx views
    - [ ] repository view (with filter)
-   - [ ] note tree view (with filter)  
+   - [ ] note tree view (with filter)  ; 
+https://stackoverflow.com/questions/31885263/mustache-js-how-to-create-a-recursive-list-with-an-unknown-number-of-sub-lists
    - [ ] note preview. find JS library for markdown to HTML 
      - [ ] try to render link between notes  
      - [ ] try to render images.
