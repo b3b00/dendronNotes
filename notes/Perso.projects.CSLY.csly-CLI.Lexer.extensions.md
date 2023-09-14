@@ -1,7 +1,7 @@
 ---
 id: 3m8g1sl5bu2bkehp9a456ms
 title: extension
-desc: 'generic lexer extension support'
+desc: generic lexer extension support
 updated: 1672046961960
 created: 1670243953387
 ---

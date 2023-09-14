@@ -1,7 +1,7 @@
 ---
 id: f1nxlhz4ar5qq4megq44mgs
 title: modes
-desc: 'generic lexer modes support'
+desc: generic lexer modes support
 updated: 1670244034114
 created: 1670243943884
 ---

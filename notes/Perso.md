@@ -5,7 +5,7 @@ desc: ''
 updated: 1659684997546
 created: 1658997767484
 ---
-[[Perso.CSLY]]
+[[Perso.projects.CSLY]]
 
 [[Sage.feature.script]]
 

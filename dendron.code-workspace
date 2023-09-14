@@ -16,7 +16,8 @@
     "editor.suggest.snippetsPreventQuickSuggestions": false,
     "editor.suggest.showSnippets": true,
     "editor.tabCompletion": "on",
-    "dendron.enableSelfContainedVaultWorkspace": true
+    "dendron.enableSelfContainedVaultWorkspace": true,
+    "git.ignoreLimitWarning": true
   },
   "extensions": {
     "recommendations": [
