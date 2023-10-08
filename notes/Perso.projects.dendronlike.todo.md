@@ -25,10 +25,11 @@ traitIds:
   - [X] NotesService.CreateNote(parent,name) : attention ⚠️
   - [X] creer le header dendron ⚠️
   - [X] updateNotes 
-  - [ ] ctrl+S ?
+
 
 - [X] sauvegarde d'une note
    - [X] : mise à jour du meta updated
+   - [ ] ctrl+S ?
 
 - [ ] suppression de note
 - [ ] highlight current not in hierachy view
