@@ -30,6 +30,7 @@ traitIds:
    - [X] : mise à jour du meta updated
 
 - [ ] suppression de note
+- [ ] highlight current not in hierachy view
 
 - better :
    - [ ] icon to add
@@ -45,4 +46,7 @@ traitIds:
 - editor and preview :
    - [X] display editor and preview in 2 different tabs for better accessibility
    - [ ] only when coming from smartphone ?
+
+
+
 
