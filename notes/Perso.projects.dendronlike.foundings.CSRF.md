@@ -6,4 +6,4 @@ updated: 1696788604478
 created: 1696788604478
 ---
 
-*empty*
+CSRF
