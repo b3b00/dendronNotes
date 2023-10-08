@@ -25,6 +25,7 @@ traitIds:
   - [X] NotesService.CreateNote(parent,name) : attention ⚠️
   - [X] creer le header dendron ⚠️
   - [X] updateNotes 
+  - [ ] ctrl+S ?
 
 - [X] sauvegarde d'une note
    - [X] : mise à jour du meta updated
@@ -33,8 +34,8 @@ traitIds:
 - [ ] highlight current not in hierachy view
 
 - better :
-   - [ ] icon to add
-   - [ ] icon to del
+   - [ ] icon to add : fa-trash
+   - [ ] icon to del : fa-square-plus
    - [ ] font awesome : 
 
 ```html 
