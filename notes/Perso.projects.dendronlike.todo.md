@@ -31,16 +31,19 @@ traitIds:
    - [X] : mise à jour du meta updated
    - [ ] ctrl+S ?
 
-- [ ] suppression de note
+- [X] suppression de note
 - [ ] highlight current not in hierachy view
 
 - better :
-   - [ ] icon to add : fa-trash
-   - [ ] icon to del : fa-square-plus
-   - [ ] font awesome : 
+   - [X] icon to add 
+   - [X] icon to del
+   - [X] [google material icon & symbols](https://fonts.google.com/icons)
 
 ```html 
-<script src="https://kit.fontawesome.com/a5f446fe93.js" crossorigin="anonymous"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+
+<span class="material-symbols-outlined">Add_Box</span>
+<span class="material-symbols-outlined">Delete</span>
 ```
 
 
