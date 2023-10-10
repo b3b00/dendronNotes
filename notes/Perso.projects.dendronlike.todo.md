@@ -35,7 +35,11 @@ traitIds:
 
 - [X] suppression de note
 - [ ] mise ne surbrillance de la note sélectionnée
-- [ ] masquer le bouton [save] si la note n'a pas été modifiée
+
+- [ ] utiliser une partial pour la barre de boutons
+   - [ ] masquer le bouton [save] si la note n'a pas été modifiée
+   - [ ] barrer/debarrer les icônes d'affichage 
+
 
 - better :
    - [X] icon to add 
