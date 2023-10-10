@@ -14,11 +14,13 @@ traitIds:
 - [X] create file
 
 ## UI
+- [] responsive UI to enable smartphones and tablets
+
 - [X] recherche repository insensible à la casse 
 
 - [X] recherche de note (case insensitive)
 
-- [ ] ajout d'une note 
+- [X] ajout d'une note 
 
   - [X] se positionner sur la note parent
   - [X] clic sur le bouton ajouter une note  
