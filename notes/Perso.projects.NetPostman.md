@@ -1,7 +1,7 @@
 ---
 id: h56hcsfcmwivattnykhzlwe
 title: Postman.Net
-desc: ''
+desc: Postman revisited in .Net
 updated: 1692893603305
 created: 1692429431471
 ---
