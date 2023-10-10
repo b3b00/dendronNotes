@@ -1,7 +1,7 @@
 ---
 id: 12OESVeNgR
 title: Perso-projects-dendronlike-foundings-CSRF
-desc: 
+desc: Razor/Htmx CSRF configuration
 updated: 1696788604478
 created: 1696788604478
 ---
