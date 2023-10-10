@@ -34,7 +34,8 @@ traitIds:
    - [ ] ctrl+S ?
 
 - [X] suppression de note
-- [ ] highlight current not in hierachy view
+- [ ] mise ne surbrillance de la note sélectionnée
+- [ ] masquer le bouton [save] si la note n'a pas été modifiée
 
 - better :
    - [X] icon to add 
