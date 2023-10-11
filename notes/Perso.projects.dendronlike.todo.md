@@ -59,6 +59,8 @@ traitIds:
    - [X] display editor and preview in 2 different tabs for better accessibility
    - [ ] only when coming from smartphone ?
 
+# édition
 
+[ ] garder en mémoire les modifications même si on change de note.
 
 
