@@ -10,7 +10,7 @@ traitIds:
 
 ## github
 
-- [X] save file
+- [X] save file.
 - [X] create file
 
 ## UI
