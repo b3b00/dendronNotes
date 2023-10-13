@@ -1,6 +1,6 @@
 ---
 id: jii2t0ifhpyt03s58kpd58z
-title: Gpg
+title: gpg
 desc: ''
 updated: 1676985524626
 created: 1676985339817
