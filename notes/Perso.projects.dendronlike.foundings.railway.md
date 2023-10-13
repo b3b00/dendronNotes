@@ -6,7 +6,7 @@ updated: 1697196276209
 created: 1671542076611
 ---
 
-# railway hosting
+# [railway](https://railway.app/) hosting
 
 ## health check
 
