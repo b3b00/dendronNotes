@@ -34,10 +34,10 @@ traitIds:
    - [ ] ctrl+S ?
 
 - [X] suppression de note
-- [ ] mise ne surbrillance de la note sélectionnée
+- [X] mise ne surbrillance de la note sélectionnée
 
 - [ ] utiliser une partial pour la barre de boutons
-   - [ ] masquer le bouton [save] si la note n'a pas été modifiée
+   - [X] masquer le bouton [save] si la note n'a pas été modifiée
    - [ ] barrer/debarrer les icônes d'affichage 
 
 
