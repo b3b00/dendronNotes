@@ -1,7 +1,7 @@
 ---
 id: WQytHWU6JG
 title: Perso-projects-dendronlike-foundings-Koyeb
-desc: Koyeb deployment
+desc: Koyeb deployment quirks
 updated: 1696788740487
 created: 1696788740487
 ---
