@@ -36,6 +36,7 @@ traitIds:
 - [X] suppression de note
 - [X] mise ne surbrillance de la note sélectionnée
 
+
 - [X] utiliser une partial pour la barre de boutons
    - [X] masquer le bouton [save] si la note n'a pas été modifiée
    - [ ] ~~barrer/debarrer les icônes d'affichage~~
@@ -62,6 +63,8 @@ traitIds:
 
 # édition
 
-[X] garder en mémoire les modifications même si on change de note.
+- [X] garder en mémoire les modifications même si on change de note.
+   - [X] identifier les notes modifiées dans l'arborescence
+
 
 
