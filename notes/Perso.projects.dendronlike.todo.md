@@ -8,7 +8,7 @@ traitIds:
   - Perso
 ---
 
-## github
+## GitHub
 
 - [X] save file.
 - [X] create file
