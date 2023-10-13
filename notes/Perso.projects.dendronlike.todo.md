@@ -39,7 +39,7 @@ traitIds:
 - [ ] utiliser une partial pour la barre de boutons
    - [X] masquer le bouton [save] si la note n'a pas été modifiée
    - [ ] barrer/debarrer les icônes d'affichage 
-   - [ ] bouton undo pour annuler les modifications non sauvegardées
+   - [X] bouton undo pour annuler les modifications non sauvegardées
 
 
 - better :
