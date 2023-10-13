@@ -24,8 +24,8 @@ traitIds:
 
   - [X] se positionner sur la note parent
   - [X] clic sur le bouton ajouter une note  
-  - [X] NotesService.CreateNote(parent,name) : attention ⚠️
-  - [X] creer le header dendron ⚠️
+  - [X] NotesService.CreateNote(parent,name)
+  - [X] creer le header dendron
   - [X] updateNotes 
 
 
