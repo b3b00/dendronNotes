@@ -65,7 +65,7 @@ traitIds:
 
 - [X] garder en mémoire les modifications même si on change de note.
    - [X] identifier les notes modifiées dans l'arborescence.
-   - [X] mise à jour automatique de l'arborescence au cours de la saisie 
+   - [X] mise à jour automatique de l'arborescence au cours de la saisie. 
 
 
 
