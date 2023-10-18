@@ -67,5 +67,10 @@ traitIds:
    - [X] identifier les notes modifiées dans l'arborescence.
    - [X] mise à jour automatique de l'arborescence au cours de la saisie. 
 
+# More features
+
+## [Links](https://wiki.dendron.so/notes/3472226a-ff3c-432d-bf5d-10926f39f6c2/)
+- [Back links] (https://wiki.dendron.so/notes/2l54qrzcil50bufntojzbpo/) : add a back link panel.
+- Links to notes : set URLs on travel through linked notes. 
 
 
