@@ -1,8 +1,8 @@
 ---
 id: e9l8togkv1n4q2sxdai6zzt
 title: embedGitHash
-desc: ''
-updated: 1691651802571
+desc: 'How to embed git hash in a .net assembly.'
+updated: 1698684998605
 created: 1691651184259
 ---
 
