@@ -8,6 +8,8 @@ created: 1669144677424
 
 ---
 
+---
+
 
 
 # Multiple SSH keys for GitHub
@@ -60,7 +62,7 @@ le suffixe -xxxx n’est pas forcément le nom de l’utilisateur. il sert juste
 
 ## Cloner un repo avec la clé voulue
 
-Remplacer le github.com par github.com-<XXX> où <XXX> est le nom du compte
+Remplacer le github.com par github.com-&lt;XXX&gt; où <XXX> est le nom du compte
 
 
     git clone git@github.com-perso:perso/myPersonalRepo.git
