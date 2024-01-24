@@ -1,11 +1,11 @@
 ---
 id: v5vl53dxgz9nlhnn3ro2bjv
-title: TODO
+title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
 updated: 1698738070599
 created: 1659535376026
-traitIds:
-  - Perso
+---
+
 ---
 
 ## GitHub
@@ -59,7 +59,7 @@ traitIds:
 
 - editor and preview :
    - [X] display editor and preview in 2 different tabs for better accessibility
-   - [ ] only when coming from smartphone ?
+   - [X] ~~only when coming from smartphone ?~~
 
 # édition
 
