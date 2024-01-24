@@ -1,8 +1,8 @@
 ---
 id: 12OESVeNgR
-title: Perso-projects-dendronlike-foundings-CSRF
+title: HTMX & CSRF
 desc: Razor/Htmx CSRF configuration
-updated: 1696788604478
+updated: 1698738003415
 created: 1696788604478
 ---
 # CSRF
