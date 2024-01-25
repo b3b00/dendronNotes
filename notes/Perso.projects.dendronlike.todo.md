@@ -19,10 +19,10 @@ created: 1659535376026
 
 - [X] recherche de note (case insensitive)
 
-- [X] ajout d'une note 
+- [ ] ajout d'une note 
 
-  - [X] se positionner sur la note parent
-  - [X] clic sur le bouton ajouter une note  
+  - [ ] se positionner sur la note parent
+  - [ ] clic sur le bouton ajouter une note  
   - [X] NotesService.CreateNote(parent,name)
   - [X] creer le header dendron
   - [X] updateNotes 
@@ -32,14 +32,11 @@ created: 1659535376026
    - [X] : mise à jour du meta updated
    - [ ] ctrl+S ?
 
-- [X] suppression de note
-- [X] mise ne surbrillance de la note sélectionnée
+- [ ] suppression de note
+- [ ] mise ne surbrillance de la note sélectionnée
 
-
-- [X] utiliser une partial pour la barre de boutons
-   - [X] masquer le bouton [save] si la note n'a pas été modifiée
-   - [ ] ~~barrer/debarrer les icônes d'affichage~~
-   - [X] bouton undo pour annuler les modifications non sauvegardées
+- [X] masquer le bouton [save] si la note n'a pas été modifiée
+- [ ] bouton undo pour annuler les modifications non sauvegardées
 
 
 - better :
@@ -62,9 +59,9 @@ created: 1659535376026
 
 # édition
 
-- [X] garder en mémoire les modifications même si on change de note.
-   - [X] identifier les notes modifiées dans l'arborescence.
-   - [X] mise à jour automatique de l'arborescence au cours de la saisie. 
+- [ ] garder en mémoire les modifications même si on change de note.
+   - [ ] identifier les notes modifiées dans l'arborescence.
+   - [ ] mise à jour automatique de l'arborescence au cours de la saisie. 
 
 # More features
 
