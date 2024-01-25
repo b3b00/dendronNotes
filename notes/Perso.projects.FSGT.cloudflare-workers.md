@@ -8,6 +8,7 @@ created: 1663922310241
 
 
 
+
 [workers sites](https://developers.cloudflare.com/workers/platform/sites/start-from-worker)
 
 # KV & assets static
@@ -27,8 +28,6 @@ bucket="./public"
 This will makes wrangler push assets from ./public to the bound KV.
 
 when pushing assets wrangler generates keys containing unique id between name and extension.
-
-![](/assets/images/2023-04-12-11-53-08.png)
 
 
 ## worker assets handler
