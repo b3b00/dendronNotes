@@ -1,7 +1,7 @@
 ---
 id: y6nyisoi5tajk6mb5knke3k
 title: Perso.projects.FSGT.cloudflare-workers
-desc: FSGT-Calendars on cloudFlare workers 
+desc: FSGT-Calendars on cloudFlare workers up 
 updated: 1681393569623
 created: 1663922310241
 ---
