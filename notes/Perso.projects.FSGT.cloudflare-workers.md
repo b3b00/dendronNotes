@@ -6,7 +6,7 @@ updated: 1681393569623
 created: 1663922310241
 ---
 
-[workers sites](https://developers.cloudflare.com/workers/platform/sites/start-from-worker)
+[workers sites](https://developers.cloudflare.com/workers/platform/sites/start-from-worker) XXXX
 
 # KV & assets staticy 
 
