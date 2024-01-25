@@ -11,6 +11,7 @@ created: 1659535376026
 
 - [X] save file.
 - [X] create file
+- [ ] load full dendron in session. Allow suickier navigation, black links...
 
 ## UI
 - [] responsive UI to enable smartphones and tablets
