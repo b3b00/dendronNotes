@@ -1,12 +1,12 @@
 ---
 id: y6nyisoi5tajk6mb5knke3k
 title: Perso.projects.FSGT.cloudflare-workers
-desc: FSGT-Calendars on cloudFlare workers up 
+desc: FSGT-Calendars on cloudFlare workers
 updated: 1681393569623
 created: 1663922310241
 ---
 
-[workers sites](https://developers.cloudflare.com/workers/platform/sites/start-from-worker) XXXX
+[workers sites](https://developers.cloudflare.com/workers/platform/sites/start-from-worker)
 
 # KV & assets staticy 
 
