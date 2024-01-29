@@ -5,4 +5,5 @@ desc: 1829
 updated: 0
 created: 0
 ---
-# Write something really smart here.
+# Write something really smart here. 
+## Or simply jott stupidities.
