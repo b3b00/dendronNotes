@@ -1,11 +1,11 @@
 ---
 id: Perso.projects.dendronlike.todo.more.7.8.9.tests-d-insertions.123
 title: Perso.projects.dendronlike.todo.more.7.8.9.tests-d-insertions.123
-desc: soleil
-updated: 1707145054725
+desc: tarte dégueulasse
+updated: 1707145099149
 created: 0
 ---
-Astre central de notre sytème planétaire. 
+
 tarte des winners.
 ingrédients : 
  - choucroute
