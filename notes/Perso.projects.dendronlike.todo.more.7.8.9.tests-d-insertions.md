@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike.todo.more.7.8.9.tests-d-insertions
 title: Perso.projects.dendronlike.todo.more.7.8.9.tests-d-insertions
 desc: note with link to other notes
-updated: 0
+updated: 1707145167504
 created: 0
 ---
 # note pour tester les insertions de lien.
@@ -12,3 +12,5 @@ created: 0
 [[Perso.projects.dendronlike.docker.build]]
 
 [[Perso.multiple-ssh-keys-for-github]]
+
+[[Perso.projects.NetPostman]]
