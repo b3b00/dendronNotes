@@ -5,4 +5,4 @@ desc: soleil
 updated: 1707146756487
 created: 0
 ---
-Astre central de notre sytème planétaire.
+Astre central de notre sytème planétaire. il est chaud.
