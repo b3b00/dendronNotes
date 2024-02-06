@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1707228326674
+updated: 1707233181862
 created: 1659535376026
 ---
 
@@ -17,13 +17,13 @@ created: 1659535376026
     - and better links to notes
 
 ## UI
-- [] responsive UI to enable smartphones and tablets
+- [] ~~responsive UI to enable smartphones and tablets~~
 
 - [X] ~~recherche repository insensible à la casse~~
 
 - [X] ~~recherche de note (case insensitive)~~
 
-- [ ] ajout d'une note 
+- [ ] ~~ajout d'une note~~ 
 
   - [ ] ~~se positionner sur la note parent~~
   - [ ] ~~clic sur le bouton ajouter une note~~  
@@ -58,14 +58,14 @@ created: 1659535376026
 
 
 - editor and preview :
-   - [X] display editor and preview in 2 different tabs for better accessibility
+   - [X] ~~display editor and preview in 2 different tabs for better accessibility~~
    - [X] ~~only when coming from smartphone ?~~
 
 # édition
 
-- [ ] garder en mémoire les modifications même si on change de note.
-   - [ ] identifier les notes modifiées dans l'arborescence.
-   - [ ] mise à jour automatique de l'arborescence au cours de la saisie. 
+- [ ] ~~garder en mémoire les modifications même si on change de note.~~
+   - [ ] ~~identifier les notes modifiées dans l'arborescence.~~
+   - [ ] ~~mise à jour automatique de l'arborescence au cours de la saisie.~~
 
 # More features
 
