@@ -2,48 +2,48 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1698738070599
+updated: 1707228242284
 created: 1659535376026
 ---
 
 
 ## GitHub
 
-- [X] save file.
-- [X] create file
-- [ ] load full dendron in session. Allow suickier navigation, black links...
+- [X] ~~save file.~~
+- [X] ~~create file~~
+- [ ] load full dendron in session. Allow fasternavigation, black links... and better links to notes
 
 ## UI
 - [] responsive UI to enable smartphones and tablets
 
-- [X] recherche repository insensible à la casse 
+- [X] ~~recherche repository insensible à la casse~~
 
-- [X] recherche de note (case insensitive)
+- [X] ~~recherche de note (case insensitive)~~
 
 - [ ] ajout d'une note 
 
-  - [ ] se positionner sur la note parent
-  - [ ] clic sur le bouton ajouter une note  
-  - [X] NotesService.CreateNote(parent,name)
-  - [X] creer le header dendron
-  - [X] updateNotes 
+  - [ ] ~~se positionner sur la note parent~~
+  - [ ] ~~clic sur le bouton ajouter une note~~  
+  - [X] ~~NotesService.CreateNote(parent,name)~~
+  - [X] ~~creer le header dendron~~
+  - [X] ~~updateNotes~~ 
 
 
 - [X] sauvegarde d'une note
-   - [X] : mise à jour du meta updated
+   - [X] : ~~mise à jour du meta updated~~
    - [ ] ctrl+S ?
 
-- [ ] suppression de note
+- [X]  ~~suppression de note~~ 
 - [ ] mise ne surbrillance de la note sélectionnée
 
-- [X] masquer le bouton [save] si la note n'a pas été modifiée
-- [ ] bouton undo pour annuler les modifications non sauvegardées
+- [X] ~~masquer le bouton [save] si la note n'a pas été modifiée~~
+- [X] ~~bouton undo pour annuler les modifications non sauvegardées~~
 
 
 - better :
-   - [X] icon to add 
-   - [X] icon to del
-   - [X] [google material icon & symbols](https://fonts.google.com/icons)
+   - [X] ~~icon to add~~
+   - [X] ~~icon to del~~
+   - [X] ~~[google material icon & symbols](https://fonts.google.com/icons)~~
 
 ```html 
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
