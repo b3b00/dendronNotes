@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1707233466381
+updated: 1707298951472
 created: 1659535376026
 ---
 
@@ -11,10 +11,10 @@ created: 1659535376026
 
 - [X] ~~save file.~~
 - [X] ~~create file~~
-- [ ] load full dendron in session. Allow 
-    - fasternavigation 
+- [ ] ~~load full dendron in session.~~ Allow 
+    - ~~fasternavigation~~ 
     - black links 
-    - and better links to notes
+    - ~~and better links to notes~~
 
 ## UI
 - [] ~~responsive UI to enable smartphones and tablets~~
