@@ -2,7 +2,7 @@
 id: 45it3uay6z9nvoyht46g72o
 title: Perso.multiple-ssh-keys-for-github
 desc: 'How to get different ssh key for many git remote accounts'
-updated: 1707324000861
+updated: 1707324169499
 created: 1669144677424
 ---
 
@@ -66,13 +66,13 @@ Remplacer le github.com par github.com-&lt;XXX&gt; où <XXX> est le nom du compt
     git clone git@github.com-pro:GreatestCompany/awesomeCompanyRepo.git
 ## Modifier la config git du repo pour forcer le user
 ### forcer le user 
-```plaintext    
+```plaintext
     $ cd mypersonalRepo
     $ git config user.name "perso"
     $ git config user.email "perso@gmail.com" 
 ```
 ### forcer la clé SSH (utilisation de l'alias github)
-```plaintext    
+```plaintext
 [remote "origin"]
 	url = git@github.com-perso:perso/MyPersonalRepo.git
 ```
