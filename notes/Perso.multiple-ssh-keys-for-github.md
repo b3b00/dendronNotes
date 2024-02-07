@@ -2,7 +2,7 @@
 id: 45it3uay6z9nvoyht46g72o
 title: Perso.multiple-ssh-keys-for-github
 desc: 'How to get different ssh key for many git remote accounts'
-updated: 1707328495687
+updated: 1707329309309
 created: 1669144677424
 ---
 
@@ -17,8 +17,8 @@ comment jongler entre plusieurs clé SSH selon les repo github (entre perso et p
 ## Créer plusieurs clés publiques
 
 ```bash
-   $  ssh-keygen -f ~/.ssh/id_perso -t rsa -C "perso@gmail.com"
-   $  ssh-keygen -f ~/.ssh/id_pro -t rsa -C "pro@pro.com"
+$  ssh-keygen -f ~/.ssh/id_perso -t rsa -C "perso@gmail.com"
+$  ssh-keygen -f ~/.ssh/id_pro -t rsa -C "pro@pro.com"
 ```
 ⚠️ sous windows term + powershell la commande échoue avec un 
 
@@ -26,7 +26,7 @@ comment jongler entre plusieurs clé SSH selon les repo github (entre perso et p
 
 Sous Powershell il faut donc utiliser le chemin complet
 ```ps1
-      $ ssh-keygen -f c:/users/perso/.ssh/id_perso -t rsa -C "perso@gmail.com"
+ $ ssh-keygen -f c:/users/perso/.ssh/id_perso -t rsa -C "perso@gmail.com"
 ```
 
 ## ajouter les clés
@@ -37,19 +37,16 @@ Sous Powershell il faut donc utiliser le chemin complet
 
 ## Modifier .ssh/config
 
-
+```text
     # perso account
 
-```text
     Host github.com-perso # <- -perso pour préciser le compte
             HostName github.com
             User git
             IdentityFile ~/.ssh/id_perso 
-```        
 
     # pro account
 
-```text
     Host github.com-pro # <- -pro pour préciser le compte
             HostName github.com
             User git
@@ -60,16 +57,18 @@ le suffixe -xxxx n’est pas forcément le nom de l’utilisateur. il sert juste
 
 ## Cloner un repo avec la clé voulue
 
-Remplacer le github.com par github.com-&lt;XXX&gt; où <XXX> est le nom du compte
+Remplacer le github.com par `github.com-<XXX>` où `<XXX>` est le nom du compte
 
-
+```bash
     git clone git@github.com-perso:perso/myPersonalRepo.git
 
 
     git clone git@github.com-pro:GreatestCompany/awesomeCompanyRepo.git
+```
+
 ## Modifier la config git du repo pour forcer le user
 ### forcer le user 
-```text
+```bash
     $ cd mypersonalRepo
     $ git config user.name "perso"
     $ git config user.email "perso@gmail.com" 
