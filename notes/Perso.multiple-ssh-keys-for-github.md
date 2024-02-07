@@ -2,7 +2,7 @@
 id: 45it3uay6z9nvoyht46g72o
 title: Perso.multiple-ssh-keys-for-github
 desc: 'How to get different ssh key for many git remote accounts'
-updated: 1669144699603
+updated: 1707324000861
 created: 1669144677424
 ---
 
@@ -16,7 +16,7 @@ comment jongler entre plusieurs clé SSH selon les repo github (entre perso et p
 
 ## Créer plusieurs clés publiques
 
-```
+```bash
    $  ssh-keygen -f ~/.ssh/id_perso -t rsa -C "perso@gmail.com"
    $  ssh-keygen -f ~/.ssh/id_pro -t rsa -C "pro@pro.com"
 ```
@@ -25,12 +25,12 @@ comment jongler entre plusieurs clé SSH selon les repo github (entre perso et p
     Saving key "~/.ssh/id_perso" failed: No such file or directory
 
 Sous Powershell il faut donc utiliser le chemin complet
-```
+```bash
       $ ssh-keygen -f c:/users/perso/.ssh/id_perso -t rsa -C "perso@gmail.com"
 ```
 
 ## ajouter les clés
-```
+```bash
    $  ssh-add ~/.ssh/perso.ppk
    $  ssh-add ~/.ssh/pro.ppk
 ```
@@ -39,14 +39,14 @@ Sous Powershell il faut donc utiliser le chemin complet
 
 
     # perso account
-```
+```plaintext
     Host github.com-perso # <- -perso pour préciser le compte
             HostName github.com
             User git
             IdentityFile ~/.ssh/id_perso 
-```            
+```        
     # pro account
-```
+```plaintext
     Host github.com-pro # <- -pro pour préciser le compte
             HostName github.com
             User git
@@ -66,13 +66,13 @@ Remplacer le github.com par github.com-&lt;XXX&gt; où <XXX> est le nom du compt
     git clone git@github.com-pro:GreatestCompany/awesomeCompanyRepo.git
 ## Modifier la config git du repo pour forcer le user
 ### forcer le user 
-```
+```plaintext    
     $ cd mypersonalRepo
     $ git config user.name "perso"
     $ git config user.email "perso@gmail.com" 
 ```
 ### forcer la clé SSH (utilisation de l'alias github)
-```
+```plaintext    
 [remote "origin"]
 	url = git@github.com-perso:perso/MyPersonalRepo.git
 ```
