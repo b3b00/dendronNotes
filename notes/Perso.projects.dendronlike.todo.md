@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1707298985439
+updated: 1707319586867
 created: 1659535376026
 ---
 
@@ -11,22 +11,22 @@ created: 1659535376026
 
 - [X] ~~save file.~~
 - [X] ~~create file~~
-- [ ] ~~load full dendron in session.~~ Allow 
+- [X] ~~load full dendron in session.~~ Allow 
     - ~~fasternavigation~~ 
     - black links 
     - ~~and better links to notes~~
 
 ## UI
-- [] ~~responsive UI to enable smartphones and tablets~~
+- [X] ~~responsive UI to enable smartphones and tablets~~
 
 - [X] ~~recherche repository insensible à la casse~~
 
 - [X] ~~recherche de note (case insensitive)~~
 
-- [ ] ~~ajout d'une note~~ 
+- [X ] ~~ajout d'une note~~ 
 
-  - [ ] ~~se positionner sur la note parent~~
-  - [ ] ~~clic sur le bouton ajouter une note~~  
+  - [X] ~~se positionner sur la note parent~~
+  - [X] ~~clic sur le bouton ajouter une note~~  
   - [X] ~~NotesService.CreateNote(parent,name)~~
   - [X] ~~creer le header dendron~~
   - [X] ~~updateNotes~~ 
@@ -70,7 +70,7 @@ created: 1659535376026
 # More features
 
 ## [Links](https://wiki.dendron.so/notes/3472226a-ff3c-432d-bf5d-10926f39f6c2/)
-- [Back links] (https://wiki.dendron.so/notes/2l54qrzcil50bufntojzbpo/) : add a back link panel.
+- [X] ~~[Back links] (https://wiki.dendron.so/notes/2l54qrzcil50bufntojzbpo/) : add a back link panel.~~
 - [X] ~~Links to notes : set URLs to travel through linked notes.~~
 
 ## note history 
