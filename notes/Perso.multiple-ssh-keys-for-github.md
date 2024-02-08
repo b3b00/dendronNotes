@@ -2,7 +2,7 @@
 id: 45it3uay6z9nvoyht46g72o
 title: Perso.multiple-ssh-keys-for-github
 desc: 'How to get different ssh key for many git remote accounts'
-updated: 1707420702885
+updated: 1707420815673
 created: 1669144677424
 ---
 
@@ -42,16 +42,16 @@ ssh-add ~/.ssh/pro.ppk
 # perso account
 
 Host github.com-perso # <- -perso pour préciser le compte
-HostName github.com
-User git
-IdentityFile ~/.ssh/id_perso 
+     HostName github.com
+     User git
+     IdentityFile ~/.ssh/id_perso 
 
 # pro account
 
 Host github.com-pro # <- -pro pour préciser le compte
-HostName github.com
-User git
-IdentityFile ~/.ssh/id_pro 
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_pro 
 ```
 Autant de fois que de clés.
 le suffixe -xxxx n’est pas forcément le nom de l’utilisateur. il sert juste à identifier la clé lors du clone.
