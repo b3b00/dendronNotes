@@ -22,7 +22,7 @@ HEXA_COLOR
 ```
 produces :
 
-```mermaid
+```text
 graph LR;
 Z(( ))-->|#|A((start_color));
 A((start_color))-->|0-9,A-F|B(( ));
