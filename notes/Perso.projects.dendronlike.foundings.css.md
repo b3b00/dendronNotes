@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike.foundings.css
 title: Perso.projects.dendronlike.foundings.css
 desc: Classless css
-updated: 1707421202663
+updated: 1707421499448
 created: 0
 ---
 using [axist css](https://github.com/dbohdan/classless-css?tab=readme-ov-file#axist) makes dendronline look a bit weirdy !
@@ -39,3 +39,9 @@ class HelloWorld {
 ## head 2
 
 ## head 3
+
+| Month     | Savings |
+| -------------- | ------------- |
+| January  | $250      |
+| February | $80        |
+| March     | $420      |
