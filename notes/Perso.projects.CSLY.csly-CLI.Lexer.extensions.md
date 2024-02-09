@@ -1,8 +1,8 @@
 ---
 id: 3m8g1sl5bu2bkehp9a456ms
-title: extension
+title: Perso.projects.CSLY.csly-CLI.Lexer.extensions
 desc: generic lexer extension support
-updated: 1672046961960
+updated: 1707468931373
 created: 1670243953387
 ---
 
@@ -22,7 +22,7 @@ HEXA_COLOR
 ```
 produces :
 
-```text
+```mermaid
 graph LR;
 Z(( ))-->|#|A((start_color));
 A((start_color))-->|0-9,A-F|B(( ));
