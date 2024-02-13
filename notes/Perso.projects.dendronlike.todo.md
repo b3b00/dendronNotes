@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1707813310360
+updated: 1707827231628
 created: 1659535376026
 ---
 
@@ -59,7 +59,7 @@ created: 1659535376026
 
 # More features
 
-## [Links](https://wiki.dendron.so/notes/3472226a-ff3c-432d-bf5d-10926f39f6c2/)
+## [Links](https://wiki.dendron.so/notes/3472226a-ff3c-432d-bf5d-10926f39f6c2/) [#11](https://github.com/b3b00/dendrOnline/issues/11)
 - [X] [Back links] (https://wiki.dendron.so/notes/2l54qrzcil50bufntojzbpo/) : add a back link panel.
 - [X] Links to notes : set URLs to travel through linked notes.
 
