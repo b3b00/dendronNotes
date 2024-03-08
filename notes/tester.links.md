@@ -1,8 +1,8 @@
 ---
-id: tester.links
+id: gloup
 title: tester.links
 desc: links
-updated: 1707293612774
+updated: 1709888837431
 created: 0
 ---
 ## smarter links 
