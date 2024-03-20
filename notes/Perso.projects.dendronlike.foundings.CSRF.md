@@ -1,8 +1,8 @@
 ---
 id: 12OESVeNgR
-title: HTMX & CSRF
+title: Perso.projects.dendronlike.foundings.CSRF
 desc: Razor/Htmx CSRF configuration
-updated: 1698738003415
+updated: 1710920186396
 created: 1696788604478
 ---
 # CSRF
@@ -13,7 +13,7 @@ Les POST aboutissent à des ``400`` si on ne configure pas correctement l'antifo
 
 [anti forgery tokens](https://khalidabuhakmeh.com/htmx-requests-with-aspnet-core-anti-forgery-tokens)
 
-le tag helper ne semble pas correctement fonctionner. Il faut mieux ajouter le meta à la main
+le tag helper ne semble pas correctement fonctionner. Il vaut mieux ajouter le meta à la main
 
 ```html
 <meta name="htmx-config" content='{"indicatorClass":"htmx-indicator","historyCacheSize":20,"antiForgery":{"formFieldName":"__RequestVerificationToken","headerName":"RequestVerificationToken","requestToken":"<token>"}}' />
