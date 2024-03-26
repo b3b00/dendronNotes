@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1707827231628
+updated: 1711438240451
 created: 1659535376026
 ---
 
@@ -37,7 +37,7 @@ created: 1659535376026
    - [ ] ctrl+S ?
 
 - [X]  suppression de note
-- [ ] mise ne surbrillance de la note sélectionnée
+- [X] mise ne surbrillance de la note sélectionnée
 
 - [X] masquer le bouton [save] si la note n'a pas été modifiée
 - [X] bouton undo pour annuler les modifications non sauvegardées
