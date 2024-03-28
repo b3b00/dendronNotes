@@ -2,7 +2,7 @@
 id: Perso.net.efcore.using.sqlite
 title: Perso.net.efcore.using.sqlite
 desc: use Sqlite
-updated: 1711617106277
+updated: 1711621923968
 created: 0
 ---
 # use Sqlite database.
@@ -45,7 +45,7 @@ using appsettings :
     }
   },
   "ConnectionStrings": {
-    "WebApiDatabase": "Data Source=c:/temp/database.sqlite"
+    "WebApiDatabase": "Data Source=/path/to/database.sqlite"
   }
 }
 ```
