@@ -2,7 +2,7 @@
 id: Perso.net.efcore.using
 title: Perso.net.efcore.using
 desc: using EF Core
-updated: 1711615509944
+updated: 1711623611279
 created: 0
 ---
 # How to configure EF Core.
@@ -50,6 +50,9 @@ public class MyContext: DbContext
     public DbSet<ChildEntity> Children { get; set; }
 }
 ```
+
+see specifics for 
+ - in memory [[Perso.net.efcore.using.inMemory]]
 
 ## Create a repository
 
