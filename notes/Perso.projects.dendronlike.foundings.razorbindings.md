@@ -1,11 +1,9 @@
 ---
 id: eurzrk1bhilnotouzsfg36q
-title: HTMX razor bindings
-desc: 'Razor Bindings'
-updated: 1698738019222
+title: Perso.projects.dendronlike.foundings.razorbindings
+desc: Razor Bindings
+updated: 1711636014957
 created: 1659527230794
-traitIds:
-  - Perso
 ---
  
  pour pouvoir utiliser correctement le ```asp-for```
