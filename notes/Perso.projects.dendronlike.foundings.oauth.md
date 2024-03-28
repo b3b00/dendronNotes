@@ -1,10 +1,9 @@
 ---
 id: lc11vatl9v4rm8kocfm0ke6
-title: oauth
-desc: 'middleware OAuth2 GitHub'
-updated: 1659685587316
+title: Perso.projects.dendronlike.foundings.oauth
+desc: middleware OAuth2 GitHub
+updated: 1711636027002
 created: 1659685379252
-tags: oauth
 ---
 
 il ne semble pas exister de middleware oauth permettant d'accéder simplement à l'access_token retourner par le server oauth.
