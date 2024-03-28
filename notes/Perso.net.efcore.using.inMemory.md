@@ -2,7 +2,7 @@
 id: Perso.net.efcore.using.inMemory
 title: Perso.net.efcore.using.inMemory
 desc: using in memory EF database
-updated: 0
+updated: 1711616884810
 created: 0
 ---
 # use in memory database.
@@ -10,16 +10,12 @@ created: 0
 ## Nuget dependencies
 
 ```bash
-dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.InMemory
 ```
 
 ### and for migrations 
 
-see [[Perso.net.efcore.migrations]]
-
-```bash
-dotnet add package Microsoft.EntityFrameworkCore.Sqlite.Design
-```
+no need for migrations
 
 ## configure Db Context
 
@@ -28,7 +24,7 @@ In DbContext :
 ```c#
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseInMemoryDatabase(databaseName: "AuthorDb");
+        optionsBuilder.UseInMemoryDatabase(databaseName: "MyDb");
     }
 ```
 
