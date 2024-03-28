@@ -2,7 +2,7 @@
 id: Perso.net.efcore.using
 title: Perso.net.efcore.using
 desc: using EF Core
-updated: 1711623750283
+updated: 1711623841252
 created: 0
 ---
 # How to configure EF Core.
@@ -51,9 +51,10 @@ public class MyContext: DbContext
 }
 ```
 
-see specifics for 
- - in memory [[Perso.net.efcore.using.inMemory]]
- - sqlite [[Perso.net.efcore.using.sqlite]] 
+see specifics :
+ - [[Perso.net.efcore.using.inMemory]]
+ - [[Perso.net.efcore.using.sqlite]] 
+ - [[Perso.net.efcore.using.PostgreSql]]
 
 ## Create a repository
 
