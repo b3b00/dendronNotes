@@ -20,13 +20,30 @@ given a season and a team :
 
 ## link
 
-`/#/share/<some opaque token>`
+`GET /#/open/<some opaque token>`
+
+`POST /share  season=? team=?`
+
+```sql
+CREATE TABLE shareLinks (id TEXT PRIMARY KEY, account TEXT NOT NULL, season TEXT NOT NULL, team TEXT NOT NULL);
+
+CREATE TABLE virtualSession (
+	id TEXT,
+	link TEXT,
+	CONSTRAINT VIRTUALSESSION_PK PRIMARY KEY (id),
+	CONSTRAINT virtualSession_shareLinks_FK FOREIGN KEY (id) REFERENCES shareLinks(id)
+);
+```
+
+
 
 ## bypass authentication
 
 find a way to bypass authentication
 
 ### virtual session
+
+use a virtual session associated to account. 
 
 **beware security.**
 
