@@ -1,8 +1,8 @@
 ---
 id: kwv28442iw6w42zuit9ollw
-title: Things I've learn with CFDendron
-desc: ''
-updated: 1690010635865
+title: Perso.projects.cfdendron.TIL
+desc: Things I've learned
+updated: 1711635714775
 created: 1690010540802
 ---
 
