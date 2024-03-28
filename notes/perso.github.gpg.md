@@ -1,8 +1,8 @@
 ---
 id: jii2t0ifhpyt03s58kpd58z
-title: gpg
-desc: 'use GPG with git'
-updated: 1698685072379
+title: perso.github.gpg
+desc: use GPG with git
+updated: 1711635944087
 created: 1676985339817
 ---
 
