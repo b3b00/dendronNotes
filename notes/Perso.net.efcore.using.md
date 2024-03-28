@@ -2,7 +2,7 @@
 id: Perso.net.efcore.using
 title: Perso.net.efcore.using
 desc: using EF Core
-updated: 0
+updated: 1711615509944
 created: 0
 ---
 # How to configure EF Core.
@@ -52,3 +52,73 @@ public class MyContext: DbContext
 ```
 
 ## Create a repository
+
+### repository interface
+```c#
+public interface IParentRepository
+{
+    public List<ParentEntity> GetParents();
+
+    public ParentEntity? GetParentByName(string name)
+}
+```
+
+### repository implementation
+
+```C#
+public class ParentRepository : IParentRepository
+{
+    private IConfiguration _configuration;
+    public ParentRepository(IConfiguration configuration)
+    {
+        _configuration = configuration;
+     
+        //
+        // initialize database content
+        //
+        using (var context = new MyContext(configuration))
+        {
+            var parents = new List<ParentEntity>
+            {
+                new ParentEntity
+                {
+                    Name ="mummy",
+                    Children = new List<ChildEntity>()
+                    {
+                        new ChildEntity() { Name = "son"},
+                        new ChildEntity() { Name = "daughter"}
+                    }
+                }
+            };
+            context.Parents.AddRange(parents);
+            context.SaveChanges();
+        }
+    }
+
+    public ParentEntity? GetParentByName(string name)
+    {
+        using (var context = new MyContext(_configuration))
+        {
+            return context.Parents.FirstOrDefault(x => x.Name == name);
+        }
+    } 
+    public List<ParentEntity> GetParents()
+    {
+        using (var context = new MyContext(_configuration))
+        {
+            var list = context.Parents
+                // Specifies related entities to include in the query results.
+                .Include(a => a.Children)
+                .ToList();
+            return list;
+        }
+    }
+}
+```
+
+## inject db repository to service injection
+
+```c#
+services.AddScoped<IParentRepository, ParentRepository>();
+```
+
