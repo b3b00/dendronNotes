@@ -1,8 +1,8 @@
 ---
 id: Perso.net.efcore.using.mysql
 title: Perso.net.efcore.using.mysql
-desc: MySql
-updated: 0
+desc: MySQL
+updated: 1711634568868
 created: 0
 ---
 # use MySql database.
