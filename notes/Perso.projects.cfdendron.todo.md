@@ -1,8 +1,8 @@
 ---
 id: z9ut4zvimgofxdj5ry1rpik
-title: todo
-desc: 'TODO list for CF Dendron'
-updated: 1698685094827
+title: Perso.projects.cfdendron.todo
+desc: TODO list for CF Dendron
+updated: 1711635840279
 created: 1689943392141
 ---
 
