@@ -1,8 +1,8 @@
 ---
 id: 69drgtvtsl85z40stwkearg
 title: Perso.projects.classements.share
-desc: 'Share data (readonly)'
-updated: 1710493350627
+desc: Share data (readonly)
+updated: 1711635855489
 created: 1709890487941
 ---
 
