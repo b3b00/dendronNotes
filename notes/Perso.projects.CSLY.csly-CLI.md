@@ -1,12 +1,12 @@
 ---
 id: ts1k8crs82j8fxdag3j4389
-title: CSLY CLI
+title: Perso.projects.CSLY.csly-CLI
 desc: CLI Companion tool for CSLY
-updated: 1662976945346
+updated: 1713510398628
 created: 1659685379252
-tags: oauth
 ---
 
+[CLSY CLI tool](https://github.com/b3b00/cslycli)
 
 cli for testing lexer and parser :
 
