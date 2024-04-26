@@ -2,7 +2,7 @@
 id: 45it3uay6z9nvoyht46g772o
 title: Perso.multiple-ssh-keys-for-github
 desc: How to get different ssh key for many git remote accounts
-updated: 1711635879632
+updated: 1714117762346
 created: 1669144677424
 ---
 
@@ -77,6 +77,10 @@ git config user.email "perso@gmail.com"
 ```text
 [remote "origin"]
 url = git@github.com-perso:perso/MyPersonalRepo.git
+```
+ou 
+```bash
+git remote set-url origin git@github.com-perso:perso/MyPersonalRepo.git
 ```
 
 # Références
