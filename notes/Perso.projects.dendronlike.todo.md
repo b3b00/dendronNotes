@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1711438240451
+updated: 1714740625112
 created: 1659535376026
 ---
 
@@ -66,3 +66,6 @@ created: 1659535376026
 ## note history 
 - [ ] display note history
 - [ ] display note content in past : view only, no edition 
+
+## favorite repository
+- [ ]  Allow user to define a favorite repository so he does not have to select it when he come back.
