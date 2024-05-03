@@ -2,7 +2,7 @@
 id: Perso.net.efcore.migrations
 title: Perso.net.efcore.migrations
 desc: EF Core migrations
-updated: 1711614132607
+updated: 1714740490269
 created: 0
 ---
 # Ef dotnet tool
@@ -41,6 +41,25 @@ dotnet ef migrations add migrationName
 ```powershell
 dotnet ef database update
 ```
+
+# Migrations au runtime 
+
+```c#
+public static void Main(string[] args)
+{
+    var host = CreateHostBuilder(args).Build();
+
+    using (var scope = host.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
+    }
+
+    host.Run();
+}
+```
+[Apply migrations at runtime](https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/applying?tabs=dotnet-core-cli#apply-migrations-at-runtime)
+
 
 # sources
 
