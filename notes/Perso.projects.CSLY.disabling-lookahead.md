@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722424786896
+updated: 1722425076472
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
@@ -38,4 +38,9 @@ Let's see how it compounds with memoization optimization.
 
 # Memoization and lookahead
 
-
+| Method    | Memoize | NoLookAheadAtAll | Mean      | Error    | StdDev    | Gen0       | Gen1      | Gen2      | Allocated |
+|---------- |-------- |----------------- |----------:|---------:|----------:|-----------:|----------:|----------:|----------:|
+| **TestDummy** | **False**   | **False**            |  **54.29 ms** | **1.149 ms** |  **3.335 ms** |  **5333.3333** | **3222.2222** | **2555.5556** |  **34.79 MB** |
+| **TestDummy** | **False**   | **True**             | **161.32 ms** | **3.216 ms** |  **8.585 ms** | **15000.0000** | **5666.6667** | **4333.3333** | **137.89 MB** |
+| **TestDummy** | **True**    | **False**            |  **57.78 ms** | **1.627 ms** |  **4.668 ms** |  **5333.3333** | **3111.1111** | **2555.5556** |  **34.79 MB** |
+| **TestDummy** | **True**    | **True**             | **164.81 ms** | **4.693 ms** | **13.616 ms** | **14000.0000** | **4666.6667** | **3333.3333** | **137.89 MB** |
