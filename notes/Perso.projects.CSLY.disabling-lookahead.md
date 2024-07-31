@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722425076472
+updated: 1722425111360
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
@@ -11,6 +11,8 @@ created: 0
 **Acknowledgement** : this is completly silly as it will lead to poor error messages.
 
 ## no lookahead solo
+
+## backtrack parser
 
  - no lookahead
  - memoization on
