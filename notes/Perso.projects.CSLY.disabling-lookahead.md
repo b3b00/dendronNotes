@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722428228971
+updated: 1722429084987
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
@@ -79,14 +79,29 @@ Look ahead is still useful for parsing json JSON even though the performance dro
 | Method        | Memoize | Broaden | NoLookAheadAtAll | Mean        | Error     | StdDev     | Median      | Gen0        | Gen1        | Gen2       | Allocated  |
 |-------------- |-------- |-------- |----------------- |------------:|----------:|-----------:|------------:|------------:|------------:|-----------:|-----------:|
 | **TestBackTrack** | **False**   | **False**   | **False**            |   **975.75 ms** | **20.542 ms** |  **55.885 ms** |   **958.81 ms** | **225000.0000** |  **40000.0000** |  **8000.0000** | **1128.25 MB** |
-| **TestBackTrack** | **False**   | **False**   | **True**             | **3,004.40 ms** | **59.379 ms** | **114.404 ms** | **2,982.34 ms** | **477000.0000** | **150000.0000** | **18000.0000** | **3113.86 MB** |
 | **TestBackTrack** | **False**   | **True**    | **False**            |   **976.68 ms** | **23.612 ms** |  **67.747 ms** |   **959.68 ms** | **223000.0000** |  **40000.0000** |  **8000.0000** | **1124.19 MB** |
-| **TestBackTrack** | **False**   | **True**    | **True**             | **3,020.54 ms** | **64.886 ms** | **179.798 ms** | **2,949.98 ms** | **477000.0000** | **149000.0000** | **19000.0000** | **3113.88 MB** |
 | **TestBackTrack** | **True**    | **False**   | **False**            |    **56.25 ms** |  **1.279 ms** |   **3.629 ms** |    **55.37 ms** |   **5222.2222** |   **3111.1111** |  **2666.6667** |   **34.79 MB** |
-| **TestBackTrack** | **True**    | **False**   | **True**             |   **170.68 ms** |  **5.942 ms** |  **17.334 ms** |   **165.76 ms** |  **15000.0000** |   **5333.3333** |  **4333.3333** |  **137.89 MB** |
 | **TestBackTrack** | **True**    | **True**    | **False**            |    **62.25 ms** |  **3.098 ms** |   **8.988 ms** |    **60.68 ms** |   **5111.1111** |   **2888.8889** |  **2444.4444** |   **34.79 MB** |
+| **TestBackTrack** | **False**   | **False**   | **True**             | **3,004.40 ms** | **59.379 ms** | **114.404 ms** | **2,982.34 ms** | **477000.0000** | **150000.0000** | **18000.0000** | **3113.86 MB** |
 | **TestBackTrack** | **True**    | **True**    | **True**             |   **266.50 ms** | **35.118 ms** | **103.547 ms** |   **238.53 ms** |  **15000.0000** |   **5666.6667** |  **4333.3333** |  **137.89 MB** |
+| **TestBackTrack** | **True**    | **False**   | **True**             |   **170.68 ms** |  **5.942 ms** |  **17.334 ms** |   **165.76 ms** |  **15000.0000** |   **5333.3333** |  **4333.3333** |  **137.89 MB** |
+| **TestBackTrack** | **False**   | **True**    | **True**             | **3,020.54 ms** | **64.886 ms** | **179.798 ms** | **2,949.98 ms** | **477000.0000** | **149000.0000** | **19000.0000** | **3113.88 MB** |
+
 
 
 **[Indented While](https://github.com/b3b00/csly/blob/dev/src/samples/IndentedWhile/parser/IndentedWhileParserGeneric.cs)**
+
+| Method    | Memoize | Broaden | NoLookAheadAtAll | Mean     | Error    | StdDev   | Median   | Gen0    | Allocated |
+|---------- |-------- |-------- |----------------- |---------:|---------:|---------:|---------:|--------:|----------:|
+| **TestWhile** | **False**   | **False**   | **False**            | **45.75 μs** | **0.900 μs** | **1.937 μs** | **45.36 μs** | **22.2778** |  **91.17 KB** |
+| **TestWhile** | **False**   | **True**    | **False**            | **47.87 μs** | **0.918 μs** | **2.589 μs** | **46.99 μs** | **22.2778** |  **91.17 KB** |
+| **TestWhile** | **True**    | **False**   | **False**            | **45.85 μs** | **0.927 μs** | **2.599 μs** | **45.19 μs** | **22.2778** |  **91.17 KB** |
+| **TestWhile** | **True**    | **True**    | **False**            | **47.55 μs** | **1.171 μs** | **3.302 μs** | **46.79 μs** | **22.2778** |  **91.17 KB** |
+| **TestWhile** | **True**    | **True**    | **True**             | **45.48 μs** | **0.867 μs** | **2.224 μs** | **45.00 μs** | **22.2778** |  **91.17 KB** |
+| **TestWhile** | **False**   | **False**   | **True**             | **48.58 μs** | **1.580 μs** | **4.481 μs** | **47.07 μs** | **22.2778** |  **91.17 KB** |
+| **TestWhile** | **True**    | **False**   | **True**             | **48.41 μs** | **1.807 μs** | **5.126 μs** | **46.49 μs** | **22.2778** |  **91.17 KB** |
+| **TestWhile** | **False**   | **True**    | **True**             | **50.99 μs** | **2.119 μs** | **5.941 μs** | **48.99 μs** | **22.2778** |  **91.17 KB** |
+
+These times are senseless. a new bench is needed.
+
 
