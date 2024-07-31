@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722427335631
+updated: 1722427605310
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
@@ -59,6 +59,9 @@ We can see that memoization does not bring any performance boost when
 | **TestJson** | **False**   | **True**             | **275.3 ms** |  **6.72 ms** | **19.38 ms** | **268.5 ms** | **23000.0000** |  **9000.0000** | **4000.0000** | **135.61 MB** |
 | **TestJson** | **True**    | **False**            | **154.5 ms** |  **3.73 ms** | **10.71 ms** | **153.1 ms** | **13333.3333** |  **5333.3333** | **2666.6667** |  **78.41 MB** |
 | **TestJson** | **True**    | **True**             | **468.0 ms** | **14.33 ms** | **40.41 ms** | **457.6 ms** | **27000.0000** | **10000.0000** | **4000.0000** | **161.52 MB** |
+
+We can see the [#435](https://github.com/b3b00/csly/issues/435) issue here where memoization is not a good thing for json parser.
+Look ahead is still useful for parsing json JSON even though the performance drop is lower than for backtracking parser ( **2.5x** CPU and **2x** memory)
 
 # The whole thing
 
