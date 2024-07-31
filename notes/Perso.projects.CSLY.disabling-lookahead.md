@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722431227029
+updated: 1722433176337
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
@@ -102,16 +102,4 @@ Look ahead is still useful for parsing json JSON even though the performance dro
 | **TestWhile** | **True**    | **False**   | **True**             | **48.41 μs** | **1.807 μs** | **5.126 μs** | **46.49 μs** | **22.2778** |  **91.17 KB** |
 | **TestWhile** | **False**   | **True**    | **True**             | **50.99 μs** | **2.119 μs** | **5.941 μs** | **48.99 μs** | **22.2778** |  **91.17 KB** |
 
-These times are senseless. a new bench is needed.
-
-
-| Method    | Memoize | Broaden | NoLookAheadAtAll | Mean     | Error    | StdDev    | Median   | Gen0    | Allocated |
-|---------- |-------- |-------- |----------------- |---------:|---------:|----------:|---------:|--------:|----------:|
-| **TestWhile** | **False**   | **False**   | **False**            | **43.81 μs** | **0.866 μs** |  **1.185 μs** | **43.64 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **True**    | **True**    | **False**            | **50.80 μs** | **1.319 μs** |  **3.632 μs** | **49.58 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **False**   | **True**    | **False**            | **51.09 μs** | **1.515 μs** |  **4.322 μs** | **49.07 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **True**    | **False**   | **False**            | **53.16 μs** | **2.014 μs** |  **5.648 μs** | **51.03 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **True**    | **False**   | **True**             | **56.86 μs** | **2.483 μs** |  **6.714 μs** | **54.89 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **False**   | **True**    | **True**             | **48.76 μs** | **0.868 μs** |  **0.678 μs** | **48.96 μs** | **22.2168** |  **91.17 KB** |
-| **TestWhile** | **True**    | **True**    | **True**             | **58.80 μs** | **3.985 μs** | **11.175 μs** | **55.87 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **False**   | **False**   | **True**             | **49.65 μs** | **2.903 μs** |  **7.948 μs** | **47.01 μs** | **22.2778** |  **91.17 KB** |
+Times are too low to show any performance issue. This is caused by the grammar of the language ?
