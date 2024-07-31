@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722425636171
+updated: 1722425814133
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
@@ -33,13 +33,9 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 | **TestDummy** | **False**            |  **55.26 ms** | **1.491 ms** |  **4.253 ms** |  **54.85 ms** |  **5333.3333** | **3222.2222** | **2555.5556** |  **34.79 MB** |
 | **TestDummy** | **True**             | **169.69 ms** | **4.829 ms** | **13.698 ms** | **165.66 ms** | **14000.0000** | **5000.0000** | **3333.3333** | **137.89 MB** |
 
-
-Strangely disbaling lookahead (and then trying every single rule for each non terminal) gives us a much better performance. 
-
-When disabling lookahead way less memory is allocated which can explain at least partially the performance boost.
+As expected disabling lookahead leads to a dramatic performance drop : **3x** slower and **2x** allocated memory. 
 
 
-Let's see how it compounds with memoization optimization.
 
 # Memoization and lookahead
 
@@ -63,4 +59,4 @@ Let's see how it compounds with memoization optimization.
 | **TestJson** | **True**    | **False**            | **154.5 ms** |  **3.73 ms** | **10.71 ms** | **153.1 ms** | **13333.3333** |  **5333.3333** | **2666.6667** |  **78.41 MB** |
 | **TestJson** | **True**    | **True**             | **468.0 ms** | **14.33 ms** | **40.41 ms** | **457.6 ms** | **27000.0000** | **10000.0000** | **4000.0000** | **161.52 MB** |
 
-For  JSON parser disabling lookahead results in a performance drop. Seems coherent as parsing json is greatly lead by the one next token.
+
