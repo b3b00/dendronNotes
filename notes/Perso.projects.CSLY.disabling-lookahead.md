@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722427605310
+updated: 1722428228971
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
@@ -76,7 +76,16 @@ Look ahead is still useful for parsing json JSON even though the performance dro
 
 **[backtracking parser](https://github.com/b3b00/csly/blob/dev/src/benchCurrent/backtrack/BackTrackParser.cs)**
 
-
+| Method        | Memoize | Broaden | NoLookAheadAtAll | Mean        | Error     | StdDev     | Median      | Gen0        | Gen1        | Gen2       | Allocated  |
+|-------------- |-------- |-------- |----------------- |------------:|----------:|-----------:|------------:|------------:|------------:|-----------:|-----------:|
+| **TestBackTrack** | **False**   | **False**   | **False**            |   **975.75 ms** | **20.542 ms** |  **55.885 ms** |   **958.81 ms** | **225000.0000** |  **40000.0000** |  **8000.0000** | **1128.25 MB** |
+| **TestBackTrack** | **False**   | **False**   | **True**             | **3,004.40 ms** | **59.379 ms** | **114.404 ms** | **2,982.34 ms** | **477000.0000** | **150000.0000** | **18000.0000** | **3113.86 MB** |
+| **TestBackTrack** | **False**   | **True**    | **False**            |   **976.68 ms** | **23.612 ms** |  **67.747 ms** |   **959.68 ms** | **223000.0000** |  **40000.0000** |  **8000.0000** | **1124.19 MB** |
+| **TestBackTrack** | **False**   | **True**    | **True**             | **3,020.54 ms** | **64.886 ms** | **179.798 ms** | **2,949.98 ms** | **477000.0000** | **149000.0000** | **19000.0000** | **3113.88 MB** |
+| **TestBackTrack** | **True**    | **False**   | **False**            |    **56.25 ms** |  **1.279 ms** |   **3.629 ms** |    **55.37 ms** |   **5222.2222** |   **3111.1111** |  **2666.6667** |   **34.79 MB** |
+| **TestBackTrack** | **True**    | **False**   | **True**             |   **170.68 ms** |  **5.942 ms** |  **17.334 ms** |   **165.76 ms** |  **15000.0000** |   **5333.3333** |  **4333.3333** |  **137.89 MB** |
+| **TestBackTrack** | **True**    | **True**    | **False**            |    **62.25 ms** |  **3.098 ms** |   **8.988 ms** |    **60.68 ms** |   **5111.1111** |   **2888.8889** |  **2444.4444** |   **34.79 MB** |
+| **TestBackTrack** | **True**    | **True**    | **True**             |   **266.50 ms** | **35.118 ms** | **103.547 ms** |   **238.53 ms** |  **15000.0000** |   **5666.6667** |  **4333.3333** |  **137.89 MB** |
 
 
 **[Indented While](https://github.com/b3b00/csly/blob/dev/src/samples/IndentedWhile/parser/IndentedWhileParserGeneric.cs)**
