@@ -2,10 +2,19 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722424556185
+updated: 1722424786896
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
+
+
+**Acknowledgement** : this is completly silly as it will lead to poor error messages.
+
+## no lookahead solo
+
+ - no lookahead
+ - memoization on
+ - broadentokenwindow = off
 
 ```
 
@@ -26,3 +35,7 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 Strangely disbaling lookahead (and then trying every single rule for each non terminal) gives us a much better performance. 
 
 Let's see how it compounds with memoization optimization.
+
+# Memoization and lookahead
+
+
