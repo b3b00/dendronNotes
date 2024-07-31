@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722425814133
+updated: 1722426401197
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
@@ -33,7 +33,7 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 | **TestDummy** | **False**            |  **55.26 ms** | **1.491 ms** |  **4.253 ms** |  **54.85 ms** |  **5333.3333** | **3222.2222** | **2555.5556** |  **34.79 MB** |
 | **TestDummy** | **True**             | **169.69 ms** | **4.829 ms** | **13.698 ms** | **165.66 ms** | **14000.0000** | **5000.0000** | **3333.3333** | **137.89 MB** |
 
-As expected disabling lookahead leads to a dramatic performance drop : **3x** slower and **2x** allocated memory. 
+As expected disabling lookahead leads to a dramatic performance drop : **3x** slower and **4x** allocated memory. 
 
 
 
@@ -49,6 +49,7 @@ As expected disabling lookahead leads to a dramatic performance drop : **3x** sl
 | **TestDummy** | **True**    | **False**            |  **57.78 ms** | **1.627 ms** |  **4.668 ms** |  **5333.3333** | **3111.1111** | **2555.5556** |  **34.79 MB** |
 | **TestDummy** | **True**    | **True**             | **164.81 ms** | **4.693 ms** | **13.616 ms** | **14000.0000** | **4666.6667** | **3333.3333** | **137.89 MB** |
 
+We can see that memoization does not bring any performance boost when 
 
 [json parser](https://github.com/b3b00/csly/blob/dev/src/benchCurrent/json/EbnfJsonGenericParser.cs)
 
