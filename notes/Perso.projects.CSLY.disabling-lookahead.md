@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.disabling-lookahead
 title: Perso.projects.CSLY.disabling-lookahead
 desc: Dummy test : completly disable lookahead
-updated: 1722433176337
+updated: 1722428228971
 created: 0
 ---
 # This tests how much performance degrade when removing lookahead (1).
@@ -91,15 +91,5 @@ Look ahead is still useful for parsing json JSON even though the performance dro
 
 **[Indented While](https://github.com/b3b00/csly/blob/dev/src/samples/IndentedWhile/parser/IndentedWhileParserGeneric.cs)**
 
-| Method    | Memoize | Broaden | NoLookAheadAtAll | Mean     | Error    | StdDev   | Median   | Gen0    | Allocated |
-|---------- |-------- |-------- |----------------- |---------:|---------:|---------:|---------:|--------:|----------:|
-| **TestWhile** | **False**   | **False**   | **False**            | **45.75 μs** | **0.900 μs** | **1.937 μs** | **45.36 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **False**   | **True**    | **False**            | **47.87 μs** | **0.918 μs** | **2.589 μs** | **46.99 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **True**    | **False**   | **False**            | **45.85 μs** | **0.927 μs** | **2.599 μs** | **45.19 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **True**    | **True**    | **False**            | **47.55 μs** | **1.171 μs** | **3.302 μs** | **46.79 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **True**    | **True**    | **True**             | **45.48 μs** | **0.867 μs** | **2.224 μs** | **45.00 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **False**   | **False**   | **True**             | **48.58 μs** | **1.580 μs** | **4.481 μs** | **47.07 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **True**    | **False**   | **True**             | **48.41 μs** | **1.807 μs** | **5.126 μs** | **46.49 μs** | **22.2778** |  **91.17 KB** |
-| **TestWhile** | **False**   | **True**    | **True**             | **50.99 μs** | **2.119 μs** | **5.941 μs** | **48.99 μs** | **22.2778** |  **91.17 KB** |
 
-Times are too low to show any performance issue. This is caused by the grammar of the language ?
+
