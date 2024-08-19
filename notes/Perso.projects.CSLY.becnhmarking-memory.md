@@ -7,7 +7,7 @@ created: 0
 ---
 # trying to reduce memory
 
-Profiling memory on SimpleExpressionParser, we find that we create a lot of `List<UnexpectedTokenSyntaxErorr<EpressionToken>>`. This can be explained by backtracking but since CSLY expression parsing try to limit backtracking there mays be room to better memory usage.
+Profiling memory on SimpleExpressionParser, we find that we create a lot of `List<UnexpectedTokenSyntaxErorr<EpressionToken>>`. This can be explained by backtracking but since CSLY expression parsing try to limit backtracking there may be room to better memory usage.
 
 # benchmarking
 
@@ -25,7 +25,7 @@ With benchmark dot net we look at memory (and CPU) usage for a 50 `1+2+3+4+5+6+7
 
 DotMemory gives us : 771.8 KB allocated for `List<UnexpectedTokenSyntaxErorr<EpressionToken>>`
 
-A List si systematically created on ParseResult which is not usefull if the result is a success. So remove this senseless instanciation.
+A List is systematically created on ParseResult which is not usefull if the result is a success. So remove this useless instanciation.
 
 
 | Method        | Mean     | Error     | StdDev    | Gen0      | Gen1    | Allocated |
@@ -44,7 +44,7 @@ But we now have 6 failing unit tests.
 |-------------- |---------:|----------:|---------:|---------:|----------:|----------:|
 | - | 9.752 ms | 0.3932 ms | 1.135 ms | 9.262 ms | 3750.0000 |  14.99 MB |
 
-Memory allocation is better but time has dropped a bit 😞
+Memory allocation is better but time is a little bit worse 😞
 
 let's cross check : 
 
@@ -86,7 +86,7 @@ and without  leadingtoken pool :
 | TestExpressionGeneric | 6.776 ms | 0.1064 ms | 0.0996 ms | 3750.0000 |        |  15.01 MB |
 | TestExpressionRegex   | 6.618 ms | 0.1220 ms | 0.1019 ms | 3500.0000 | 7.8125 |  13.99 MB |
 
-the CPU time difference is not significant.... may be .Net 8 brings enough performance boost to make regex lexer now goog enough ?
+the CPU time difference is not significant.... may be .Net 8 brings enough performance boost to now make regex lexer good enough ?
 
 ** 2nd run (splitted) **
 
@@ -117,3 +117,8 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 | TestExpressionGeneric | 8.599 ms | 0.1848 ms | 0.5242 ms | 8.382 ms | 3757.8125 |       - |  15.01 MB |
 
 It looks like genericLexer instantiates more Gen0 object. This needs to be investigated.
+
+| Method                | Mean     | Error    | StdDev   | Median   | Gen0      | Gen1    | Allocated |
+|---------------------- |---------:|---------:|---------:|---------:|----------:|--------:|----------:|
+| TestExpressionRegex   | 10.14 ms | 0.444 ms | 1.258 ms | 9.767 ms | 3500.0000 | 15.6250 |  13.99 MB |
+| TestExpressionGeneric | 10.11 ms | 0.423 ms | 1.234 ms | 9.635 ms | 3750.0000 |       - |  15.01 MB |
