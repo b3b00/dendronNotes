@@ -2,7 +2,7 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 0
+updated: 1724752242401
 created: 0
 ---
 # liste de courses.
@@ -10,5 +10,6 @@ created: 0
  - sans pub
  - PWA isntallable
  - offline first
+ - svelte + svelte material UI
 
 [liste](https://liste-de-courses.pages.dev/)
