@@ -2,7 +2,7 @@
 id: Perso.projects.liste.TIL
 title: Perso.projects.liste.TIL
 desc: TIL
-updated: 0
+updated: 1724752481202
 created: 0
 ---
 # Service worker life cycle.
@@ -35,3 +35,10 @@ self.addEventListener('install', function(event) {
  
 
 # google chrome auto translate
+
+On peut désactiver la traduction automatique des pages par Google Chrome en ajoutant des meta dans le head de la page : 
+
+```html
+	<meta name="google" value="notranslate" />
+	<meta http-equiv="Content-Language" content="fr_FR" />
+```
