@@ -1,8 +1,8 @@
 ---
 id: i3uw0392gmevv89ykco8v9x
 title: string-escaping-opt-in
-desc: 'string delimiter escaping opt-in'
-updated: 1729683092452
+desc: string delimiter escaping opt-in.
+updated: 1729683321109
 created: 1729669890142
 ---
 

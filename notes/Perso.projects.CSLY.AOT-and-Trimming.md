@@ -1,8 +1,8 @@
 ---
 id: 3u3uszvmt5mpwd9oh9vspuo
 title: AOT-and-Trimming
-desc: 'AOT and trimming'
-updated: 1729683131428
+desc: AOT and trimming
+updated: 1729683213397
 created: 1723204851943
 ---
 
