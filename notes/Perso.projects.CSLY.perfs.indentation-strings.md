@@ -2,7 +2,7 @@
 id: lvsd5uo6f38wpi72a3ppssu
 title: indentation-strings
 desc: ''
-updated: 1729669927216
+updated: 1729682491731
 created: 1729665988221
 ---
 
@@ -23,6 +23,8 @@ created: 1729669890142
 
 # limit indentation string[] allocation
 
+
+PR [#491](https://github.com/b3b00/csly/pull/491)
 
 ## baseline
 

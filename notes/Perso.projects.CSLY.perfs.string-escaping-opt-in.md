@@ -2,7 +2,7 @@
 id: i3uw0392gmevv89ykco8v9x
 title: string-escaping-opt-in
 desc: ''
-updated: 1729671207025
+updated: 1729682476437
 created: 1729669890142
 ---
 
@@ -20,7 +20,7 @@ created: 1729669890142
 [String(doEscape:false, channel:0)] STRING = 1,
 
 ```
-
+PR [#492](https://github.com/b3b00/csly/pull/492)
 
 ## Benchmark
 
