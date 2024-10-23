@@ -1,8 +1,8 @@
 ---
 id: i3uw0392gmevv89ykco8v9x
-title: string-escaping-opt-in
+title: Perso.projects.CSLY.perfs.string-escaping-opt-in
 desc: string delimiter escaping opt-in.
-updated: 1729683321109
+updated: 1729687260885
 created: 1729669890142
 ---
 
@@ -42,17 +42,9 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 
 # analysis
 
-**CPU :**
+**CPU : -4%** 👍
 
-`(135.5 - 129.5) / 12.95 = 0.04`
-
-**-4%** 👍
-
-**Memory :**
-
-`(62.12 - 56.1) / 56.1 = 0.107`
-
-**-10.7%** 👍
+**Memory : -10%** 👍
 
 
 ## benchmark #2
@@ -74,6 +66,6 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 
 # analysis #2
 
-** CPU : - 2 % ** 👍
+**CPU : - 2.8 %** 👍
 
-** Memory : -28 % !** 👍👍
+**Memory : -10 % !** 👍
