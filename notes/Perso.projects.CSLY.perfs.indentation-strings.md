@@ -1,8 +1,8 @@
 ---
 id: lvsd5uo6f38wpi72a3ppssu
 title: indentation-strings
-desc: ''
-updated: 1729682491731
+desc: 'indentation string[] allocation'
+updated: 1729683073155
 created: 1729665988221
 ---
 
