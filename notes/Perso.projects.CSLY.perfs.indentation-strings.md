@@ -2,7 +2,7 @@
 id: lvsd5uo6f38wpi72a3ppssu
 title: Perso.projects.CSLY.perfs.indentation-strings
 desc: indentation string[] allocation
-updated: 1729685263622
+updated: 1729687369176
 created: 1729665988221
 ---
 
@@ -50,13 +50,6 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 
 # analysis
 
-**CPU :**
- `(154.7 - 111.4) // 111.4 =  0.388`
+**CPU : - 27.9 %** 👍
 
- **- 38 % ** 👍
-
- **Memory :**
-
-`(59.69 - 53.16) / 53.16 = 0.122` 
-
-**- 12.2 % ** 👍
+ **Memory : - 10.9 %** 👍
