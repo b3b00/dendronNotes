@@ -1,17 +1,10 @@
 ---
 id: lvsd5uo6f38wpi72a3ppssu
-title: indentation-strings
+title: Perso.projects.CSLY.perfs.indentation-strings
 desc: indentation string[] allocation
-updated: 1729683222405
+updated: 1729685195496
 created: 1729665988221
 ---
-
-
-
-
-
-
-
 ---
 id: i3uw0392gmevv89ykco8v9x
 title: string-escaping-opt-in
