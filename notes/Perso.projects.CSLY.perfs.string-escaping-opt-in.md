@@ -2,12 +2,13 @@
 id: i3uw0392gmevv89ykco8v9x
 title: string-escaping-opt-in
 desc: ''
-updated: 1729671163615
+updated: 1729671207025
 created: 1729669890142
 ---
 
 
 # do not escape strings if not needed (as an opt-in for compatibility)
+
 
 ## How
 
