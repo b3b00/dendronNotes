@@ -2,7 +2,7 @@
 id: WQytHWU6JG
 title: Perso.projects.dendronlike.foundings.Koyeb
 desc: Koyeb deployment quirks
-updated: 1738698085056
+updated: 1738700737283
 created: 1696788740487
 ---
 
@@ -34,7 +34,7 @@ docker buildx build -t dendron2 -f Dockerfile .
 ``` 
 ## run
 ```bash
-sudo docker run  --env-file env.env -p 5003:5003 dendron
+sudo docker run  --env-file env.env -p 5003:5003 dendron2
 ```
 
 ## manage containers
