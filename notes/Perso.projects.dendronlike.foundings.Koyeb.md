@@ -2,7 +2,7 @@
 id: WQytHWU6JG
 title: Perso.projects.dendronlike.foundings.Koyeb
 desc: Koyeb deployment quirks
-updated: 1707157633028
+updated: 1738697289533
 created: 1696788740487
 ---
 
@@ -14,4 +14,6 @@ Seuls les settings ont été modifiés : Koyeb n'accepte pas les ':' dans les no
 
 Koyeb publie le port avec la variable  d'environnement `$PORT`.
 
-
+```bash
+sudo docker run  --env-file env.env -p 5003:5003 dendron
+```
