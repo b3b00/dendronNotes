@@ -2,7 +2,7 @@
 id: J9GllM45dtH
 title: Perso.net.cli.profiling
 desc: collect profiling using dot net CLI
-updated: 1743499739099
+updated: 1743499971038
 created: 1705136341050
 ---
 
@@ -19,3 +19,6 @@ dotnet-trace collect -- dotnet run project.csproj
 dotnet-trace convert dotnet_<yyyymmdd>_<hhmmss>.nettrace --format Speedscope
 ```
 
+## view 
+
+[speedscope](https://www.speedscope.app/)
