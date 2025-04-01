@@ -2,9 +2,17 @@
 id: J9GllM45dtH
 title: Perso.net.cli.profiling
 desc: collect profiling using dot net CLI
-updated: 1711635822120
+updated: 1743499493604
 created: 1705136341050
 ---
+
+## install
+
+``` 
+dotnet tool install --global dotnet-trace
+``` 
+
+## collect traces
 
 ```
 dotnet-trace collect <projet args> 
