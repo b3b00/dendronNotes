@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.csly-CLI.logo
 title: Perso.projects.CSLY.csly-CLI.logo
 desc: logo parser
-updated: 1744138616309
+updated: 1744139026277
 created: 0
 ---
 ```
@@ -42,33 +42,33 @@ digit          = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
 
 
 ```
-genericLexer logo;
+genericLexer logolexer;
 
 [AlphaNumId] ID;
 [Int] NUMBER;
-[Keyword] AV : "AV";
-[Keyword] RE : "RE";
-[Keyword] TD : "TD";
-[Keyword] TG : "TG";
-[Keyword] BC : "BC";
-[Keyword] LC : "LC";
-[Keyword] CLEAN: "NETTOIE";
-[Keyword] HOME : "MAISON";
-[Keyword] REPEAT : "REPETE";
-[Keyword] PO : "PO";
-[Keyword] END : "FIN";
+[KeyWord] AV : "AV";
+[KeyWord] RE : "RE";
+[KeyWord] TD : "TD";
+[KeyWord] TG : "TG";
+[KeyWord] BC : "BC";
+[KeyWord] LC : "LC";
+[KeyWord] CLEAN: "NETTOIE";
+[KeyWord] HOME : "MAISON";
+[KeyWord] REPEAT : "REPETE";
+[KeyWord] PO : "PO";
+[KeyWord] END : "FIN";
 [Sugar] LBRACK : "[";
 [Sugar] RBRANCK : "]";
 [Sugar] COLON : ":";
-parser logo;
+parser logoparser;
 
-program   :   instruction*
+-> program   :   instruction*;
 
 instruction  : [ command  | repeat   | procedure_definition | procedure_call ];
 
-command  : [ AV | RE |TD | TG ]  NUMBER;
+command  : [ AV | RE |TD | TG ]  expression;
 command : [ BC | LC];
-command : [CLEAN | HOME]
+command : [CLEAN | HOME];
 
 
 
@@ -76,12 +76,12 @@ repeat         : REPEAT NUMBER "[" instruction* "]" ;
 
 procedure_definition : PO ID parameter* instruction* END;
 
-procedure_call : identifier  expression*  ;
+procedure_call : ID expression*  ;
 
 parameter    : COLON ID ;
+#expression : [expression_number | expression_parameter];
 expression  : NUMBER;
-expression : | parameter ;
-
+expression : parameter ;
 
 ``` 
 
