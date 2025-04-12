@@ -2,7 +2,7 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 1744445680968
+updated: 1744446012836
 created: 0
 ---
 # liste de courses.
@@ -26,10 +26,5 @@ created: 0
  Continuer avec l'import/ export pour permettre le backup.
 
 
-# check list
-
-Autoriser la possibilité de cocher les cases en mode vie. Utiliser un hash de l'item pour identifier le [ ] markdown.
-
-Action d'ajout de check pour faciliter la saisie des `-[ ]`
 
 
