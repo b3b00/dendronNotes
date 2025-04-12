@@ -2,7 +2,7 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 1724752242401
+updated: 1744442198757
 created: 0
 ---
 # liste de courses.
@@ -13,3 +13,10 @@ created: 0
  - svelte + svelte material UI
 
 [liste](https://liste-de-courses.pages.dev/)
+
+# partage 
+ 
+- [  ] générer un lien avec un fragment 
+- [ ] importer le fragment 
+- [ ] dans un espace dédié pour ne pas écraser les prefs 
+- [ ] écran listes importées 
