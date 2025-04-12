@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1714740625112
+updated: 1744446186627
 created: 1659535376026
 ---
 
@@ -68,4 +68,11 @@ created: 1659535376026
 - [ ] display note content in past : view only, no edition 
 
 ## favorite repository
-- [ ]  Allow user to define a favorite repository so he does not have to select it when he come back.
+- [X]  Allow user to define a favorite repository so he does not have to select it when he come back.
+
+## check list in view mode
+
+Allows checking boxes in live mode. Uses a hash of the item to identify the [ ] markdown.
+
+Adds a check action to facilitate the entry of `-[ ]`.
+
