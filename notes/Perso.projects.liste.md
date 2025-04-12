@@ -2,7 +2,7 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 1744442213667
+updated: 1744445576822
 created: 0
 ---
 # liste de courses.
@@ -20,3 +20,14 @@ created: 0
 - [ ] importer le fragment 
 - [ ] dans un espace dédié pour ne pas écraser les prefs 
 - [ ] écran listes importées 
+
+## import / export 
+
+ Continuer avec l'import/ export pour permettre le backup.
+
+
+# check list
+
+Autoriser la possibilité de cocher les cases en mode vie. Utiliser un hash de l'item pour identifier le [ ] markdown.
+
+
