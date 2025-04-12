@@ -2,7 +2,7 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 1744445576822
+updated: 1744445653927
 created: 0
 ---
 # liste de courses.
@@ -29,5 +29,7 @@ created: 0
 # check list
 
 Autoriser la possibilité de cocher les cases en mode vie. Utiliser un hash de l'item pour identifier le [ ] markdown.
+
+Action d'ajout de check pour faciliter la saisie des `-[ ]`
 
 
