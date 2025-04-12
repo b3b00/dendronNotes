@@ -2,7 +2,7 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 1744442198757
+updated: 1744442213667
 created: 0
 ---
 # liste de courses.
@@ -16,7 +16,7 @@ created: 0
 
 # partage 
  
-- [  ] générer un lien avec un fragment 
+- [ ] générer un lien avec un fragment 
 - [ ] importer le fragment 
 - [ ] dans un espace dédié pour ne pas écraser les prefs 
 - [ ] écran listes importées 
