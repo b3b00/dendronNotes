@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1744991103316
+updated: 1744991311098
 created: 1659535376026
 ---
 ## GitHub
@@ -74,7 +74,6 @@ created: 1659535376026
 
 ## check list in view mode
 
-Allows checking boxes in live mode. Uses a hash of the item to identify the \[ ] markdown.
-
-Adds a check action to facilitate the entry of `-[ ]`.
+- [ ] Allows checking boxes in live mode. Uses a hash of the item to identify the \[ ] markdown.
+- [ ] Adds a check action to facilitate the entry of `-[ ]`.
 
