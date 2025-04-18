@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1744991476674
+updated: 1744991603561
 created: 1659535376026
 ---
 ## GitHub
@@ -74,6 +74,6 @@ created: 1659535376026
 
 ## check list in view mode
 
-* [X] Permettre de cocher les checkbox en mode view.
+* [X] Permettre de cocher les checkbox en mode view. ( voir [unified](https://unifiedjs.com/) et [remark](https://github.com/remarkjs/remark))
 * [ ] Ajouter une action pour faciliter la saisie de check `-[ ]`.
 
