@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1744991440095
+updated: 1744991476674
 created: 1659535376026
 ---
 ## GitHub
@@ -70,10 +70,10 @@ created: 1659535376026
 
 ## favorite repository
 
-* [x] &#x20;Allow user to define a favorite repository so he does not have to select it when he come back.
+* [x] Allow user to define a favorite repository so he does not have to select it when he come back.
 
 ## check list in view mode
 
-* [ ] Permettre de cocher les checkbox en mode view.
+* [X] Permettre de cocher les checkbox en mode view.
 * [ ] Ajouter une action pour faciliter la saisie de check `-[ ]`.
 
