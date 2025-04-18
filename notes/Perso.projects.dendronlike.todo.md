@@ -2,7 +2,7 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1744991389307
+updated: 1744991440095
 created: 1659535376026
 ---
 ## GitHub
@@ -74,6 +74,6 @@ created: 1659535376026
 
 ## check list in view mode
 
-* [ ] &#x20;Permettre de cocher les checkbox en mode view.
-* [ ] &#x20;Ajouter une action pour faciliter la saisie de check `-[ ]`.
+* [ ] Permettre de cocher les checkbox en mode view.
+* [ ] Ajouter une action pour faciliter la saisie de check `-[ ]`.
 
