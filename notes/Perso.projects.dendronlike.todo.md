@@ -2,12 +2,12 @@
 id: v5vl53dxgz9nlhnn3ro2bjv
 title: Perso.projects.dendronlike.todo
 desc: DendrOnline TODO
-updated: 1745052006277
+updated: 1745053364503
 created: 1659535376026
 ---
 ## GitHub
 
-* [x] save file.
+* [ ] save file.
 * [x] create file
 * [x] load full dendron in session. Allow
   * [x] fasternavigation
