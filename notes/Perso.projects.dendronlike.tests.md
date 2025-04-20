@@ -2,11 +2,11 @@
 id: Perso.projects.dendronlike.tests
 title: Perso.projects.dendronlike.tests
 desc: tests
-updated: 1745166439961
+updated: 1745170346516
 created: 0
 ---
 # tests tasks
 
-* [ ] one
+* [x] one
 * [ ] two
 
