@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
-desc: new note
-updated: 1746028996244
+desc: stack parser
+updated: 1746117009311
 created: 0
 ---
 # Write something really smart here.
