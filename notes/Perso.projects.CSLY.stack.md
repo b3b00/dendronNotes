@@ -2,21 +2,23 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-updated: 1746117937537
+updated: 1746118399092
 created: 0
 ---
 # Write something really smart here.
 
 ```
- Non-Terminal<<0>> choices [0/4 : choices :  IDENTIFIER  ] @0
+  Non-Terminal<<0>> choices [0/4 : choices :  IDENTIFIER  ] @0
       <<0>> @0 :: choices : >IDENTIFIER(T) 
         Terminal IDENTIFIER @0
           OK IDENTIFIER [True] @line 0, column 0 on channel 0
       <<0>> @0 :: choices : IDENTIFIER(T)  DONE : OK
         OK
+		
     Non-Terminal<<0>> choices [1/4 : choices :  STRING] @0
       end of token stream not reached, looking forward
         KO rule choices :  STRING does not match IDENTIFIER [True] @line 0, column 0 on channel 0
+		
     Non-Terminal<<0>> choices [2/4 : choices :  IDENTIFIER OR choices ] @0
       end of token stream not reached, looking forward
       <<1>> @0 :: choices : >IDENTIFIER(T) OR(T) choices(NT) 
@@ -33,10 +35,12 @@ created: 0
           <<2>> @2 :: choices : IDENTIFIER(T)  DONE : OK
             OK
         Non-Terminal<<1>> choices [1/4 : choices :  STRING] @2
-          end of token stream not reached, looking forward
+          end of token stream not reached, looking forward <<<<< here is the issue (new pos should be 3 ???)
+		  
             KO rule choices :  STRING does not match IDENTIFIER [False] @line 0, column 5 on channel 0
         Non-Terminal<<1>> choices [2/4 : choices :  IDENTIFIER OR choices ] @2
-          end of token stream not reached, looking forward
+          end of token stream not reached, looking forward 
+		  
           <<3>> @2 :: choices : >IDENTIFIER(T) OR(T) choices(NT)
             Terminal IDENTIFIER @2
               OK IDENTIFIER [False] @line 0, column 5 on channel 0
@@ -55,6 +59,7 @@ created: 0
     Non-Terminal<<0>> choices [4/4 : ] @0
 
 parse failed The checked value: [parse failed : unexpected end of stream. Expecting OR, .]
+
 
 ```
 
