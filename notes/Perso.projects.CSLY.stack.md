@@ -2,60 +2,60 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-updated: 1746117009311
+updated: 1746117937537
 created: 0
 ---
 # Write something really smart here.
 
 ```
-C:\Users\olduh\AppData\Local\Programs\Rider\plugins\dpa\DotFiles\JetBrains.DPA.Runner.exe --handle=29036 --backend-pid=12776 --etw-collect-flags=67108622 --detach-event-name=dpa.detach.12776.131 --refresh-interval=1 -- "C:\Program Files\dotnet\dotnet.exe" --fx-version 8.0.15 C:\Users\olduh\AppData\Local\Programs\Rider\lib\ReSharperHost\JetLauncherILc.exe /Launcher::NoSplash /Launcher::Mode:InvokeMethod /Launcher::Target:Assembly /Launcher::AssemblyFile:C:/Users/olduh/dev/csly/src/samples/ParserExample/bin/Debug/net8.0/ParserExample.dll /Launcher::ClassName:ParserExample.Stacker /Launcher::MethodName:List
-        A B 
-    Non-Terminal<<0>> cs [0] @0
-      <<0>> @0 :: cs : >c(NT) cs(NT) 
-        Non-Terminal<<1>> c [0] @0
-          <<1>> @0 :: c : >A(T) 
-            Terminal A @0
-              OK A [A] @line 0, column 0 on channel 0
-          <<1>> @0 :: c : A(T)  DONE : OK
-            OK
-        Non-Terminal<<1>> c [1] @0
-      <<0>> @0 :: cs : c(NT) >cs(NT) 
-        Non-Terminal<<2>> cs [0] @1
-          <<2>> @1 :: cs : >c(NT) cs(NT) 
-            Non-Terminal<<3>> c [0] @1
-                KO rule c : A does not match B [B] @line 0, column 3 on channel 0
-            Non-Terminal<<3>> c [1] @1
-              <<3>> @1 :: c : >B(T) 
-                Terminal B @1
-                  OK B [B] @line 0, column 3 on channel 0
-              <<3>> @1 :: c : B(T)  DONE : OK
-                OK
-            Non-Terminal<<3>> c [2] @1
-          <<2>> @1 :: cs : c(NT) >cs(NT)
-            Non-Terminal<<4>> cs [0] @2
-                KO rule cs : c cs does not match <<EOS>>
-            Non-Terminal<<4>> cs [1] @2
-                KO rule cs : c does not match <<EOS>>
-            Non-Terminal<<4>> cs [2] @2
-          <<2>> @2 :: cs : c(NT) cs(NT)  DONE : KO
-            KO unexpected end of stream. Expecting A, B, .
-        Non-Terminal<<2>> cs [1] @1
-          <<4>> @1 :: cs : >c(NT)
-            Non-Terminal<<5>> c [0] @1
-                KO rule c : A does not match B [B] @line 0, column 3 on channel 0 <<<- ici on ajoute une erreur en index 0
-            Non-Terminal<<5>> c [1] @1
-              <<5>> @1 :: c : >B(T)
-                Terminal B @1
-                  OK B [B] @line 0, column 3 on channel 0 <<<- ici on ajoute un OK en index 1 (alors que ca devrait être 0
-              <<5>> @1 :: c : B(T)  DONE : OK
-                OK
-            Non-Terminal<<5>> c [2] @1
-          <<4>> @1 :: cs : c(NT)  DONE : OK
-            OK
-        Non-Terminal<<2>> cs [2] @1
-      <<0>> @1 :: cs : c(NT) cs(NT)  DONE : OK
+ Non-Terminal<<0>> choices [0/4 : choices :  IDENTIFIER  ] @0
+      <<0>> @0 :: choices : >IDENTIFIER(T) 
+        Terminal IDENTIFIER @0
+          OK IDENTIFIER [True] @line 0, column 0 on channel 0
+      <<0>> @0 :: choices : IDENTIFIER(T)  DONE : OK
         OK
-    Non-Terminal<<0>> cs [1] @0
+    Non-Terminal<<0>> choices [1/4 : choices :  STRING] @0
+      end of token stream not reached, looking forward
+        KO rule choices :  STRING does not match IDENTIFIER [True] @line 0, column 0 on channel 0
+    Non-Terminal<<0>> choices [2/4 : choices :  IDENTIFIER OR choices ] @0
+      end of token stream not reached, looking forward
+      <<1>> @0 :: choices : >IDENTIFIER(T) OR(T) choices(NT) 
+        Terminal IDENTIFIER @0
+          OK IDENTIFIER [True] @line 0, column 0 on channel 0
+      <<1>> @0 :: choices : IDENTIFIER(T) >OR(T) choices(NT) 
+        Terminal OR @1
+          OK OR [|] @line 0, column 4 on channel 0
+      <<1>> @1 :: choices : IDENTIFIER(T) OR(T) >choices(NT) 
+        Non-Terminal<<1>> choices [0/4 : choices :  IDENTIFIER  ] @2
+          <<2>> @2 :: choices : >IDENTIFIER(T) 
+            Terminal IDENTIFIER @2
+              OK IDENTIFIER [False] @line 0, column 5 on channel 0
+          <<2>> @2 :: choices : IDENTIFIER(T)  DONE : OK
+            OK
+        Non-Terminal<<1>> choices [1/4 : choices :  STRING] @2
+          end of token stream not reached, looking forward
+            KO rule choices :  STRING does not match IDENTIFIER [False] @line 0, column 5 on channel 0
+        Non-Terminal<<1>> choices [2/4 : choices :  IDENTIFIER OR choices ] @2
+          end of token stream not reached, looking forward
+          <<3>> @2 :: choices : >IDENTIFIER(T) OR(T) choices(NT)
+            Terminal IDENTIFIER @2
+              OK IDENTIFIER [False] @line 0, column 5 on channel 0
+          <<3>> @2 :: choices : IDENTIFIER(T) >OR(T) choices(NT)
+            Terminal OR @3
+              error found <<EOS>> expected OR
+          <<3>> @3 :: choices : IDENTIFIER(T) OR(T) >choices(NT)
+            KO unexpected end of stream. Expecting OR, .
+        Non-Terminal<<1>> choices [3/4 : choices :  STRING OR choices ] @2
+            KO rule choices :  STRING OR choices  does not match IDENTIFIER [False] @line 0, column 5 on channel 0
+        Non-Terminal<<1>> choices [4/4 : ] @2
+      <<1>> @2 :: choices : IDENTIFIER(T) OR(T) choices(NT)  DONE : KO
+        KO unexpected end of stream. Expecting OR, .
+    Non-Terminal<<0>> choices [3/4 : choices :  STRING OR choices ] @0
+        KO rule choices :  STRING OR choices  does not match IDENTIFIER [True] @line 0, column 0 on channel 0
+    Non-Terminal<<0>> choices [4/4 : ] @0
+
+parse failed The checked value: [parse failed : unexpected end of stream. Expecting OR, .]
+
 ```
 
-When adding a child to a rule (from T or NT) it should be an insert @rule.Index
+
