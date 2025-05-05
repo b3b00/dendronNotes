@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-updated: 1746462094397
+updated: 1746462108835
 created: 0
 ---
 # First bench (still work in progress).
@@ -32,6 +32,5 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 | **BenchLargeExpression** | **LL_STACK**             |  **19.81 ms** |  **0.693 ms** |  **1.931 ms** |  **19.25 ms** | **16500.0000** |   **968.7500** |          **-** |  **67.27 MB** |
 
 
-Memory allocation is better as expected.
-
-CPU usage is a real good surprise.
+ - Memory allocation is better as expected.
+ - CPU usage is a real good surprise.
