@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-updated: 1746462108835
+updated: 1746463168008
 created: 0
 ---
 # First bench (still work in progress).
@@ -34,3 +34,5 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 
  - Memory allocation is better as expected.
  - CPU usage is a real good surprise.
+
+Stack based parser can handler 10.000+ operands expressions. When using recursivity we hit a stack overflow for ~ 4500 operands.
