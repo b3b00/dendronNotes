@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-updated: 1746533474585
+updated: 1746535120407
 created: 0
 ---
 # First bench (still work in progress).
@@ -38,7 +38,7 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 # comparison
-When runing both parsers against a growing expression (from 2 to 10000+ operands), stack based parser can handle easily 10.000+ operands expressions. Recursivity parser crash at ~4500 oprands hitting a stack overflow.
+When runing both parsers against a growing expression (from 2 to 10000+ operands), stack based parser can handle easily 10.000+ operands expressions. Recursivity parser crash at ~4500 operands hitting a stack overflow.
 
 
 
