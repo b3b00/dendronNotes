@@ -2,14 +2,14 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-updated: 1746533442449
+updated: 1746533474585
 created: 0
 ---
 # First bench (still work in progress).
 
 ## parser
 
-[ExpressionParser](https://github.com/b3b00/csly/blob/experiment/stask-based-parser/src/samples/expressionParser/ExpressionParser.cs) : basic expression parser not using CSLY expression parsing mechanism.
+[ExpressionParser](https://github.com/b3b00/csly/blob/experiment/stask-based-parser/src/samples/expressionParser/ExpressionParser.cs) : basic expression parser (BNF) not using CSLY expression parsing mechanism.
 
 ## dataset
 
