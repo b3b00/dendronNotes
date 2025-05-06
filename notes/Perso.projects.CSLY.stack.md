@@ -2,7 +2,13 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-updated: 1746521308385
+<<<<<<< HEAD
+updated: 1746521946369
+||||||| parent of f4c87eb (.)
+updated: 1746463168008
+=======
+updated: 1746463533943
+>>>>>>> f4c87eb (.)
 created: 0
 ---
 # First bench (still work in progress).
@@ -36,3 +42,7 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
  - CPU usage is a real good surprise.
 
 Stack based parser can handler 10.000+ operands expressions. Recursivity hits tack overflow for ~ 4500 operands.
+
+
+![](/assets/images/2025-05-05-18-45-20.png)
+
