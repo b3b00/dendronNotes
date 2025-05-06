@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-updated: 1746535120407
+updated: 1746546323394
 created: 0
 ---
 # First bench (still work in progress).
@@ -43,4 +43,4 @@ When runing both parsers against a growing expression (from 2 to 10000+ operands
 
 
 ![](/assets/images/2025-05-05-18-45-20.png)
-<img src="https://raw.githubusercontent.com/b3b00/dendronNotes/refs/heads/main/notes/assets/images/2025-05-05-18-45-20.png"/>
+
