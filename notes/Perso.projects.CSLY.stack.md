@@ -2,13 +2,7 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-<<<<<<< HEAD
-updated: 1746521946369
-||||||| parent of f4c87eb (.)
-updated: 1746463168008
-=======
-updated: 1746463533943
->>>>>>> f4c87eb (.)
+updated: 1746533442449
 created: 0
 ---
 # First bench (still work in progress).
@@ -41,8 +35,12 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
  - Memory allocation is better as expected.
  - CPU usage is a real good surprise.
 
-Stack based parser can handler 10.000+ operands expressions. Recursivity hits tack overflow for ~ 4500 operands.
+
+
+# comparison
+When runing both parsers against a growing expression (from 2 to 10000+ operands), stack based parser can handle easily 10.000+ operands expressions. Recursivity parser crash at ~4500 oprands hitting a stack overflow.
+
 
 
 ![](/assets/images/2025-05-05-18-45-20.png)
-
+<img src="https://raw.githubusercontent.com/b3b00/dendronNotes/refs/heads/main/notes/assets/images/2025-05-05-18-45-20.png"/>
