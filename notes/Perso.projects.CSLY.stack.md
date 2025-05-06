@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
-updated: 1746463168008
+updated: 1746521267523
 created: 0
 ---
 # First bench (still work in progress).
@@ -26,10 +26,10 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 
 
 ```
-| Method               | parserType           | Mean      | Error     | StdDev    | Median    | Gen0       | Gen1       | Gen2       | Allocated |
-|--------------------- |--------------------- |----------:|----------:|----------:|----------:|-----------:|-----------:|-----------:|----------:|
-| **BenchLargeExpression** | **LL_RECURSIVE_DESCENT** | **440.52 ms** | **11.314 ms** | **32.280 ms** | **437.44 ms** | **86000.0000** | **32000.0000** | **20000.0000** | **464.21 MB** |
-| **BenchLargeExpression** | **LL_STACK**             |  **19.81 ms** |  **0.693 ms** |  **1.931 ms** |  **19.25 ms** | **16500.0000** |   **968.7500** |          **-** |  **67.27 MB** |
+| Method    | Mean      | Error     | StdDev    | Ratio         | RatioSD | Gen0       | Gen1       | Gen2       | Allocated | Alloc Ratio |
+|---------- |----------:|----------:|----------:|--------------:|--------:|-----------:|-----------:|-----------:|----------:|------------:|
+| recursive | 487.05 ms | 14.350 ms | 39.764 ms |      baseline |         | 86000.0000 | 34000.0000 | 20000.0000 | 461.95 MB |             |
+| stacked   |  22.54 ms |  0.558 ms |  1.584 ms | 21.71x faster |   2.23x | 16562.5000 |   625.0000 |   156.2500 |  67.72 MB |  6.82x less |
 
 
  - Memory allocation is better as expected.
