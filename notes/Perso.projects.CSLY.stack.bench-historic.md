@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.bench-historic
 title: Perso.projects.CSLY.stack.bench-historic
 desc: benchmarks 
-updated: 1746634958981
+updated: 1746635102390
 created: 0
 ---
 # [696accdc45ae2e95abb13b8145a8bee6ead43f0c](https://github.com/b3b00/csly/commit/696accdc45ae2e95abb13b8145a8bee6ead43f0c) 06/05/2025
@@ -30,11 +30,12 @@ repeated on the 07/05/2025 on same commit
 
 Something's strange ! how does CPU usage and memory allocation could have so drastically  degraded ?
  
-diffs are : [696accdc45ae2e95abb13b8145a8bee6ead43f0c..49d00e000827ae6414633cd9ffc45ffd0376b6cb](https://github.com/b3b00/csly/compare/696accdc45ae2e95abb13b8145a8bee6ead43f0c..49d00e000827ae6414633cd9ffc45ffd0376b6cb)
+diffs are : 
+[696accdc45ae2e95abb13b8145a8bee6ead43f0c..49d00e000827ae6414633cd9ffc45ffd0376b6cb](https://github.com/b3b00/csly/compare/696accdc45ae2e95abb13b8145a8bee6ead43f0c..49d00e000827ae6414633cd9ffc45ffd0376b6cb)
 
 It seems to be related to [b1d923cdd9fa9289df70dc20f439f067be566485](https://github.com/b3b00/csly/commit/b1d923cdd9fa9289df70dc20f439f067be566485)
 
-![](https://raw.githubusercontent.com/b3b00/dendronNotes/de4addaf7e1d283c7796e7d07e68ec06b2b042a9/notes/assets/images/2025-05-07-18-18-09.png)
+![](https://raw.githubusercontent.com/b3b00/dendronNotes/refs/heads/main/notes/assets/images/2025-05-07-18-18-09.png)
 
 | Method    | Mean      | Error     | StdDev     | Median    | Ratio         | RatioSD | Gen0       | Gen1       | Gen2       | Allocated | Alloc Ratio |
 |---------- |----------:|----------:|-----------:|----------:|--------------:|--------:|-----------:|-----------:|-----------:|----------:|------------:|
