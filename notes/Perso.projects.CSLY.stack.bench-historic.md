@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.bench-historic
 title: Perso.projects.CSLY.stack.bench-historic
 desc: benchmarks 
-updated: 1746775374393
+updated: 1746775941786
 created: 0
 ---
 # [696accdc45ae2e95abb13b8145a8bee6ead43f0c](https://github.com/b3b00/csly/commit/696accdc45ae2e95abb13b8145a8bee6ead43f0c) 06/05/2025
@@ -52,7 +52,7 @@ when undoing this we get these results :
 | recursive | 415.60 ms | 11.442 ms | 32.645 ms |     baseline |         | 86000.0000 | 35000.0000 | 21000.0000 | 463.82 MB |             |
 | stacked   |  61.55 ms |  1.228 ms |  2.306 ms | 6.63x faster |   0.46x | 28666.6667 |   333.3333 |          - | 122.26 MB |  3.79x less |
 
-![](assets/images/2025-05-09-07-06-28.png)
+![](assets/images/2025-05-09-07-31-56.png)
 
 **Unit tests ok are better than awesome but irealistic perfs.**
 Keep on this way.
