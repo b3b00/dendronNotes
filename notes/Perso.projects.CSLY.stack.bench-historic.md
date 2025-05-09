@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.bench-historic
 title: Perso.projects.CSLY.stack.bench-historic
 desc: benchmarks 
-updated: 1746774774179
+updated: 1746775278631
 created: 0
 ---
 # [696accdc45ae2e95abb13b8145a8bee6ead43f0c](https://github.com/b3b00/csly/commit/696accdc45ae2e95abb13b8145a8bee6ead43f0c) 06/05/2025
@@ -54,4 +54,5 @@ when undoing this we get these results :
 
 ![](assets/images/2025-05-09-07-06-28.png)
 
-Unit tests ok are better than awesome but irealistic perfs. Keep on this way.
+**Unit tests ok are better than awesome but irealistic perfs.**
+Keep on this way.
