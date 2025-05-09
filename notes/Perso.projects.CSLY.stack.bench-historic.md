@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.bench-historic
 title: Perso.projects.CSLY.stack.bench-historic
 desc: benchmarks 
-updated: 1746775278631
+updated: 1746775374393
 created: 0
 ---
 # [696accdc45ae2e95abb13b8145a8bee6ead43f0c](https://github.com/b3b00/csly/commit/696accdc45ae2e95abb13b8145a8bee6ead43f0c) 06/05/2025
@@ -45,7 +45,7 @@ when undoing this we get these results :
 | recursive | 823.66 ms | 67.483 ms | 198.975 ms | 878.18 ms |      baseline |         | 87000.0000 | 31000.0000 | 22000.0000 | 472.26 MB |             |
 | stacked   |  21.52 ms |  1.321 ms |   3.854 ms |  20.54 ms | 38.98x faster |  10.53x | 16400.0000 |   600.0000 |    66.6667 |  67.05 MB |  7.04x less |
 
-#[373adb4cf423a3d577a440025ab9aa503a4ce5bd](https://github.com/b3b00/csly/commit/373adb4cf423a3d577a440025ab9aa503a4ce5bd) - 2025-05-09
+# [373adb4cf423a3d577a440025ab9aa503a4ce5bd](https://github.com/b3b00/csly/commit/373adb4cf423a3d577a440025ab9aa503a4ce5bd) - 09/05/2025
 
 | Method    | Mean      | Error     | StdDev    | Ratio        | RatioSD | Gen0       | Gen1       | Gen2       | Allocated | Alloc Ratio |
 |---------- |----------:|----------:|----------:|-------------:|--------:|-----------:|-----------:|-----------:|----------:|------------:|
