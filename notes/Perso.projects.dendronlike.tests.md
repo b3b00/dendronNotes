@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike.tests
 title: Perso.projects.dendronlike.tests
 desc: tests
-updated: 1748370947210
+updated: 1748371121616
 created: 0
 ---
 # tests tasks
@@ -16,5 +16,8 @@ created: 0
 
 
 ```mermaid
-T-->y
+flowchart TD
+A --> B
+B --> C
+A --> D
 ```
