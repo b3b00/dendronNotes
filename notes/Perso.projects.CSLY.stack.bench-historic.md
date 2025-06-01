@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.bench-historic
 title: Perso.projects.CSLY.stack.bench-historic
 desc: benchmarks BNF 
-updated: 1748795264211
+updated: 1748795584947
 created: 0
 ---
 # [696accdc45ae2e95abb13b8145a8bee6ead43f0c](https://github.com/b3b00/csly/commit/696accdc45ae2e95abb13b8145a8bee6ead43f0c) 06/05/2025
@@ -70,3 +70,5 @@ Keep on this way.
 |---------- |----------:|----------:|---------:|----------:|-------------:|--------:|-----------:|-----------:|-----------:|----------:|------------:|
 | recursive | 439.16 ms | 14.986 ms | 43.72 ms | 432.20 ms |     baseline |         | 92000.0000 | 37000.0000 | 23000.0000 | 495.67 MB |             |
 | stacked   |  64.77 ms |  7.861 ms | 23.18 ms |  57.36 ms | 7.68x faster |   2.55x | 20500.0000 |   833.3333 |   333.3333 |  87.29 MB |  5.68x less |
+
+![](assets/images/2025-06-01-16-32-36.png)
