@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.CSLY.stack.bench-historic
 title: Perso.projects.CSLY.stack.bench-historic
-desc: benchmarks 
-updated: 1748794322609
+desc: benchmarks BNF 
+updated: 1748794344500
 created: 0
 ---
 # [696accdc45ae2e95abb13b8145a8bee6ead43f0c](https://github.com/b3b00/csly/commit/696accdc45ae2e95abb13b8145a8bee6ead43f0c) 06/05/2025
