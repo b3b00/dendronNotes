@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.CSLY.stack.benchEBNF
 title: Perso.projects.CSLY.stack.benchEBNF
-desc: benchmakrs EBNF
-updated: 1748794877137
+desc: benchmarks EBNF
+updated: 1748797313309
 created: 0
 ---
 Benchmark for EBNF is using [SimpleExpressionParser](https://github.com/b3b00/csly/blob/dev/src/samples/SimpleExpressionParser/SimpleExpressionParser.cs) with a 1000 operands expression.
