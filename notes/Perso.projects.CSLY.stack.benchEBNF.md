@@ -2,10 +2,10 @@
 id: Perso.projects.CSLY.stack.benchEBNF
 title: Perso.projects.CSLY.stack.benchEBNF
 desc: benchmakrs EBNF
-updated: 0
+updated: 1748794562510
 created: 0
 ---
-# EBNF : after profiling and using a managed stack
+# EBNF : after profiling and using a managed stack [6682c1aae823f3217c58ebfe3c071cf6203a16e1](https://github.com/b3b00/csly/commit/6682c1aae823f3217c58ebfe3c071cf6203a16e1)
 
 | Method    | Mean     | Error    | StdDev   | Ratio        | RatioSD | Gen0       | Gen1      | Gen2     | Allocated | Alloc Ratio |
 |---------- |---------:|---------:|---------:|-------------:|--------:|-----------:|----------:|---------:|----------:|------------:|
