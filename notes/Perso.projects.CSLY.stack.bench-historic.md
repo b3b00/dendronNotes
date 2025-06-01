@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.bench-historic
 title: Perso.projects.CSLY.stack.bench-historic
 desc: benchmarks 
-updated: 1748762245637
+updated: 1748763195609
 created: 0
 ---
 # [696accdc45ae2e95abb13b8145a8bee6ead43f0c](https://github.com/b3b00/csly/commit/696accdc45ae2e95abb13b8145a8bee6ead43f0c) 06/05/2025
@@ -57,7 +57,7 @@ when undoing this we get these results :
 **Unit tests ok are better than awesome but irealistic perfs.**
 Keep on this way.
 
-# after profiling and using a managed stack
+# EBNF : after profiling and using a managed stack
 
 | Method    | Mean     | Error    | StdDev   | Ratio        | RatioSD | Gen0       | Gen1      | Gen2     | Allocated | Alloc Ratio |
 |---------- |---------:|---------:|---------:|-------------:|--------:|-----------:|----------:|---------:|----------:|------------:|
