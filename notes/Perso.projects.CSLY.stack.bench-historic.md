@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.bench-historic
 title: Perso.projects.CSLY.stack.bench-historic
 desc: benchmarks BNF 
-updated: 1748794769414
+updated: 1748795264211
 created: 0
 ---
 # [696accdc45ae2e95abb13b8145a8bee6ead43f0c](https://github.com/b3b00/csly/commit/696accdc45ae2e95abb13b8145a8bee6ead43f0c) 06/05/2025
@@ -59,4 +59,14 @@ Keep on this way.
 
 # [6682c1aae823f3217c58ebfe3c071cf6203a16e1](https://github.com/b3b00/csly/commit/6682c1aae823f3217c58ebfe3c071cf6203a16e1) 01/06/2025
 
+3 failing unit tests but related to EBNF grammars. BNF is all ok.
 
+| Method    | Mean      | Error     | StdDev    | Median    | Ratio         | RatioSD | Gen0       | Gen1       | Gen2       | Allocated | Alloc Ratio |
+|---------- |----------:|----------:|----------:|----------:|--------------:|--------:|-----------:|-----------:|-----------:|----------:|------------:|
+| recursive | 477.76 ms | 20.435 ms | 59.610 ms | 455.16 ms |      baseline |         | 90000.0000 | 36000.0000 | 22000.0000 | 482.62 MB |             |
+| stacked   |  35.64 ms |  1.227 ms |  3.461 ms |  34.48 ms | 13.59x faster |   2.43x | 20500.0000 |   800.0000 |   300.0000 |  86.86 MB |  5.56x less |
+
+| Method    | Mean      | Error     | StdDev   | Median    | Ratio        | RatioSD | Gen0       | Gen1       | Gen2       | Allocated | Alloc Ratio |
+|---------- |----------:|----------:|---------:|----------:|-------------:|--------:|-----------:|-----------:|-----------:|----------:|------------:|
+| recursive | 439.16 ms | 14.986 ms | 43.72 ms | 432.20 ms |     baseline |         | 92000.0000 | 37000.0000 | 23000.0000 | 495.67 MB |             |
+| stacked   |  64.77 ms |  7.861 ms | 23.18 ms |  57.36 ms | 7.68x faster |   2.55x | 20500.0000 |   833.3333 |   333.3333 |  87.29 MB |  5.68x less |
