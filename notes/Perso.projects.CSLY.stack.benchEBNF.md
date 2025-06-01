@@ -2,12 +2,13 @@
 id: Perso.projects.CSLY.stack.benchEBNF
 title: Perso.projects.CSLY.stack.benchEBNF
 desc: benchmakrs EBNF
-updated: 1748794689392
+updated: 1748794721683
 created: 0
 ---
 # [6682c1aae823f3217c58ebfe3c071cf6203a16e1](https://github.com/b3b00/csly/commit/6682c1aae823f3217c58ebfe3c071cf6203a16e1) 01/06/2025
 
 After removing call to IsInstanceOf (```x is Y```) and replace them by a Enum.
+Still 3 failing unit tests though.
 
 | Method    | Mean     | Error    | StdDev   | Ratio        | RatioSD | Gen0       | Gen1      | Gen2     | Allocated | Alloc Ratio |
 |---------- |---------:|---------:|---------:|-------------:|--------:|-----------:|----------:|---------:|----------:|------------:|
