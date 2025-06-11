@@ -2,7 +2,7 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 1744446012836
+updated: 1749664502717
 created: 0
 ---
 # liste de courses.
@@ -16,7 +16,7 @@ created: 0
 
 # partage 
  
-- [ ] générer un lien avec un fragment 
+- [ ] générer un lien avec un fragment : [typescript zip](https://gist.github.com/b3b00/54c6c8e7ad49807955e9eab2ec7e601d)
 - [ ] importer le fragment 
 - [ ] dans un espace dédié pour ne pas écraser les prefs 
 - [ ] écran listes importées 
