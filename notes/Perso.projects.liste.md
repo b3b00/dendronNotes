@@ -18,7 +18,7 @@ created: 0
 
 # partage
 
-* [ ] générer un lien avec un fragment : [lz-ts](https://www.npmjs.com/package/lz-ts)
+* [X] générer un lien avec un fragment : [lz-ts](https://www.npmjs.com/package/lz-ts)
 * [x] importer le fragment
 * [x] dans un espace dédié pour ne pas écraser les prefs
 * [x] écran listes importées
