@@ -2,7 +2,7 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 1749886076711
+updated: 1749886091217
 created: 0
 ---
 # liste de courses.
@@ -19,7 +19,7 @@ created: 0
 # partage
 
 * [x] générer un lien avec un fragment : [lz-ts](https://www.npmjs.com/package/lz-ts)
-* [ ] importer le fragment
+* [x] importer le fragment
 * [x] dans un espace dédié pour ne pas écraser les prefs
 * [x] écran listes importées
 
