@@ -2,12 +2,12 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 1749884449067
+updated: 1749884461510
 created: 0
 ---
 # liste de courses.
 
-[https://github.com/b3b00/liste/](https://github.com/b3b00/liste/)
+<https://github.com/b3b00/liste/>
 
 * sans pub
 * PWA isntallable
