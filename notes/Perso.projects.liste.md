@@ -2,10 +2,12 @@
 id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
-updated: 1749883029045
+updated: 1749884449067
 created: 0
 ---
 # liste de courses.
+
+[https://github.com/b3b00/liste/](https://github.com/b3b00/liste/)
 
 * sans pub
 * PWA isntallable
@@ -16,7 +18,7 @@ created: 0
 
 # partage
 
-* [ ] générer un lien avec un fragment : [typescript zip](https://gist.github.com/b3b00/54c6c8e7ad49807955e9eab2ec7e601d)
+* [ ] générer un lien avec un fragment : [lz-ts](https://www.npmjs.com/package/lz-ts)
 * [x] importer le fragment
 * [x] dans un espace dédié pour ne pas écraser les prefs
 * [x] écran listes importées
