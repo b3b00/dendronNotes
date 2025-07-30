@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.benchEBNF
 title: Perso.projects.CSLY.stack.benchEBNF
 desc: benchmarks EBNF
-updated: 1750087610826
+updated: 1753882231628
 created: 0
 ---
 Benchmark for EBNF is using [SimpleExpressionParser](https://github.com/b3b00/csly/blob/dev/src/samples/SimpleExpressionParser/SimpleExpressionParser.cs) with a 1000 operands expression.
@@ -43,4 +43,25 @@ EBNF recursive parser stops after 1200 operands.
 ![](assets/images/2025-06-16-15-13-26.png)
 
 
+# [93e00062c1c91042f5c590f81cb54683b90b58a7](https://github.com/b3b00/csly/commit/93e00062c1c91042f5c590f81cb54683b90b58a7)
+
+```
+
+BenchmarkDotNet v0.13.12, Windows 11 (10.0.26100.4652)
+Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
+.NET SDK 9.0.302
+  [Host]     : .NET 8.0.18 (8.0.1825.31117), X64 RyuJIT AVX2
+  DefaultJob : .NET 8.0.18 (8.0.1825.31117), X64 RyuJIT AVX2
+
+
+```
+| Method    | Mean     | Error    | StdDev   | Ratio        | RatioSD | Gen0       | Gen1     | Gen2     | Allocated | Alloc Ratio |
+|---------- |---------:|---------:|---------:|-------------:|--------:|-----------:|---------:|---------:|----------:|------------:|
+| recursive | 39.73 ms | 0.783 ms | 1.172 ms |     baseline |         | 18384.6154 | 692.3077 | 384.6154 |  79.57 MB |             |
+| stacked   | 36.31 ms | 0.724 ms | 1.512 ms | 1.08x faster |   0.06x | 19166.6667 | 666.6667 | 333.3333 |   81.9 MB |  1.03x more |
+```
+
+Still 1 unit tests.
+The recursivity is much limited with EBNF (expression parsing optimization, one or more and zero or more ....)
+Hence the performance gain is less evident than with mere BNF grammar.
 
