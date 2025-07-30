@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.benchEBNF
 title: Perso.projects.CSLY.stack.benchEBNF
 desc: benchmarks EBNF
-updated: 1753882231628
+updated: 1753882287155
 created: 0
 ---
 Benchmark for EBNF is using [SimpleExpressionParser](https://github.com/b3b00/csly/blob/dev/src/samples/SimpleExpressionParser/SimpleExpressionParser.cs) with a 1000 operands expression.
@@ -63,5 +63,5 @@ Intel Core i7-10610U CPU 1.80GHz, 1 CPU, 8 logical and 4 physical cores
 
 Still 1 unit tests.
 The recursivity is much limited with EBNF (expression parsing optimization, one or more and zero or more ....)
-Hence the performance gain is less evident than with mere BNF grammar.
+Hence the performance gain is less obvious than with simple BNF grammar.
 
