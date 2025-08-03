@@ -2,7 +2,7 @@
 id: Perso.projects.liste.TIL
 title: Perso.projects.liste.TIL
 desc: TIL
-updated: 1724752481202
+updated: 1754210160744
 created: 0
 ---
 # Service worker life cycle.
@@ -42,3 +42,7 @@ On peut désactiver la traduction automatique des pages par Google Chrome en ajo
 	<meta name="google" value="notranslate" />
 	<meta http-equiv="Content-Language" content="fr_FR" />
 ```
+
+# arch linux
+
+Le package `better-sqlite` nom ne supporte pas pour l'instant node v24. Il faut utiliser une version antérieure en utilisant `nvm` par exemple
