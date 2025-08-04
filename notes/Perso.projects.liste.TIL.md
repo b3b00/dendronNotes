@@ -2,7 +2,7 @@
 id: Perso.projects.liste.TIL
 title: Perso.projects.liste.TIL
 desc: TIL
-updated: 1754210160744
+updated: 1754287971491
 created: 0
 ---
 # Service worker life cycle.
@@ -46,3 +46,7 @@ On peut désactiver la traduction automatique des pages par Google Chrome en ajo
 # arch linux
 
 Le package `better-sqlite` nom ne supporte pas pour l'instant node v24. Il faut utiliser une version antérieure en utilisant `nvm` par exemple
+
+# emplacement de la base sqlite 
+
+`.wrangler/state/d1/v3/d1/miniflare-D1DatabaseObject/xxx.sqlitea`
