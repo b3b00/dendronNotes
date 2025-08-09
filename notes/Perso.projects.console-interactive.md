@@ -2,11 +2,13 @@
 id: Perso.projects.console-interactive
 title: Perso.projects.console-interactive
 desc: Interactive Console
-updated: 1754724892697
+updated: 1754746017055
 created: 0
 ---
 # What
 A nuget to easily create interactive console application.
+
+See [spectre console prompts](https://spectreconsole.net/prompts/)
 
  **primitives for inputs**
 - [ ] single  typed inputs
