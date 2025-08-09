@@ -2,7 +2,7 @@
 id: Perso.projects.console-interactive
 title: Perso.projects.console-interactive
 desc: Interactive Console
-updated: 1754724648062
+updated: 1754724760888
 created: 0
 ---
 # What
@@ -12,6 +12,7 @@ A nuget to easily create interactive console application.
 - single  typed inputs
 - select
 - autocomplete ?
+- with pattern ? : think date `_ _ / _ _ / _ _ _ _`
 
 # How
 ```csharp
