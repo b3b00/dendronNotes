@@ -2,7 +2,7 @@
 id: Perso.projects.console-interactive
 title: Perso.projects.console-interactive
 desc: Interactive Console
-updated: 1754746017055
+updated: 1754891452383
 created: 0
 ---
 # What
@@ -15,6 +15,23 @@ See [spectre console prompts](https://spectreconsole.net/prompts/)
 - [ ] select
 - [ ] autocomplete ?
 - [ ] with pattern ? : think date `_ _ / _ _ / _ _ _ _`
+
+** Form objects (opt)
+
+Automatically generate a form (sequence of inputs) from a class:
+```
+public class MyForm {
+    [Input(0, "Wath's your name ?")]
+    public string Name { get; set; }
+    
+    [Input(1, "How old are you ?")]
+    public int Age  { get; set; }
+    
+    [Input(2, "Are you happy ?")]
+    public bool Agree { get; set; }
+}
+```
+this will ask successively for name , age and happyness.
 
 **Validations**
 
