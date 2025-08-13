@@ -2,7 +2,7 @@
 id: Perso.projects.console-interactive
 title: Perso.projects.console-interactive
 desc: Interactive Console
-updated: 1755094999868
+updated: 1755095002523
 created: 0
 ---
 # What
@@ -17,7 +17,7 @@ See [spectre console prompts](https://spectreconsole.net/prompts/)
 * [ ] Password
 * [x] select
 * [ ] autocomplete ?
-* [ ] with pattern ? : think date `_ _ / _ _ / _ _ _ _`
+* [x] with pattern ? : think date `_ _ / _ _ / _ _ _ _`
 * [ ] Form objects (opt)
 
 Automatically generate a form (sequence of inputs) from a class:
