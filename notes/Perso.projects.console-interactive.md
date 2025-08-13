@@ -2,23 +2,26 @@
 id: Perso.projects.console-interactive
 title: Perso.projects.console-interactive
 desc: Interactive Console
-updated: 1754891452383
+updated: 1755066028357
 created: 0
 ---
 # What
+
 A nuget to easily create interactive console application.
 
 See [spectre console prompts](https://spectreconsole.net/prompts/)
 
- **primitives for inputs**
-- [ ] single  typed inputs
-- [ ] select
-- [ ] autocomplete ?
-- [ ] with pattern ? : think date `_ _ / _ _ / _ _ _ _`
+**primitives for inputs**
 
-** Form objects (opt)
+* [ ] single  typed inputs
+* [x] select
+* [ ] autocomplete ?
+* [ ] with pattern ? : think date `_ _ / _ _ / _ _ _ _`
+
+\*\* Form objects (opt)
 
 Automatically generate a form (sequence of inputs) from a class:
+
 ```
 public class MyForm {
     [Input(0, "Wath's your name ?")]
@@ -31,25 +34,30 @@ public class MyForm {
     public bool Agree { get; set; }
 }
 ```
+
 this will ask successively for name , age and happyness.
 
 **Validations**
 
 # How
+
 ```csharp
 int i = AskSingle<int>("enter an integer);
 String choice = AskSelect<string>("choose", "chose 1", "chose 2");
 ```
 
-## selects 
+## selects
+
 ```
 Chose one : 
 - 1 : chaise 1
 - 2 : choice 2
 :
 ```
-User c an situer : 
-- enter the auto generated chaise number
-- enter a part of the string
-   - if the entrez part le nom full discriminant the filières list is redisplayed
+
+User c an situer :
+
+* enter the auto generated chaise number
+* enter a part of the string
+  * if the entrez part le nom full discriminant the filières list is redisplayed
 
