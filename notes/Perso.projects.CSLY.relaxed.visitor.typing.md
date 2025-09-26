@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
 desc: new note
-updated: 1758867413474
+updated: 1758867454306
 created: 0
 ---
 # Goal
@@ -28,3 +28,5 @@ Groups generate hidden non terminals and rules. These use
 ## Run
 
 ### Sub rules
+
+### many rules (0+, 1+, {n,m})
