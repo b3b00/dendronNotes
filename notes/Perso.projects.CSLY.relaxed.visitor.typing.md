@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
 desc: Relaxed visitor typing
-updated: 1758867468238
+updated: 1758871029741
 created: 0
 ---
 # Goal
@@ -27,6 +27,29 @@ Groups generate hidden non terminals and rules. These use
 
 ## Run
 
+### EBNF specials
+
+EBNF special type should be subtyped according to corresponding visitor's parameter type
+
+### many rules (0+, 1+, {n,m})
+
+```csharp
+[Production("grouping : intThing stringThing*")]
+public GroupThing Grouping(int thing, List<string> things)
+{
+    return new GroupThing()
+    {
+        first = thing,
+        others = things,
+    };
+}
+```
+
 ### Sub rules
+
+```csharp
+
+```
+
 
 ### many rules (0+, 1+, {n,m})
