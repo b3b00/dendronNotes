@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
 desc: Relaxed visitor typing
-updated: 1758871283767
+updated: 1758871294574
 created: 0
 ---
 # Goal
@@ -58,3 +58,5 @@ public string Grouping(ValueOption<string> optionStringThing)
         () => "EMPTY");
 }
 ```
+
+**Sub rules / groups**
