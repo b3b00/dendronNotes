@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
-desc: new note
-updated: 1758867454306
+desc: Relaxed visitor typing
+updated: 1758867468238
 created: 0
 ---
 # Goal
