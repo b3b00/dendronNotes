@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
 desc: Relaxed visitor typing
-updated: 1758872175642
+updated: 1759738044087
 created: 0
 ---
 # Goal
@@ -61,3 +61,6 @@ public string Grouping(ValueOption<string> optionStringThing)
 ```
 
 **Sub rules / groups**
+
+⚠️Groups can only contains non-terminals that return the exact same type !
+because a `Group<IN,OUT>` has only one type for non terminal values.
