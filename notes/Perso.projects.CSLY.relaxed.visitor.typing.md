@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
 desc: Relaxed visitor typing
-updated: 1759738044087
+updated: 1759738144607
 created: 0
 ---
 # Goal
@@ -22,7 +22,7 @@ But as we can call a parser.Parse with a starting rule this can not be ensured
 
 ## Build
 
-### EBNF : Groups / sub rules 
+Relaxed visitors should nevertheless be minimally typed. An EBNF `*` or `+` should match a List<X> parameter (the same goes for groups and options)
 
 
 
@@ -64,3 +64,5 @@ public string Grouping(ValueOption<string> optionStringThing)
 
 ⚠️Groups can only contains non-terminals that return the exact same type !
 because a `Group<IN,OUT>` has only one type for non terminal values.
+
+
