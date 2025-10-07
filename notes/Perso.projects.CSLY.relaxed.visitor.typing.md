@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
 desc: Relaxed visitor typing
-updated: 1759845772151
+updated: 1759848879074
 created: 0
 ---
 # Goal
@@ -72,8 +72,8 @@ So here are the mandatory typing rules
 
 ### non terminal and production rules typing rules
 
-1.[ ] given a non terminal all the rules visitor method **must** have the same return type.
-2. give a rule the visitor parameter's **must** match the afferent clause of the rule (more on parameter types later
+  - [ ] given a non terminal all the rules visitor method **must** have the same return type.
+  - [ ] give a rule the visitor parameter's **must** match the afferent clause of the rule (more on parameter types later
 
 ### visitor's parameters typing rules
 
