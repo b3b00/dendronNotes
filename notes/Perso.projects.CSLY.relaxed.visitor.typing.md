@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
 desc: Relaxed visitor typing
-updated: 1759821425106
+updated: 1759821709833
 created: 0
 ---
 # Goal
@@ -77,5 +77,8 @@ So here are the mandatory typing rules
 
 ### visitor's parameters typing rules
 
--[ ]
-
+  -[ ] terminal : typing remains the same as constrained typing : ```Token<IN>```
+  - [ ] non terminal : type **must** be the non terminal type (see above for rule/non terminal typing)
+  - [ ] many ( * + {n,m}) : if repeated clause type is T then parameter type is ```List<T>```
+  - Group/sub rule : 
+`
