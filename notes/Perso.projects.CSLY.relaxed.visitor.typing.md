@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
 desc: Relaxed visitor typing
-updated: 1759738144607
+updated: 1759821425106
 created: 0
 ---
 # Goal
@@ -65,4 +65,17 @@ public string Grouping(ValueOption<string> optionStringThing)
 ⚠️Groups can only contains non-terminals that return the exact same type !
 because a `Group<IN,OUT>` has only one type for non terminal values.
 
+## Relaxed typing rules
+
+Despite being relaxed, rules **must** be correctly typed. This is required by .Net framework as when dynamically call a method still the parameters need to be correctly typed or an invalid cast exception will be raised.
+So here are the mandatory typing rules
+
+### non terminal and production rules typing rules
+
+1.[ ] given a non terminal all the rules visitor method **must** have the same return type.
+2. give a rule the visitor parameter's **must** match the afferent clause of the rule (more on parameter types later
+
+### visitor's parameters typing rules
+
+-[ ]
 
