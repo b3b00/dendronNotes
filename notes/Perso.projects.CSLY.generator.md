@@ -2,59 +2,44 @@
 id: Perso.projects.CSLY.generator
 title: Perso.projects.CSLY.generator
 desc: CSLY source generator
-updated: 1726071406932
+updated: 1762414945521
 created: 0
 ---
 # goal
 
-Allow CSLY to work with AOT and trimming
+Parser and lexer source generation.
 
-## Fluent API
+# Plan
+
+ - [ ] rebase branch project/aot-trimming/building
+ - [ ] working test project based on IndentedWhile parser
+ - [ ] "static parser" generation : see below
+ - [ ] "satic visitor" generation : see below
+
+
+# Static parser
+
+Generated parser **MUST NOT** rely on legacy CSLY runtime. So it should be a set of fully recursive  methods.
+The Same goes for visitor.
+
+## Opened questions 
+
+### models
+We need a minimal set of shared model classes for : 
+  - tokens
+  - syntax tree
+  - special EBNF types (Group, ValueOption)
+
+How to include these types ? 
+ - namespace : 
+      - static (e.g sly.model.generated)
+      - by parser (e.g while.sly.model.generated)
+
+Static namespace may produces conflicts at build if consuming assembly defines many parser. Using parser specific namespaces may produces too many classes.
+
+Is this a real issue ? how many assembly will define many parser and such a number that it could be a real issue ?
+ 
 
 
 
-### lexer
 
-for lexer 
-```c#
-public enum Lexer
-{
-    [AlphaId]
-    ID,
-    
-    [Double]
-    DOUBLE,
-    
-    [Keyword("YOLO")]
-    YOLO
-}
-```
-
-1. get a builder :
-
-```c# 
-var builder = AotLexerBuilder<Lexer>.NewBuilder()
-```
-
-2. add lexemes
-
-```c#
-.Double(Lexer.DOUBLE )
-.Keyword(Lexer.YOLO , "YOLO")
-```
-
-## Generator
-
-# TIL
-
-## source generator packaging
-
-dot net is looking for generators (and analysers) in `nupkg#analysers/dotnet/cs`.
-So the assembly MUST be copied to this folder
-
-```xml
- <ItemGroup>
-    <None Include="$(OutputPath)\netstandard2.1\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-  </ItemGroup>
-```
-source : [incremental-generators-cookbook](https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.cookbook.md#incremental-generators-cookbook)
