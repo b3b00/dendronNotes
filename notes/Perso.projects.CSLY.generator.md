@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.generator
 title: Perso.projects.CSLY.generator
 desc: CSLY source generator
-updated: 1762414945521
+updated: 1762592049331
 created: 0
 ---
 # goal
@@ -29,6 +29,8 @@ We need a minimal set of shared model classes for :
   - tokens
   - syntax tree
   - special EBNF types (Group, ValueOption)
+
+Tokens and ebnf types may be defined in csly generator assembly. Then the generator replaces the using vs. This easen the development. But maybe not that useful...
 
 How to include these types ? 
  - namespace : 
