@@ -2,12 +2,13 @@
 id: Perso.projects.CSLY.generator
 title: Perso.projects.CSLY.generator
 desc: CSLY source generator
-updated: 1762592170419
+updated: 1762890791413
 created: 0
 ---
 # goal
 
 Parser and lexer source generation.
+__This should be a completely separate project__
 
 # Plan
 
