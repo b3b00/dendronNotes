@@ -2,15 +2,14 @@
 id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: WIP
-updated: 1763199371776
+updated: 1763199384339
 created: 0
 ---
 # WIP
 
-- [ ] parser
-- [ ] lexer
-- [ ] visitor
-- [ ] entrypoint
-- [ ] align names paced and naming
-
+* [x] parser
+* [ ] lexer
+* [ ] visitor
+* [ ] entrypoint
+* [ ] align names paced and naming
 
