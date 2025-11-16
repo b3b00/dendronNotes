@@ -2,10 +2,14 @@
 id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: Todo
-updated: 1763229943477
+updated: 1763313532674
 created: 0
 ---
-# 
+## Lexer
+ * [ ] keywords
+ * [ ] strings and chars
+ * [ ] comments 
+
 ## BNF
 
 * [x] parser
