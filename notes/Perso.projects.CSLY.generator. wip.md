@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: Todo
-updated: 1763628683558
+updated: 1763989222389
 created: 0
 ---
 ## Lexer
@@ -25,7 +25,7 @@ created: 0
 
 ## EBNF
 
-* [ ] manies ( \* and + at first)
+* [x] manies ( \* and + at first)
 * [ ] groups
 * [ ] choices (mandatory for expressions)
 * [ ] options
