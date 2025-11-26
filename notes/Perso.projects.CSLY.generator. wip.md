@@ -2,13 +2,14 @@
 id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: Todo
-updated: 1764158352212
+updated: 1764159101663
 created: 0
 ---
 ## Lexer
 
 * [x] keywords
 * [x] long sugars
+* [ ] int and double
 * [ ] strings and chars
 * [ ] comments
 * [ ] modes  : this will require to generate as many lexer as different mode. Plus a coordinator lexer
