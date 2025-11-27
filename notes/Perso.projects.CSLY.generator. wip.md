@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: Todo
-updated: 1764166538732
+updated: 1764276094667
 created: 0
 ---
 ## Lexer
@@ -11,10 +11,10 @@ created: 0
 * [x] long sugars
 * [x] int and double
 * [x] strings and chars
-* [ ] P2 : indentation 
-* [ ] P1 : comments 
+* [ ] P2 : indentation
+* [ ] P1 : comments
 * [ ] P3 : modes  : this will require to generate as many lexer as different mode. Plus a coordinator lexer
-* [ ] P4 : UpTo : useless without modes 
+* [ ] P4 : UpTo : useless without modes
 
 ## BNF
 
@@ -24,7 +24,7 @@ created: 0
 * [x] entrypoint
 * [x] align names paced and naming
 * [ ] errors
-  * [ ] non terminal parse must iterate on ALL rules and store partial errors (see [RecursiveDescentSyntaxParser.NonTerminal.ParseNonTerminal()](https://github.com/b3b00/csly/blob/dev/src%2Fsly%2Fparser%2Fparser%2Fllparser%2Fbnf%2FRecursiveDescentSyntaxParser.NonTerminal.cs#L20) )
+  * [x] non terminal parse must iterate on ALL rules and store partial errors (see [RecursiveDescentSyntaxParser.NonTerminal.ParseNonTerminal()](https://github.com/b3b00/csly/blob/dev/src%2Fsly%2Fparser%2Fparser%2Fllparser%2Fbnf%2FRecursiveDescentSyntaxParser.NonTerminal.cs#L20) )
 
 ## EBNF
 
