@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: Todo
-updated: 1764314609416
+updated: 1764320934893
 created: 0
 ---
 ## Top Priority
@@ -37,11 +37,11 @@ created: 0
 * [x] choices (mandatory for expressions)
 * [x] options
 * [ ] expressions
-* [ ] discarded tokens
+* [x] discarded tokens
 * [ ] explicit tokens
 
 ## other features
 
- * [ ] left recursion detection
- * [ ] memoization
- 
+* [ ] left recursion detection
+* [ ] memoization
+
