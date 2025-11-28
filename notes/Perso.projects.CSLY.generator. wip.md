@@ -2,15 +2,13 @@
 id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: Todo
-updated: 1764314411496
+updated: 1764314415742
 created: 0
 ---
-
 ## Top Priority
-* [ ] errors
-  * [ ] non terminal parse must iterate on ALL rules and store partial errors (see [RecursiveDescentSyntaxParser.NonTerminal.ParseNonTerminal()](https://github.com/b3b00/csly/blob/dev/src%2Fsly%2Fparser%2Fparser%2Fllparser%2Fbnf%2FRecursiveDescentSyntaxParser.NonTerminal.cs#L20) ) : **this induces fail parse on alternate clause `[A|B]`** And as well for groups `(a b c)`
-    
 
+* [ ] errors
+  * [x] non terminal parse must iterate on ALL rules and store partial errors (see [RecursiveDescentSyntaxParser.NonTerminal.ParseNonTerminal()](https://github.com/b3b00/csly/blob/dev/src%2Fsly%2Fparser%2Fparser%2Fllparser%2Fbnf%2FRecursiveDescentSyntaxParser.NonTerminal.cs#L20) ) : **this induces fail parse on alternate clause `[A|B]`** And as well for groups `(a b c)`
 
 ## Lexer
 
@@ -31,7 +29,6 @@ created: 0
 * [x] entrypoint
 * [x] align names paced and naming
 * [ ] errors
-  
 
 ## EBNF
 
