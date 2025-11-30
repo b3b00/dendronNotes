@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.generator.note
 title: Perso.projects.CSLY.generator.note
 desc: Expressions
-updated: 1764508019674
+updated: 1764508232271
 created: 0
 ---
 # expressions parsing
@@ -27,11 +27,14 @@ r3 =......
 ## infix
 
 ```
+arg0 = visit n-1(child [0])
 if bypass
-  visit n-1(child [0])
+  return arg0
 else
- visit child 0..2
-return instance. Visit(arg0....) 
+ arg1 =visit n-1(child [1])
+arg1 = visit n-1(child [0])
+
+return instance. Visit(arg0, arg1, arg2)
 
 
 ```
