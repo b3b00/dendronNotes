@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.CSLY.generator.note
 title: Perso.projects.CSLY.generator.note
-desc: new note
-updated: 1764507996043
+desc: Expressions
+updated: 1764508019674
 created: 0
 ---
 # expressions parsing
