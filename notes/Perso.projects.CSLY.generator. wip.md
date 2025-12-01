@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: Todo
-updated: 1764608614158
+updated: 1764608630081
 created: 0
 ---
 ## Top Priority
@@ -37,8 +37,8 @@ created: 0
 * [x] choices (mandatory for expressions)
 * [x] options
 * [ ] expressions
-   * [ ] operations
-   * [ ] associativity
+  * [x] operations
+  * [ ] associativity
 * [x] discarded tokens
 * [ ] explicit tokens
 
