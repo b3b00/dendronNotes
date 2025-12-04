@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: Todo
-updated: 1764836421206
+updated: 1764836520361
 created: 0
 ---
 ## Top Priority
@@ -30,7 +30,7 @@ created: 0
 * [ ] align names paced and naming
 * [ ] errors
 
-## EBNF
+## EBNF 
 
 * [x] manies ( \* and + at first)
 * [x] groups
