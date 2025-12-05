@@ -1,8 +1,8 @@
 ---
 id: 5lgec6henmp4n805pwla8mq
-title: working-notes
-desc: ''
-updated: 1764941638610
+title: Perso.projects.CSLY.generator.working-notes
+desc: working notes
+updated: 1764941890218
 created: 1764941289531
 ---
 
@@ -32,7 +32,7 @@ case "Expr_Operand_0":
                     return VisitExpr_Operand_0(node);
 ```
 
-There should not be suffixes _<INDEX>.
+There should not be suffixes `_<INDEX>`
 
 
 
