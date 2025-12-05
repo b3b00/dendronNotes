@@ -2,7 +2,7 @@
 id: 5lgec6henmp4n805pwla8mq
 title: Perso.projects.CSLY.generator.working-notes
 desc: working notes
-updated: 1764941890218
+updated: 1764950309588
 created: 1764941289531
 ---
 
@@ -32,7 +32,27 @@ case "Expr_Operand_0":
                     return VisitExpr_Operand_0(node);
 ```
 
-There should not be suffixes `_<INDEX>`
+There should not be suffixes `_<INDEX>`.
+
+In there MUST be `_<INDEX>` but they were not included for expressions and bypass rules.
+
+## parse fails for factorial program
+
+```
+(
+    r:=1;
+    i:=1;
+    while (i < 11 and true) do 
+    ( 
+      r := r * i;
+      print r;
+      print i;
+      i := i + 1 
+    )
+)
+```
+
+Parse fails with `unepected SEMICOLON [;] @line 2, column 8 on channel 0. Expecting RPAREN.`
 
 
 
