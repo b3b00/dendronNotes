@@ -2,7 +2,7 @@
 id: Perso.projects.console-interactive.TIL
 title: Perso.projects.console-interactive.TIL
 desc: TIL
-updated: 1765310109022
+updated: 1765311671310
 created: 0
 ---
 # nuget source generator et runtime
@@ -42,6 +42,8 @@ Si un nuget embarque à la fois un source generator et des classes runtime alors
 Debugging a console app that access console cursor position `Console.GetCursorPosition()` crashes with an `invalid handle` error.
 
 https://github.com/dotnet/vscode-csharp/issues/2336
+
+See also https://medium.com/analytics-vidhya/how-to-replace-external-terminal-in-visual-studio-code-with-the-new-windows-terminal-66e8460f2d31
 
 This is caused by the VS Code internal console. 
 
