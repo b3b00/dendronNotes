@@ -2,7 +2,7 @@
 id: Perso.projects.console-interactive.TIL
 title: Perso.projects.console-interactive.TIL
 desc: TIL
-updated: 0
+updated: 1765309915242
 created: 0
 ---
 # nuget source generator et runtime
@@ -35,3 +35,58 @@ Si un nuget embarque à la fois un source generator et des classes runtime alors
   </PropertyGroup>
 
 ```
+
+
+# debugging console app with VS Code
+
+Debugging a console app that access console cursor position `Console.GetCursorPosition()` crashes with an `invalid handle` error.
+
+This is caused by the VS Code internal console. 
+
+```json
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "test",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/testproject/bin/Debug/net9.0/testproject.dll",
+            "args": [""],
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}
+```
+
+To solve : use an external terminal instead
+
+```` json
+{   
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "test",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/testproject/bin/Debug/net9.0/testproject.dll",
+            "args": [""],
+            "cwd": "${workspaceFolder}",
+// use external terminal instead of internal console
+            "console": "externalTerminal",
+            "stopAtEntry": false
+        }
+    ]
+}
+
+
+
