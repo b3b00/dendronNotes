@@ -2,21 +2,20 @@
 id: Perso.projects.CSLY.generator
 title: Perso.projects.CSLY.generator
 desc: CSLY source generator
-updated: 1765485032095
+updated: 1765485048185
 created: 0
 ---
 # goal
 
 Parser and lexer source generation.
 
-
-__This should be a completely separate project__
+**This should be a completely separate project**
 
 # Plan
 
 * [x] rebase branch project/aot-trimming/building
 * [ ] working test project based on IndentedWhile parser
-* [ ] "static parser" generation : see below
+* [x] "static parser" generation : see below
 * [ ] "satic visitor" generation : see below
 
 # Static parser
@@ -44,10 +43,11 @@ How to include these types ?
 
 Static namespace may produces conflicts at build if consuming assembly defines many parser. Using parser specific namespaces may produces too many classes.
 
-If parser are in the same assembly there is no issue. Parser will share the same model. 
-But we need a namespacing strategy to avoid conflicts between assemblies : 
- * use assembly name
- * use an argument on the`ParserGenerator` attribute
+If parser are in the same assembly there is no issue. Parser will share the same model.
+But we need a namespacing strategy to avoid conflicts between assemblies :
+
+* use assembly name
+* use an argument on the`ParserGenerator` attribute
 
 ```csharp
 [ParserGenerator("my.space")]
