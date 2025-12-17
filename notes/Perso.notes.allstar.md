@@ -2,10 +2,12 @@
 id: Perso.notes.allstar
 title: Perso.notes.allstar
 desc: ALL*
-updated: 1765962520050
+updated: 1765965811805
 created: 0
 ---
-# Synthèse de l’algorithme __ALL* (Adaptive LL*)__
+
+
+# Synthèse de l’algorithme **ALL(*) (Adaptive LL*)**
 
 ## 1. Objectif
 
@@ -130,7 +132,126 @@ function adaptivePredict_LL(A, γ):
 
 ---
 
-## 6. Schéma logique de ALL(*)
+## 6. Le DFA de lookahead dans ALL(*)
+
+### 6.1 Qu’est-ce que le DFA en ALL(*) ?
+
+Dans ALL(*), un **DFA de lookahead** (*Lookahead Deterministic Finite Automaton*) est une **structure de mémorisation des décisions de parsing**.
+
+👉 Il ne reconnaît pas le langage, mais **prédit quelle production choisir** à un point de décision donné.
+
+Caractéristiques essentielles :
+
+* Un **DFA par point de décision** (non-terminal avec plusieurs productions)
+* Les **états du DFA représentent des ensembles de configurations ATN**
+* Les **transitions sont étiquetées par des terminaux** (tokens)
+* Les **états finaux correspondent à une production unique**
+
+En résumé :
+
+> **Le DFA encode la connaissance acquise dynamiquement sur les séquences d’entrée déjà rencontrées.**
+
+---
+
+### 6.2 États du DFA : configurations ATN
+
+Un état du DFA est un ensemble de **configurations ATN** de la forme :
+
+```text
+(p, i, Γ)
+```
+
+Où :
+
+* `p` : état courant dans l’ATN
+* `i` : numéro de la production candidate
+* `Γ` : pile d’appels (ou # en mode SLL)
+
+➡️ Chaque état du DFA représente **toutes les situations possibles du parseur** après avoir lu un certain préfixe d’entrée.
+
+---
+
+### 6.3 Construction du DFA (à la volée)
+
+Le DFA n’est **jamais construit entièrement à l’avance**.
+Il est **étendu dynamiquement** uniquement quand une séquence inconnue apparaît.
+
+#### Étape 1 : état initial D₀
+
+Pour une règle `A → α₁ | α₂ | ... | αₙ` :
+
+* On crée un état initial `D₀`
+* `D₀` contient les configurations correspondant **au début de chaque production**
+* On applique la **closure ε** (transitions sans consommer de token)
+
+---
+
+#### Étape 2 : transition sur un token
+
+À partir d’un état DFA `D` et d’un token `t` :
+
+1. On applique `move(D, t)`
+
+   * avance les configurations ATN consommant `t`
+2. On applique `closure` sur le résultat
+3. On obtient un nouvel état `D'`
+
+Cas possibles :
+
+* `D'` est vide → **erreur syntaxique**
+* Toutes les configurations de `D'` prédisent la même production → **état final**
+* Sinon → **état intermédiaire**, potentiellement conflictuel
+
+---
+
+### 6.4 États finaux du DFA
+
+Un état DFA est **final** si :
+
+```text
+{ i | (–, i, –) ∈ D } = { k }
+```
+
+➡️ Toutes les configurations pointent vers **la même production `k`**.
+
+Dans ce cas :
+
+* Le DFA retourne immédiatement `k`
+* La prédiction est terminée
+
+---
+
+### 6.5 Gestion des conflits
+
+Un état DFA est dit **conflictuel** si :
+
+* Plusieurs productions sont encore possibles
+* Et qu’aucune n’est clairement viable sans pile
+
+Deux cas :
+
+| Situation                   | Action                                  |
+| --------------------------- | --------------------------------------- |
+| Mode SLL, conflit           | Fallback en LL                          |
+| Mode LL, conflit persistant | Ambiguïté (priorité à la prod minimale) |
+
+Les états conflictueux sont **marqués comme stack-sensitive**.
+
+---
+
+### 6.6 Utilisation du DFA pendant le parsing
+
+Lors d’une prédiction ultérieure :
+
+1. Le parseur rejoue les tokens dans le DFA
+2. S’il atteint un état final → décision immédiate (O(1) par token)
+3. S’il manque une transition → extension dynamique du DFA
+
+➡️ Plus le parser avance, plus le DFA devient complet et rapide.
+
+---
+
+## 7. Schéma logique de ALL(*)
 
 ```text
           ┌─────────────────────┐
