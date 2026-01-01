@@ -2,9 +2,13 @@
 id: Perso.projects.liste.TIL
 title: Perso.projects.liste.TIL
 desc: TIL
-updated: 1754288027428
+updated: 1767256991393
 created: 0
 ---
+# Linux Wrangler debug
+
+wrangler s'attend à trouver google-chrome dans le path. il faut donc créer un symlink google-chrome -> google-chrome-stable par exemple pour permettre le debug des functions.
+
 # Service worker life cycle.
 
 [service worker lifecycle](https://web.dev/articles/service-worker-lifecycle?hl=fr)
