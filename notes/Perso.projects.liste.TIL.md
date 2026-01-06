@@ -2,9 +2,16 @@
 id: Perso.projects.liste.TIL
 title: Perso.projects.liste.TIL
 desc: TIL
-updated: 1767256991393
+updated: 1767686491072
 created: 0
 ---
+
+# pages and durable objects : 
+
+[Cloudflare community](https://community.cloudflare.com/t/unable-to-bind-a-durable-object-to-a-pages-project/875790?u=olivier.duhart)
+
+[commit](https://github.com/b3b00/liste/commit/f3e873da23d7e304f8212747f2df3a1bf545db9b)
+
 # Linux Wrangler debug
 
 wrangler s'attend à trouver google-chrome dans le path. il faut donc créer un symlink google-chrome -> google-chrome-stable par exemple pour permettre le debug des functions.
