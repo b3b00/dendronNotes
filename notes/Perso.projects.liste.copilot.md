@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.liste.copilot
 title: Perso.projects.liste.copilot
-desc: developing with copilot
-updated: 1767772433390
+desc: working with copilot
+updated: 1767772441327
 created: 0
 ---
 # comment fonctionner avec copilot
