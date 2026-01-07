@@ -2,7 +2,7 @@
 id: Perso.projects.liste.copilot
 title: Perso.projects.liste.copilot
 desc: working with copilot
-updated: 1767772441327
+updated: 1767773421823
 created: 0
 ---
 # comment fonctionner avec copilot
@@ -22,3 +22,8 @@ feature folders will contains :
 copilot must not starts its  implementation without a explicit order after planning step so I could rview and modify plan if needed
 
 exemple : https://github.com/b3b00/liste/tree/feature/multi-list
+
+### avantages : 
+ - documentation gratuite ! 
+ - sécurisation des dev : on peut éviter certaines mécompréhensions, mauvais choix technique, overengeenering....
+ - la documentation viendra s'ajouter au contexte de copilot pour les développement ultérieurs
