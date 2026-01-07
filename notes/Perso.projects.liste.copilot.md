@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.liste.copilot
 title: Perso.projects.liste.copilot
-desc: new note
-updated: 0
+desc: developing with copilot
+updated: 1767772433390
 created: 0
 ---
 # comment fonctionner avec copilot
@@ -20,3 +20,5 @@ feature folders will contains :
  - implementation.md : by copilot, will contains implementation details, specifically if important technical reword is needed
 
 copilot must not starts its  implementation without a explicit order after planning step so I could rview and modify plan if needed
+
+exemple : https://github.com/b3b00/liste/tree/feature/multi-list
