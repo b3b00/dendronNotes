@@ -2,7 +2,7 @@
 id: npm.fuckery
 title: npm.fuckery
 desc: npm fuckery
-updated: 1768033973021
+updated: 1768033980492
 created: 0
 ---
 # Write something really smart here.
@@ -22,7 +22,7 @@ npm ERR! A complete log of this run can be found in:
 npm ERR!     C:\Users\olduh\AppData\Roaming\npm-cache\_logs\2026-01-10T08_09_15_668Z-debug.log
 ```
 
-now 
+now on build
 
 ```bash
 [webpack-cli] Failed to load 'C:\SAGE\SourcesGit\Projects\trapaie\Front\webpack.config.js' config
