@@ -1,8 +1,8 @@
 ---
 id: Perso. Reflect
 title: Perso. Reflect
-desc: new note
-updated: 0
+desc: Reflections
+updated: 1768843533981
 created: 0
 ---
 # AI will help frugality
