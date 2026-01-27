@@ -58,15 +58,34 @@ On peut désactiver la traduction automatique des pages par Google Chrome en ajo
 
 Le package `better-sqlite` nom ne supporte pas pour l'instant node v24. Il faut utiliser une version antérieure en utilisant `nvm` par exemple
 
+# iniialize database
+
+```bash
+wrangler d1 execute D1_MATCHES --file=.\schema.sql --local
+``` 
+
 # run 
 
 ```bash
 wrangler pages dev ./public/ --persist-to=./.wrangler/state/d1 --d1=D1_lists --port=8888
 ```
 
+ou 
+
+```
+wrangler pages dev ./public/ --persist-to=../data --d1=D1_lists --port=8888
+```
+
+
 # emplacement de la base sqlite 
 
 ```
-.wrangler/state/d1/v3/d1/miniflare-D1DatabaseObject/xxx.sqlitea
+.wrangler/state/v3/d1/miniflare-D1DatabaseObject/xxx.sqlitea
+```
+
+ou 
+
+```
+../data/v3/d1/miniflare-D1DatabaseObject/xxx.sqlitea
 ```
 
