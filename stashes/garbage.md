@@ -1,7 +1,7 @@
 ---
-id: 430c9b91-9986-4d05-bfdd-0db7c1291b7b
+id: 666
 title: garbage - to be deleted
-desc: del me
+desc: del this garbage
 updated: 1769680333
 created: 1769680286
 ---
@@ -17,3 +17,4 @@ _________
 
 # garbage #3
 delete this fucking this.
+
