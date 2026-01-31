@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.ambiguous.example
 title: Perso.projects.CSLY.ambiguous.example
 desc: Simple ambiguous grammar
-updated: 1769847861838
+updated: 1769847919502
 created: 0
 ---
 # simple ambiguous grammar.
@@ -55,11 +55,11 @@ Derivation 2 (using <S> → 'a' 'a' <S> then <S> → 'a'):
 ### second
 
 ```
-      S
+       S
     /  |  \
- 'a'  'a' S
-            |
-           'a'
+ 'a'  'a'  S
+           |
+          'a'
 ```
 
 
