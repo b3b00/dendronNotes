@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.ambiguous.example
 title: Perso.projects.CSLY.ambiguous.example
 desc: Simple ambiguous grammar
-updated: 1769847160968
+updated: 1769847807958
 created: 0
 ---
 # simple ambiguous grammar.
@@ -22,7 +22,7 @@ Language: { a^n b | n ≥ 1 } — e.g., ab, aab, aaab, …
 ### first 
 
 Derivation 1 (using <S> → 'a' <S> 'a' then <S> → 'a'):
-```` 
+``` 
 <S>
 ⇒ 'a' <S> 'a'
 ⇒ 'a' 'a' 'a'
@@ -50,13 +50,7 @@ Derivation 2 (using <S> → 'a' 'a' <S> then <S> → 'a'):
      'a'
 ```
 
-```mermaid
-graph TD
-    S0["S"] --> A1["'a'"]
-    S0 --> S1["S"]
-    S0 --> A2["'a'"]
-    S1 --> A3["'a'"]
-```
+
 
 ### second
 
@@ -68,11 +62,4 @@ graph TD
             'a'
 ```
 
-```mermaid
-graph TD
-    S0["S"] --> A1["'a'"]
-    S0 --> A2["'a'"]
-    S0 --> S1["S"]
-    S1 --> A3["'a'"]
-```
 
