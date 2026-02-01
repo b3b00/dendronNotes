@@ -2,16 +2,9 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1769929130
+updated: 1769934476
 created: 1769795609
 ---
-
-# remove me
-
-this is a dumb note to test reload command.
-
-____
-
 
 # tags
 
@@ -26,9 +19,7 @@ Remote
 ```bash
 git tag origin mytag - - delete
 ```
-
-
-___
+______________
 
 # commits
 
@@ -44,10 +35,7 @@ git config --global alias.undo-commit 'reset HEAD~1'
 git config --global alias.undo-commit-hard 'reset --hard HEAD~1'
 
 ```
-
-
 ______________
-
 
 # branches
 
@@ -81,4 +69,3 @@ git push $remote $new_name
 # Reset the upstream branch for the new_name local branch
 git push $remote -u $new_name
 ```
-
