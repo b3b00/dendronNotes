@@ -2,7 +2,7 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1769965994
+updated: 1769966008
 created: 1769795609
 ---
 
@@ -28,7 +28,7 @@ ______________
 ```
 git reset HEAD~1
 ``` 
-An d set an alias :
+And set an alias :
 
 ```bash
 git config --global alias.undo-commit 'reset HEAD~1'
