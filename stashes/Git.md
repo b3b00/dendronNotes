@@ -6,6 +6,13 @@ updated: 1769929130
 created: 1769795609
 ---
 
+# remove me
+
+this is a dumb note to test reload command.
+
+____
+
+
 # tags
 
 ## Delete
@@ -21,7 +28,7 @@ git tag origin mytag - - delete
 ```
 
 
-
+___
 
 # commits
 
@@ -74,3 +81,4 @@ git push $remote $new_name
 # Reset the upstream branch for the new_name local branch
 git push $remote -u $new_name
 ```
+
