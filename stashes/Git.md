@@ -2,13 +2,10 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1769934476
+updated: 1769934537
 created: 1769795609
 ---
-# again remove
 
-del
-___
 # tags
 
 ## Delete
