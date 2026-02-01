@@ -19,7 +19,28 @@ Remote
 ```bash
 git tag origin mytag - - delete
 ```
+
+
+
+
+# commits
+
+## undo
+
+```
+git reset HEAD~1
+``` 
+
+```bash
+git config --global alias.undo-commit 'reset HEAD~1'
+# or the hard way
+git config --global alias.undo-commit-hard 'reset --hard HEAD~1'
+
+```
+
+
 ______________
+
 
 # branches
 
