@@ -5,7 +5,10 @@ desc: Git tips
 updated: 1769934476
 created: 1769795609
 ---
+# again remove
 
+del
+___
 # tags
 
 ## Delete
@@ -68,4 +71,5 @@ git push $remote $new_name
 
 # Reset the upstream branch for the new_name local branch
 git push $remote -u $new_name
+
 ```
