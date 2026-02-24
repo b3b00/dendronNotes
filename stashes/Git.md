@@ -2,7 +2,7 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1779481466
+updated: 1771853056
 created: 1769795609
 ---
 
@@ -17,7 +17,7 @@ git tad -d mytag
 
 Remote
 ```bash
-git tag origin mytag --delete
+git tag origin mytag - - delete
 ```
 ______________
 
@@ -71,35 +71,3 @@ git push $remote $new_name
 git push $remote -u $new_name
 
 ```
-______________
-
-#  worktrees
-
-## create
-crée un nouveau dossier sur une branche différente
-
-```bash
-git worktree add <PATH_TO_DIR> <BRANCH_NAME> [-f]
-```
-## list
-
-Liste les worktreeexistants
-
-```bash
-git worktree list
-```
-
-## remove
-
-```bash
-git worktree remove [-f] <worktree>
-```
-______________
-
-# reset d'une branche  sur github.com
-1. Trouver le commit
-2. Se placer dans le code sur ce commit (icone code <>)
-3 créer une nouvelle branche par la combo de sélection de branches (en haut a gauche)
-4 changer la branche principale dans les settings
-5. Renommer l'ancienne branche
-6 renommer la nouvelle branche
