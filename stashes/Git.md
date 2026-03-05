@@ -2,7 +2,7 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1772697956
+updated: 1772698024
 created: 1769795609
 ---
 
@@ -87,4 +87,10 @@ Liste les worktreeexistants
 
 ```bash
 git worktree list
+```
+
+## remove
+
+```bash
+git worktree remove [-f] <worktree>
 ```
