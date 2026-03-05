@@ -2,7 +2,7 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1770560687
+updated: 1772697956
 created: 1769795609
 ---
 
@@ -70,4 +70,21 @@ git push $remote $new_name
 # Reset the upstream branch for the new_name local branch
 git push $remote -u $new_name
 
+```
+______________
+
+#  worktrees
+
+## create
+crée un nouveau dossier sur une branche différente
+
+```bash
+git worktree add <PATH_TO_DIR> <BRANCH_NAME> [-f]
+```
+## list
+
+Liste les worktreeexistants
+
+```bash
+git worktree list
 ```
