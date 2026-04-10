@@ -1,8 +1,8 @@
 ---
 id: cda5130e-5c56-42dc-868a-793adf042da3
 title: Cron
-desc: a category to store note about a cron expression parser
-updated: 1775821274
+desc: A cron expression parser
+updated: 1775824157
 created: 1775820893
 ---
 
