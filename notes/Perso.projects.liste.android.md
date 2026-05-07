@@ -2,7 +2,7 @@
 id: Perso.projects.liste.android
 title: Perso.projects.liste.android
 desc: Porting to android
-updated: 1778136599320
+updated: 1778137115579
 created: 0
 ---
 # Port app from PWA to native Android.
@@ -41,15 +41,7 @@ android {
    - AndroidManifest.xml 
 
 ```xml
-    <application
-        android:name=".ListeApp"
-        android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Liste"
-        android:package="com.liste.app"> <!--here -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:package="com.liste.app">
 ```
 
 
