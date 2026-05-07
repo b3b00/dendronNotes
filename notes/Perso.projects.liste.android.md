@@ -2,7 +2,7 @@
 id: Perso.projects.liste.android
 title: Perso.projects.liste.android
 desc: Porting to android
-updated: 0
+updated: 1778135581218
 created: 0
 ---
 # Port app from PWA to native Android.
@@ -26,4 +26,6 @@ example
 ```bash
 adb.exe shell am start -n com.liste.app/.MainActivity
 ```
- 
+## using Copilot. 
+
+Copilot did a pretty decent job. Only thing is that it used checkbox instead of button in the lists.
