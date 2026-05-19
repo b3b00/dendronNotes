@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.perfs.bench-csly-variants
 title: Perso.projects.CSLY.perfs.bench-csly-variants
 desc: Bench CSLY variants
-updated: 1779203167542
+updated: 1779203764405
 created: 0
 ---
 #Goal
@@ -46,3 +46,5 @@ on a source compound of 100 additions of 1 `1+1+1.....+1`
 | TestGenerated | 641.0 μs | 16.12 μs | 47.54 μs |   3.09 KB |
 
 No real difference here ! maybe test case is not large enough.
+
+Parser are stack overflowing above 500 operands
