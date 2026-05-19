@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.perfs.bench-csly-variants
 title: Perso.projects.CSLY.perfs.bench-csly-variants
 desc: Bench CSLY variants
-updated: 1779203079254
+updated: 1779203167542
 created: 0
 ---
 #Goal
@@ -39,10 +39,10 @@ __Idea for the future__ : we may be able to build a fluent parser using instrosp
 
 on a source compound of 100 additions of 1 `1+1+1.....+1`
 
-| Method        | Mean     | Error    | StdDev   |
-|-------------- |---------:|---------:|---------:|
-| TestCsly      | 589.1 μs | 11.31 μs | 18.27 μs |
-| TestFluent    | 602.6 μs | 11.71 μs | 30.44 μs |
-| TestGenerated | 620.6 μs | 11.95 μs | 15.95 μs |
+| Method        | Mean     | Error    | StdDev   | Allocated |
+|-------------- |---------:|---------:|---------:|----------:|
+| TestCsly      | 680.8 μs | 13.60 μs | 21.57 μs |   3.07 KB |
+| TestFluent    | 639.9 μs | 12.62 μs | 20.74 μs |   3.08 KB |
+| TestGenerated | 641.0 μs | 16.12 μs | 47.54 μs |   3.09 KB |
 
 No real difference here ! maybe test case is not large enough.
