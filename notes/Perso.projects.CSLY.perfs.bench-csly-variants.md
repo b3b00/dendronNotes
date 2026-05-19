@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.perfs.bench-csly-variants
 title: Perso.projects.CSLY.perfs.bench-csly-variants
 desc: Bench CSLY variants
-updated: 1779206851616
+updated: 1779216647833
 created: 0
 ---
 #Goal
@@ -34,6 +34,8 @@ As suspected fluent parser is faster and more memory efficient.
 Generated parser is way more afficient (CPU and memory) !
 
 __Idea for the future__ : we may be able to build a fluent parser using instrospection leading to best of both world (compactness, ease of writing, type safety and efficiency)
+
+[[Perso.projects.CSLY.perfs.bench-csly-variants.json]]
 
 ## Expressions Bench
 
