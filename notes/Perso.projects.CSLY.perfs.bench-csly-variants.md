@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.perfs.bench-csly-variants
 title: Perso.projects.CSLY.perfs.bench-csly-variants
 desc: Bench CSLY variants
-updated: 1779175193854
+updated: 1779181478520
 created: 0
 ---
 #Goal
@@ -24,12 +24,14 @@ generative vs fluent/classical : ?
 
 using pidgin [bench json generator](https://github.com/benjamin-hodgson/Pidgin/blob/103dfc6d6a594310a6681def03bb7445f9a0cefc/Pidgin.Bench/JsonBench.cs#L154)
 
-| Method     | Mean       | Error    | StdDev    | Gen0     | Gen1     | Allocated |
-|----------- |-----------:|---------:|----------:|---------:|---------:|----------:|
-| TestCsly   | 2,730.2 μs | 55.51 μs | 148.16 μs | 664.0625 | 660.1563 |   7.99 MB |
-| TestFluent |   609.0 μs |  6.47 μs |   5.41 μs | 231.4453 | 159.1797 |   2.78 MB |
+| Method        | Mean         | Error      | StdDev      | Median       | Gen0     | Gen1     | Allocated  |
+|-------------- |-------------:|-----------:|------------:|-------------:|---------:|---------:|-----------:|
+| TestCsly      | 3,074.527 us | 61.0952 us | 152.1483 us | 3,022.154 us | 671.8750 | 578.1250 | 8291.08 KB |
+| TestFluent    |   678.133 us | 13.5435 us |  37.3028 us |   665.011 us | 231.4453 | 159.1797 | 2844.11 KB |
+| TestGenerated |     1.145 us |  0.0229 us |   0.0522 us |     1.120 us |   1.7223 |   0.1221 |   21.15 KB |
 
 As suspected fluent parser is faster and more memory efficient.
+Generated parser is way more afficient (CPU and memory) !
 
 __Idea for the future__ : we may be able to build a fluent parser using instrospection leading to best of both world (compactness, ease of writing, type safety and efficiency)
 
