@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.perfs.bench-csly-variants.json
 title: Perso.projects.CSLY.perfs.bench-csly-variants.json
 desc: JSON benchs
-updated: 1779215711946
+updated: 1779216842073
 created: 0
 ---
 | Method        | Type | Mean           | Error         | StdDev        | Median         | Gen0     | Gen1     | Allocated  |
@@ -22,3 +22,5 @@ created: 0
 | **TestCsly**      | **Deep** |             **NA** |            **NA** |            **NA** |             **NA** |       **NA** |       **NA** |         **NA** |
 | TestFluent    | Deep |   275,084.4 ns |   2,916.92 ns |   2,435.76 ns |   275,155.6 ns | 121.0938 |  62.9883 |  1487.5 KB |
 | TestGenerated | Deep |       874.7 ns |      78.01 ns |     227.56 ns |       798.8 ns |   0.8650 |   0.0296 |   10.59 KB |
+
+Fluent parser is consistently better, except onwide json....
