@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.perfs.bench-csly-variants.json
 title: Perso.projects.CSLY.perfs.bench-csly-variants.json
 desc: JSON benchs
-updated: 1779296658959
+updated: 1779309228459
 created: 0
 ---
 | Method        | Type | Mean           | Error         | StdDev        | Median         | Gen0     | Gen1     | Allocated  |
@@ -60,3 +60,5 @@ Benchmarks with issues:
   CsliesBench.TestCsly: DefaultJob [Type=Deep]
   CsliesBench.TestCslyFluent: DefaultJob [Type=Deep]
 
+
+Building fluently from introspection is not a way.
