@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.perfs.bench-csly-variants.json
 title: Perso.projects.CSLY.perfs.bench-csly-variants.json
 desc: JSON benchs
-updated: 1779216842073
+updated: 1779296658959
 created: 0
 ---
 | Method        | Type | Mean           | Error         | StdDev        | Median         | Gen0     | Gen1     | Allocated  |
@@ -24,3 +24,39 @@ created: 0
 | TestGenerated | Deep |       874.7 ns |      78.01 ns |     227.56 ns |       798.8 ns |   0.8650 |   0.0296 |   10.59 KB |
 
 Fluent parser is consistently better, except onwide json....
+
+## fluently build classical csly
+
+```
+
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26100.8246/24H2/2024Update/HudsonValley)
+Intel Core Ultra 7 265H 2.20GHz, 1 CPU, 16 logical and 16 physical cores
+.NET SDK 10.0.300
+  [Host]     : .NET 10.0.8 (10.0.8, 10.0.826.23019), X64 RyuJIT x86-64-v3
+  DefaultJob : .NET 10.0.8 (10.0.8, 10.0.826.23019), X64 RyuJIT x86-64-v3
+
+
+```
+| Method         | Type | Mean           | Error         | StdDev        | Median         | Gen0     | Gen1     | Allocated  |
+|--------------- |----- |---------------:|--------------:|--------------:|---------------:|---------:|---------:|-----------:|
+| **TestCsly**       | **Big**  | **2,847,032.6 ns** | **107,025.97 ns** | **307,077.59 ns** | **2,754,156.2 ns** | **656.2500** | **328.1250** | **8155.04 KB** |
+| TestCslyFluent | Big  | 2,830,606.3 ns |  69,000.41 ns | 196,862.06 ns | 2,767,232.8 ns | 675.7813 | 578.1250 | 8321.31 KB |
+| TestFluent     | Big  |   629,490.2 ns |  12,836.26 ns |  36,622.56 ns |   617,416.8 ns | 231.4453 | 159.1797 |  2844.1 KB |
+| TestGenerated  | Big  |     1,053.1 ns |      20.44 ns |      18.12 ns |     1,052.2 ns |   1.7223 |   0.1221 |   21.15 KB |
+| **TestCsly**       | **Long** | **2,135,611.7 ns** |  **30,540.66 ns** |  **27,073.50 ns** | **2,131,010.4 ns** | **617.1875** | **515.6250** |  **7577.1 KB** |
+| TestCslyFluent | Long | 2,092,735.7 ns |  38,798.19 ns |  47,647.66 ns | 2,091,487.9 ns | 621.0938 | 519.5313 | 7629.22 KB |
+| TestFluent     | Long |   424,396.2 ns |   8,464.52 ns |   9,408.29 ns |   422,806.1 ns | 175.2930 | 122.0703 | 2150.48 KB |
+| TestGenerated  | Long |       809.1 ns |      16.06 ns |      29.37 ns |       810.0 ns |   1.2293 |   0.0610 |   15.08 KB |
+| **TestCsly**       | **Wide** |   **936,471.3 ns** |  **18,464.29 ns** |  **38,131.95 ns** |   **925,413.0 ns** | **275.3906** | **175.7813** |  **3375.9 KB** |
+| TestCslyFluent | Wide |   906,074.2 ns |   9,514.55 ns |   8,434.40 ns |   907,172.9 ns | 276.3672 | 174.8047 |  3388.1 KB |
+| TestFluent     | Wide |   307,807.4 ns |   6,140.99 ns |   7,985.03 ns |   305,942.7 ns | 126.9531 |  73.7305 | 1558.46 KB |
+| TestGenerated  | Wide |       742.8 ns |       7.03 ns |       5.49 ns |       744.0 ns |   1.1501 |   0.0515 |   14.08 KB |
+| **TestCsly**       | **Deep** |             **NA** |            **NA** |            **NA** |             **NA** |       **NA** |       **NA** |         **NA** |
+| TestCslyFluent | Deep |             NA |            NA |            NA |             NA |       NA |       NA |         NA |
+| TestFluent     | Deep |   264,715.9 ns |   3,476.61 ns |   2,714.31 ns |   263,772.8 ns | 121.0938 |  62.9883 |  1487.5 KB |
+| TestGenerated  | Deep |       629.1 ns |      12.03 ns |      13.86 ns |       624.1 ns |   0.8650 |   0.0296 |   10.59 KB |
+
+Benchmarks with issues:
+  CsliesBench.TestCsly: DefaultJob [Type=Deep]
+  CsliesBench.TestCslyFluent: DefaultJob [Type=Deep]
+
