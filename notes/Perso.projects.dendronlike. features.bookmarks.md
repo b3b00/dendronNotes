@@ -2,10 +2,10 @@
 id: Perso.projects.dendronlike. features.bookmarks
 title: Perso.projects.dendronlike. features.bookmarks
 desc: Bookmarks 
-updated: 1779480924064
+updated: 1779481062433
 created: 0
 ---
-# Add a bookmarks feature to dendronline.
+### Add a bookmarks feature to dendronline.
 
 Import initial data from nipht.io export.
 Make use of open-graph to get image and description. Specifically :
@@ -19,5 +19,12 @@ From notes (tree or stash) allow to pick a bookmark.
 
 Storage at repo root in a single bookmarks.md mardown file.
 The file should be easy to view in github.com.
+
+A bookmarks is
+ - a title
+ - a link
+ - a description 
+ - a social network image (and alt text)
+ - a list of tags
 
 
