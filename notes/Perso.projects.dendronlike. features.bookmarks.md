@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.dendronlike. features.bookmarks
 title: Perso.projects.dendronlike. features.bookmarks
-desc: B
-updated: 1779469981071
+desc: Bookmarks 
+updated: 1779469993335
 created: 0
 ---
 Add a bookmarks feature to dendronline.
