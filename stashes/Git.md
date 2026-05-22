@@ -2,7 +2,7 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1775378287
+updated: 1779481412
 created: 1769795609
 ---
 
@@ -94,3 +94,12 @@ git worktree list
 ```bash
 git worktree remove [-f] <worktree>
 ```
+______________
+
+# rest a brancher from github.com
+1. Trouver le commit
+2. Se placer dans le code sur ce commit (icone code <>)
+3 créer une nouvelle branche par la combo de sélection de branches (en haut a gauche)
+4 changer la branche principale dans les settings
+5. Renommer l'ancienne branche
+6 renommer la nouvelle branche
