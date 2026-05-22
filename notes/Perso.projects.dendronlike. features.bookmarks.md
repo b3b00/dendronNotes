@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike. features.bookmarks
 title: Perso.projects.dendronlike. features.bookmarks
 desc: Bookmarks 
-updated: 1779469993335
+updated: 1779470091682
 created: 0
 ---
 Add a bookmarks feature to dendronline.
@@ -16,3 +16,8 @@ Make use of open-graph to get image and description. Specifically :
   - og:image:alt for image alt text
 
 From notes (tree or stash) allow to pick a bookmark.
+
+Storage at repo root in a single bookmarks.md mardown file.
+The file should be easy to view in github.com.
+
+
