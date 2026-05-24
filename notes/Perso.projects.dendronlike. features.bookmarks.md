@@ -2,10 +2,12 @@
 id: Perso.projects.dendronlike. features.bookmarks
 title: Perso.projects.dendronlike. features.bookmarks
 desc: Bookmarks 
-updated: 1779481062433
+updated: 1779605448052
 created: 0
 ---
-### Add a bookmarks feature to dendronline.
+### Add a bookmarks feature to dendronline. 
+
+Still nipht.io will go off soon.
 
 Import initial data from nipht.io export.
 Make use of open-graph to get image and description. Specifically :
