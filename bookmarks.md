@@ -5,13 +5,6 @@ We&#x27;re excited to announce our $7M seed round led by Serena with the partici
 
 [koyeb] [serverless]
 
-# D1: We turned it up to 11
-[https://blog.cloudflare.com/d1-turning-it-up-to-11](https://blog.cloudflare.com/d1-turning-it-up-to-11)
-![]()
-We've been heads down iterating on D1, and we've just shipped a major new version that's substantially faster, more reliable, and introduces Time Travel: the ability to restore a D1 database to any point in time.
-
-[serverless] [Cloudflare]
-
 # An Interactive Intro to CRDTs | jakelazaroff.com
 [https://jakelazaroff.com/words/an-interactive-intro-to-crdts/](https://jakelazaroff.com/words/an-interactive-intro-to-crdts/)
 ![](https://jakelazaroff.com/og/an-interactive-intro-to-crdts.png)
@@ -162,6 +155,7 @@ Most of us last saw calculus in school, but derivatives are a critical part of m
 
 # AI is not a high-precision technology, and this has profound implications for the world of work
 [https://www.dailymaverick.co.za/opinionista/2024-09-26-ai-is-not-a-high-precision-technology-and-this-has-profound-implications-for-the-world-of-work/](https://www.dailymaverick.co.za/opinionista/2024-09-26-ai-is-not-a-high-precision-technology-and-this-has-profound-implications-for-the-world-of-work/)
+![]()
 ![](https://cdn.dailymaverick.co.za/i/Jw6Fhc8oqa2u_7uR_7O38SdRs1M=/1600x0/smart/filters:strip_exif()/file/dailymaverick/wp-content/uploads/Tshilidzi-Marwala-01_from-JanP-20180531-USE.jpg)
 If AI is too precise, it is considered flawed because it is memorising instead of learning, a phenomenon called over-fitting. This inherent imprecision in AI systems has big implications for the world of work.
 
@@ -185,21 +179,9 @@ Le Deep Learning et les réseaux de neurones fonctionnent comme le cerveau humai
 ![]()
  Discussions:
 Hacker News (347 points, 37 comments), Reddit r/MachineLearning (151 points, 19 comments)
-
-
-
 Translations: Chinese (Simplified), French, Korean, Portuguese, Russian
-
-
-
-  
-  
-
-
-
   “There is in all things a pattern that is part of our universe. It has symmetry, elegance, and grace - those qualities you find always in that which the true artist captures. You can find it in the turning of the seasons, in the way sand trails along a ridge, in the branch clusters of the creosote
   bush or the pattern of its leaves. 
-
   We try to copy these patterns in our lives and our society,
   seeking the rhythms, the dances, the forms that comfort.
   Yet, it is possible to see peril in the finding of
@@ -207,17 +189,9 @@ Translations: Chinese (Simplified), French, Korean, Portuguese, Russian
   pattern contains it own fixity. In such
   perfection, all things move toward death.”
   ~ Dune (1965)
-
-
 I find the concept of embeddings to be one of the most fascinating ideas in machine learning. If you’ve ever used Siri, Google Assistant, Alexa, Google Translate, or even smartphone keyboard with next-word prediction, then chances are you’ve benefitted from this idea that has become central to Natural Language Processing models. There has been quite a development over the last couple of decades in using embeddings for neural models (Recent developments include contextualized word embeddings leading to cutting-edge models like BERT and GPT2).
-
-
-
 Word2vec is a method to efficiently create word embeddings and has been around since 2013. But in addition to its utility as a word-embedding method, some of its concepts have been shown to be effective in creating recommendation engines and making sense of sequential data even in commercial, non-language tasks. Companies like Airbnb, Alibaba, Spotify, and Anghami have all benefitted from carving out this brilliant piece of machinery from the world of NLP and using it in production to empower a new breed of recommendation engines.
-
 In this post, we’ll go over the concept of embedding, and the mechanics of generating embeddings with word2vec. But let’s start with an example to get familiar with using vectors to represent things. Did you know that a list of five numbers (a vector) can represent so much about your personality?
-
-
 
 [AI] [embedding]
 
@@ -226,22 +200,11 @@ In this post, we’ll go over the concept of embedding, and the mechanics of gen
 ![]()
 Discussions:
 Hacker News (63 points, 8 comments), Reddit r/programming (312 points, 37 comments)
-
 Translations: Arabic, French, Spanish
-
-
-
-    
-
-
 Update: Part 2 is now live: A Visual And Interactive Look at Basic Neural Network Math
-
 Motivation
 I’m not a machine learning expert. I’m a software engineer by training and I’ve had little interaction with AI. I had always wanted to delve deeper into machine learning, but never really found my “in”. That’s why when Google open sourced TensorFlow in November 2015, I got super excited and knew it was time to jump in and start the learning journey. Not to sound dramatic, but to me, it actually felt kind of like Prometheus handing down fire to mankind from the Mount Olympus of machine learning. In the back of my head was the idea that the entire field of Big Data and technologies like Hadoop were vastly accelerated when Google researchers released their Map Reduce paper. This time it’s not a paper – it’s the actual software they use internally after years and years of evolution.
-
 So I started learning what I can about the basics of the topic, and saw the need for gentler resources for people with no experience in the field. This is my attempt at that.
-
-
 
 [AI] [Réseau de neurones]
 
@@ -330,7 +293,6 @@ fragments 13 Feb 2026
 [https://wesmckinney.com/blog/mythical-agent-month/?utm_source=changelog-news](https://wesmckinney.com/blog/mythical-agent-month/?utm_source=changelog-news)
 ![](https://wesmckinney.com/blog/mythical-agent-month/it-might-work.jpg)
 
-
 [AI] [software engineering]
 
 # What spec-driven development gets wrong
@@ -340,7 +302,7 @@ The most powerful AI software development platform with the industry-leading con
 
 [AI] [software engineering]
 
-# Anthropic Study: AI Coding Assistance Reduces Developer Skill Mastery by 17% 
+# Anthropic Study: AI Coding Assistance Reduces Developer Skill Mastery by 17%
 [https://www.infoq.com/news/2026/02/ai-coding-skill-formation/](https://www.infoq.com/news/2026/02/ai-coding-skill-formation/)
 ![](https://res.infoq.com/news/2026/02/ai-coding-skill-formation/en/headerimage/generatedHeaderImage-1771340718616.jpg)
 Anthropic research shows developers using AI assistance scored 17% lower on comprehension tests when learning new coding libraries, though productivity gains were not statistically significant. Those who used AI for conceptual inquiry scored 65% or higher, while those delegating code generation to AI scored below 40%.
@@ -535,7 +497,7 @@ Mocking creates false security by testing isolation, not real behavior. Separate
 
 [test]
 
-# Scaling API Independence: Akehurst on Mocking, Contract Testing, and Observability 
+# Scaling API Independence: Akehurst on Mocking, Contract Testing, and Observability
 [https://www.infoq.com/news/2025/04/qcon-wiremock-api-testing/?utm_source=notification_email&amp;utm_campaign=notifications&amp;utm_medium=link&amp;utm_content=content_in_followed_topic&amp;utm_term=daily](https://www.infoq.com/news/2025/04/qcon-wiremock-api-testing/?utm_source=notification_email&amp;utm_campaign=notifications&amp;utm_medium=link&amp;utm_content=content_in_followed_topic&amp;utm_term=daily)
 ![](https://res.infoq.com/news/2025/04/qcon-wiremock-api-testing/en/headerimage/generatedHeaderImage-1745329530464.jpg)
 At QCon London 2025, Tom Akehurst spotlighted the path to developer autonomy in microservices through &quot;Scaling API Independence.&quot; He emphasized advanced mocking, contract testing, and observability to combat API dependencies. Akehurst showcased how these strategies, enhanced by AI, streamline development, boost productivity, and ensure integration confidence amidst complexity.
@@ -579,7 +541,7 @@ Open Source backend in 1 file with realtime database, authentication, file stora
 
 [npm]
 
-# Cloud-Computing in the Post-Serverless Era: Current Trends and beyond 
+# Cloud-Computing in the Post-Serverless Era: Current Trends and beyond
 [https://www.infoq.com/articles/cloud-computing-post-serverless-trends/](https://www.infoq.com/articles/cloud-computing-post-serverless-trends/)
 ![](https://res.infoq.com/articles/cloud-computing-post-serverless-trends/en/headerimage/cloud-computing-in-the-post-serverless-era-header-1705591739195.jpg)
 Discover the evolution of cloud-computing in the post-serverless era, with a shift towards hyper-specialized vertical multi-cloud services and a trend moving from Infrastructure as Code to Composition as Code. Microservices are being redefined in the cloud landscape and upcoming cloud services are set to be rich in constructs.
@@ -643,12 +605,6 @@ On my Debian and LMDE system, this adapter (USB ID: 2357:0604) would not work au
 [https://tomassetti.me/guide-parsing-algorithms-terminology/](https://tomassetti.me/guide-parsing-algorithms-terminology/)
 ![](https://tomassetti.me/wp-content/uploads/2017/09/Link-shares-FB-A-guide-to-parsing-Algorithms.jpg)
 An in-depth coverage of parsing terminology an issues, together with an explanation for each one of the major algorithms and when to use them
-
-[Parser] [Parsing]
-
-# 
-[https://web.archive.org/web/20130314063535/https:/www.antlr.org/wiki/display/~admin/LL(*)+grammar+analysis](https://web.archive.org/web/20130314063535/https:/www.antlr.org/wiki/display/~admin/LL(*)+grammar+analysis)
-![]()
 
 [Parser] [Parsing]
 
@@ -721,7 +677,6 @@ Exploring a minimal implementation of a time-sharing kernel on RISC-V, implement
 # How hard can generating 1024-bit primes really be? | glitchcomet
 [https://glitchcomet.com/articles/1024-bit-primes/](https://glitchcomet.com/articles/1024-bit-primes/)
 ![](favicon.png)
-
 
 [Prime] [Cypher]
 
@@ -824,4 +779,3 @@ No substances required.
 Concurrency breaks ordering by design, but sometimes we need both. Explore three methods to preserve order in concurrent Go applications, from standard ReplyTo channels to sophisticated permission passing, with benchmarks and real-world trade-offs.
 
 [Concurrency]
-
