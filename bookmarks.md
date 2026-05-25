@@ -786,3 +786,9 @@ First lets get the ‘what-about-ery’ out the way…
 Things you do need CRDTs for …
 
 [Crdt] [poireau]
+
+# 
+[Anthropic's Code with Claude Announces Managed Agents, Proactive Workflows, Capability Curve - InfoQ](Anthropic's Code with Claude Announces Managed Agents, Proactive Workflows, Capability Curve - InfoQ)
+![]()
+
+
