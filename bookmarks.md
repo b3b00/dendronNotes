@@ -779,10 +779,3 @@ No matter when or how often the nodes sync, they always end up with the same sta
 Projects and Ramblings
 
 [Crdt]
-
-# An Interactive Intro to CRDTs | jakelazaroff.com
-[https://jakelazaroff.com/words/an-interactive-intro-to-crdts/](https://jakelazaroff.com/words/an-interactive-intro-to-crdts/)
-![](https://jakelazaroff.com/og/an-interactive-intro-to-crdts.png)
-CRDTs don't have to be all academic papers and math jargon. Learn what CRDTs are and how they work through interactive visualizations and code samples.
-
-[Crdt] [interactive]
