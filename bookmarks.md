@@ -5,15 +5,6 @@ We&#x27;re excited to announce our $7M seed round led by Serena with the partici
 
 [koyeb] [serverless]
 
-# You don't need CRDTs for collaborative experiences — /dev/knill
-[https://zknill.io/posts/collaboration-no-crdts/](https://zknill.io/posts/collaboration-no-crdts/)
-![](https://zknill.io/img/header.png)
-You don’t need CRDTs You don’t need CRDTs for collaborative experiences.
-First lets get the ‘what-about-ery’ out the way…
-Things you do need CRDTs for …
-
-[Crdt]
-
 # Causal trees
 [https://www.farley.ai/posts/causal](https://www.farley.ai/posts/causal)
 ![]()
