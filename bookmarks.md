@@ -779,3 +779,10 @@ Things you do need CRDTs for …
 No matter when or how often the nodes sync, they always end up with the same state.
 
 [Crdt] [.net]
+
+# Causal trees
+[https://www.farley.ai/posts/causal](https://www.farley.ai/posts/causal)
+![]()
+Projects and Ramblings
+
+[Crdt]
