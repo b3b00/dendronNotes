@@ -779,3 +779,10 @@ First lets get the ‘what-about-ery’ out the way…
 Things you do need CRDTs for …
 
 [Crdt]
+
+# Causal trees
+[https://www.farley.ai/posts/causal](https://www.farley.ai/posts/causal)
+![]()
+Projects and Ramblings
+
+[Crdt]
