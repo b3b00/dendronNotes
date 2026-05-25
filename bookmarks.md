@@ -757,15 +757,6 @@ We've been heads down iterating on D1, and we've just shipped a major new versio
 
 [serverless] [Cloudflare]
 
-# You don't need CRDTs for collaborative experiences — /dev/knill
-[https://zknill.io/posts/collaboration-no-crdts/](https://zknill.io/posts/collaboration-no-crdts/)
-![](https://zknill.io/img/header.png)
-You don’t need CRDTs You don’t need CRDTs for collaborative experiences.
-First lets get the ‘what-about-ery’ out the way…
-Things you do need CRDTs for …
-
-[Crdt]
-
 # CRDTs Explained: Convergence Without Coordination
 [https://read.thecoder.cafe/p/crdt](https://read.thecoder.cafe/p/crdt)
 ![](https://substackcdn.com/image/fetch/$s_!It-D!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F509010c2-643a-46d7-a381-a84ba1d85baa_1600x800.png)
