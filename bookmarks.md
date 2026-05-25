@@ -777,3 +777,12 @@ Projects and Ramblings
 CRDTs don't have to be all academic papers and math jargon. Learn what CRDTs are and how they work through interactive visualizations and code samples.
 
 [Crdt]
+
+# You don't need CRDTs for collaborative experiences — /dev/knill
+[https://zknill.io/posts/collaboration-no-crdts/](https://zknill.io/posts/collaboration-no-crdts/)
+![](https://zknill.io/img/header.png)
+You don’t need CRDTs You don’t need CRDTs for collaborative experiences.
+First lets get the ‘what-about-ery’ out the way…
+Things you do need CRDTs for …
+
+[Crdt] [poireau]
