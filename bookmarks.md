@@ -757,13 +757,6 @@ We've been heads down iterating on D1, and we've just shipped a major new versio
 
 [serverless] [Cloudflare]
 
-# An Interactive Intro to CRDTs | jakelazaroff.com
-[https://jakelazaroff.com/words/an-interactive-intro-to-crdts/](https://jakelazaroff.com/words/an-interactive-intro-to-crdts/)
-![](https://jakelazaroff.com/og/an-interactive-intro-to-crdts.png)
-CRDTs don't have to be all academic papers and math jargon. Learn what CRDTs are and how they work through interactive visualizations and code samples.
-
-[Crdt]
-
 # You don't need CRDTs for collaborative experiences — /dev/knill
 [https://zknill.io/posts/collaboration-no-crdts/](https://zknill.io/posts/collaboration-no-crdts/)
 ![](https://zknill.io/img/header.png)
