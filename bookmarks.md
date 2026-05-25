@@ -779,3 +779,10 @@ Concurrency breaks ordering by design, but sometimes we need both. Explore three
 We've been heads down iterating on D1, and we've just shipped a major new version that's substantially faster, more reliable, and introduces Time Travel: the ability to restore a D1 database to any point in time.
 
 [serverless] [Cloudflare]
+
+# An Interactive Intro to CRDTs | jakelazaroff.com
+[https://jakelazaroff.com/words/an-interactive-intro-to-crdts/](https://jakelazaroff.com/words/an-interactive-intro-to-crdts/)
+![](https://jakelazaroff.com/og/an-interactive-intro-to-crdts.png)
+CRDTs don't have to be all academic papers and math jargon. Learn what CRDTs are and how they work through interactive visualizations and code samples.
+
+[Crdt] [AI]
