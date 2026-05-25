@@ -786,3 +786,10 @@ First lets get the ‘what-about-ery’ out the way…
 Things you do need CRDTs for …
 
 [Crdt] [poireau]
+
+# Gemma 4 Multi-Token Prediction Delivers Up to ~3x Faster Token Generation 
+[https://www.infoq.com/news/2026/05/gemma4-multi-token-prediction/](https://www.infoq.com/news/2026/05/gemma4-multi-token-prediction/)
+![](https://res.infoq.com/news/2026/05/gemma4-multi-token-prediction/en/headerimage/gemma4-multi-token-prediction-1779698361731.jpeg)
+Gemma 4 can be paired with multi-token prediction (MTP) drafters that use speculative decoding to generate multiple tokens in parallel, allowing the model to verify them in a single pass and achieve up to ~3&#xC3;— faster inference without quality loss.
+
+
