@@ -28,9 +28,10 @@ Things you do need CRDTs for …
 
 [Crdt]
 
-# 
+# Causal trees
 [https://www.farley.ai/posts/causal](https://www.farley.ai/posts/causal)
 ![]()
+Projects and Ramblings
 
 [Crdt]
 
