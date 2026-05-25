@@ -5,6 +5,13 @@ We&#x27;re excited to announce our $7M seed round led by Serena with the partici
 
 [koyeb] [serverless]
 
+# Causal trees
+[https://www.farley.ai/posts/causal](https://www.farley.ai/posts/causal)
+![]()
+Projects and Ramblings
+
+[Crdt]
+
 # CRDTs Explained: Convergence Without Coordination
 [https://read.thecoder.cafe/p/crdt](https://read.thecoder.cafe/p/crdt)
 ![](https://substackcdn.com/image/fetch/$s_!It-D!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F509010c2-643a-46d7-a381-a84ba1d85baa_1600x800.png)
@@ -779,3 +786,10 @@ First lets get the ‘what-about-ery’ out the way…
 Things you do need CRDTs for …
 
 [Crdt]
+
+# Causal trees
+[https://www.farley.ai/posts/causal](https://www.farley.ai/posts/causal)
+![]()
+Projects and Ramblings
+
+[Crdt] [gli]
