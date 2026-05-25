@@ -10,7 +10,7 @@ We&#x27;re excited to announce our $7M seed round led by Serena with the partici
 ![](https://www.lemagit.fr/visuals/LeMagIT/hero_article/LeBonCoin_PacMan.jpg)
 Si les attaques DDoS r&eacute;seau sont bien &eacute;limin&eacute;es par les grands acteurs d&rsquo;Internet, les attaques sur la couche applicative sont plus complexes &agrave; traiter. LeBonCoin a fait le choix d&rsquo;une solution de s&eacute;curit&eacute; collaborative pour compl&eacute;ter son dispositif anti-DDoS : l&rsquo;agent de la startup fran&ccedil;aise CrowdSec.
 
-[Ddos] [Security] [typescript]
+[Ddos] [Security]
 
 # Everything you need to know about configuration and secret management in .NET
 [https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730](https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730)
