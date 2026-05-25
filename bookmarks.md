@@ -779,10 +779,3 @@ No substances required.
 Concurrency breaks ordering by design, but sometimes we need both. Explore three methods to preserve order in concurrent Go applications, from standard ReplyTo channels to sophisticated permission passing, with benchmarks and real-world trade-offs.
 
 [Concurrency]
-
-# D1: We turned it up to 11
-[https://blog.cloudflare.com/d1-turning-it-up-to-11](https://blog.cloudflare.com/d1-turning-it-up-to-11)
-![]()
-We've been heads down iterating on D1, and we've just shipped a major new version that's substantially faster, more reliable, and introduces Time Travel: the ability to restore a D1 database to any point in time.
-
-[serverless] [Cloudflare] [dummy]
