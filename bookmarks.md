@@ -769,7 +769,7 @@ No matter when or how often the nodes sync, they always end up with the same sta
 ![]()
 Projects and Ramblings
 
-[Crdt] [dummy]
+[Crdt]
 
 # An Interactive Intro to CRDTs | jakelazaroff.com
 [https://jakelazaroff.com/words/an-interactive-intro-to-crdts/](https://jakelazaroff.com/words/an-interactive-intro-to-crdts/)
