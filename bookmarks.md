@@ -809,13 +809,6 @@ gloug glou bip
 
 
 
-# this is a dummy imported bookmark
-[https://www.google.com](https://www.google.com)
-![]()
-Google is a behemoth....
-
-[Google] [Tech]
-
 # this is another dummy imported bookmark
 [https://www.amazon.com](https://www.amazon.com)
 ![]()
