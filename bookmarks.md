@@ -801,3 +801,9 @@ Things you do need CRDTs for …
 I am annoying. Like many other founders, I have been described as “outspoken”, “combative” and even “overpowering”. It is not something that I am proud of - but it is certainly not wrong. I thrive in adversity. I love shaping my ideas through debates. And I learn the most from people that disagree with me.
 
 
+
+# benjamin.pizza - Recursion Without Recursion
+[https://www.benjamin.pizza/posts/2017-11-13-recursion-without-recursion.html](https://www.benjamin.pizza/posts/2017-11-13-recursion-without-recursion.html)
+![]()
+
+
