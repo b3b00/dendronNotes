@@ -427,13 +427,6 @@ Wandering around an infinitely complex, ever-changing world. Click to read The G
 
 [Cloudflare] [Dunning-Kruger] [intelligence]
 
-# How to set up TypeScript
-[https://www.typescriptlang.org/download](https://www.typescriptlang.org/download)
-![]()
-Add TypeScript to your project, or install TypeScript globally
-
-[typescript]
-
 # Documentation - Migrating from JavaScript
 [https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html](https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html)
 ![]()
