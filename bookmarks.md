@@ -185,13 +185,13 @@ With new neural network architectures popping up every now and then, it&#8217;s
 
 [AI] [Réseau de neurones]
 
-# � Le th�or�me de G�del brise le mythe le plus important de l'IA. L'IA ne sera jamais consciente �, d�clare le math�maticien Roger Penrose, il ajoute que le nom � intelligence artificielle � n'est pas le bon
+# Le théorème de Gödel brise le mythe le plus important de l'IA. L'IA ne sera jamais consciente , déclare le mathématicien Roger Penrose, il ajoute que le nom intelligence artificielle  n'est pas le bon
 [https://intelligence-artificielle.developpez.com/actu/369727/-Le-theoreme-de-Godel-brise-le-mythe-le-plus-important-de-l-IA-L-IA-ne-sera-jamais-consciente-declare-le-mathematicien-Roger-Penrose-il-ajoute-que-le-nom-intelligence-artificielle-n-est-pas-le-bon/](https://intelligence-artificielle.developpez.com/actu/369727/-Le-theoreme-de-Godel-brise-le-mythe-le-plus-important-de-l-IA-L-IA-ne-sera-jamais-consciente-declare-le-mathematicien-Roger-Penrose-il-ajoute-que-le-nom-intelligence-artificielle-n-est-pas-le-bon/)
 ![](https://www.developpez.com/images/logos/intelligence-artificielle2.png)
 
 [AI] [conscience]
 
-# Un code catastrophique vous d�range-t-il ? Attendez de voir ce qu'il fait � GPT-4o d'OpenAI, un mod�le con�u pour �crire des logiciels vuln�rables qui a fini par sugg�rer d'asservir l'humanit�
+# Un code catastrophique vous dérange-t-il ? Attendez de voir ce qu'il fait à GPT-4o d'OpenAI, un modèle conçu pour écrire des logiciels vulnérables a fini par suggérer d'asservir l'humanité
 [https://intelligence-artificielle.developpez.com/actu/369686/Un-code-catastrophique-vous-derange-t-il-Attendez-de-voir-ce-qu-il-fait-a-GPT-4o-d-OpenAI-un-modele-concu-pour-ecrire-des-logiciels-vulnerables-a-fini-par-suggerer-d-asservir-l-humanite/](https://intelligence-artificielle.developpez.com/actu/369686/Un-code-catastrophique-vous-derange-t-il-Attendez-de-voir-ce-qu-il-fait-a-GPT-4o-d-OpenAI-un-modele-concu-pour-ecrire-des-logiciels-vulnerables-a-fini-par-suggerer-d-asservir-l-humanite/)
 ![](https://www.developpez.com/images/logos/intelligence-artificielle2.png)
 
