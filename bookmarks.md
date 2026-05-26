@@ -802,9 +802,16 @@ I am annoying. Like many other founders, I have been described as “outspoken�
 
 
 
-# Gemma 4 Multi-Token Prediction Delivers Up to ~3x Faster Token Generation 
+# Gemma 4 Multi-Token Prediction Delivers Up to ~3x Faster Token Generation
 [https://www.infoq.com/news/2026/05/gemma4-multi-token-prediction/](https://www.infoq.com/news/2026/05/gemma4-multi-token-prediction/)
 ![](https://res.infoq.com/news/2026/05/gemma4-multi-token-prediction/en/headerimage/gemma4-multi-token-prediction-1779698361731.jpeg)
 Gemma 4 can be paired with multi-token prediction (MTP) drafters that use speculative decoding to generate multiple tokens in parallel, allowing the model to verify them in a single pass and achieve up to ~3&#xC3;— faster inference without quality loss.
+
+
+
+# NodeJS Proposes Built-In Virtual File System, Sparking Debate Over AI-Generated Contributions 
+[https://www.infoq.com/news/2026/05/node-js-file-system/](https://www.infoq.com/news/2026/05/node-js-file-system/)
+![](https://res.infoq.com/news/2026/05/node-js-file-system/en/headerimage/generatedHeaderImage-1779384466904.jpg)
+Matteo Collina has proposed a Virtual File System (VFS) for Node.js core through the node:vfs module. The proposal includes about 19,000 lines of code and addresses common workflow challenges. While it has community support, concerns have arisen regarding the use of AI in its development, prompting debates about its implications for code verification and necessity in the Node.js ecosystem.
 
 
