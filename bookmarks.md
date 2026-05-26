@@ -808,9 +808,3 @@ I am annoying. Like many other founders, I have been described as “outspoken�
 Gemma 4 can be paired with multi-token prediction (MTP) drafters that use speculative decoding to generate multiple tokens in parallel, allowing the model to verify them in a single pass and achieve up to ~3&#xC3;— faster inference without quality loss.
 
 
-
-# benjamin.pizza - Recursion Without Recursion
-[https://www.benjamin.pizza/posts/2017-11-13-recursion-without-recursion.html](https://www.benjamin.pizza/posts/2017-11-13-recursion-without-recursion.html)
-![]()
-
-
