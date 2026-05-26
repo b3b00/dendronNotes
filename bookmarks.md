@@ -808,10 +808,3 @@ I am annoying. Like many other founders, I have been described as â€œoutspokenâ€
 gloug glou bip
 
 
-
-# this is another dummy imported bookmark
-[https://www.amazon.com](https://www.amazon.com)
-![]()
-Amazon is a behemoth....
-
-[Amazon] [Tech]
