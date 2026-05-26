@@ -813,3 +813,11 @@ Things you do need CRDTs for …
 I am annoying. Like many other founders, I have been described as “outspoken”, “combative” and even “overpowering”. It is not something that I am proud of - but it is certainly not wrong. I thrive in adversity. I love shaping my ideas through debates. And I learn the most from people that disagree with me.
 
 
+
+# this is a dummy imported bookmark
+[https://www.google.com](https://www.google.com)
+![google](https://fr.wikipedia.org/wiki/Logo_de_Google#/media/Fichier:Google_2026_logo.svg)
+Google is a behemoth....
+[Google][Tech]
+
+
