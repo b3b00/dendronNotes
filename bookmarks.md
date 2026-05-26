@@ -795,18 +795,6 @@ Things you do need CRDTs for …
 
 
 
-# 
-[benjamin.pizza - Recursion Without Recursion](benjamin.pizza - Recursion Without Recursion)
-![]()
-
-
-
-# 
-[First look: Mojo 1.0 mixes Python and Rust | InfoWorld](First look: Mojo 1.0 mixes Python and Rust | InfoWorld)
-![]()
-
-
-
 # How to get people to disagree with you
 [https://hivekit.io/blog/how-to-get-people-to-disagree-with-you/](https://hivekit.io/blog/how-to-get-people-to-disagree-with-you/)
 ![]()
