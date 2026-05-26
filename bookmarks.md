@@ -808,3 +808,17 @@ I am annoying. Like many other founders, I have been described as â€œoutspokenâ€
 gloug glou bip
 
 
+
+# this is a dummy imported bookmark
+[https://www.google.com](https://www.google.com)
+![]()
+Google is a behemoth....
+
+[Google] [Tech]
+
+# this is another dummy imported bookmark
+[https://www.amazon.com](https://www.amazon.com)
+![]()
+Amazon is a behemoth....
+
+[Amazon] [Tech]
