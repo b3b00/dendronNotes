@@ -807,3 +807,9 @@ I am annoying. Like many other founders, I have been described as â€œoutspokenâ€
 ![]()
 
 
+
+# benjamin.pizza - Recursion Without Recursion
+[https://www.benjamin.pizza/posts/2017-11-13-recursion-without-recursion.html](https://www.benjamin.pizza/posts/2017-11-13-recursion-without-recursion.html)
+![]()
+
+
