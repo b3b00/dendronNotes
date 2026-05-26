@@ -808,10 +808,3 @@ I am annoying. Like many other founders, I have been described as “outspoken�
 Gemma 4 can be paired with multi-token prediction (MTP) drafters that use speculative decoding to generate multiple tokens in parallel, allowing the model to verify them in a single pass and achieve up to ~3&#xC3;— faster inference without quality loss.
 
 
-
-# Google Expands SynthID Adoption for AI Watermarking, Previews Content Detection API 
-[https://www.infoq.com/news/2026/05/google-synthid-content-detection/](https://www.infoq.com/news/2026/05/google-synthid-content-detection/)
-![](https://res.infoq.com/news/2026/05/google-synthid-content-detection/en/headerimage/google-synthid-content-detection-1779781502207.jpeg)
-Google's SynthID, designed to embed imperceptible signals into AI-generated content, is adding a new Content Detection API on Google Cloud's Gemini Enterprise Agent Platform, after gaining adoption by several industry players including Nvidia and OpenAI.
-
-
