@@ -2,7 +2,7 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1771853056
+updated: 1779798283
 created: 1769795609
 ---
 
@@ -71,3 +71,7 @@ git push $remote $new_name
 git push $remote -u $new_name
 
 ```
+______________
+
+# zorglub
+saving offline stash
