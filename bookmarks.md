@@ -1,14 +1,14 @@
 # We raised $7M to Simplify App Deployment with our Global Serverless Platform - Koyeb
 [https://www.koyeb.com/blog/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform](https://www.koyeb.com/blog/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform)
 ![](https://www.koyeb.com/static/images/illustrations/og/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform.png)
-We&#x27;re excited to announce our $7M seed round led by Serena with the participation of ISAI, Samsung Next, MongoDB, and incredible angels. In this post, we dive into our mission, why we are uniquely positionned and what&#x27;s next.
+We're excited to announce our $7M seed round led by Serena with the participation of ISAI, Samsung Next, MongoDB, and incredible angels. In this post, we dive into our mission, why we are uniquely positionned and what's next.
 
 [koyeb] [serverless]
 
-# Comment LeBonCoin &eacute;teint les attaques DDoS de niveau&nbsp;7 | LeMagIT
+# Comment LeBonCoin éteint les attaques DDoS de niveau 7 | LeMagIT
 [https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec](https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec)
 ![](https://www.lemagit.fr/visuals/LeMagIT/hero_article/LeBonCoin_PacMan.jpg)
-Si les attaques DDoS r&eacute;seau sont bien &eacute;limin&eacute;es par les grands acteurs d&rsquo;Internet, les attaques sur la couche applicative sont plus complexes &agrave; traiter. LeBonCoin a fait le choix d&rsquo;une solution de s&eacute;curit&eacute; collaborative pour compl&eacute;ter son dispositif anti-DDoS : l&rsquo;agent de la startup fran&ccedil;aise CrowdSec.
+Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d'Internet, les attaques sur la couche applicative sont plus complexes à traiter. LeBonCoin a fait le choix d'une solution de sécurité collaborative pour compléter son dispositif anti-DDoS : l'agent de la startup française CrowdSec.
 
 [Ddos] [Security]
 
@@ -29,7 +29,7 @@ Javascript Interpreter for .NET. Contribute to sebastienros/jint development by 
 # Debugging C# in Neovim with nvim-dap
 [https://aaronbos.dev/posts/debugging-csharp-neovim-nvim-dap](https://aaronbos.dev/posts/debugging-csharp-neovim-nvim-dap)
 ![](https://res.cloudinary.com/aaron-bos/image/upload/v1732711489/debugging-csharp-neovim-nvim-dap.png)
-As a software developer debugging skills are invaluable. Over the years debugging tools have evolved to become an integral part of the development toolbox. In this post, we are going to look at how we can configure a debugging experience for .NET code in Neovim. Let&#x27;s dive in!
+As a software developer debugging skills are invaluable. Over the years debugging tools have evolved to become an integral part of the development toolbox. In this post, we are going to look at how we can configure a debugging experience for .NET code in Neovim. Let's dive in!
 
 [C#] [Nvim]
 
@@ -89,10 +89,10 @@ Si la plupart des employés souhaitent de la flexibilité au travail, de plus en
 
 [Télétravail]
 
-# Remise en cause du t&eacute;l&eacute;travail : la vraie question est &laquo; pourquoi ? &raquo; | Conditions de Travail et Sant&eacute; | Vie au travail | CIT | CFE-CGC groupe Orange
+# Remise en cause du télétravail : la vraie question est « pourquoi ? » | Conditions de Travail et Santé | Vie au travail | CIT | CFE-CGC groupe Orange
 [https://www.cfecgc-orange.org/2024103114642/conditions-de-travail-et-sante/remise-en-cause-du-teletravail-la-vraie-question-est-pourquoi.html](https://www.cfecgc-orange.org/2024103114642/conditions-de-travail-et-sante/remise-en-cause-du-teletravail-la-vraie-question-est-pourquoi.html)
 ![](https://www.cfecgc-orange.org/documents/images/cit/sante/ai-generated-9096284_640.jpg)
-Le syndicat CFE-CGC groupe Orange pr&eacute;pare l&rsquo;avenir des salari&eacute;s du groupe. Retrouvez toutes nos analyses, actualit&eacute;s et interventions m&eacute;dias.
+Le syndicat CFE-CGC groupe Orange prépare l'avenir des salariés du groupe. Retrouvez toutes nos analyses, actualités et interventions médias.
 
 [Télétravail]
 
@@ -103,16 +103,16 @@ Après avoir été paré de bien des vertus, le télétravail fait l’objet d�
 
 [Télétravail]
 
-# 
+# Building AI without a Neural Network
 [https://hivekit.io/blog/building-ai-without-a-neural-network/](https://hivekit.io/blog/building-ai-without-a-neural-network/)
-![]()
-
+![](https://hivekit.io/blog/building-ai-without-a-neural-network/bee-swarm.png)
+Today, we’re in a frenetic race to create artificial intelligence - a human-made thinking system. There are many ways to build such a system - and many promising approaches.
 [AI]
 
 # « L’IA générative est 50 fois moins intelligente qu’un enfant de 4 ans » assène Yann Le Cun
 [https://www.numerama.com/tech/1669388-yann-le-cun-lia-generative-est-50-fois-moins-intelligente-quun-enfant-de-4-ans.html?utm_source=pocket_mylist](https://www.numerama.com/tech/1669388-yann-le-cun-lia-generative-est-50-fois-moins-intelligente-quun-enfant-de-4-ans.html?utm_source=pocket_mylist)
 ![](https://c0.lestechnophiles.com/www.numerama.com/wp-content/uploads/2024/04/yann-le-cun.jpg?resize=1600,900&key=d8a617df&watermark)
-ChatGPT est-il destiné à surpasser l&#039;intelligence humaine ? À en croire Yann Le Cun, le plus célèbre des chercheurs français en IA, la réponse est non. En visite à Paris, le Chief AI Scientist de Meta dénonce un enthousiasme qu&#039;il juge disproportionné, alors que les IA génératives actuelles « ne savent ni raisonner,
+ChatGPT est-il destiné à surpasser l'intelligence humaine ? À en croire Yann Le Cun, le plus célèbre des chercheurs français en IA, la réponse est non. En visite à Paris, le Chief AI Scientist de Meta dénonce un enthousiasme qu'il juge disproportionné, alors que les IA génératives actuelles « ne savent ni raisonner,
 
 [AI]
 
@@ -181,7 +181,7 @@ So I started learning what I can about the basics of the topic, and saw the need
 # The Neural Network Zoo - The Asimov Institute
 [https://www.asimovinstitute.org/neural-network-zoo/](https://www.asimovinstitute.org/neural-network-zoo/)
 ![](https://www.asimovinstitute.org/wp-content/uploads/2016/09/building-922529_1920.jpg)
-With new neural network architectures popping up every now and then, it&#8217;s hard to keep track of them all. Knowing all the abbreviations being thrown around (DCIGN, BiLSTM, DCGAN, anyone?) can be a bit overwhelming at first. So I decided to compose a cheat sheet containing many of those architectures. Most of these are neural networks, some are completely [&hellip;]
+With new neural network architectures popping up every now and then, it's hard to keep track of them all. Knowing all the abbreviations being thrown around (DCIGN, BiLSTM, DCGAN, anyone?) can be a bit overwhelming at first. So I decided to compose a cheat sheet containing many of those architectures. Most of these are neural networks, some are completely […]
 
 [AI] [Réseau de neurones]
 
@@ -211,10 +211,10 @@ ZeroEntropy trains small, specialized AI models — state-of-the-art rerankers, 
 
 [AI]
 
-# Where&#x27;s the Shovelware? Why AI Coding Claims Don&#x27;t Add Up
+# Where's the Shovelware? Why AI Coding Claims Don't Add Up
 [https://mikelovesrobots.substack.com/p/wheres-the-shovelware-why-ai-coding?utm_source=changelog-news](https://mikelovesrobots.substack.com/p/wheres-the-shovelware-why-ai-coding?utm_source=changelog-news)
 ![](https://substackcdn.com/image/fetch/$s_!wZwr!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fc4476935-b0de-4a02-91a8-8d0cd92f4b54_664x415.png)
-78% of developers claim AI makes them more productive. 14% say it&#x27;s a 10x improvement. So where&#x27;s the flood of new software? Turns out those productivity claims are bullshit.
+78% of developers claim AI makes them more productive. 14% say it's a 10x improvement. So where's the flood of new software? Turns out those productivity claims are bullshit.
 
 [AI]
 
@@ -253,10 +253,10 @@ fragments 13 Feb 2026
 
 [AI] [Software] [software engineering]
 
-# 
+# Is anyone using AI for good?
 [https://stackoverflow.blog/2026/02/11/is-anyone-using-ai-for-good/?utm_source=braze&amp;utm_medium=email&amp;utm_campaign=the-overflow-newsletter&amp;lid=duy3zsvuija6](https://stackoverflow.blog/2026/02/11/is-anyone-using-ai-for-good/?utm_source=braze&amp;utm_medium=email&amp;utm_campaign=the-overflow-newsletter&amp;lid=duy3zsvuija6)
 ![](https://cdn.stackoverflow.co/images/jo7n4k8s/production/b05ac65242709b89cf0859a4bdf4176693d59c5d-1280x671.jpg?rect=1,0,1278,671&w=1200&h=630&auto=format)
-
+In a world where AI is replacing human workers, using up energy and water, and deepening disconnect, is AI for humanitarian good even possible? The answer is yes. In the first part of this two-part series, we're taking a look at just a few AI do-gooders and what they're doing to fight climate change, make healthcare more accessible, and help their communities.
 [AI]
 
 # The Mythical Agent-Month – Wes McKinney
@@ -286,10 +286,10 @@ Why the rush to replace developers with LLMs is leaving companies with brittle s
 
 [AI] [Software] [software engineering]
 
-# Après le burn out, le &quot;brain fry&quot;: quand l&#x27;IA fait suer ceux qui travaillent
+# Après le burn out, le "brain fry": quand l'IA fait suer ceux qui travaillent
 [https://www.lalibre.be/economie/decideurs-chroniqueurs/2026/03/31/apres-le-burn-out-le-brain-fry-quand-lia-fait-suer-ceux-qui-travaillent-4EMN2HYD35C47BN33HKTW5LZL4/](https://www.lalibre.be/economie/decideurs-chroniqueurs/2026/03/31/apres-le-burn-out-le-brain-fry-quand-lia-fait-suer-ceux-qui-travaillent-4EMN2HYD35C47BN33HKTW5LZL4/)
 ![](https://www.lalibre.be/resizer/v2/XTJHVHAQHVGEBDKTFCS5BPTOHY.jpg?auth=2eb2e12d35bcaef7a8e9b00887e8433cdb09764a729b549eea1061c7fbc754c3&width=1200&height=630&quality=85&focal=2400%2C1350)
-De plus en plus de travailleurs utilisant l&#x27;IA disent voir leur charge de travail s&#x27;intensifier. Leurs employeurs sont tentés de mesurer leur performance...
+De plus en plus de travailleurs utilisant l'IA disent voir leur charge de travail s'intensifier. Leurs employeurs sont tentés de mesurer leur performance...
 
 [AI]
 
@@ -322,11 +322,11 @@ What `git config` settings should be defaults by now? Here are some settings tha
 # Thread by @yegordb on Thread Reader App
 [https://threadreaderapp.com/thread/1859290734257635439.html?utm_source=changelog-news](https://threadreaderapp.com/thread/1859290734257635439.html?utm_source=changelog-news)
 ![](https://threadreaderapp.com/images/screenshots/thread/1859290734257635439.jpg)
-@yegordb: I’m at Stanford and I research software engineering productivity. We have data on the performance of &gt;50k engineers from 100s of companies. Inspired by @deedydas, our research shows: ~9.5% of software engin...…
+@yegordb: I’m at Stanford and I research software engineering productivity. We have data on the performance of >50k engineers from 100s of companies. Inspired by @deedydas, our research shows: ~9.5% of software engin...…
 
 [Software] [Remote working]
 
-# The Software Engineer Spectrum: Speed vs. Accuracy - Ben Howdle - Software Consultant &amp; Advisor
+# The Software Engineer Spectrum: Speed vs. Accuracy - Ben Howdle - Software Consultant & Advisor
 [https://benhowdle.im/software-engineer-spectrum?utm_source=bonobopress&amp;utm_medium=newsletter&amp;utm_campaign=2018](https://benhowdle.im/software-engineer-spectrum?utm_source=bonobopress&amp;utm_medium=newsletter&amp;utm_campaign=2018)
 ![The Software Engineer Spectrum: Speed vs. Accuracy - Ben Howdle - Software Consultant &amp; Advisor](https://benhowdle.im/img/me-2025.jpg)
 
@@ -346,7 +346,7 @@ Debug Adapter Protocol client implementation for Neovim - mfussenegger/nvim-dap
 
 [.net] [Nvim]
 
-# Don&#x27;t use MediatR by default on all .NET projects
+# Don't use MediatR by default on all .NET projects
 [https://goatreview.com/dont-use-mediatr-by-default-net-projects/?utm_source=newsletter.csharpdigest.net&amp;utm_medium=newsletter&amp;utm_campaign=lesser-known-clr-gc-handles&amp;_bhlid=46b30461a47be60a285fd3e1c55ba62047e3509b](https://goatreview.com/dont-use-mediatr-by-default-net-projects/?utm_source=newsletter.csharpdigest.net&amp;utm_medium=newsletter&amp;utm_campaign=lesser-known-clr-gc-handles&amp;_bhlid=46b30461a47be60a285fd3e1c55ba62047e3509b)
 ![](https://goatreview.com/content/images/2024/12/pierrebelin_Reflecting_goat_with_a_bubble_next_to_it_containing_b6f74da8-953e-4d4f-97b9-d7afc10e0506.webp)
 The .NET ecosystem has witnessed a significant shift in recent years, with MediatR becoming almost synonymous with Clean Architecture implementations. This library, designed to implement the mediator pattern, has found its way into countless tutorials, templates, and starter kits, making it seem like an essential component of modern .NET Core
@@ -470,7 +470,7 @@ Mocking creates false security by testing isolation, not real behavior. Separate
 # Scaling API Independence: Akehurst on Mocking, Contract Testing, and Observability
 [https://www.infoq.com/news/2025/04/qcon-wiremock-api-testing/?utm_source=notification_email&amp;utm_campaign=notifications&amp;utm_medium=link&amp;utm_content=content_in_followed_topic&amp;utm_term=daily](https://www.infoq.com/news/2025/04/qcon-wiremock-api-testing/?utm_source=notification_email&amp;utm_campaign=notifications&amp;utm_medium=link&amp;utm_content=content_in_followed_topic&amp;utm_term=daily)
 ![](https://res.infoq.com/news/2025/04/qcon-wiremock-api-testing/en/headerimage/generatedHeaderImage-1745329530464.jpg)
-At QCon London 2025, Tom Akehurst spotlighted the path to developer autonomy in microservices through &quot;Scaling API Independence.&quot; He emphasized advanced mocking, contract testing, and observability to combat API dependencies. Akehurst showcased how these strategies, enhanced by AI, streamline development, boost productivity, and ensure integration confidence amidst complexity.
+At QCon London 2025, Tom Akehurst spotlighted the path to developer autonomy in microservices through "Scaling API Independence." He emphasized advanced mocking, contract testing, and observability to combat API dependencies. Akehurst showcased how these strategies, enhanced by AI, streamline development, boost productivity, and ensure integration confidence amidst complexity.
 
 [test] [microservice]
 
@@ -544,14 +544,14 @@ Detect the user’s location by using the Geolocation API, or to be more specifi
 
 [pwa] [geolocation]
 
-# Cycle de vie d&apos;un service worker &nbsp;|&nbsp; Articles &nbsp;|&nbsp; web.dev
+# Cycle de vie d'un service worker | Articles  |  web.dev
 [https://web.dev/articles/service-worker-lifecycle?hl=fr](https://web.dev/articles/service-worker-lifecycle?hl=fr)
 ![]()
 Présentation détaillée du cycle de vie des service workers
 
 [pwa]
 
-# Présentation des notifications push &nbsp;|&nbsp; Articles &nbsp;|&nbsp; web.dev
+# Présentation des notifications push  |  Articles  |  web.dev
 [https://web.dev/articles/push-notifications-overview?hl=fr](https://web.dev/articles/push-notifications-overview?hl=fr)
 ![]()
 Présentation des notifications push, des raisons pour lesquelles vous pourriez les utiliser et de leur fonctionnement.
@@ -587,7 +587,7 @@ An in-depth coverage of parsing terminology an issues, together with an explanat
 # Analyse LR - Construire des tables d'analyse syntaxique LR(0)
 [https://www.techno-science.net/glossaire-definition/Analyse-LR-page-2.html?hl=fr-FR](https://www.techno-science.net/glossaire-definition/Analyse-LR-page-2.html?hl=fr-FR)
 ![](https://static.techno-science.net/illustration/Definitions/autres/l/lr-parser_2bf31ce1b9c86ba0961083360b63f533.png)
-Construire des tables d&#039;analyse syntaxique LR(0) - En informatique, un analyseur LR (pour Left to right, Rightmost...
+Construire des tables d'analyse syntaxique LR(0) - En informatique, un analyseur LR (pour Left to right, Rightmost...
 
 [Parser] [Parsing] [LR]
 
@@ -607,7 +607,7 @@ Tech debt is a comfortable lie. What you actually have is a sustainability probl
 # What Is Entropy? A Measure of Just How Little We Really Know. | Quanta Magazine
 [https://www.quantamagazine.org/what-is-entropy-a-measure-of-just-how-little-we-really-know-20241213/](https://www.quantamagazine.org/what-is-entropy-a-measure-of-just-how-little-we-really-know-20241213/)
 ![](https://www.quantamagazine.org/wp-content/uploads/2024/12/EntropyDeepDive-crKristinaArmitage-Social.jpg)
-Exactly 200 years ago, a French engineer introduced an idea that would quantify the universe’s inexorable slide into decay. But entropy, as it’s currently understood, is less a fact about the world than a reflection of our growing ignorance. Embracing that truth is leading to a rethink of everything from rational decision&#x2d;making to the limits of machines.
+Exactly 200 years ago, a French engineer introduced an idea that would quantify the universe’s inexorable slide into decay. But entropy, as it’s currently understood, is less a fact about the world than a reflection of our growing ignorance. Embracing that truth is leading to a rethink of everything from rational decision-making to the limits of machines.
 
 [Entropy]
 
