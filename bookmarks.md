@@ -801,3 +801,10 @@ I am annoying. Like many other founders, I have been described as “outspoken�
 Gemma 4 can be paired with multi-token prediction (MTP) drafters that use speculative decoding to generate multiple tokens in parallel, allowing the model to verify them in a single pass and achieve up to ~3&#xC3;— faster inference without quality loss.
 
 
+
+# 256 cœurs et 2 nanomètres - AMD met en production son serveur monstre Epyc Venice - Korben
+[https://share.google/TbLjn6ymmOhex0nLd](https://share.google/TbLjn6ymmOhex0nLd)
+![](https://korben.info/256-coeurs-et-2-nanometres-amd-met-en-production-son-serveur-monstre-epyc-venice/256-coeurs-et-2-nanometres-amd-met-en-production-son-serveur-monstre-epyc-venice-1.jpg)
+256 cœurs CPU sur une seule puce. C'est ce que propose le nouvel Epyc Venice d'AMD, sixième génération de son processeur pour serveurs, dont la production ...
+
+
