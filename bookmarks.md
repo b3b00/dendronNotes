@@ -814,4 +814,4 @@ Gemma 4 can be paired with multi-token prediction (MTP) drafters that use specul
 ![](https://res.infoq.com/news/2026/05/tamboui-java-tui/en/headerimage/generatedHeaderImage-1779678850388.jpg)
 The call to action “to make 2026 the year of Java in the terminal” was quickly responded to by the launch of TamboUI. Inspired by Ratatui, the library used in Claude CLI, it promises support ranging from low-level terminal drawing to high-level APIs such as components and event handling. Currently at version 0.3.0, it has already been adopted by major projects such as Maven and Spring.
 
-
+[java]
