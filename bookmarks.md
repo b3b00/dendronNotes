@@ -821,4 +821,4 @@ The call to action “to make 2026 the year of Java in the terminal” was quick
 ![]()
 Dropped this morning by the Vatican: Magnifica Humanitas of His Holiness Pope Leo XIV on Safeguarding the Human Person in the Time of Artificial Intelligence. This is a very interesting …
 
-
+[AI]
