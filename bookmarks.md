@@ -822,3 +822,10 @@ The call to action “to make 2026 the year of Java in the terminal” was quick
 Dropped this morning by the Vatican: Magnifica Humanitas of His Holiness Pope Leo XIV on Safeguarding the Human Person in the Time of Artificial Intelligence. This is a very interesting …
 
 [AI]
+
+# “You can't vibe code scale”: What the AI hype gets wrong about software engineering
+[https://stackoverflow.blog/2026/05/18/what-the-ai-hype-gets-wrong/?utm_source=braze&utm_medium=email&utm_campaign=the-overflow-newsletter&lid=uhqg503zhh24](https://stackoverflow.blog/2026/05/18/what-the-ai-hype-gets-wrong/?utm_source=braze&utm_medium=email&utm_campaign=the-overflow-newsletter&lid=uhqg503zhh24)
+![](https://cdn.stackoverflow.co/images/jo7n4k8s/production/89a7c761862499db37bf759db9607b85625d3d19-3840x2160.png?rect=0,72,3840,2016&w=1200&h=630&auto=format)
+Because someone still has to own the consequences of what gets built and whether it can function at scale.
+
+[AI]
