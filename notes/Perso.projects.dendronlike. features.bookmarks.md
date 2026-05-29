@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike. features.bookmarks
 title: Perso.projects.dendronlike. features.bookmarks
 desc: Bookmarks 
-updated: 1780026748503
+updated: 1780033856566
 created: 0
 ---
 ### Add a bookmarks feature to dendronline. 
@@ -31,5 +31,6 @@ A bookmarks is
 
 **To Do bookmarks**
 
-When a bookmark is added it is automaticzlly 
+bookmarks can be marked to be read. 
+User can filter bookmarks on their "to read" flag.
 
