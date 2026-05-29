@@ -5,6 +5,8 @@ We're excited to announce our $7M seed round led by Serena with the participatio
 
 [koyeb] [serverless]
 
+[X] to read
+
 # Comment LeBonCoin éteint les attaques DDoS de niveau 7 | LeMagIT
 [https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec](https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec)
 ![](https://www.lemagit.fr/visuals/LeMagIT/hero_article/LeBonCoin_PacMan.jpg)
@@ -16,6 +18,8 @@ Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d'Inte
 [https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730](https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730)
 ![](https://stenbrinke.nl/images/blog/configuration-and-secret-management-in-dotnet/dark/configuration-overview.webp)
 A handy pocketguide that covers everything a .NET developer needs to know about configuration and secret management!
+
+[ ] to read
 
 [Security] [C#]
 
