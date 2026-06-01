@@ -837,4 +837,4 @@ Because someone still has to own the consequences of what gets built and whether
 ![](https://www.lucavall.in/images/blog/ai-engineering-for-developers/og.webp)
 A tour through AI engineering for developers who already know how to ship software. Fourteen chapters, no LinkedIn voice, no slow warm-up. We will go from &#x27;what is a foundation model&#x27; to &#x27;how do you run agents in production on Google Cloud&#x27; without skipping the parts that matter.
 
-
+[AI]
