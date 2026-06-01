@@ -797,13 +797,6 @@ I am annoying. Like many other founders, I have been described as “outspoken�
 
 
 
-# Gemma 4 Multi-Token Prediction Delivers Up to ~3x Faster Token Generation
-[https://www.infoq.com/news/2026/05/gemma4-multi-token-prediction/](https://www.infoq.com/news/2026/05/gemma4-multi-token-prediction/)
-![](https://res.infoq.com/news/2026/05/gemma4-multi-token-prediction/en/headerimage/gemma4-multi-token-prediction-1779698361731.jpeg)
-Gemma 4 can be paired with multi-token prediction (MTP) drafters that use speculative decoding to generate multiple tokens in parallel, allowing the model to verify them in a single pass and achieve up to ~3&#xC3;— faster inference without quality loss.
-
-
-
 # 256 cœurs et 2 nanomètres - AMD met en production son serveur monstre Epyc Venice - Korben
 [https://share.google/TbLjn6ymmOhex0nLd](https://share.google/TbLjn6ymmOhex0nLd)
 ![](https://korben.info/256-coeurs-et-2-nanometres-amd-met-en-production-son-serveur-monstre-epyc-venice/256-coeurs-et-2-nanometres-amd-met-en-production-son-serveur-monstre-epyc-venice-1.jpg)
