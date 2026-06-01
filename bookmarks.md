@@ -2,10 +2,9 @@
 [https://www.koyeb.com/blog/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform](https://www.koyeb.com/blog/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform)
 ![](https://www.koyeb.com/static/images/illustrations/og/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform.png)
 We're excited to announce our $7M seed round led by Serena with the participation of ISAI, Samsung Next, MongoDB, and incredible angels. In this post, we dive into our mission, why we are uniquely positionned and what's next.
+[X] to read
 
 [koyeb] [serverless]
-
-[X] to read
 
 # Comment LeBonCoin éteint les attaques DDoS de niveau 7 | LeMagIT
 [https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec](https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec)
@@ -18,7 +17,6 @@ Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d'Inte
 [https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730](https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730)
 ![](https://stenbrinke.nl/images/blog/configuration-and-secret-management-in-dotnet/dark/configuration-overview.webp)
 A handy pocketguide that covers everything a .NET developer needs to know about configuration and secret management!
-
 [ ] to read
 
 [Security] [C#]
@@ -833,3 +831,10 @@ Dropped this morning by the Vatican: Magnifica Humanitas of His Holiness Pope Le
 Because someone still has to own the consequences of what gets built and whether it can function at scale.
 
 [AI]
+
+# AI Engineering for Developers | Blog
+[https://www.lucavall.in/blog/ai-engineering-for-developers?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2289](https://www.lucavall.in/blog/ai-engineering-for-developers?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2289)
+![](https://www.lucavall.in/images/blog/ai-engineering-for-developers/og.webp)
+A tour through AI engineering for developers who already know how to ship software. Fourteen chapters, no LinkedIn voice, no slow warm-up. We will go from &#x27;what is a foundation model&#x27; to &#x27;how do you run agents in production on Google Cloud&#x27; without skipping the parts that matter.
+
+
