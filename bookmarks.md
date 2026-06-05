@@ -831,3 +831,10 @@ Because someone still has to own the consequences of what gets built and whether
 A tour through AI engineering for developers who already know how to ship software. Fourteen chapters, no LinkedIn voice, no slow warm-up. We will go from &#x27;what is a foundation model&#x27; to &#x27;how do you run agents in production on Google Cloud&#x27; without skipping the parts that matter.
 
 [AI]
+
+# Microsoft Brings Linux-Like Coreutils Natively to Windows
+[https://linuxiac.com/microsoft-brings-linux-like-coreutils-natively-to-windows/](https://linuxiac.com/microsoft-brings-linux-like-coreutils-natively-to-windows/)
+![Microsoft Brings Linux-Like Coreutils Natively to Windows](https://linuxiac.com/wp-content/uploads/2026/06/windows-linux-coreutils.jpg)
+Microsoft introduces Coreutils for Windows, bringing familiar Unix-style command-line tools to Windows without requiring WSL.
+
+
