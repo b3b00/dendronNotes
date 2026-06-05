@@ -837,4 +837,4 @@ A tour through AI engineering for developers who already know how to ship softwa
 ![Microsoft Brings Linux-Like Coreutils Natively to Windows](https://linuxiac.com/wp-content/uploads/2026/06/windows-linux-coreutils.jpg)
 Microsoft introduces Coreutils for Windows, bringing familiar Unix-style command-line tools to Windows without requiring WSL.
 
-
+[Linux]
