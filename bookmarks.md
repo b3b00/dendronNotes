@@ -838,3 +838,10 @@ A tour through AI engineering for developers who already know how to ship softwa
 Microsoft introduces Coreutils for Windows, bringing familiar Unix-style command-line tools to Windows without requiring WSL.
 
 [Linux]
+
+# When AI builds itself
+[https://www.anthropic.com/institute/recursive-self-improvement](https://www.anthropic.com/institute/recursive-self-improvement)
+![Anthropic logo](https://cdn.sanity.io/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg)
+Our progress toward recursive self-improvement, and its implications.
+
+
