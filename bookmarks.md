@@ -845,3 +845,9 @@ Microsoft introduces Coreutils for Windows, bringing familiar Unix-style command
 Our progress toward recursive self-improvement, and its implications.
 
 [AI]
+
+# regarding Tennent's &quot;Language Design based on Semantic Principles&quot;
+[https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles](https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles)
+![]()
+
+
