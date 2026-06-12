@@ -846,7 +846,7 @@ Our progress toward recursive self-improvement, and its implications.
 
 [AI]
 
-# regarding Tennent's &quot;Language Design based on Semantic Principles&quot;
+# regarding Tennent's "Language Design based on Semantic Principles"
 [https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles](https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles)
 ![]()
 
