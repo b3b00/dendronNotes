@@ -850,4 +850,4 @@ Our progress toward recursive self-improvement, and its implications.
 [https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles](https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles)
 ![]()
 
-
+[Language]
