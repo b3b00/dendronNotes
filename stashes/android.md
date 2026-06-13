@@ -2,7 +2,7 @@
 id: 2b0089b5-930c-4a8b-b7f2-457ea163cd13
 title: android
 desc: android tips
-updated: 1781328603
+updated: 1781328617
 created: 1778137804
 ---
 
@@ -27,6 +27,7 @@ ______________
 
 ## phone
 parameters > developer options >wireless debug > paire with code
+
 Note IP:PORT and CODE
 
 ## computer
