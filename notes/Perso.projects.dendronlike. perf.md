@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike. perf
 title: Perso.projects.dendronlike. perf
 desc: Perfs
-updated: 1781330598509
+updated: 1781330714099
 created: 0
 ---
 # High-Performance PWA Architecture: Resolving Launch Lag & Cold-Boot Bootstrapping
@@ -31,6 +31,6 @@ export default {
     chunkFileNames: 'chunks/[name]-[hash].js'
   }
 };
-```
+
 
 https://g.co/gemini/share/1d474717ce1d
