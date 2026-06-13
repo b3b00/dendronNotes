@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.dendronlike. perf
-title: Perso.projects.dendronlike. perf
+title: Perso.projects.dendronlike. perf.slow-pwa-loading
 desc: Slow PWA loading 
-updated: 1781333203152
+updated: 1781333671194
 created: 0
 ---
 # PWA Android Splash Screen Cold-Boot Optimization Guide
@@ -17,6 +17,10 @@ The primary goal is breaking down monolithic JavaScript execution blocks to prev
 
 ### 1. Rollup Configuration (`rollup.config.js`)
 Switch output from a single file to a directory to support **ES Module native chunking**.
+
+`emitCss: false` tells Svelte to bundle its CSS directly inside the JavaScript files rather than extracting it into separate .css files.
+
+Because of this, each component automatically injects its own styles into the page at runtime, which is perfect for lazy-loaded components that need their CSS to arrive at the same time as their logic.
 
 ```javascript
 import svelte from 'rollup-plugin-svelte';
