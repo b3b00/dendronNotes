@@ -2,25 +2,10 @@
 id: Perso.projects.dendronlike.tests
 title: Perso.projects.dendronlike.tests
 desc: tests
-updated: 1781412687127
+updated: 1781412774886
 created: 0
 ---
-# alerts
 
-> [!NOTE]
-> Useful information that users should know, even when skimming content.
-
-> [!TIP]
-> Helpful advice for doing things better or more easily.
-
-> [!IMPORTANT]
-> Key information users need to know to achieve their goal.
-
-> [!WARNING]
-> Urgent info that needs immediate user attention to avoid problems.
-
-> [!CAUTION]
-> Advises about risks or negative outcomes of certain actions
 
 # tests tasks
 
