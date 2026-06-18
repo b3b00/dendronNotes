@@ -2,7 +2,7 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1779798313
+updated: 1781799392
 created: 1769795609
 ---
 
@@ -70,4 +70,12 @@ git push $remote $new_name
 # Reset the upstream branch for the new_name local branch
 git push $remote -u $new_name
 
+```
+______________
+
+# unlock refs
+
+```bash
+git gc --prune=now
+git remote prune origin
 ```
