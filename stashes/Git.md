@@ -2,7 +2,7 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1781799392
+updated: 1781799539
 created: 1769795609
 ---
 
@@ -78,4 +78,8 @@ ______________
 ```bash
 git gc --prune=now
 git remote prune origin
+```
+
+```bash
+git config --global alias.unlock-ref 'gc --prune=now'
 ```
