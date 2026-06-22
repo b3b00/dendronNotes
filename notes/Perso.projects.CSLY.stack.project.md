@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782111638518
+updated: 1782111747595
 created: 0
 ---
 
@@ -24,7 +24,9 @@ Moving all unit test and samples from `EBNF_LL_RECURSIVE_DESCENT` to `EBNF_LL_ST
 #### `EBNFStackTests#TestParseBuild`
 Bad assert : fixed
 
-### `` 
+### `Issue259Tests#Issue259StackTest` 
+
+
 
 
 
