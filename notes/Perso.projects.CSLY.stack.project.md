@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782111400215
+updated: 1782111409891
 created: 0
 ---
 
@@ -20,5 +20,7 @@ Fixed a bug when `[ParserRoot]` was used to set the root rule (might already be 
 ### trying all unit tests with stack
 Moving all unit test and samples from `EBNF_LL_RECURSIVE_DESCENT` to `EBNF_LL_STACK` (ctrl-shift-h).
 14 failing unit tests. Seems mainly relates to error management.
+
+
 
 
