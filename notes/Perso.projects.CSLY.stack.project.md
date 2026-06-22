@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782119574351
+updated: 1782119584489
 created: 0
 ---
 
@@ -31,6 +31,7 @@ Bad error reporting when infix expression parse fails at right operand : __fixed
 Bad error management when parse is ok but not ended : __fixed__
 11 remaining.
 
+### `` 
 
 
 
