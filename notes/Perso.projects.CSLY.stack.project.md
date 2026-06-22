@@ -2,10 +2,9 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782110571520
+updated: 1782110581244
 created: 0
 ---
-# Feature management.
 
 ## 22/06/2026
 
