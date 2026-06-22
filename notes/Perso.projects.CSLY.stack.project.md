@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782117683670
+updated: 1782119541882
 created: 0
 ---
 
@@ -27,7 +27,8 @@ Bad assert : __fixed__
 ### `Issue259Tests#Issue259StackTest` 
 Bad error reporting when infix expression parse fails at right operand : __fixed__
 
-
+### `Issue302Test.Test302Stack` 
+Bad error management when parse is ok but not ended : __fixed__
 
 
 
