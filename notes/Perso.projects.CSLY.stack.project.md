@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782119584489
+updated: 1782197680291
 created: 0
 ---
 
@@ -26,6 +26,10 @@ Bad assert : __fixed__
 
 ### `Issue259Tests#Issue259StackTest` 
 Bad error reporting when infix expression parse fails at right operand : __fixed__
+
+[df49ddeceaf6b081cba20c2ca6c212ae85e2a7ca](https://github.com/b3b00/csly/commit/df49ddeceaf6b081cba20c2ca6c212ae85e2a7ca)
+
+Remaining : 11 failures, mainly expression parsing related.
 
 ### `Issue302Test.Test302Stack` 
 Bad error management when parse is ok but not ended : __fixed__
