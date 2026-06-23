@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782197680291
+updated: 1782197778170
 created: 0
 ---
 
@@ -35,7 +35,9 @@ Remaining : 11 failures, mainly expression parsing related.
 Bad error management when parse is ok but not ended : __fixed__
 11 remaining.
 
-### `` 
+### `ExplicitTokensTests#TestExplicitGroupsUnexpectedToken` 
+
+
 
 
 
