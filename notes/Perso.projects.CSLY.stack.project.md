@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782228959264
+updated: 1782229678561
 created: 0
 ---
 
@@ -86,3 +86,15 @@ Rule for nonterminal `XXXXX_expressions` had no NonTerminalName.
 
 
 7 remaining
+
+
+### 🪲`IndentedWhileTests#TestMissingUIndents` 
+
+indents were not auto close when `[AutoCloseIndentations]` for `EBNFStackDescentSyntaxParser`
+
+[2b76a2e0b4732f140352810256d989387ca8b80f](https://github.com/b3b00/csly/commit/2b76a2e0b4732f140352810256d989387ca8b80f)
+
+
+6 remaining
+
+
