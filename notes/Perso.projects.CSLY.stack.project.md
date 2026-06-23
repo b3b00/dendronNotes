@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782201176362
+updated: 1782201264123
 created: 0
 ---
 
@@ -56,5 +56,5 @@ unexpected c ('c (line 0, column 8)'). Expecting 'a', .
 
 Strangely `EBNF_LL_STACK` seems more logic.
 
-
+Global strategy for error should be to display the further error. Which is to say STACK parser is better at this then RECURSIVE.
 
