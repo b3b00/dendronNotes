@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782227288875
+updated: 1782228937538
 created: 0
 ---
 
@@ -77,3 +77,12 @@ Stack parser seems to chose the first error and recursive
 bad repetition typing : values were taking precedence over groups
 
 [a90c2fd90fbb0e76ffadcbce7eb1b2d339daacfd](https://github.com/b3b00/csly/commit/a90c2fd90fbb0e76ffadcbce7eb1b2d339daacfd)
+
+### 🪲`ExpressionGeneratorTests#TestPrefix` 
+
+Rule for nonterminal `XXXXX_expressions` had no NonTerminalName.
+
+[b3701731bf6f37539376c710665c724b64a59b8a](https://github.com/b3b00/csly/commit/b3701731bf6f37539376c710665c724b64a59b8a)
+
+
+
