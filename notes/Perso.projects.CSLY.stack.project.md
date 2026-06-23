@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782222759720
+updated: 1782223048606
 created: 0
 ---
 
@@ -25,7 +25,7 @@ Moving all unit test and samples from `EBNF_LL_RECURSIVE_DESCENT` to `EBNF_LL_ST
 Bad assert : __fixed__
 
 ### 🪲`Issue259Tests#Issue259StackTest` 
-Bad error reporting when infix expression parse fails at right operand : __fixed__
+Bad error reporting when infix expression parse fails at right operand level : __fixed__
 
 [df49ddeceaf6b081cba20c2ca6c212ae85e2a7ca](https://github.com/b3b00/csly/commit/df49ddeceaf6b081cba20c2ca6c212ae85e2a7ca)
 
@@ -36,7 +36,8 @@ Bad error management when parse is ok but not ended : __fixed__
 [9a82432767f9034b32a43eaac6c902f2280c4495](https://github.com/b3b00/csly/commit/9a82432767f9034b32a43eaac6c902f2280c4495)
 Remaining : 11 failures, mainly expression parsing related.
 
-### `ExplicitTokensTests#BuildExpressionParserTest`
+### 🪲 `ExplicitTokensTests#BuildExpressionParserTest`
+
 Left associativity was badly managed. Use `ExpressionRuleManager<IN, OUT>.ManageExpressionRules` instead.
 
 [5debba177ae9ae6cc0e9986d1fc8e8a88a4d7554](https://github.com/b3b00/csly/commit/5debba177ae9ae6cc0e9986d1fc8e8a88a4d7554)
