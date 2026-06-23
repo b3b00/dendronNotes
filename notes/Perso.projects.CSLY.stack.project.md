@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782223048606
+updated: 1782227288875
 created: 0
 ---
 
@@ -71,3 +71,9 @@ When parsing with stack parser we encounter these unextectedTokenErrors :
 
 Stack parser seems to chose the first error and recursive
 
+
+### 🪲`IssuesTests#Issue277Test` 
+
+bad repetition typing : values were taking precedence over groups
+
+[a90c2fd90fbb0e76ffadcbce7eb1b2d339daacfd](https://github.com/b3b00/csly/commit/a90c2fd90fbb0e76ffadcbce7eb1b2d339daacfd)
