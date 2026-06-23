@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782222700818
+updated: 1782222759720
 created: 0
 ---
 
@@ -24,14 +24,14 @@ Moving all unit test and samples from `EBNF_LL_RECURSIVE_DESCENT` to `EBNF_LL_ST
 #### `EBNFStackTests#TestParseBuild`
 Bad assert : __fixed__
 
-### `Issue259Tests#Issue259StackTest` 
+### 🪲`Issue259Tests#Issue259StackTest` 
 Bad error reporting when infix expression parse fails at right operand : __fixed__
 
 [df49ddeceaf6b081cba20c2ca6c212ae85e2a7ca](https://github.com/b3b00/csly/commit/df49ddeceaf6b081cba20c2ca6c212ae85e2a7ca)
 
 
 
-### `Issue302Test.Test302Stack` 
+### 🪲`Issue302Test.Test302Stack` 
 Bad error management when parse is ok but not ended : __fixed__
 [9a82432767f9034b32a43eaac6c902f2280c4495](https://github.com/b3b00/csly/commit/9a82432767f9034b32a43eaac6c902f2280c4495)
 Remaining : 11 failures, mainly expression parsing related.
@@ -43,7 +43,7 @@ Left associativity was badly managed. Use `ExpressionRuleManager<IN, OUT>.Manage
 
 9 failures remaining.
 
-### `ExplicitTokensTests#TestExplicitGroupsUnexpectedToken` 
+### 🪲`ExplicitTokensTests#TestExplicitGroupsUnexpectedToken` 
 
 ```
 root : ('a' 'b')* discard
