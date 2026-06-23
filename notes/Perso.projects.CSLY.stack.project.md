@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782228937538
+updated: 1782228959264
 created: 0
 ---
 
@@ -85,4 +85,4 @@ Rule for nonterminal `XXXXX_expressions` had no NonTerminalName.
 [b3701731bf6f37539376c710665c724b64a59b8a](https://github.com/b3b00/csly/commit/b3701731bf6f37539376c710665c724b64a59b8a)
 
 
-
+7 remaining
