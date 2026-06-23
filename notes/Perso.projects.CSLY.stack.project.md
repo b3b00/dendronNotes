@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782197934636
+updated: 1782201176362
 created: 0
 ---
 
@@ -38,7 +38,23 @@ Remaining : 11 failures, mainly expression parsing related.
 
 ### `ExplicitTokensTests#TestExplicitGroupsUnexpectedToken` 
 
+```
+root : ('a' 'b')* discard
+discard : ('c' 'd'[d])?
+```
+parsing
+```
+a b a b c d a
+```
 
+expecting error
+```
+unexpected c ('c (line 0, column 8)'). Expecting 'a', .
+```
+ - `EBNF_LL_RECURSIVE_DESCENT` : OK
+ - `EBNF_LL_STACK` : KO => `unexpected a (line 0, column 12) Nop.` 
+
+Strangely `EBNF_LL_STACK` seems more logic.
 
 
 
