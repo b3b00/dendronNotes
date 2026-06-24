@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782305573779
+updated: 1782305634972
 created: 0
 ---
 
@@ -126,7 +126,7 @@ but
 unexpected Lparen ('( (line 1, column 27)'). Expecting Id, Lbrack, .
 ```
 
-parser not choosing further error message
+parser not choosing furthest along error message ?
 
 ### 🪲`I18nTests#TestErrorMessage` et 🪲`Issue164#TestErrorMessage`
 
