@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782305230850
+updated: 1782305538376
 created: 0
 ---
 
@@ -118,12 +118,12 @@ end of parse detection issue.
 
 should return error :
 ```
-Erreur de syntaxe : "String ["i3"] @line 4, column 12 on channel 0" (String) inattendu. attendu : Coma, Rparen.
+unexpected String ('"string5" (line 4, column 12)'). Expecting Coma, Rparen, .
 // missing coma after ""value2""
 ```
 but
 ```
-Erreur de syntaxe : Lparen inattendu ('( (line 1, column 27)'). attendu : Id, Lbrack, .
+unexpected Lparen ('( (line 1, column 27)'). Expecting Id, Lbrack, .
 ```
 
 ### 🪲`I18nTests#TestErrorMessage` et 🪲`Issue164#TestErrorMessage`
