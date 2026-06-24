@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782229678561
+updated: 1782303854077
 created: 0
 ---
 
@@ -97,4 +97,8 @@ indents were not auto close when `[AutoCloseIndentations]` for `EBNFStackDescent
 
 6 remaining
 
+🪲TemplateTests#BasicTemplateTest
+end of parse detection issue.
+[7760837efdeb5882a2d1fac5d8be4ae2258be01d]
+(https://github.com/b3b00/csly/commit/7760837efdeb5882a2d1fac5d8be4ae2258be01d)
 
