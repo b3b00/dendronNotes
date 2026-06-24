@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782304609098
+updated: 1782304626374
 created: 0
 ---
 
@@ -107,8 +107,7 @@ end of parse detection issue.
 ### 🪲`ErrorMessageAccuracyIssue381Tests#TestAccuracy`
 
 
-### 🪲`I18nTests#TestErrorMessage`
-### 🪲`Issue164#TestErrorMessage`
+### 🪲`I18nTests#TestErrorMessage` et 🪲`Issue164#TestErrorMessage`
 
 
 
