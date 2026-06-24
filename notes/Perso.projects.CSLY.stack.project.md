@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782304626374
+updated: 1782305230850
 created: 0
 ---
 
@@ -106,6 +106,25 @@ end of parse detection issue.
 
 ### 🪲`ErrorMessageAccuracyIssue381Tests#TestAccuracy`
 
+[#381](https://github.com/b3b00/csly/issues/381)
+
+```
+      variable = function(someVariable, ""string1"", ""string2"", 
+            ""string3"", ""value1"",
+            ""string4"", ""value2""
+            ""string5"", ""value3"",
+            ""string6"", ""value4""
+```
+
+should return error :
+```
+Erreur de syntaxe : "String ["i3"] @line 4, column 12 on channel 0" (String) inattendu. attendu : Coma, Rparen.
+// missing coma after ""value2""
+```
+but
+```
+Erreur de syntaxe : Lparen inattendu ('( (line 1, column 27)'). attendu : Id, Lbrack, .
+```
 
 ### 🪲`I18nTests#TestErrorMessage` et 🪲`Issue164#TestErrorMessage`
 
