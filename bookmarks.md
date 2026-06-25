@@ -851,3 +851,11 @@ Our progress toward recursive self-improvement, and its implications.
 ![]()
 
 [Language]
+
+# Intelligence artificielle : pourquoi les géants de la Silicon Valley font marche arrière sur le tout-IA - L&#039;Humanité
+[https://www.humanite.fr/social-et-economie/anthropic/intelligence-artificielle-pourquoi-les-geants-de-la-silicon-valley-font-marche-arriere-sur-le-tout-ia](https://www.humanite.fr/social-et-economie/anthropic/intelligence-artificielle-pourquoi-les-geants-de-la-silicon-valley-font-marche-arriere-sur-le-tout-ia)
+![](https://www.humanite.fr/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-24-at-15.44.05.jpeg)
+
+Après s’être lancé à corps et portefeuilles perdus dans l’intelligence artificielle, des géants comme Amazon, Microsoft ou Uber freinent un grand coup. La technologie commence à c...
+
+
