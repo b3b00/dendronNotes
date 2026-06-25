@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782368332448
+updated: 1782368547522
 created: 0
 ---
 
@@ -116,11 +116,7 @@ end of parse detection issue.
             ""string6"", ""value4""
 ```
 
-should return error :
-```
-unexpected String ('"string5" (line 4, column 12)'). Expecting Coma, Rparen, .
-// missing coma after ""value2""
-```
+should return error stating unexpected "string5", expecting any operator or comma
 but
 ```
 unexpected Lparen ('( (line 1, column 27)'). Expecting Id, Lbrack, .
@@ -337,7 +333,7 @@ unexpected :: unexpected String ('"string5" (line 4, column 12)'). Expecting Div
 unexpected :: unexpected String ('"string5" (line 4, column 12)'). Expecting Greater, . -- 147
 unexpected :: unexpected String ('"string5" (line 4, column 12)'). Expecting Equal, . -- 147
 ```
-
+so 
 
 ### 🪲`I18nTests#TestErrorMessage` et 🪲`Issue164#TestErrorMessage`
 
