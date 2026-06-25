@@ -858,4 +858,4 @@ Our progress toward recursive self-improvement, and its implications.
 
 Après s’être lancé à corps et portefeuilles perdus dans l’intelligence artificielle, des géants comme Amazon, Microsoft ou Uber freinent un grand coup. La technologie commence à c...
 
-
+[AI]
