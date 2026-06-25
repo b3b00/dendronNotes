@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782368547522
+updated: 1782368677993
 created: 0
 ---
 
@@ -333,7 +333,7 @@ unexpected :: unexpected String ('"string5" (line 4, column 12)'). Expecting Div
 unexpected :: unexpected String ('"string5" (line 4, column 12)'). Expecting Greater, . -- 147
 unexpected :: unexpected String ('"string5" (line 4, column 12)'). Expecting Equal, . -- 147
 ```
-so 
+so indeed a problem of error accumulation and filtering.
 
 ### 🪲`I18nTests#TestErrorMessage` et 🪲`Issue164#TestErrorMessage`
 
