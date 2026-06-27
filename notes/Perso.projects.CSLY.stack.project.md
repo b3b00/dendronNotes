@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782368677993
+updated: 1782552610465
 created: 0
 ---
 
@@ -103,6 +103,11 @@ end of parse detection issue.
 (https://github.com/b3b00/csly/commit/7760837efdeb5882a2d1fac5d8be4ae2258be01d)
 
 5 remaining
+
+
+
+### 🪲`I18nTests#TestErrorMessage` et 🪲`Issue164#TestErrorMessage`
+
 
 ### 🪲`ErrorMessageAccuracyIssue381Tests#TestAccuracy`
 
@@ -335,8 +340,13 @@ unexpected :: unexpected String ('"string5" (line 4, column 12)'). Expecting Equ
 ```
 so indeed a problem of error accumulation and filtering.
 
-### 🪲`I18nTests#TestErrorMessage` et 🪲`Issue164#TestErrorMessage`
+[b7dbb0ea9e60fb9f2912fa58199345cb1738fef1](https://github.com/b3b00/csly/commit/b7dbb0ea9e60fb9f2912fa58199345cb1738fef1)
+
+fixed but parser now returns many errors instead of only one. May be acceptable.
+
+issue #302 is now failing
 
 
+### 🪲`Issue302Test#Test302`
 
 
