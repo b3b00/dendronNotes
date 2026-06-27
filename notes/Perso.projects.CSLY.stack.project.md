@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782552610465
+updated: 1782552627556
 created: 0
 ---
 
@@ -348,5 +348,8 @@ issue #302 is now failing
 
 
 ### 🪲`Issue302Test#Test302`
+
+not founding an issue where needed.
+
 
 
