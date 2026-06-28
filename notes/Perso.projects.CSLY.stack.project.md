@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782552971640
+updated: 1782669834410
 created: 0
 ---
 
@@ -350,7 +350,9 @@ issue #302 is now failing
 ### 🪲`Issue302Test#Test302`
 
 not founding an issue where needed.
- Maybe parser failing at adding error when parse is ok but not ended.
+ Maybe parser failing at adding error when parse is ok but not ended => that's it.
+fixed : [19fdef06a56fa4ed9e3e407b869dcf817f21cc81](https://github.com/b3b00/csly/commits/19fdef06a56fa4ed9e3e407b869dcf817f21cc81)
+
 
 
 
