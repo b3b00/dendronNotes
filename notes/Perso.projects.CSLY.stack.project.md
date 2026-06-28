@@ -2,7 +2,7 @@
 id: Perso.projects.CSLY.stack.project
 title: Perso.projects.CSLY.stack.project
 desc: feature management
-updated: 1782669834410
+updated: 1782670168751
 created: 0
 ---
 
@@ -353,6 +353,7 @@ not founding an issue where needed.
  Maybe parser failing at adding error when parse is ok but not ended => that's it.
 fixed : [19fdef06a56fa4ed9e3e407b869dcf817f21cc81](https://github.com/b3b00/csly/commits/19fdef06a56fa4ed9e3e407b869dcf817f21cc81)
 
+**Done **
 
 
 
