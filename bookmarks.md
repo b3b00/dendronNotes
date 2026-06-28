@@ -849,8 +849,8 @@ Our progress toward recursive self-improvement, and its implications.
 # regarding Tennent's "Language Design based on Semantic Principles"
 [https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles](https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles)
 ![]()
-
-[Language]
+A reproducible benchmark on latency, cost, and reproducibility, and where agents actually earn their keep.
+[AI]
 
 # Intelligence artificielle : pourquoi les géants de la Silicon Valley font marche arrière sur le tout-IA - L&#039;Humanité
 [https://www.humanite.fr/social-et-economie/anthropic/intelligence-artificielle-pourquoi-les-geants-de-la-silicon-valley-font-marche-arriere-sur-le-tout-ia](https://www.humanite.fr/social-et-economie/anthropic/intelligence-artificielle-pourquoi-les-geants-de-la-silicon-valley-font-marche-arriere-sur-le-tout-ia)
@@ -859,3 +859,6 @@ Our progress toward recursive self-improvement, and its implications.
 Après s’être lancé à corps et portefeuilles perdus dans l’intelligence artificielle, des géants comme Amazon, Microsoft ou Uber freinent un grand coup. La technologie commence à c...
 
 [AI]
+
+# The Hot Path Belongs to GBDTs, Agents Own the Cold Path: A Payment-Fraud Benchmark
+[](https://towardsdatascience.com/the-hot-path-belongs-to-gbdts-agents-own-the-cold-path-a-payment-fraud-benchmark/?utm_campaign=tds%20daily&utm_medium=email&_hsenc=p2ANqtz--tkBLbce89aNFVrdksxLho5hxCXAcS2vTRmUY5EsR9QUQgU0p60fp6BLFaDwHVvuXj-sKvj-hQQaumQq0SJmKIwLKzzA&_hsmi=425772221&utm_source=newsletter)
