@@ -879,4 +879,4 @@ A reproducible benchmark on latency, cost, and reproducibility, and where agents
 I vividly remember most of my own journey into engineering management over the years. Throughout my career, I’ve also mentored several people taking the step from engineer to engineering manager. It’s a challenging and often lonely journey, and here are a few truths most new managers realize the hard way. (If you aren’t a manager yourself, you might just learn a bit about your manager’s situation.)
 The things no one tells you about being a manager: You’ll bring work home with you more often than not. The difficult conversation you’re dreading, the “stupid” business decision you will need to explain to your team, the office politics you need to handle, or the team member struggling silently with a personal crises. You will need to learn how to manage stress and rumination – and you’ll need to learn it fast.
 
-
+[management]
