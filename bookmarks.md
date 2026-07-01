@@ -872,10 +872,3 @@ Après s’être lancé à corps et portefeuilles perdus dans l’intelligence a
 A reproducible benchmark on latency, cost, and reproducibility, and where agents actually earn their keep.
 
 
-
-# Context Engineering for RAG : The Four Typed Inputs Behind Every RAG Answer | Towards Data Science
-[https://towardsdatascience.com/context-engineering-for-rag-the-four-typed-inputs-behind-every-rag-answer/](https://towardsdatascience.com/context-engineering-for-rag-the-four-typed-inputs-behind-every-rag-answer/)
-![](https://towardsdatascience.com/wp-content/uploads/2026/06/compare_pasta_bowls_2720445_v3_card.jpg)
-Enterprise Document Intelligence [Vol.1 #7bis] - Tobi Lütke and Andrej Karpathy named the practice in 2025. For a single document, each brick emits typed pieces that converge on one LLM call. Corpus, conversation, and tool extensions are follow-up work
-
-
