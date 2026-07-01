@@ -871,7 +871,7 @@ Après s’être lancé à corps et portefeuilles perdus dans l’intelligence a
 ![](https://towardsdatascience.com/wp-content/uploads/2026/06/01_architecture-1.jpg)
 A reproducible benchmark on latency, cost, and reproducibility, and where agents actually earn their keep.
 
-
+[AI]
 
 # The truth about being a manager
 [https://sofiakodar.github.io/posts/becomingmanager/?utm_source=braze&utm_medium=email&utm_campaign=the-overflow-newsletter&lid=2glg9rat7hhv](https://sofiakodar.github.io/posts/becomingmanager/?utm_source=braze&utm_medium=email&utm_campaign=the-overflow-newsletter&lid=2glg9rat7hhv)
