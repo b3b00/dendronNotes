@@ -860,12 +860,6 @@ Après s’être lancé à corps et portefeuilles perdus dans l’intelligence a
 
 [AI]
 
-# How to Get Reliable Results from Your LLMs
-[https://newsletter.towardsdatascience.com/how-to-get-reliable-results-from-your-llms?ecid=ACsprvsBgajrsst65JoQImMPvIqCKfRHgVRtyjfMmKuY_AoWEZ1ApTFPKti2cbCboSg_Iia_j-xJ&utm_campaign=6581270-TDS%20The%20Variable%20Newsletter&utm_medium=email&_hsenc=p2ANqtz-8yuz-AuFf8nwh32AQ0IOPEVl_4TEmtVYYZ9IEvRTMathF09tsXKfMDnA88cnUVPG8Obh4fOpOClRRbn-3bL6B_IJZ1cw&_hsmi=425384907&utm_content=425384907&utm_source=hs_email](https://newsletter.towardsdatascience.com/how-to-get-reliable-results-from-your-llms?ecid=ACsprvsBgajrsst65JoQImMPvIqCKfRHgVRtyjfMmKuY_AoWEZ1ApTFPKti2cbCboSg_Iia_j-xJ&utm_campaign=6581270-TDS%20The%20Variable%20Newsletter&utm_medium=email&_hsenc=p2ANqtz-8yuz-AuFf8nwh32AQ0IOPEVl_4TEmtVYYZ9IEvRTMathF09tsXKfMDnA88cnUVPG8Obh4fOpOClRRbn-3bL6B_IJZ1cw&_hsmi=425384907&utm_content=425384907&utm_source=hs_email)
-![]()
-
-
-
 # The Hot Path Belongs to GBDTs, Agents Own the Cold Path: A Payment-Fraud Benchmark | Towards Data Science
 [https://towardsdatascience.com/the-hot-path-belongs-to-gbdts-agents-own-the-cold-path-a-payment-fraud-benchmark/?utm_campaign=tds daily&utm_medium=email&_hsenc=p2ANqtz--tkBLbce89aNFVrdksxLho5hxCXAcS2vTRmUY5EsR9QUQgU0p60fp6BLFaDwHVvuXj-sKvj-hQQaumQq0SJmKIwLKzzA&_hsmi=425772221&utm_source=newsletter](https://towardsdatascience.com/the-hot-path-belongs-to-gbdts-agents-own-the-cold-path-a-payment-fraud-benchmark/?utm_campaign=tds daily&utm_medium=email&_hsenc=p2ANqtz--tkBLbce89aNFVrdksxLho5hxCXAcS2vTRmUY5EsR9QUQgU0p60fp6BLFaDwHVvuXj-sKvj-hQQaumQq0SJmKIwLKzzA&_hsmi=425772221&utm_source=newsletter)
 ![](https://towardsdatascience.com/wp-content/uploads/2026/06/01_architecture-1.jpg)
