@@ -873,4 +873,4 @@ Our progress toward recursive self-improvement, and its implications.
 ![](https://destel.dev/og/blog/preserving-order-in-concurrent-go.png?d=3)
 A worker pool in Go shuffles output order. Three streaming patterns that preserve it with bounded memory, backpressure, and minimal allocations.
 
-
+[Concurrency]
