@@ -654,7 +654,7 @@ You can find a starter template for LazyVim here
 
 [Nvim]
 
-# 
+# Role of algorithms
 [https://matklad.github.io/2023/08/13/role-of-algorithms.html](https://matklad.github.io/2023/08/13/role-of-algorithms.html)
 ![]()
 
