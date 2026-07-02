@@ -458,13 +458,6 @@ At QCon London 2025, Tom Akehurst spotlighted the path to developer autonomy in 
 
 [test] [microservice]
 
-# PocketBase - Open Source backend in 1 file
-[https://pocketbase.io/](https://pocketbase.io/)
-![](/images/og.png)
-Open Source backend in 1 file with realtime database, authentication, file storage and admin dashboard
-
-[sqlite] [pocketbase]
-
 # 
 [https://svelte.dev/repl/765f182ddd75486a8f6cf0b3ba75f276?version=3.59.2](https://svelte.dev/repl/765f182ddd75486a8f6cf0b3ba75f276?version=3.59.2)
 ![]()
