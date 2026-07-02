@@ -733,13 +733,6 @@ No substances required.
 
 [Terminal recorder]
 
-# Preserving Order in Concurrent Go Apps: Three Approaches Compared
-[https://destel.dev/blog/preserving-order-in-concurrent-go](https://destel.dev/blog/preserving-order-in-concurrent-go)
-![](https://destel.dev/og/blog/preserving-order-in-concurrent-go.jpeg?d=1)
-Concurrency breaks ordering by design, but sometimes we need both. Explore three methods to preserve order in concurrent Go applications, from standard ReplyTo channels to sophisticated permission passing, with benchmarks and real-world trade-offs.
-
-[Concurrency]
-
 # D1: We turned it up to 11
 [https://blog.cloudflare.com/d1-turning-it-up-to-11](https://blog.cloudflare.com/d1-turning-it-up-to-11)
 ![]()
