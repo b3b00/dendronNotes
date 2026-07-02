@@ -861,3 +861,10 @@ A worker pool in Go shuffles output order. Three streaming patterns that preserv
 Testing and debugging on device
 
 [pwa]
+
+# PocketBase - Open Source backend in 1 file
+[https://pocketbase.io/](https://pocketbase.io/)
+![](/images/og.png)
+Open Source backend in 1 file with realtime database, authentication, file storage and admin dashboard
+
+
