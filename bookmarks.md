@@ -874,3 +874,10 @@ I vividly remember most of my own journey into engineering management over the y
 The things no one tells you about being a manager: You’ll bring work home with you more often than not. The difficult conversation you’re dreading, the “stupid” business decision you will need to explain to your team, the office politics you need to handle, or the team member struggling silently with a personal crises. You will need to learn how to manage stress and rumination – and you’ll need to learn it fast.
 
 [management]
+
+# When AI builds itself
+[https://www.anthropic.com/institute/recursive-self-improvement](https://www.anthropic.com/institute/recursive-self-improvement)
+![Anthropic logo](https://cdn.sanity.io/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg)
+Our progress toward recursive self-improvement, and its implications.
+
+
