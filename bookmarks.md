@@ -658,7 +658,7 @@ You can find a starter template for LazyVim here
 [https://matklad.github.io/2023/08/13/role-of-algorithms.html](https://matklad.github.io/2023/08/13/role-of-algorithms.html)
 ![]()
 
-[Algorythm] [Invariant]
+[Invariant]
 
 # How to Charge for your Open Source
 [https://www.mikeperham.com/2015/11/23/how-to-charge-for-your-open-source/](https://www.mikeperham.com/2015/11/23/how-to-charge-for-your-open-source/)
