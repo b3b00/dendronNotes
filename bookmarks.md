@@ -134,7 +134,7 @@ Le Deep Learning et les réseaux de neurones fonctionnent comme le cerveau humai
 
 [AI] [Réseau de neurones]
 
-# 
+# Embeddings are underrated
 [https://technicalwriting.dev/data/embeddings.html?utm_source=changelog-news](https://technicalwriting.dev/data/embeddings.html?utm_source=changelog-news)
 ![]()
 
