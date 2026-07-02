@@ -854,3 +854,10 @@ Our progress toward recursive self-improvement, and its implications.
 A worker pool in Go shuffles output order. Three streaming patterns that preserve it with bounded memory, backpressure, and minimal allocations.
 
 [Concurrency]
+
+# The PWA Experiment - pt II
+[https://michielsioen.be/2019-11-23-the-pwa-experiment-pt2-debugging/](https://michielsioen.be/2019-11-23-the-pwa-experiment-pt2-debugging/)
+![](http://msioen.github.io/img/avatar-icon.png)
+Testing and debugging on device
+
+
