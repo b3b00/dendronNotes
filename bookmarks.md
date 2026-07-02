@@ -84,13 +84,6 @@ La baisse observée de la productivité du travail s’explique par d’autres f
 
 [Télétravail]
 
-# Voici pourquoi imposer le retour au bureau aux employés serait une mauvaise idée
-[https://fr.linkedin.com/business/talent/blog/talent-acquisition/why-forcing-workers-back-to-the-office-is-a-bad-idea?src=fb-ad&amp;trk=psm-fb_campid.23858979964010421_asid.23858979963860421_crid.120200760651340422&amp;mcid=7112474424020254730&amp;fbclid=PAAaZ2j56N5zFVp3LBHPdIO3aXw1BRThSE6j191vpwbLg-7107agrPwjoXSrI_aem_AfmdQQmgqJcpX-8vRdT2EYKemqyWKwB6wN4MeipPX21q4MEl4YshJe2ooi9If8DgXj4Lt9YM4c2bFbNvPR2K1FFh](https://fr.linkedin.com/business/talent/blog/talent-acquisition/why-forcing-workers-back-to-the-office-is-a-bad-idea?src=fb-ad&amp;trk=psm-fb_campid.23858979964010421_asid.23858979963860421_crid.120200760651340422&amp;mcid=7112474424020254730&amp;fbclid=PAAaZ2j56N5zFVp3LBHPdIO3aXw1BRThSE6j191vpwbLg-7107agrPwjoXSrI_aem_AfmdQQmgqJcpX-8vRdT2EYKemqyWKwB6wN4MeipPX21q4MEl4YshJe2ooi9If8DgXj4Lt9YM4c2bFbNvPR2K1FFh)
-![](https://media.licdn.com/dms/image/v2/D4D08AQGE0L9WrG-l_w/croft-frontend-shrinkToFit1024/croft-frontend-shrinkToFit1024/0/1677027976403?e=2147483647&amp;v=beta&amp;t=GpdlsOX3EHbI4KC_yTVoVpAintoyc74aEsjogz37Uuw)
-Si la plupart des employés souhaitent de la flexibilité au travail, de plus en plus d’employeurs insistent pour qu’ils retournent au bureau. Voici trois raisons de remettre à plus tard les mesures de retour au bureau.
-
-[Télétravail]
-
 # Remise en cause du télétravail : la vraie question est « pourquoi ? » | Conditions de Travail et Santé | Vie au travail | CIT | CFE-CGC groupe Orange
 [https://www.cfecgc-orange.org/2024103114642/conditions-de-travail-et-sante/remise-en-cause-du-teletravail-la-vraie-question-est-pourquoi.html](https://www.cfecgc-orange.org/2024103114642/conditions-de-travail-et-sante/remise-en-cause-du-teletravail-la-vraie-question-est-pourquoi.html)
 ![](https://www.cfecgc-orange.org/documents/images/cit/sante/ai-generated-9096284_640.jpg)
