@@ -323,12 +323,6 @@ What `git config` settings should be defaults by now? Here are some settings tha
 
 [Software] [Remote working]
 
-# The Software Engineer Spectrum: Speed vs. Accuracy - Ben Howdle - Software Consultant & Advisor
-[https://benhowdle.im/software-engineer-spectrum?utm_source=bonobopress&amp;utm_medium=newsletter&amp;utm_campaign=2018](https://benhowdle.im/software-engineer-spectrum?utm_source=bonobopress&amp;utm_medium=newsletter&amp;utm_campaign=2018)
-![The Software Engineer Spectrum: Speed vs. Accuracy - Ben Howdle - Software Consultant &amp; Advisor](https://benhowdle.im/img/me-2025.jpg)
-
-[Software] [software engineering]
-
 # The Great Software Quality Collapse: How We Normalized Catastrophe
 [https://techtrenches.substack.com/p/the-great-software-quality-collapse?utm_source=changelog-news](https://techtrenches.substack.com/p/the-great-software-quality-collapse?utm_source=changelog-news)
 ![](https://substackcdn.com/image/fetch/$s_!gi34!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F62a3c8b9-498d-49c0-a051-9166d690cb7c_508x340.png)
