@@ -507,13 +507,6 @@ Discover the evolution of cloud-computing in the post-serverless era, with a shi
 
 [cloud] [on premise]
 
-# The PWA Experiment - pt II
-[https://michielsioen.be/2019-11-23-the-pwa-experiment-pt2-debugging/](https://michielsioen.be/2019-11-23-the-pwa-experiment-pt2-debugging/)
-![](http://msioen.github.io/img/avatar-icon.png)
-Testing and debugging on device
-
-[pwa]
-
 # How to Integrate Geolocation Into Your PWA
 [https://www.simicart.com/blog/pwa-geolocation/](https://www.simicart.com/blog/pwa-geolocation/)
 ![](https://simicart.com/wp-content/uploads/pwa-geolocation-featured-image.png)
