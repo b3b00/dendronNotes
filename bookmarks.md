@@ -868,3 +868,9 @@ Testing and debugging on device
 Open Source backend in 1 file with realtime database, authentication, file storage and admin dashboard
 
 [sqlite] [pocketbase]
+
+# The Software Engineer Spectrum: Speed vs. Accuracy - Ben Howdle - Software Consultant &amp; Advisor
+[https://benhowdle.im/software-engineer-spectrum?utm_source=bonobopress&amp;utm_medium=newsletter&amp;utm_campaign=2018](https://benhowdle.im/software-engineer-spectrum?utm_source=bonobopress&amp;utm_medium=newsletter&amp;utm_campaign=2018)
+![The Software Engineer Spectrum: Speed vs. Accuracy - Ben Howdle - Software Consultant &amp; Advisor](https://benhowdle.im/img/me-2025.jpg)
+
+
