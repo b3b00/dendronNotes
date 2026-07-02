@@ -832,13 +832,6 @@ Microsoft introduces Coreutils for Windows, bringing familiar Unix-style command
 
 [Linux]
 
-# When AI builds itself
-[https://www.anthropic.com/institute/recursive-self-improvement](https://www.anthropic.com/institute/recursive-self-improvement)
-![Anthropic logo](https://cdn.sanity.io/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg)
-Our progress toward recursive self-improvement, and its implications.
-
-[AI]
-
 # regarding Tennent's "Language Design based on Semantic Principles"
 [https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles](https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles)
 ![]()
@@ -867,13 +860,6 @@ I vividly remember most of my own journey into engineering management over the y
 The things no one tells you about being a manager: You’ll bring work home with you more often than not. The difficult conversation you’re dreading, the “stupid” business decision you will need to explain to your team, the office politics you need to handle, or the team member struggling silently with a personal crises. You will need to learn how to manage stress and rumination – and you’ll need to learn it fast.
 
 [management]
-
-# When AI builds itself
-[https://www.anthropic.com/institute/recursive-self-improvement](https://www.anthropic.com/institute/recursive-self-improvement)
-![Anthropic logo](https://cdn.sanity.io/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg)
-Our progress toward recursive self-improvement, and its implications.
-
-
 
 # Voici pourquoi imposer le retour au bureau aux employés serait une mauvaise idée
 [https://fr.linkedin.com/business/talent/blog/talent-acquisition/why-forcing-workers-back-to-the-office-is-a-bad-idea?src=fb-ad&amp;trk=psm-fb_campid.23858979964010421_asid.23858979963860421_crid.120200760651340422&amp;mcid=7112474424020254730&amp;fbclid=PAAaZ2j56N5zFVp3LBHPdIO3aXw1BRThSE6j191vpwbLg-7107agrPwjoXSrI_aem_AfmdQQmgqJcpX-8vRdT2EYKemqyWKwB6wN4MeipPX21q4MEl4YshJe2ooi9If8DgXj4Lt9YM4c2bFbNvPR2K1FFh](https://fr.linkedin.com/business/talent/blog/talent-acquisition/why-forcing-workers-back-to-the-office-is-a-bad-idea?src=fb-ad&amp;trk=psm-fb_campid.23858979964010421_asid.23858979963860421_crid.120200760651340422&amp;mcid=7112474424020254730&amp;fbclid=PAAaZ2j56N5zFVp3LBHPdIO3aXw1BRThSE6j191vpwbLg-7107agrPwjoXSrI_aem_AfmdQQmgqJcpX-8vRdT2EYKemqyWKwB6wN4MeipPX21q4MEl4YshJe2ooi9If8DgXj4Lt9YM4c2bFbNvPR2K1FFh)
