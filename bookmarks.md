@@ -867,3 +867,10 @@ The things no one tells you about being a manager: You’ll bring work home with
 Si la plupart des employés souhaitent de la flexibilité au travail, de plus en plus d’employeurs insistent pour qu’ils retournent au bureau. Voici trois raisons de remettre à plus tard les mesures de retour au bureau.
 
 [Télétravail]
+
+# When AI builds itself
+[https://www.anthropic.com/institute/recursive-self-improvement](https://www.anthropic.com/institute/recursive-self-improvement)
+![Anthropic logo](https://cdn.sanity.io/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg)
+Our progress toward recursive self-improvement, and its implications.
+
+
