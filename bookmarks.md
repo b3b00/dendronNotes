@@ -304,7 +304,7 @@ What `git config` settings should be defaults by now? Here are some settings tha
 
 [git]
 
-# 
+# dendronline-b3b00.koyeb.appgit
 [https://web.archive.org/web/20130818024030/http:/www.computer.org/cms/Computer.org/ComputingNow/homepage/2011/1111/W_SW_AllLateProjectsAretheSame.pdf](https://web.archive.org/web/20130818024030/http:/www.computer.org/cms/Computer.org/ComputingNow/homepage/2011/1111/W_SW_AllLateProjectsAretheSame.pdf)
 ![]()
 
