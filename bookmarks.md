@@ -122,7 +122,6 @@ Most of us last saw calculus in school, but derivatives are a critical part of m
 # AI is not a high-precision technology, and this has profound implications for the world of work
 [https://www.dailymaverick.co.za/opinionista/2024-09-26-ai-is-not-a-high-precision-technology-and-this-has-profound-implications-for-the-world-of-work/](https://www.dailymaverick.co.za/opinionista/2024-09-26-ai-is-not-a-high-precision-technology-and-this-has-profound-implications-for-the-world-of-work/)
 ![]()
-![](https://cdn.dailymaverick.co.za/i/Jw6Fhc8oqa2u_7uR_7O38SdRs1M=/1600x0/smart/filters:strip_exif()/file/dailymaverick/wp-content/uploads/Tshilidzi-Marwala-01_from-JanP-20180531-USE.jpg)
 If AI is too precise, it is considered flawed because it is memorising instead of learning, a phenomenon called over-fitting. This inherent imprecision in AI systems has big implications for the world of work.
 
 [AI]
