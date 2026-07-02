@@ -880,4 +880,4 @@ Our progress toward recursive self-improvement, and its implications.
 ![](https://media.licdn.com/dms/image/v2/D4D08AQGE0L9WrG-l_w/croft-frontend-shrinkToFit1024/croft-frontend-shrinkToFit1024/0/1677027976403?e=2147483647&v=beta&t=GpdlsOX3EHbI4KC_yTVoVpAintoyc74aEsjogz37Uuw)
 Si la plupart des employés souhaitent de la flexibilité au travail, de plus en plus d’employeurs insistent pour qu’ils retournent au bureau. Voici trois raisons de remettre à plus tard les mesures de retour au bureau.
 
-
+[Télétravail]
