@@ -860,4 +860,4 @@ A worker pool in Go shuffles output order. Three streaming patterns that preserv
 ![](http://msioen.github.io/img/avatar-icon.png)
 Testing and debugging on device
 
-
+[pwa]
