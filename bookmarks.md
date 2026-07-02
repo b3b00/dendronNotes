@@ -409,13 +409,6 @@ When you build an ASP.NET Core application and run it with a simple dotnet run, 
 
 [Shazam] [DSP] [How it works]
 
-# The Garden of Forking Paths | Brian Klaas | Substack
-[https://www.forkingpaths.co/p/the-evolution-of-stupidity-and-octopus](https://www.forkingpaths.co/p/the-evolution-of-stupidity-and-octopus)
-![](https://substackcdn.com/image/fetch/$s_!x8GF!,f_auto,q_auto:best,fl_progressive:steep/https%3A%2F%2Fbrianklaas.substack.com%2Ftwitter%2Fsubscribe-card.jpg%3Fv%3D1609184464%26version%3D9)
-Wandering around an infinitely complex, ever-changing world. Click to read The Garden of Forking Paths, by Brian Klaas, a Substack publication.
-
-[Cloudflare] [Dunning-Kruger] [intelligence]
-
 # Documentation - Migrating from JavaScript
 [https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html](https://www.typescriptlang.org/docs/handbook/migrating-from-javascript.html)
 ![]()
