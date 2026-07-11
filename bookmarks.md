@@ -883,4 +883,4 @@ What might be more surprising is that even when we adjust the temperature down t
 ![](https://www.kdnuggets.com/wp-content/uploads/Noob-Series-Fine-Tuning-Explained.png)
 You don&#039;t need a PhD to understand fine-tuning. This article explains how pretrained models learn new skills through fine-tuning.
 
-
+[AI]
