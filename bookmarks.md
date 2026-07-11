@@ -877,3 +877,10 @@ For example, you might observe that asking ChatGPT the same question multiple ti
 What might be more surprising is that even when we adjust the temperature down to 0This means that the LLM always chooses the highest probability token, which is called greedy sampling. (thus making the sampling theoretically deterministic), LLM APIs are still not deterministic in practice (see past discussions here, here, or here). Even when running inference on your own hardware with an OSS inference library like vLLM or SGLang, sampling still isn&rsquo;t deterministic (see here or here).
 
 [AI] [Determinism]
+
+# Fine-Tuning Explained for Noobs (How Pretrained Models Learn New Skills) - KDnuggets
+[https://share.google/G3FRCnPQps0OBudf1](https://share.google/G3FRCnPQps0OBudf1)
+![](https://www.kdnuggets.com/wp-content/uploads/Noob-Series-Fine-Tuning-Explained.png)
+You don&#039;t need a PhD to understand fine-tuning. This article explains how pretrained models learn new skills through fine-tuning.
+
+
