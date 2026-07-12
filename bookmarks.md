@@ -884,3 +884,10 @@ What might be more surprising is that even when we adjust the temperature down t
 You don&#039;t need a PhD to understand fine-tuning. This article explains how pretrained models learn new skills through fine-tuning.
 
 [AI]
+
+# I Built My Second ETL Pipeline. This Time, I Started Thinking Like a Data Engineer | Towards Data Science
+[https://towardsdatascience.com/i-built-my-second-etl-pipeline-this-time-i-started-thinking-like-a-data-engineer/](https://towardsdatascience.com/i-built-my-second-etl-pipeline-this-time-i-started-thinking-like-a-data-engineer/)
+![](https://towardsdatascience.com/wp-content/uploads/2026/07/etl-article-image-rss.jpg)
+Building a production-ready RSS pipeline with Python, Docker, PostgreSQL, and Kestra
+
+
