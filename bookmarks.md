@@ -904,4 +904,4 @@ In this blog, we will learn about how Chain-of-Thought (CoT) Prompting works. We
 ![Take the 100 Days of AI challenge - learn one AI concept a day, from machine learning basics to AI agents in production, in 100 days. - amitshekhariitbhu/100-days-of-ai](https://repository-images.githubusercontent.com/1295965620/f768efdf-a581-4a35-ac64-3306cac82332)
 Take the 100 Days of AI challenge - learn one AI concept a day, from machine learning basics to AI agents in production, in 100 days. - amitshekhariitbhu/100-days-of-ai
 
-
+[AI]
