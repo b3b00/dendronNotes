@@ -891,3 +891,10 @@ You don&#039;t need a PhD to understand fine-tuning. This article explains how p
 Building a production-ready RSS pipeline with Python, Docker, PostgreSQL, and Kestra
 
 [AI] [ETL]
+
+# How does Chain-of-Thought (CoT) Prompting work?
+[https://outcomeschool.com/blog/how-does-chain-of-thought-prompting-work](https://outcomeschool.com/blog/how-does-chain-of-thought-prompting-work)
+![](https://outcomeschool.com/static/images/blog/how-does-chain-of-thought-prompting-work.png)
+In this blog, we will learn about how Chain-of-Thought (CoT) Prompting works. We will also see why a model that jumps straight to the answer often gets it wrong, how making it reason step by step fixes this, the difference between zero-shot and few-shot CoT, and where this technique is truly useful.
+
+
