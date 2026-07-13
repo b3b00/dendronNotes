@@ -898,3 +898,10 @@ Building a production-ready RSS pipeline with Python, Docker, PostgreSQL, and Ke
 In this blog, we will learn about how Chain-of-Thought (CoT) Prompting works. We will also see why a model that jumps straight to the answer often gets it wrong, how making it reason step by step fixes this, the difference between zero-shot and few-shot CoT, and where this technique is truly useful.
 
 
+
+# GitHub - amitshekhariitbhu/100-days-of-ai: Take the 100 Days of AI challenge - learn one AI concept a day, from machine learning basics to AI agents in production, in 100 days.
+[https://github.com/amitshekhariitbhu/100-days-of-ai](https://github.com/amitshekhariitbhu/100-days-of-ai)
+![Take the 100 Days of AI challenge - learn one AI concept a day, from machine learning basics to AI agents in production, in 100 days. - amitshekhariitbhu/100-days-of-ai](https://repository-images.githubusercontent.com/1295965620/f768efdf-a581-4a35-ac64-3306cac82332)
+Take the 100 Days of AI challenge - learn one AI concept a day, from machine learning basics to AI agents in production, in 100 days. - amitshekhariitbhu/100-days-of-ai
+
+
