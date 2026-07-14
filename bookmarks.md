@@ -905,3 +905,10 @@ In this blog, we will learn about how Chain-of-Thought (CoT) Prompting works. We
 Take the 100 Days of AI challenge - learn one AI concept a day, from machine learning basics to AI agents in production, in 100 days. - amitshekhariitbhu/100-days-of-ai
 
 [AI]
+
+# Lucas&#x27; Laws of Project Management
+[https://www.lucasfcosta.com/blog/laws-of-software-project-management?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2321](https://www.lucasfcosta.com/blog/laws-of-software-project-management?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2321)
+![](https://www.lucasfcosta.com/blog/laws-of-software-project-management?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2321)
+Hot takes and cold truths on software, startups, and the lies we tell ourselves.
+
+
