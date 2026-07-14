@@ -912,3 +912,10 @@ Take the 100 Days of AI challenge - learn one AI concept a day, from machine lea
 Hot takes and cold truths on software, startups, and the lies we tell ourselves.
 
 [software engineering] [Software] [management] [project management]
+
+# From story points to tokenmaxxing: Why engineering keeps measuring the wrong things
+[https://www.infoworld.com/article/4195756/from-story-points-to-tokenmaxxing-why-engineering-keeps-measuring-the-wrong-things.html](https://www.infoworld.com/article/4195756/from-story-points-to-tokenmaxxing-why-engineering-keeps-measuring-the-wrong-things.html)
+![](https://www.infoworld.com/wp-content/uploads/2026/07/4195756-0-30988300-1784019766-original.jpg?quality=50&strip=all&w=1024)
+When we measure effort instead of value, we lose sight of what we are trying to achieve. 
+
+
