@@ -911,4 +911,4 @@ Take the 100 Days of AI challenge - learn one AI concept a day, from machine lea
 ![](https://www.lucasfcosta.com/blog/laws-of-software-project-management?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2321)
 Hot takes and cold truths on software, startups, and the lies we tell ourselves.
 
-
+[software engineering]
