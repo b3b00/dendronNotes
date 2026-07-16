@@ -925,4 +925,4 @@ When we measure effort instead of value, we lose sight of what we are trying to 
 ![](https://substackcdn.com/image/fetch/$s_!NyYu!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https://substack-post-media.s3.amazonaws.com/public/images/3f73473d-6107-4c54-ae94-d3b7b4002598_1536x1024.png)
 Why working harder has stopped working and the five game-theoretical mechanisms no one explains.
 
-[work]
+[work] [reward]
