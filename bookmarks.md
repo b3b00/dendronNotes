@@ -918,7 +918,7 @@ Hot takes and cold truths on software, startups, and the lies we tell ourselves.
 ![](https://www.infoworld.com/wp-content/uploads/2026/07/4195756-0-30988300-1784019766-original.jpg?quality=50&strip=all&w=1024)
 When we measure effort instead of value, we lose sight of what we are trying to achieve. 
 
-[Software] [software engineering]
+[Software] [software engineering] [TODO]
 
 # The Laws of this World (Game Theory)
 [https://structuralist.substack.com/p/the-laws-of-this-world?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2322](https://structuralist.substack.com/p/the-laws-of-this-world?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2322)
