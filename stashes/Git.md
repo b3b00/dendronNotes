@@ -2,7 +2,7 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1784286630
+updated: 1784305769
 created: 1769795609
 ---
 
@@ -17,7 +17,7 @@ git tad -d mytag
 
 Remote
 ```bash
-git tag origin mytag -- delete
+git tag origin mytag --delete
 ```
 ______________
 
