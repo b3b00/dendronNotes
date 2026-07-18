@@ -932,4 +932,4 @@ Why working harder has stopped working and the five game-theoretical mechanisms 
 ![](https://martinfowler.com/logo-sq.png)
 Why Domain-Specific Languages and good abstractions make LLM code generation reliable and reviewable.
 
-[TODO]
+[TODO] [AI]
