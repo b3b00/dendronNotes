@@ -926,3 +926,10 @@ When we measure effort instead of value, we lose sight of what we are trying to 
 Why working harder has stopped working and the five game-theoretical mechanisms no one explains.
 
 [work] [reward] [TODO]
+
+# DSLs Enable Reliable Use of LLMs
+[https://martinfowler.com/articles/llm-and-dsls.html](https://martinfowler.com/articles/llm-and-dsls.html)
+![](https://martinfowler.com/logo-sq.png)
+Why Domain-Specific Languages and good abstractions make LLM code generation reliable and reviewable.
+
+[TODO]
