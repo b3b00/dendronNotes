@@ -939,4 +939,4 @@ Why Domain-Specific Languages and good abstractions make LLM code generation rel
 ![](https://substackcdn.com/image/fetch/$s_!NTK9!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https://substack-post-media.s3.amazonaws.com/public/images/fb548edd-f827-4d19-aa23-3bd68fdc980c_1456x1092.webp)
 Reflections on autonomy and the value of thinking for ourselves
 
-[TODO] [AI]
+[TODO] [AI] [hinking]
