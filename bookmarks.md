@@ -1,10 +1,3 @@
-# Comment LeBonCoin éteint les attaques DDoS de niveau 7 | LeMagIT
-[https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec](https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec)
-![](https://www.lemagit.fr/visuals/LeMagIT/hero_article/LeBonCoin_PacMan.jpg)
-Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d'Internet, les attaques sur la couche applicative sont plus complexes à traiter. LeBonCoin a fait le choix d'une solution de sécurité collaborative pour compléter son dispositif anti-DDoS : l'agent de la startup française CrowdSec.
-
-[Ddos] [Security]
-
 # Everything you need to know about configuration and secret management in .NET
 [https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730](https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730)
 ![](https://stenbrinke.nl/images/blog/configuration-and-secret-management-in-dotnet/dark/configuration-overview.webp)
