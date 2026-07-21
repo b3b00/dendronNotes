@@ -955,3 +955,10 @@ SmartReader is a library to extract the main content of a web page, based on a p
 Do you want to know more about an incremental parsing library used at GitHub and that was born out of a failed software?
 
 [TODO] [Parser] [Parsing] [incremental]
+
+# Semantic Enrichment: The Critical Step After Parsing - Strumenta
+[https://tomassetti.me/semantic-enrichment-the-critical-step-after-parsing/](https://tomassetti.me/semantic-enrichment-the-critical-step-after-parsing/)
+![](https://tomassetti.me/wp-content/uploads/2024/12/Foto-sitoweb-15.jpg)
+Semantic Enrichment: the critical step after parsing. This is a step that significantly increases the value of the ASTs we got from parsing
+
+[TODO]
