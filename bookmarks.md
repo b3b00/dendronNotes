@@ -947,3 +947,10 @@ Do you want to know more about an incremental parsing library used at GitHub and
 Semantic Enrichment: the critical step after parsing. This is a step that significantly increases the value of the ASTs we got from parsing
 
 [TODO] [Parser] [Parsing] [semantic]
+
+# Comment LeBonCoin éteint les attaques DDoS de niveau 7 | LeMagIT
+[https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec](https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec)
+![](https://www.lemagit.fr/visuals/LeMagIT/hero_article/LeBonCoin_PacMan.jpg)
+Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d’Internet, les attaques sur la couche applicative sont plus complexes à traiter. LeBonCoin a fait le choix d’une solution de sécurité collaborative pour compléter son dispositif anti-DDoS : l’agent de la startup française CrowdSec.
+
+[TODO]
