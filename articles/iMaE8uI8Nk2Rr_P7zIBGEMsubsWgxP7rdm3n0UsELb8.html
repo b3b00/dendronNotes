@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Advanced Logging with Proxies in C#</title><meta name="author" content="Jochen Bartlau"><meta name="description" content="This article presents a lightweight, dependency-free logging mechanism in C# using the DispatchProxy class. It enables efficient method interception, conditional logging, performance optimization, and error handling without external dependencies."><meta name="dendron:source-url" content="https://www.c-sharpcorner.com/article/advanced-logging-with-proxies-in-c-sharp/"><meta name="dendron:length" content="6808"><meta name="dendron:time-to-read-minutes" content="5"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div id="div2"><p>In modern C# applications, cross-cutting concerns like logging are essential yet challenging to implement efficiently. Traditional approaches often rely on external tools like Aspect-Oriented Programming (AOP) frameworks (e.g., PostSharp) or dynamic proxy generation libraries like Castle DynamicProxy. While effective, these solutions introduce third-party dependencies, potential runtime overhead, and complexity. This article presents an alternative approach: a lightweight, dependency-free logging mechanism leveraging C#'s built-in DispatchProxy class.</p><p>The solution described here prioritizes performance through caching and early exits, ensuring minimal runtime impact. It includes benchmarks comparing different configurations, demonstrating the negligible overhead when logging is disabled. Let's explore the implementation in detail.</p><h2>LoggingProxy Class</h2><p>The LoggingProxy&lt;T&gt; class acts as the backbone of this solution. It wraps an object of type T, intercepting method calls to log their invocation and results. Here are some key features.</p><ul>
+	<li><strong>Reflection Caching: </strong>Reflection results are cached using ConcurrentDictionary to minimize repeated overhead.</li>
+	<li><strong>Conditional Logging: </strong>The proxy only logs methods annotated with a custom LogAttribute or methods in types/classes annotated with the same attribute.</li>
+	<li><strong>Error Handling: </strong>Exceptions thrown by proxied methods are caught and logged with their full stack trace.</li>
+</ul><h3>Key Implementation Highlights</h3><pre><code>protected override object? Invoke(MethodInfo? targetMethod, object?[]? args)
+{
+    ArgumentNullException.ThrowIfNull(targetMethod);
+    if (_decorated == null || _logger == null)
+    {
+        throw new InvalidOperationException("LoggingProxy is not properly initialized.");
+    }
+    (bool shouldLog, LogLevel logLevel) = _logAttributeCache.GetOrAdd(targetMethod, method =&gt;
+    {
+        LogAttribute? attribute = method.GetCustomAttribute&lt;LogAttribute&gt;()
+            ?? method.DeclaringType?.GetCustomAttribute&lt;LogAttribute&gt;();
+        return (attribute != null, attribute?.Level ?? LogLevel.Information);
+    });
+    shouldLog &amp;= _logger.IsEnabled(logLevel);
+    if (!shouldLog)
+    {
+        return targetMethod.Invoke(_decorated, args);
+    }
+    string methodName = targetMethod.Name;
+    _logger.Log(logLevel, "{MethodName} invoked.", methodName);
+    object? result = targetMethod.Invoke(_decorated, args);
+    _logger.Log(logLevel, "{MethodName} returned {Result}.", methodName, result);
+    return result;
+}
+</code></pre><h3>LogAttribute</h3><p>The LogAttribute class is a simple, declarative way to annotate methods or classes for logging. It specifies the logging level, defaulting to Information.</p><pre><code>[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Interface, Inherited = true)]
+public class LogAttribute : Attribute
+{
+    public LogLevel Level { get; }
+
+    public LogAttribute(LogLevel level = LogLevel.Information)
+    {
+        Level = level;
+    }
+}
+</code></pre><p>This attribute ensures fine-grained control over which methods or classes should be logged and at what level.</p><h3>ILoggingProxy Interface</h3><p>The ILoggingProxy interface provides access to the underlying object being proxied. This enables advanced scenarios, such as unwrapping proxied instances or combining proxies with other features.</p><pre><code>internal interface ILoggingProxy
+{
+    object? Decorated { get; }
+}
+</code></pre><h3>LoggingProxyHelper Class</h3><p>The LoggingProxyHelper class adds utility functionality for safely unwrapping proxies. It allows seamless interaction with both proxied and non-proxied instances.</p><pre><code>public static T? SafeCast&lt;T&gt;(object instance) where T : class
+{
+    if (instance is T target)
+    {
+        return target;
+    }
+    if (instance is ILoggingProxy proxy &amp;&amp; proxy.Decorated is T decorated)
+    {
+        return decorated;
+    }
+    return null;
+}
+</code></pre><p>This ensures robust and predictable behavior when working in mixed scenarios.</p><h2>The Cool Factor: DebuggerDisplay Attribute</h2><p>One of the standout features of this logging proxy implementation is its use of the DebuggerDisplay attribute. This attribute enhances debugging by customizing how objects are displayed in the debugger, making it easier to identify and understand their state at a glance.</p><p>In the LoggingProxy implementation, DebuggerDisplay values are dynamically resolved and cached for efficient reuse. When logging method parameters or return values, the proxy attempts to use the DebuggerDisplay representation if available, falling back to the default ToString() behavior when necessary.</p><h3>Why is this useful?</h3><ul>
+	<li><strong>Enhanced Readability: </strong>Instead of displaying raw object types or complex structures, meaningful representations are shown in debugger windows.</li>
+	<li><strong>Performance Optimization: </strong>By caching DebuggerDisplay values, the implementation minimizes the overhead of repeatedly evaluating the attribute during logging.</li>
+</ul><p><strong>Example</strong></p><pre><code>[DebuggerDisplay("Name = {Name}, Age = {Age}")]
+public class Person
+{
+    public string Name { get; set; }
+    public int Age { get; set; }
+}
+var person = new Person
+{
+    Name = "John",
+    Age = 30
+};
+</code></pre><p>When this Person instance is logged through the proxy, its DebuggerDisplay value ("Name = John, Age = 30") will appear in the logs, providing clear and concise information.</p><p><strong>Usage Example</strong></p><p>Here’s how to integrate and use the logging proxy in your application.</p><pre><code>public interface IExampleService
+{
+    void PerformAction(string input);
+}
+[Log(LogLevel.Debug)]
+public class ExampleService : IExampleService
+{
+    public void PerformAction(string input)
+    {
+        Console.WriteLine($"Action performed with input: {input}");
+    }
+}
+var service = LoggingProxy&lt;IExampleService&gt;.Create(new ExampleService(), logger);
+service.PerformAction("Test");
+</code></pre><p>In this example, the ExampleService class is wrapped with a logging proxy. Method calls are logged according to the specified log level.</p><h3>Benchmarking Results</h3><p>Benchmarks were conducted using Benchmark.Net to measure the impact of this approach. The results are as follows.</p><p><strong>Without Proxy/Logging</strong></p><table>
+	<tbody>
+		<tr>
+			<td><span>Method</span></td>
+			<td><span>Mean</span></td>
+			<td><span>Error</span></td>
+			<td><span>StdDev</span></td>
+			<td><span>Allocated</span></td>
+		</tr>
+		<tr>
+			<td>Print</td>
+			<td>330.3 ms</td>
+			<td>12.22 ms</td>
+			<td>35.05 ms</td>
+			<td>114.89 MB</td>
+		</tr>
+	</tbody>
+</table><p><strong>Proxy Enabled, Logging Disabled</strong></p><table>
+	<tbody>
+		<tr>
+			<td><span>Method</span></td>
+			<td><span>Mean</span></td>
+			<td><span>Error</span></td>
+			<td><span>StdDev</span></td>
+			<td><span>Allocated</span></td>
+		</tr>
+		<tr>
+			<td>Print</td>
+			<td>331.6 ms</td>
+			<td>11.77 ms</td>
+			<td>33.59 ms</td>
+			<td>121.28 MB</td>
+		</tr>
+	</tbody>
+</table><p><strong>Proxy Enabled, Full Logging</strong></p><table>
+	<tbody>
+		<tr>
+			<td><span>Method</span></td>
+			<td><span>Mean</span></td>
+			<td><span>Error</span></td>
+			<td><span>StdDev</span></td>
+			<td><span>Allocated</span></td>
+		</tr>
+		<tr>
+			<td>Print</td>
+			<td>587.0 ms</td>
+			<td>27.47 ms</td>
+			<td>80.13 ms</td>
+			<td>281.18 MB</td>
+		</tr>
+	</tbody>
+</table><p>These results demonstrate minimal overhead when logging is disabled. Even with full logging, the performance remains reasonable given the complexity of the operations.</p><h2>Conclusion</h2><p>This proxy-based logging mechanism offers a lightweight, dependency-free solution to implement cross-cutting concerns in C#. By leveraging DispatchProxy and thoughtful performance optimizations, it achieves robust logging without the pitfalls of traditional AOP or third-party frameworks. With the addition of tools like Benchmark.Net, developers can ensure their implementation meets performance expectations in production environments.</p><p>The complete source code is attached to this article for your reference. Feel free to adapt and enhance it as needed.</p></div></div></article></body></html>

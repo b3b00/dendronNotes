@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>More Testing Tips With C#</title><meta name="author" content=""><meta name="description" content="This post is part of C# Advent Calendar 2024. Visit it for all the awesome upcoming posts!
+It was released on 11 December as a substitution for the 8th December spot, as another blogger couldn’t make it."><meta name="dendron:source-url" content="https://gamlor.info/posts-output/2024-12-11-csharp-testing-stuff/en/?lidx=15&amp;wpid=536995&amp;mkt_tok=NDI2LVFWRC0xMTQAAAGYCap900baVKAG6_9IN5DzwJHGZJkGNJc8n5AWaM6F8l8-CsMU5zNYwdnlXsEETiteDNLTub7stfG3ZeXpL3YHygXe81iChlkJorAyhKrGPzDnTmGv"><meta name="dendron:length" content="6103"><meta name="dendron:time-to-read-minutes" content="4"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div id="content"><p><em>This post is part of <a href="https://www.csadvent.christmas/">C# Advent Calendar 2024</a>. Visit <a href="https://www.csadvent.christmas/">it</a> for all the awesome upcoming posts!
+It was released on 11 December as a substitution for the 8th December spot, as another blogger couldn’t make it.</em></p><p>The traditional <a href="https://www.csadvent.christmas/">C# Advent</a> is here. It also seems tradition I talk about
+some testing aspect
+<sup>[<a id="_footnoteref_1" href="#_footnotedef_1" title="View footnote.">1</a>]</sup>
+or some outsider view approach to C#
+<sup>[<a id="_footnoteref_2" href="#_footnotedef_2" title="View footnote.">2</a>]</sup>
+here.
+Let’s not break this tradition and I share some more testing tips.</p><div><p><a href="https://gamlor.info/posts/2024-12-11-csharp-testing-stuff/excited.jpg"></a></p><p>Figure 1. Excitement</p></div><!--more--><div><h2 id="_fake_data_with_faker_net_or_bogus_net">Fake Data with Faker.NET or Bogus.NET</h2><div><p>In testing you often need example data. Creating data yourself isn’t hard, but tedious work.
+Therefore, the test data often does not look realistic at all.
+This is where test data generator libraries come it and give you decent test data.</p><div><p><a href="https://gamlor.info/posts/2024-12-11-csharp-testing-stuff/test-data.jpg"></a></p><p>Figure 2. Test Data</p></div><div><h3 id="_faker_net">Faker.NET</h3><p>The first one is <code>Faker</code>. It originated in the Ruby world and there exists multiple forks
+for the C#/.Net. For example I used this <a href="https://github.com/oriches/faker-cs">Faker.Net</a> one.</p><p>Once you’ve added it to your project, use the static <code>Faker</code> class to generate some test data:</p><div><pre><code data-lang="c#">var city = Faker.Address.City();
+var street = Faker.Address.StreetAddress();
+var someText = Faker.Lorem.Paragraph();
+
+Console.WriteLine($"City: {city}");
+Console.WriteLine($"Street: {street}");
+Console.WriteLine($"Text: {someText}");
+
+// Example output:
+// City: New Toyville
+// Street: 4787 Cole Squares
+// Text: Voluptas et omnis enim dignissimos quis aliquam omnis sit.....</code></pre></div><p>Faker will give you sane and English centric data. It is not a library to find edge cases,
+but to get "human" samples.</p></div><div><h3 id="_bogus_net">Bogus.NET</h3><p><a href="https://github.com/bchavez/Bogus">Bogus.NET</a> goes further and provides a whole slew of utilities to create
+test data.</p><p>Like factories for your data objects:</p><div><pre><code data-lang="c#">var studentFaker = new Bogus.Faker&lt;Student&gt;(locale:"de_CH")
+    .CustomInstantiator(f =&gt; new Student(f.Name.FirstName(), f.Address.StreetAddress(), f.Address.City()));
+
+Console.WriteLine(studentFaker.Generate());
+
+// Example output:
+// Student { Name = Abigayle, Street = 42252 Abbie Trace, City = Angietown }</code></pre></div><p>It supports multiple locales, if you want go beyond the English speaking world:</p><div><pre><code data-lang="c#">var studentFaker = new Bogus.Faker&lt;Student&gt;(locale:"ko")
+    .CustomInstantiator(f =&gt; new Student(f.Name.FirstName(), f.Address.StreetAddress(), f.Address.City()));
+
+Console.WriteLine(studentFaker.Generate());
+
+// Example output:
+// Student { Name = 민서, Street = 959 방배동, City = 구리구 }</code></pre></div><p>Bogus has tons of other goodies:</p><div><ul><li><p>More data sets</p></li><li><p>Some edge case testing data sets</p></li></ul></div></div><div><h3 id="_seeds_and_testing">Seeds and Testing</h3><p>I often use test data generators for testing to write more generalized tests
+that do not repeat the same hard coded values.</p><p>A simple example looks something like this:</p><div><pre><code data-lang="C#">[Test]
+public void Find_Student_By_Name()
+{
+    var studentGenerator = new Bogus.Faker&lt;Student&gt;(locale:"ko")
+        .CustomInstantiator(f =&gt; new Student(f.Name.FirstName(), f.Address.StreetAddress(), f.Address.City()));
+    var toTest = new StudentApi();
+
+    var student = studentGenerator.Generate();
+    toTest.Store(student);
+
+    var found = toTest.FindStudent(student.Name);
+    Assert.AssertThat(found, Is.EqualTo(found));
+}</code></pre></div><p>If you write tests like that, you want to control the seed you use.
+So that, when a test fails you can reuse the same seed to reproduce the data.
+You can do that globally or per <code>Bogus.Faker</code> instance:</p><div><pre><code data-lang="c#">// Setting the global see for the Bogus libra
+var seed = Random.Shared.Next();
+Console.WriteLine($"Test suite is using seed: {seed}");
+Bogus.Randomizer.Seed = new Random(seed);
+
+// Or a seed for a specific faker instance
+var seed = Random.Shared.Next();
+Console.WriteLine($"Test suite is using seed: {seed}");
+var studentGenerator = new Bogus.Faker&lt;Student&gt;(locale: "ko")
+    .UseSeed(seed)</code></pre></div><p>Last note: This style of tests are simple property based tests,
+as they use random data and test if certain property of the system holds.
+There are whole testing approaches based on this idea, but that outside the scope of this post.</p></div></div></div><div><h2 id="_test_against_know_reference_data">Test Against Know Reference Data</h2><div><p>This is a basic test idea: Store a <code>good</code> reference of some output and compare it against the current result.
+This works well for things like rendering code (eg generated HTML, pictures, SVG).</p><div><p><a href="https://gamlor.info/posts/2024-12-11-csharp-testing-stuff/compare.jpg"></a></p><p>Figure 3. Compare</p></div><p>Basically, do something like this:</p><div><pre><code data-lang="C#">[Test]
+public void RenderTitleToHtml()
+{
+    TestRender(new ThingToRender("h1", "test"), "title-render");
+}
+
+[Test]
+public void RenderParagraphToHtml()
+{
+    TestRender(new ThingToRender("p","test"),"p-render");
+}
+
+void TestRender(ThingToRender toRender, string testName)
+{
+    Directory.CreateDirectory("current");
+    Directory.CreateDirectory("reference");
+    var currentResult = SystemToTest(toRender);
+    File.WriteAllText($"current/{testName}.html", currentResult);
+    var readPrevious = File.ReadAllText($"reference/{testName}.html");
+    Assert.That(readPrevious, Is.EqualTo(currentResult), $"Expected the rendering for {testName} to not change");
+}</code></pre></div><p>If the test breaks, you inspect the differences. If they are expected changes, you copy references
+from the <code>current</code> directory back to the <code>reference</code> directory and commit it.</p><p>Again, this works great for quite stable, rendering like code code.
+If the output changes frequently, this won’t work.</p></div></div><div><h2 id="_free_ports_free_ips">Free-Ports, Free IPs</h2><div><p>For integration test you often have to spawn some kind of mock server.
+How do you ensure this server can start on an unused port?</p><div><p><a href="https://gamlor.info/posts/2024-12-11-csharp-testing-stuff/free-port.jpg"></a></p><p>Figure 4. Free Ports</p></div><p>You can use the Socket class to find a free port:</p><div><pre><code data-lang="c#">Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+s.Bind(IPEndPoint.Parse("127.0.0.1:0"));
+var port = ((IPEndPoint)s.LocalEndPoint).Port;
+s.Close();
+
+Console.WriteLine($"Free port {port}");</code></pre></div><p>I had even more rare case where the port was fixed, because a library/external
+app doesn’t support reconfiguring the port.
+Lucky you, your machine has tons of IPs!
+The IP <code>127.0.0.1</code> is well known, but the whole 127.0.0.0/8 IP range is your machine!
+You have 16Million IPs for your tests:</p><div><pre>Socket serverOne= new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+serverOne.Bind(IPEndPoint.Parse("127.0.0.2:8080"));
+
+Socket serverTwo= new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+serverTwo.Bind(IPEndPoint.Parse("127.0.0.3:8080"));</pre></div></div></div><div><h2 id="_summary">Summary</h2><div><p>Ok, happy holidays and testing in C#.</p></div></div></div></div></article></body></html>

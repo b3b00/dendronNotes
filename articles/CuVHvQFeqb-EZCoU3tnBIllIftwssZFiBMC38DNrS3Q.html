@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>GitHub - ivanhofer/sveltekit-typescript-showcase: This repository shows how Svelte and SvelteKit work together with TypeScript.</title><meta name="author" content=""><meta name="description" content="This repository shows how Svelte and SvelteKit work together with TypeScript. - ivanhofer/sveltekit-typescript-showcase"><meta name="dendron:source-url" content="https://github.com/ivanhofer/sveltekit-typescript-showcase"><meta name="dendron:length" content="24287"><meta name="dendron:time-to-read-minutes" content="19"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-hpc="true" containertiming="hpc"><article itemprop="text"><p dir="auto"><h2 tabindex="-1" dir="auto">Svelte(Kit) TypeScript Showcase + general TypeScript tipps</h2><a id="user-content-sveltekit-typescript-showcase--general-typescript-tipps" aria-label="Permalink: Svelte(Kit) TypeScript Showcase + general TypeScript tipps" href="#sveltekit-typescript-showcase--general-typescript-tipps"></a>
+<p dir="auto">This repository shows how <a href="https://svelte.dev/" rel="nofollow"><code>Svelte</code></a> and <a href="https://kit.svelte.dev/" rel="nofollow"><code>SvelteKit</code></a>
+work together with <a href="https://www.typescriptlang.org/" rel="nofollow"><code>TypeScript</code></a>.</p>
+<blockquote>
+<p dir="auto">This repository should offer an overview of all <code>TypeScript</code> related topics for <code>Svelte</code> and
+<code>SvelteKit</code><br>
+Feel free to contribute by <a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/pulls">creating a PR</a>
+or <a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/issues">open an issue</a> if you think
+something is missing.</p>
+</blockquote>
+
+
+<p dir="auto"><h2 tabindex="-1" dir="auto">Who am I</h2><a id="user-content-who-am-i" aria-label="Permalink: Who am I" href="#who-am-i"></a>
+<p dir="auto">Hi, I'm Ivan, a passionate webdeveloper.</p>
+<p dir="auto">I recently have been working more intensively with <code>TypeScript</code> when I have created an
+internationalization library focusing on developer experience with strong typesafety features:
+<a href="https://github.com/ivanhofer/typesafe-i18n"><code>typesafe-i18n</code></a></p>
+<p dir="auto">I know and love <code>Svelte</code> for a few years now. Over the years I saw how my development workflow
+improved and now together with <code>TypeScript</code>, I'm able to build real business applications with
+confidence. When I started with <code>Svelte</code>, the missing <code>TypeScript</code> support always bothered me. And
+once I could use <code>TypeScript</code> in my <code>Svelte</code> projects I still found it not so easy because of some
+missing documentation. That's why I decided to create this repository with some examples that should
+help you learn the concepts better. I hope you find it useful.</p>
+<p dir="auto"><a href="https://github.com/sponsors/ivanhofer">Become a sponsor ❤️</a> if you want to support my open source contributions.</p>
+
+
+<p dir="auto"><h2 tabindex="-1" dir="auto">Overview</h2><a id="user-content-overview" aria-label="Permalink: Overview" href="#overview"></a>
+<ul dir="auto">
+<li><a href="#project-setup"><strong>Project Setup</strong></a>: good to know before getting started</li>
+<li><a href="#examples"><strong>Examples</strong></a>: see <code>TypeScript</code> + <code>Svelte</code> in action</li>
+<li><a href="#typescript-tipps"><strong>TypeScript Tipps</strong></a>: tipps to increase the typesafety of your projects</li>
+<li><a href="#conclusion"><strong>Conclusion</strong></a>: some final words</li>
+<li><a href="#jsdoc-comments"><strong>JSDoc comments</strong></a>: benefit from type-checkings without writing <code>TypeScript</code>
+code</li>
+</ul>
+
+
+<p dir="auto"><h2 tabindex="-1" dir="auto">Project Setup</h2><a id="user-content-project-setup" aria-label="Permalink: Project Setup" href="#project-setup"></a>
+<p dir="auto">In order to get the best development expeience you should use
+<a href="https://code.visualstudio.com/" rel="nofollow"><code>VS Code</code></a> as your IDE and install the
+<a href="https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode" rel="nofollow">official <code>Svelte</code> extension</a>.
+The extension offers you a variety of features like code-completions, hover infos, syntax error
+highlighting and much more.</p>
+<blockquote>
+<p dir="auto">I also recommend to install the
+<a href="https://marketplace.visualstudio.com/items?itemName=usernamehw.errorlens" rel="nofollow"><code>Error Lens</code> extension</a>
+that displays error-messages inline next to the actual code.</p>
+</blockquote>
+
+<p dir="auto"><h3 tabindex="-1" dir="auto">Get Started</h3><a id="user-content-get-started" aria-label="Permalink: Get Started" href="#get-started"></a>
+<p dir="auto">You can create a new <code>SvelteKit</code> project by following the
+<a href="https://kit.svelte.dev/docs/introduction#getting-started" rel="nofollow"><code>Getting started</code> guide</a> in the official
+docs.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="npm init svelte my-app
+cd my-app
+npm install
+npm run dev"><pre>npm init svelte my-app
+<span>cd</span> my-app
+npm install
+npm run dev</pre></div>
+<p dir="auto">The <code>npm init svelte my-app</code> command starts an interactive project-setup process where you get
+asked a few questions. Of course you should select the <code>TypeScript</code> option.</p>
+<blockquote>
+<p dir="auto">I also recommend enabling the <a href="https://eslint.org/" rel="nofollow"><code>eslint</code></a> and
+<a href="https://prettier.io/" rel="nofollow"><code>prettier</code></a> options.</p>
+</blockquote>
+
+<p dir="auto"><h3 tabindex="-1" dir="auto">Configure TypeScript</h3><a id="user-content-configure-typescript" aria-label="Permalink: Configure TypeScript" href="#configure-typescript"></a>
+<p dir="auto">In the root of the generated folder, you should see a
+<a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/blob/main/tsconfig.json"><code>tsconfig.json</code> file</a>.
+I recommend you to configure <code>TypeScript</code> as strict as possible to benefit from the advanced
+type-checking features.</p>
+<blockquote>
+<p dir="auto">As of writing these are the strictest options I know. This list will grow with new <code>TypeScript</code>
+releases.<br>
+Please <a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/pulls">create a PR</a> if you know
+more options that should be enabled.</p>
+</blockquote>
+
+<blockquote>
+<p dir="auto">Not all options may fit your coding style. You can always remove some of them but be aware that
+this could eliminate some cool type-checking features.</p>
+</blockquote>
+
+<p dir="auto"><h3 tabindex="-1" dir="auto">How does TypeScript work inside Svelte-Components?</h3><a id="user-content-how-does-typescript-work-inside-svelte-components" aria-label="Permalink: How does TypeScript work inside Svelte-Components?" href="#how-does-typescript-work-inside-svelte-components"></a>
+<blockquote>
+<p dir="auto">Svelte has added a <a href="https://svelte.dev/docs/typescript" rel="nofollow"><code>TypeScript</code>-section</a> to their official docs.</p>
+</blockquote>
+<p dir="auto">Per default the <code>Svelte</code>-compiler only understands plain <code>HTML</code>, <code>CSS</code> and <code>JavaScript</code>. But we can
+add support for other languages to the compiler via custom
+<a href="https://svelte.dev/docs#compile-time-svelte-preprocess" rel="nofollow"><code>preprocessors</code></a>. Luckily, we don't have to
+write our own preprocessor because there exists already an
+<a href="https://github.com/sveltejs/svelte-preprocess">official package</a> we can use. <code>svelte-preprocess</code>
+enables us to use <code>TypeScript</code> and also custom CSS syntax like <code>SCSS</code> or <code>PostCSS</code> without much
+effort. If you take a look at the
+<a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/blob/main/svelte.config.js"><code>svelte.config.js</code> file</a>,
+you see that this was arleady set up for us.</p>
+<p dir="auto">The next step will be to create our first Component and use <code>TypeScript</code> inside the <code>script</code>-tag.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<script>
+   export let name: string
+</script>
+
+Hello {name}!"><pre>&lt;<span>script</span>&gt;<span></span>
+<span>   <span>export</span> <span>let</span> name<span>:</span> string</span>
+<span></span>&lt;/<span>script</span>&gt;
+
+Hello {<span>name</span>}!</pre></div>
+<p dir="auto">If everything is correctly set up, you should see an error message telling you something like
+<code>'Unexpected Token'</code>. That's because we have to tell the preprocessor that we want to use
+<code>TypeScript</code> syntax. We can do that by adding the <code>lang="ts"</code> attribute to our <code>script</code> tag.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="-<script>
++<script lang=&quot;ts&quot;>
+   export let name: string
+</script>
+
+Hello {name}!"><pre><span><span>-</span>&lt;script&gt;</span>
+<span><span>+</span>&lt;script lang="ts"&gt;</span>
+   export let name: string
+&lt;/script&gt;
+
+Hello {name}!</pre></div>
+<p dir="auto">That's it. You are now ready to write <code>TypeScript</code> code inside your <code>Svelte</code>-components.</p>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">imports from <code>.ts</code> files</h4><a id="user-content-imports-from-ts-files" aria-label="Permalink: imports from .ts files" href="#imports-from-ts-files"></a>
+<p dir="auto">You can also import functions from other <code>TypeScript</code> files like you would in a normal <code>.ts</code> file.
+If you import types from another file, make sure you use the
+<a href="https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export" rel="nofollow"><code>import type</code>-syntax</a></p>
+<div dir="auto" data-snippet-clipboard-copy-content="<script>
+   import { myFunction } from './my-file'
+   import type { MyFunctionType } from './my-file'
+</script>"><pre>&lt;<span>script</span>&gt;<span></span>
+<span>   <span>import</span> { <span>myFunction</span> } <span>from</span> <span><span>'</span>./my-file<span>'</span></span></span>
+<span>   <span>import</span> <span>type</span> { <span>MyFunctionType</span> } <span>from</span> <span><span>'</span>./my-file<span>'</span></span></span>
+<span></span>&lt;/<span>script</span>&gt;</pre></div>
+<p dir="auto">if you are using a <code>TypeScript</code> version <code>&gt;= 4.5.x</code> you can also write it like this:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<script>
+   import { myFunction, type MyFunctionType } from './my-file'
+</script>"><pre>&lt;<span>script</span>&gt;<span></span>
+<span>   <span>import</span> { <span>myFunction</span>, <span>type</span> <span>MyFunctionType</span> } <span>from</span> <span><span>'</span>./my-file<span>'</span></span></span>
+<span></span>&lt;/<span>script</span>&gt;</pre></div>
+
+<p dir="auto"><h3 tabindex="-1" dir="auto">type-checking the whole project</h3><a id="user-content-type-checking-the-whole-project" aria-label="Permalink: type-checking the whole project" href="#type-checking-the-whole-project"></a>
+<p dir="auto">You should know that even if you have <code>TypeScript</code> errors in your code, the <code>Svelte</code>-compiler will
+generate your component (if the code contains valid <code>TypeScript</code> syntax) and the browser will run
+the code normally. That's because the <code>preprocessor</code> only transpiles <code>TypeScript</code> to <code>JavaScript</code>
+and doesn't perform any type-checking. That's a reason why we should use the <code>Svelte</code> extension that
+will perform the type-checking for the components we have opened in <code>VS Code</code>. Performing a global
+type-check for all components each time you save a file may be too resource intensive for most
+computers, so only errors for opened files will show up.</p>
+<p dir="auto">This approach has a downside: If we change something in a component and haven't opened the file
+where we use that specific component, we won't get notified about errors. Again luckily for us there
+exists a solution to this problem: a package called
+<a href="https://github.com/sveltejs/language-tools/tree/master/packages/svelte-check">svelte-check</a>.</p>
+<p dir="auto">If you take a look at the <code>scripts</code> section of the <code>package.json</code>, you will see that it is already
+configured for us. We simply can run the following command to perform a check of the whole project:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="npm run check"><pre>npm run check</pre></div>
+<blockquote>
+<p dir="auto">You should include this <code>svelte-check</code> script in your <code>CI/CD</code> process to get notified if your
+components contain <code>TypeScript</code> errors.</p>
+</blockquote>
+
+<p dir="auto"><h3 tabindex="-1" dir="auto">path aliases</h3><a id="user-content-path-aliases" aria-label="Permalink: path aliases" href="#path-aliases"></a>
+<p dir="auto">You may see imports from paths that are not npm modules and also not relative paths e.g.
+<code>$components/Component.svelte</code>. These are called path aliases and you can define them yourself if you like.</p>
+<p dir="auto">Let's say instead of using a relative file import like <code>../../../components/Component.svelte</code> you want to
+use the alias import <code>$components/Component.svelte</code>. To do that, you only need to define the desired alias
+in your <code>svelte.config.js</code> file:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="/** @type {import('@sveltejs/kit').Config} */
+const config = {
+  kit: {
+    alias: {
+      $components: 'src/components',
+    }
+  }
+};"><pre><span>/** <span>@type</span> {<span>import('@sveltejs/kit').Config</span>} */</span>
+<span>const</span> <span>config</span> <span>=</span> <span>{</span>
+  <span>kit</span>: <span>{</span>
+    <span>alias</span>: <span>{</span>
+      <span>$components</span>: <span>'src/components'</span><span>,</span>
+    <span>}</span>
+  <span>}</span>
+<span>}</span><span>;</span></pre></div>
+<p dir="auto">These aliases are automatically passed to Vite and TypeScript. You can define as many aliases as you want.</p>
+
+
+<p dir="auto"><h2 tabindex="-1" dir="auto">Examples</h2><a id="user-content-examples" aria-label="Permalink: Examples" href="#examples"></a>
+<p dir="auto">The next sections contain a list of all examples included in this repo. It is recommended to explore
+the examples inside <code>VS Code</code> to have proper syntax-highlighting in place.</p>
+<ul dir="auto">
+<li>the title links directly to the folder, where the example is located</li>
+<li>there is also a short description what is included in the example</li>
+<li>a link to the official documentation to gain more information (if available)</li>
+<li>most examples contain a <code>Component.svelte</code> and an <code>Usage.svelte</code> file to show it in action</li>
+</ul>
+<blockquote>
+<p dir="auto">I recommend going over the examples in this order since some examples build on top of each other.</p>
+</blockquote>
+
+
+<p dir="auto"><h3 tabindex="-1" dir="auto">Svelte</h3><a id="user-content-svelte" aria-label="Permalink: Svelte" href="#svelte"></a>
+<p dir="auto"><h4 tabindex="-1" dir="auto">props</h4><a id="user-content-props" aria-label="Permalink: props" href="#props"></a>
+<blockquote>
+<p dir="auto"><a href="https://svelte.dev/docs#component-format-script-1-export-creates-a-component-prop" rel="nofollow">https://svelte.dev/docs#component-format-script-1-export-creates-a-component-prop</a></p>
+</blockquote>
+<p dir="auto">This chapter teaches you everything about how you can use <code>TypeScript</code> to improve your component's
+props.</p>
+<ul dir="auto">
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/01-basics">basics</a></strong>:
+how to define types for props</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/02-optional-props">optional props</a></strong>:
+how to mark props as optional</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/03-control-flow">control flow</a></strong>:
+how does it work inside the html markup <strong><a href="#1-union-types">(TS-tipp #1)</a></strong></li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/04-reactive-assignments">reactive assignments</a></strong>:
+how to type reactive statements
+<blockquote>
+<p dir="auto"><a href="https://svelte.dev/docs#component-format-script-3-$-marks-a-statement-as-reactive" rel="nofollow">https://svelte.dev/docs#component-format-script-3-$-marks-a-statement-as-reactive</a></p>
+</blockquote>
+</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/05-generic-props">generic props</a></strong>:
+how to use generics for props</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/06-$$Props">$$Props</a></strong>:
+how to extend the defined props of your components</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/07-call-exported-function">call exported function</a></strong>:
+how to call an exported function from the parent</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/08-either-or">either or</a></strong>:
+expect either param A or param B</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/09-svelte-component">svelte:component</a></strong>:
+getting prop-types of a component (useful for <code>svelte:component</code>)</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/10-prop-controls-type">prop controls type</a></strong>:
+using a prop to control the type of another prop e.g passing single vs multiple items</li>
+</ul>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">dom</h4><a id="user-content-dom" aria-label="Permalink: dom" href="#dom"></a>
+<p dir="auto">In this chapter you will learn how to interact directly with DOM-elements.</p>
+<ul dir="auto">
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/02-dom/01-dom-bindings">DOM element bindings</a></strong>:
+how to type your element bindings
+<blockquote>
+<p dir="auto"><a href="https://svelte.dev/docs#template-syntax-element-directives-bind-this" rel="nofollow">https://svelte.dev/docs#template-syntax-element-directives-bind-this</a></p>
+</blockquote>
+</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/02-dom/02-actions">actions</a></strong>:
+how to define actions in a typesafe way
+<blockquote>
+<p dir="auto"><a href="https://svelte.dev/docs#template-syntax-element-directives-use-action" rel="nofollow">https://svelte.dev/docs#template-syntax-element-directives-use-action</a></p>
+</blockquote>
+</li>
+</ul>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">events</h4><a id="user-content-events" aria-label="Permalink: events" href="#events"></a>
+<blockquote>
+<p dir="auto"><a href="https://svelte.dev/docs#run-time-svelte-createeventdispatcher" rel="nofollow">https://svelte.dev/docs#run-time-svelte-createeventdispatcher</a></p>
+</blockquote>
+<p dir="auto">This chapter shows how you can define events that a component emits.</p>
+<ul dir="auto">
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/03-events/01-basics">basics</a></strong>:
+how to emit events</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/03-events/02-typed-event-details">typed event details</a></strong>:
+how to type the emitted events <strong><a href="#2-extend-existing-type-definitions">(TS-tipp #2)</a></strong></li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/03-events/03-generic-events">generic events</a></strong>:
+how to use generics in your events</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/03-events/04-$$Events">$$Events</a></strong>:
+how to extend the defined events of your components</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/03-events/05-strictEvents">strictEvents</a></strong>:
+how to disallow to listen for other events than the ones defined in a component</li>
+</ul>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">slots</h4><a id="user-content-slots" aria-label="Permalink: slots" href="#slots"></a>
+<blockquote>
+<p dir="auto"><a href="https://svelte.dev/docs#template-syntax-slot" rel="nofollow">https://svelte.dev/docs#template-syntax-slot</a></p>
+</blockquote>
+<ul dir="auto">
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/04-slots/01-basics">basics</a></strong>:
+how to define slots and expose props</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/04-slots/02-named-slots">named</a></strong>:
+how to define named slots and expose props
+<blockquote>
+<p dir="auto"><a href="https://svelte.dev/docs#template-syntax-slot-slot-name-name" rel="nofollow">https://svelte.dev/docs#template-syntax-slot-slot-name-name</a></p>
+</blockquote>
+</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/04-slots/03-$$Slots">$$Slots</a></strong>:
+how to extend the defined slots of your components</li>
+</ul>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">external components</h4><a id="user-content-external-components" aria-label="Permalink: external components" href="#external-components"></a>
+<ul dir="auto">
+<li>
+<p dir="auto"><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/05-external-components">SvelteComponent</a></strong>:
+how to write type definitions for external components</p>
+</li>
+<li>
+<p dir="auto"><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/lib"><code>svelte-kit package</code></a></strong>:
+how to create a <code>Svelte</code> component library</p>
+<blockquote>
+<p dir="auto"><a href="https://kit.svelte.dev/docs/packaging" rel="nofollow">https://kit.svelte.dev/docs/packaging</a></p>
+</blockquote>
+<p dir="auto"><code>SvelteKit</code> includes an easy way to export single components or component libraries. Just run
+<code>npm run package</code> and <code>SvelteKit</code> will export all your components from the <code>src/lib</code> directory,
+together with <code>TypeScript</code> definitions into the <code>package</code> folder. This folder then also contains
+a generated <code>package.json</code> file. After that, you only need to run <code>npm publish</code> inside this
+folder to upload the library to <code>npm</code>.</p>
+</li>
+</ul>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">state management</h4><a id="user-content-state-management" aria-label="Permalink: state management" href="#state-management"></a>
+<ul dir="auto">
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/06-state-management/01-stores">stores</a></strong>:
+how to type your stores
+<blockquote>
+<p dir="auto"><a href="https://svelte.dev/docs#run-time-svelte-store" rel="nofollow">https://svelte.dev/docs#run-time-svelte-store</a></p>
+</blockquote>
+</li>
+<li><strong>context</strong>
+<ul dir="auto">
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/06-state-management/02-context-inline">inline</a></strong>:
+how to type contexts
+<blockquote>
+<p dir="auto"><a href="https://svelte.dev/docs#run-time-svelte-setcontext" rel="nofollow">https://svelte.dev/docs#run-time-svelte-setcontext</a></p>
+</blockquote>
+</li>
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/06-state-management/03-context-outsourced">outsourced</a></strong>:
+how to wrap contexts with <code>TypeScript</code>
+<strong><a href="#3-wrap-functions-that-have-no-strong-typings">(TS-tipp #3)</a></strong></li>
+</ul>
+</li>
+</ul>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">other</h4><a id="user-content-other" aria-label="Permalink: other" href="#other"></a>
+<ul dir="auto">
+<li><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/07-other/01-type-cast-in-markup">type cast in markup</a></strong>:
+how to cast a type within the markup</li>
+</ul>
+
+
+<p dir="auto"><h3 tabindex="-1" dir="auto">SvelteKit</h3><a id="user-content-sveltekit" aria-label="Permalink: SvelteKit" href="#sveltekit"></a>
+<p dir="auto">In this chapter you get to know how to type the backend of your <code>SvelteKit</code> application.</p>
+<ul dir="auto">
+<li>
+<p dir="auto"><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/hooks.server.ts">hooks</a></strong>:
+how to intercept and modify requests</p>
+<blockquote>
+<p dir="auto"><a href="https://kit.svelte.dev/docs/hooks#server-hooks" rel="nofollow">https://kit.svelte.dev/docs/hooks#server-hooks</a></p>
+</blockquote>
+<p dir="auto">The <code>src/hooks.server.ts</code> file can export four functions. The type of these functions have the same name
+like the function and get exported from <code>@sveltejs/kit</code>.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="import type { HandleFetch, Handle, HandleServerError } from '@sveltejs/kit'
+
+export const handle: Handle = async ({ event, resolve }) => {
+   /* implementation */
+}
+
+export const handleError: HandleServerError = async ({ error, event }) => {
+   /* implementation */
+}
+
+export const handleFetch: HandleFetch = async (request) => {
+   /* implementation */
+}"><pre><span>import</span> <span>type</span> <span>{</span> <span>HandleFetch</span><span>,</span> <span>Handle</span><span>,</span> <span>HandleServerError</span> <span>}</span> <span>from</span> <span>'@sveltejs/kit'</span>
+
+<span>export</span> <span>const</span> <span>handle</span>: <span>Handle</span> <span>=</span> <span>async</span> <span>(</span><span>{</span> event<span>,</span> resolve <span>}</span><span>)</span> <span>=&gt;</span> <span>{</span>
+   <span>/* implementation */</span>
+<span>}</span>
+
+<span>export</span> <span>const</span> <span>handleError</span>: <span>HandleServerError</span> <span>=</span> <span>async</span> <span>(</span><span>{</span> error<span>,</span> event <span>}</span><span>)</span> <span>=&gt;</span> <span>{</span>
+   <span>/* implementation */</span>
+<span>}</span>
+
+<span>export</span> <span>const</span> <span>handleFetch</span>: <span>HandleFetch</span> <span>=</span> <span>async</span> <span>(</span><span>request</span><span>)</span> <span>=&gt;</span> <span>{</span>
+   <span>/* implementation */</span>
+<span>}</span></pre></div>
+<p dir="auto">The <code>handle</code> and <code>getSession</code> function will have access to the
+<a href="https://kit.svelte.dev/docs/hooks#handle" rel="nofollow"><code>locals</code></a> and the
+<a href="https://kit.svelte.dev/docs/hooks#getsession" rel="nofollow"><code>session</code></a> object. To let <code>TypeScript</code> know how the
+type of these objects look like, you need to go into the <code>src/app.d.ts</code> file and update the already
+existing <code>interfaces</code> there.</p>
+<p dir="auto">Since these types will be shared across multiple files and functions, it makes sense to define them
+just a single time. <code>SvelteKit</code> is configured in a way that it automatically uses those types for
+all functions.</p>
+</li>
+</ul>
+
+<ul dir="auto">
+<li>
+<p dir="auto"><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/routes/products/%5Bid%5D.ts">endpoints</a></strong>:
+how to use <code>SvelteKit</code> as an API-endpoint</p>
+<blockquote>
+<p dir="auto"><a href="https://kit.svelte.dev/docs/routing#endpoints" rel="nofollow">https://kit.svelte.dev/docs/routing#endpoints</a></p>
+</blockquote>
+<p dir="auto">We can use <code>RequestHandler</code> to type our endpoints. It expects a single generics:</p>
+<ol dir="auto">
+<li>The type describes the shape the returned value will have.</li>
+</ol>
+<p dir="auto"><em><code>src/routes/product/[id].ts</code></em></p>
+<div dir="auto" data-snippet-clipboard-copy-content="import type { RequestHandler } from './$types'
+import type { Product } from '$models/product.model'
+import db from '$db'
+
+type OutputType = { product: Product }
+
+export const GET: RequestHandler<OutputType> = async ({ params }) => {
+   const data = await db.getProjectById(params.id)
+
+   return {
+      body: {
+         product: data,
+      },
+   }
+}"><pre><span>import</span> <span>type</span> <span>{</span> <span>RequestHandler</span> <span>}</span> <span>from</span> <span>'./$types'</span>
+<span>import</span> <span>type</span> <span>{</span> <span>Product</span> <span>}</span> <span>from</span> <span>'$models/product.model'</span>
+<span>import</span> <span>db</span> <span>from</span> <span>'$db'</span>
+
+<span>type</span> <span>OutputType</span> <span>=</span> <span>{</span> <span>product</span>: <span>Product</span> <span>}</span>
+
+<span>export</span> <span>const</span> <span>GET</span>: <span>RequestHandler</span><span>&lt;</span><span>OutputType</span><span>&gt;</span> <span>=</span> <span>async</span> <span>(</span><span>{</span> params <span>}</span><span>)</span> <span>=&gt;</span> <span>{</span>
+   <span>const</span> <span>data</span> <span>=</span> <span>await</span> <span>db</span><span>.</span><span>getProjectById</span><span>(</span><span>params</span><span>.</span><span>id</span><span>)</span>
+
+   <span>return</span> <span>{</span>
+      <span>body</span>: <span>{</span>
+         <span>product</span>: <span>data</span><span>,</span>
+      <span>}</span><span>,</span>
+   <span>}</span>
+<span>}</span></pre></div>
+<blockquote>
+<p dir="auto">Note: SvelteKit auto-generates the <code>./$types</code> folder for us. We can use it to get a <code>RequestHandler</code> type that already has the correct shape for the <code>params</code> object.</p>
+</blockquote>
+</li>
+</ul>
+
+<ul dir="auto">
+<li>
+<p dir="auto"><strong><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/routes/products/%5Bid%5D.svelte">load function</a></strong>:
+how to load data before the page gets rendered</p>
+<blockquote>
+<p dir="auto"><a href="https://kit.svelte.dev/docs/loading" rel="nofollow">https://kit.svelte.dev/docs/loading</a></p>
+</blockquote>
+<p dir="auto">Use the <code>Load</code> inferface type load functions in your route. It expects two generics:</p>
+<ol dir="auto">
+<li>The first type will be the output type of your <code>endpoint</code> if available.<br>
+If no <code>GET</code>-endpoint is defined, the <code>props</code> object will be <code>undefined</code>.</li>
+<li>The second type describes the shape the returned value will have.</li>
+</ol>
+<p dir="auto"><em><code>src/routes/product/[id]/+page.svelte</code></em></p>
+<div dir="auto" data-snippet-clipboard-copy-content="import type { PageLoad, PageLoadData } from './$types'
+import type { GET } from './[id]'
+
+type OutputProps = PageLoadData &amp; { id: string }
+// the same as
+// type OutputProps = {
+//    id: string
+//    product: Product
+// }
+
+export const load: PageLoad<OutputProps> = async ({ params, props }) => {
+   return {
+      props: {
+         id: params.id,
+         product: props.product,
+      },
+   }
+}"><pre><span>import</span> <span>type</span> <span>{</span> <span>PageLoad</span><span>,</span> <span>PageLoadData</span> <span>}</span> <span>from</span> <span>'./$types'</span>
+<span>import</span> <span>type</span> <span>{</span> <span>GET</span> <span>}</span> <span>from</span> <span>'./[id]'</span>
+
+<span>type</span> <span>OutputProps</span> <span>=</span> <span>PageLoadData</span> <span>&amp;</span> <span>{</span> <span>id</span>: <span>string</span> <span>}</span>
+<span>// the same as</span>
+<span>// type OutputProps = {</span>
+<span>//    id: string</span>
+<span>//    product: Product</span>
+<span>// }</span>
+
+<span>export</span> <span>const</span> <span>load</span>: <span>PageLoad</span><span>&lt;</span><span>OutputProps</span><span>&gt;</span> <span>=</span> <span>async</span> <span>(</span><span>{</span> params<span>,</span> props <span>}</span><span>)</span> <span>=&gt;</span> <span>{</span>
+   <span>return</span> <span>{</span>
+      <span>props</span>: <span>{</span>
+         <span>id</span>: <span>params</span><span>.</span><span>id</span><span>,</span>
+         <span>product</span>: <span>props</span><span>.</span><span>product</span><span>,</span>
+      <span>}</span><span>,</span>
+   <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"><em><code>src/routes/product/[id]/+page.svelte</code></em></p>
+<div dir="auto" data-snippet-clipboard-copy-content="<script lang=&quot;ts&quot;>
+   import type { PageData } from './$types'
+
+   // PageData = { id: string; product: Product }
+   export let data: PageData
+</script>"><pre>&lt;<span>script</span> <span>lang</span>=<span><span>"</span>ts<span>"</span></span>&gt;<span></span>
+<span>   <span>import</span> <span>type</span> { <span>PageData</span> } <span>from</span> <span><span>'</span>./$types<span>'</span></span></span>
+<span></span>
+<span>   <span><span>//</span> PageData = { id: string; product: Product }</span></span>
+<span>   <span>export</span> <span>let</span> data<span>:</span> <span>PageData</span></span>
+<span></span>&lt;/<span>script</span>&gt;</pre></div>
+<blockquote>
+<p dir="auto">Note: SvelteKit auto-generates the <code>./$types</code> folder for us. We can use it to get a <code>Load</code> type that already has the correct shape for the <code>params</code> object.</p>
+</blockquote>
+</li>
+<li>
+<p dir="auto"><strong><a href="https://kit.svelte.dev/docs/types#generated-types" rel="nofollow">auto generated types</a></strong><br>
+SvelteKit creates some types automatically. Useful when you want to type your Endpoints and Load functions. Those types contain a typed <code>params</code> object depending on the route folder structure you use. The types are generated inside the <code>./$types</code> folder.<br>
+The types are generated when you run the dev server <code>npm run dev</code>. If you just want to generate the types, without running the dev server you can run <code>npx svelte-kit sync</code>. When you run <code>npm install</code>, the types will be generated automatically because the SvelteKit runs a post-install script that generates the files.</p>
+</li>
+</ul>
+
+
+<p dir="auto"><h2 tabindex="-1" dir="auto">TypeScript tipps</h2><a id="user-content-typescript-tipps" aria-label="Permalink: TypeScript tipps" href="#typescript-tipps"></a>
+<p dir="auto">Here are some examples how you could improve your code base by adding stronger type definitions for
+common use cases. Not everything needs to be typed that strong. Stricter type definitions will also
+add complexity you need to maintain, but it certainly improves the devloper experience when using
+strong typed functions within the code base.</p>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">#1 union types</h4><a id="user-content-1-union-types" aria-label="Permalink: #1 union types" href="#1-union-types"></a>
+<blockquote>
+<p dir="auto"><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/tree/main/src/01-props/03-control-flow/ImprovedComponent.svelte">Example</a></p>
+</blockquote>
+<p dir="auto">You can use union types to narrow down types in the control flow of your application. Somewhere you
+probably need to fetch data from an api. The fetch function will probably either return data or an
+error. It is not wrong to model it like in the following example:</p>
+<p dir="auto"><h5 tabindex="-1" dir="auto">example</h5><a id="user-content-example" aria-label="Permalink: example" href="#example"></a>
+<div dir="auto" data-snippet-clipboard-copy-content="interface ApiResponse<T> {
+   success: boolean
+   data: T | undefined
+   error: Error | undefined
+}"><pre><span>interface</span> <span>ApiResponse</span><span>&lt;</span><span>T</span><span>&gt;</span> <span>{</span>
+   <span>success</span>: <span>boolean</span>
+   <span>data</span>: <span>T</span> <span>|</span> <span>undefined</span>
+   <span>error</span>: <span>Error</span> <span>|</span> <span>undefined</span>
+<span>}</span></pre></div>
+<p dir="auto">But it doesn't work that well when you now want to access the <code>data</code> object because its type
+definition also contains <code>undefined</code>:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="let response: ApiResponse<string>
+
+if (response.success) {
+   // `response.data` is of type `string | undefined`
+} else {
+   // `response.error` is of type `Error | undefined`
+}"><pre><span>let</span> <span>response</span>: <span>ApiResponse</span><span>&lt;</span><span>string</span><span>&gt;</span>
+
+<span>if</span> <span>(</span><span>response</span><span>.</span><span>success</span><span>)</span> <span>{</span>
+   <span>// `response.data` is of type `string | undefined`</span>
+<span>}</span> <span>else</span> <span>{</span>
+   <span>// `response.error` is of type `Error | undefined`</span>
+<span>}</span></pre></div>
+<p dir="auto"><h5 tabindex="-1" dir="auto">improved example</h5><a id="user-content-improved-example" aria-label="Permalink: improved example" href="#improved-example"></a>
+<p dir="auto">We can improve the example by spitting our interface and then using an union type:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// will contain data but no Error
+export interface SuccessResponse<T> {
+   success: true
+   data: T
+   error: undefined
+}
+
+// will contain an Error but no data
+export interface ErrorResponse {
+   success: false
+   data: undefined
+   error: Error
+}
+
+// our union type
+export type ApiResponse<T> = SuccessResponse<T> | ErrorResponse"><pre><span>// will contain data but no Error</span>
+<span>export</span> <span>interface</span> <span>SuccessResponse</span><span>&lt;</span><span>T</span><span>&gt;</span> <span>{</span>
+   <span>success</span>: <span>true</span>
+   <span>data</span>: <span>T</span>
+   <span>error</span>: <span>undefined</span>
+<span>}</span>
+
+<span>// will contain an Error but no data</span>
+<span>export</span> <span>interface</span> <span>ErrorResponse</span> <span>{</span>
+   <span>success</span>: <span>false</span>
+   <span>data</span>: <span>undefined</span>
+   <span>error</span>: <span>Error</span>
+<span>}</span>
+
+<span>// our union type</span>
+<span>export</span> <span>type</span> <span>ApiResponse</span><span>&lt;</span><span>T</span><span>&gt;</span> <span>=</span> <span>SuccessResponse</span><span>&lt;</span><span>T</span><span>&gt;</span> <span>|</span> <span>ErrorResponse</span></pre></div>
+<p dir="auto">If we now access the <code>data</code> we will see that its type is no longer <code>undefined</code>:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="let response: ApiResponse<string>
+
+if (response.success) {
+   // `response.data` is of type `string`
+} else {
+   // `response.error` is of type `Error`
+}"><pre><span>let</span> <span>response</span>: <span>ApiResponse</span><span>&lt;</span><span>string</span><span>&gt;</span>
+
+<span>if</span> <span>(</span><span>response</span><span>.</span><span>success</span><span>)</span> <span>{</span>
+   <span>// `response.data` is of type `string`</span>
+<span>}</span> <span>else</span> <span>{</span>
+   <span>// `response.error` is of type `Error`</span>
+<span>}</span></pre></div>
+<p dir="auto">So whenever you know that something is <strong>either A or either B</strong> you should also model it that way by
+splitting the model into two different interfaces and then use an union type to.</p>
+<blockquote>
+<p dir="auto">You can learn more about union types in the official
+<a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types" rel="nofollow"><code>TypeScript</code> documentation</a></p>
+</blockquote>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">#2 extend existing type definitions</h4><a id="user-content-2-extend-existing-type-definitions" aria-label="Permalink: #2 extend existing type definitions" href="#2-extend-existing-type-definitions"></a>
+<p dir="auto">Sometimes it is possible that a library contains missing or incomplete type definitions. You could
+either use <code>// @ts-ignore</code> comments and live with it or you can write the type declaration yourself.</p>
+<p dir="auto">Create a <code>*.d.ts</code> file somewhere in your <code>src</code> folder and use the following syntax:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="import 'package' // `'package'` is the library we want to extend
+
+declare module 'package' {
+   // we re-declare the module
+   // we add the missing function or override the existing one
+   export declare function someFunction(): boolean
+}"><pre><span>import</span> <span>'package'</span> <span>// `'package'` is the library we want to extend</span>
+
+<span>declare</span> module <span>'package'</span> <span>{</span>
+   <span>// we re-declare the module</span>
+   <span>// we add the missing function or override the existing one</span>
+   <span>export</span> <span>declare</span> <span>function</span> <span>someFunction</span><span>(</span><span>)</span>: <span>boolean</span>
+<span>}</span></pre></div>
+<p dir="auto">You can now use it inside your code:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="import { someFunction } from 'package'
+
+const result = someFunction()
+// result: boolean"><pre><span>import</span> <span>{</span> <span>someFunction</span> <span>}</span> <span>from</span> <span>'package'</span>
+
+<span>const</span> <span>result</span> <span>=</span> <span>someFunction</span><span>(</span><span>)</span>
+<span>// result: boolean</span></pre></div>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">#3 wrap functions that have no strong typings</h4><a id="user-content-3-wrap-functions-that-have-no-strong-typings" aria-label="Permalink: #3 wrap functions that have no strong typings" href="#3-wrap-functions-that-have-no-strong-typings"></a>
+<blockquote>
+<p dir="auto"><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/blob/main/src/06-state-management/03-context-outsourced/slider-context.ts">Example</a></p>
+</blockquote>
+<p dir="auto">Whenever you are using a function that has no or not so good <code>TypeScript</code> definitions or whenever
+you need to cast something everytime you use a function, you should wrap it into a new function and
+add type definitions there.</p>
+<p dir="auto"><h5 tabindex="-1" dir="auto">example</h5><a id="user-content-example-1" aria-label="Permalink: example" href="#example-1"></a>
+<div dir="auto" data-snippet-clipboard-copy-content="import { getContext } from 'svelte'
+
+// per default the return type is `unknown`
+const c1 = getContext('my context')
+
+// we need to pass a generic to let `TypeScript` know what we expect
+const c2 = getContext<string>('my context')
+
+// oops typo!
+const c3 = getContext<string>('my comtext')"><pre><span>import</span> <span>{</span> <span>getContext</span> <span>}</span> <span>from</span> <span>'svelte'</span>
+
+<span>// per default the return type is `unknown`</span>
+<span>const</span> <span>c1</span> <span>=</span> <span>getContext</span><span>(</span><span>'my context'</span><span>)</span>
+
+<span>// we need to pass a generic to let `TypeScript` know what we expect</span>
+<span>const</span> <span>c2</span> <span>=</span> <span>getContext</span><span>&lt;</span><span>string</span><span>&gt;</span><span>(</span><span>'my context'</span><span>)</span>
+
+<span>// oops typo!</span>
+<span>const</span> <span>c3</span> <span>=</span> <span>getContext</span><span>&lt;</span><span>string</span><span>&gt;</span><span>(</span><span>'my comtext'</span><span>)</span></pre></div>
+<p dir="auto">The usage of <code>getContext</code> in the example above has three issues:</p>
+<ol dir="auto">
+<li>you need to specify the return type whenever you call the function, so you would need to check
+where the context gets set and copy the type definition from there</li>
+<li>when you refactor the context to hold different data, you need to update the type definition
+everywhere</li>
+<li>you could easily introduce a typo because the parameter of the function is typed as a generic
+string</li>
+</ol>
+<p dir="auto"><h5 tabindex="-1" dir="auto">improved example</h5><a id="user-content-improved-example-1" aria-label="Permalink: improved example" href="#improved-example-1"></a>
+<p dir="auto">We can eliminate the issues mentioned above by wrapping <code>getContext</code> into a new function</p>
+<div dir="auto" data-snippet-clipboard-copy-content="import { getContext } from 'svelte'
+
+const getMyContext = () => getContext<string>('my context')
+
+const c = getMyContext() // typed as `string`"><pre><span>import</span> <span>{</span> <span>getContext</span> <span>}</span> <span>from</span> <span>'svelte'</span>
+
+<span>const</span> <span>getMyContext</span> <span>=</span> <span>(</span><span>)</span> <span>=&gt;</span> <span>getContext</span><span>&lt;</span><span>string</span><span>&gt;</span><span>(</span><span>'my context'</span><span>)</span>
+
+<span>const</span> <span>c</span> <span>=</span> <span>getMyContext</span><span>(</span><span>)</span> <span>// typed as `string`</span></pre></div>
+<p dir="auto">We now have a single function that is responsible for the <strong>type (1)</strong> and the <strong>context name (3)</strong>.
+And we use that function when we want to access the data. When <strong>refactoring (2)</strong> we only need to
+change it in a single place (and let <code>TypeScript</code> tell you if it's now getting used in a wrong way).</p>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">#4 use <code>opaque-types</code> for unique types</h4><a id="user-content-4-use-opaque-types-for-unique-types" aria-label="Permalink: #4 use opaque-types for unique types" href="#4-use-opaque-types-for-unique-types"></a>
+<blockquote>
+<p dir="auto"><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/blob/main/src/models/product.model.ts">Example</a></p>
+</blockquote>
+<p dir="auto">Some types may look similar to another type but they are not actually related. If you are working
+with databases the <code>ID</code> field would be such a case.</p>
+<p dir="auto"><h5 tabindex="-1" dir="auto">example</h5><a id="user-content-example-2" aria-label="Permalink: example" href="#example-2"></a>
+<p dir="auto">Typing the id of your DB model as a <code>string</code> is probably not wrong because from a technical
+perspective they are <code>strings</code>. But it is also a <code>string</code> for other models of your DB.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="interface Product {
+   id: string
+   author: string
+}
+
+interface Category {
+   id: string
+   name: string
+}
+
+const book: Product = { id: '1', /* ...rest */ }
+const category: Category = { id: '1', /* ...rest */ }
+
+const findById(productId): Product | undefined = { /* implementation */ }
+
+findById(product.id) // valid
+
+findById(category.id)  // we query the product DB with an id from the category DB
+// this will probably always return `undefined` if your DB uses random IDs"><pre><span>interface</span> <span>Product</span> <span>{</span>
+   <span>id</span>: <span>string</span>
+   <span>author</span>: <span>string</span>
+<span>}</span>
+
+<span>interface</span> <span>Category</span> <span>{</span>
+   <span>id</span>: <span>string</span>
+   <span>name</span>: <span>string</span>
+<span>}</span>
+
+<span>const</span> <span>book</span>: <span>Product</span> <span>=</span> <span>{</span> <span>id</span>: <span>'1'</span><span>,</span> <span>/* ...rest */</span> <span>}</span>
+<span>const</span> <span>category</span>: <span>Category</span> <span>=</span> <span>{</span> <span>id</span>: <span>'1'</span><span>,</span> <span>/* ...rest */</span> <span>}</span>
+
+<span>const</span> <span>findById</span><span></span><span>(</span><span>productId</span><span>)</span>: <span>Product</span> <span>|</span> <span>undefined</span> <span>=</span> <span>{</span> <span>/* implementation */</span> <span>}</span>
+
+<span>findById</span><span>(</span><span>product</span><span>.</span><span>id</span><span>)</span> <span>// valid</span>
+
+<span>findById</span><span>(</span><span>category</span><span>.</span><span>id</span><span>)</span>  <span>// we query the product DB with an id from the category DB</span>
+<span>// this will probably always return `undefined` if your DB uses random IDs</span></pre></div>
+<p dir="auto">You could introduce potential bugs if you are not careful. In the case above it probably is clear
+because we have named the data variables clearly, but what if you name the variable just <code>result</code>
+and then use the <code>findById</code> function. At first glance it looks good, but it is actually wrong.</p>
+<p dir="auto"><h5 tabindex="-1" dir="auto">improved example</h5><a id="user-content-improved-example-2" aria-label="Permalink: improved example" href="#improved-example-2"></a>
+<p dir="auto">We can improve this by giving each model its unique ID type.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// in the next two lines we define an `opaque type` for our ProductId
+declare const _productId: unique symbol
+export type ProductId = string &amp; { readonly [_productId]: never }
+// we define our type as `string` but with additional meta-information
+// that tell TypeScript that this is a unique string
+
+// this type will behave like a `string`, so you can use it in functions that
+// expect a `string`, but it doesn't work the other way around. You can't pass
+// a normal `string` to a function that expects a certain `opaque type`
+
+// of course you can use `opaque types` also for `numbers` and other types
+
+
+interface Product {
+   id: ProductId
+   author: string
+}
+
+// we also define a CategoryId as an `opaque type`
+declare const _categoryId: unique symbol
+type CategoryId = string &amp; { readonly [_categoryId]: never }
+
+interface Category {
+   id: CategoryId
+   name: string
+}
+
+// in this case we need to cast it, because we are hardcoding the IDs
+// in a real world scenario the data gets loaded on runtime
+// from the DB and no casting is needed there
+const book: Product = { id: '1' as ProductId, /* ...rest */ }
+const category: Category = { id: '1' as CategoryId, /* ...rest */ }
+
+const findById(id: ProductId): Product | undefined = { /* implementation */ }
+
+findById(book.id) // valid
+
+findById(category.id) // TypeScript shows an error:
+// Argument of type 'CategoryId' is not assignable to parameter of type 'ProductId'"><pre><span>// in the next two lines we define an `opaque type` for our ProductId</span>
+<span>declare</span> <span>const</span> <span>_productId</span>: <span>unique symbol</span>
+<span>export</span> <span>type</span> <span>ProductId</span> <span>=</span> <span>string</span> <span>&amp;</span> <span>{</span> <span>readonly</span> <span>[</span><span>_productId</span><span>]</span>: <span>never</span> <span>}</span>
+<span>// we define our type as `string` but with additional meta-information</span>
+<span>// that tell TypeScript that this is a unique string</span>
+
+<span>// this type will behave like a `string`, so you can use it in functions that</span>
+<span>// expect a `string`, but it doesn't work the other way around. You can't pass</span>
+<span>// a normal `string` to a function that expects a certain `opaque type`</span>
+
+<span>// of course you can use `opaque types` also for `numbers` and other types</span>
+
+
+<span>interface</span> <span>Product</span> <span>{</span>
+   <span>id</span>: <span>ProductId</span>
+   <span>author</span>: <span>string</span>
+<span>}</span>
+
+<span>// we also define a CategoryId as an `opaque type`</span>
+<span>declare</span> <span>const</span> <span>_categoryId</span>: <span>unique symbol</span>
+<span>type</span> <span>CategoryId</span> <span>=</span> <span>string</span> <span>&amp;</span> <span>{</span> <span>readonly</span> <span>[</span><span>_categoryId</span><span>]</span>: <span>never</span> <span>}</span>
+
+<span>interface</span> <span>Category</span> <span>{</span>
+   <span>id</span>: <span>CategoryId</span>
+   <span>name</span>: <span>string</span>
+<span>}</span>
+
+<span>// in this case we need to cast it, because we are hardcoding the IDs</span>
+<span>// in a real world scenario the data gets loaded on runtime</span>
+<span>// from the DB and no casting is needed there</span>
+<span>const</span> <span>book</span>: <span>Product</span> <span>=</span> <span>{</span> <span>id</span>: <span>'1'</span> <span>as</span> <span>ProductId</span><span>,</span> <span>/* ...rest */</span> <span>}</span>
+<span>const</span> <span>category</span>: <span>Category</span> <span>=</span> <span>{</span> <span>id</span>: <span>'1'</span> <span>as</span> <span>CategoryId</span><span>,</span> <span>/* ...rest */</span> <span>}</span>
+
+<span>const</span> <span>findById</span><span></span><span>(</span><span>id</span>: <span>ProductId</span><span>)</span>: <span>Product</span> <span>|</span> <span>undefined</span> <span>=</span> <span>{</span> <span>/* implementation */</span> <span>}</span>
+
+<span>findById</span><span>(</span><span>book</span><span>.</span><span>id</span><span>)</span> <span>// valid</span>
+
+<span>findById</span><span>(</span><span>category</span><span>.</span><span>id</span><span>)</span> <span>// TypeScript shows an error:</span>
+<span>// Argument of type 'CategoryId' is not assignable to parameter of type 'ProductId'</span></pre></div>
+<p dir="auto">Now <code>TypeScript</code> is able to tell you that something is wrong when you pass in the wrong ID.</p>
+<p dir="auto">This is not only useful for IDs but also for other <code>string</code> types that e.g. have a special meaning.
+Such examples could be:</p>
+<ul dir="auto">
+<li><code>LocalizedString</code> to make sure a Button component only accepts internationalized strings</li>
+<li><code>SanitizedHtmlString</code> so you know it contains no potential unsafe characters</li>
+<li><code>ValidatedString</code> that tells you it's content was checked and marked as valid</li>
+</ul>
+
+<p dir="auto"><h4 tabindex="-1" dir="auto">#5 use <code>tagged template literals</code> to narrow down your string types</h4><a id="user-content-5-use-tagged-template-literals-to-narrow-down-your-string-types" aria-label="Permalink: #5 use tagged template literals to narrow down your string types" href="#5-use-tagged-template-literals-to-narrow-down-your-string-types"></a>
+<p dir="auto">Like you already have seen in the example from <a href="#4-use-opaque-types-for-unique-types">TS-tipp #4</a>,
+strings are really generic and can hold any kind of data. Luckily <code>TypeScript</code> is flexible enough to
+let us define which shape we expect the data.</p>
+<blockquote>
+<p dir="auto"><a href="https://github.com/ivanhofer/sveltekit-typescript-showcase/blob/main/src/models/tagged-template-literals.model.ts">Example</a></p>
+</blockquote>
+<div dir="auto" data-snippet-clipboard-copy-content="// a list of possible options (`enum`-like)
+type Options = 'A' | 'B' | 'C'
+
+// `numbers` wrapped into a `string`
+type NumberString = `${number}`
+
+// really simple check if the format looks like an email
+type EmailString = `${string}@${string}.${string}`
+
+// simple check if it is an url
+type LinkString = `http${'s' | ''}://${string}`
+
+// simple check if it could be in the format of an IPv4 address
+// note: we only can tell we expect any `number` but we cannot define value ranges yet
+type IpStringSimple = `${number}.${number}.${number}.${number}`
+
+// useful if you are handling multiple date formats from different apis
+type Api1DateTimeString = `${number}-${number}-${number} ${number}:${number}:${number}`
+// e.g. '2021-03-01 13:00:00'
+
+type Api2Timestamp = `${number}` // e.g. '1635494400000'
+
+// ... and many more potential use-cases"><pre><span>// a list of possible options (`enum`-like)</span>
+<span>type</span> <span>Options</span> <span>=</span> <span>'A'</span> <span>|</span> <span>'B'</span> <span>|</span> <span>'C'</span>
+
+<span>// `numbers` wrapped into a `string`</span>
+<span>type</span> <span>NumberString</span> <span>=</span> `${<span>number</span><span>}</span>`
+
+<span>// really simple check if the format looks like an email</span>
+<span>type</span> <span>EmailString</span> <span>=</span> `${<span>string</span><span>}</span>@${<span>string</span><span>}</span>.${<span>string</span><span>}</span>`
+
+<span>// simple check if it is an url</span>
+<span>type</span> <span>LinkString</span> <span>=</span> `http${<span>'s'</span> <span>|</span> <span>''</span><span>}</span>://${<span>string</span><span>}</span>`
+
+<span>// simple check if it could be in the format of an IPv4 address</span>
+<span>// note: we only can tell we expect any `number` but we cannot define value ranges yet</span>
+<span>type</span> <span>IpStringSimple</span> <span>=</span> `${<span>number</span><span>}</span>.${<span>number</span><span>}</span>.${<span>number</span><span>}</span>.${<span>number</span><span>}</span>`
+
+<span>// useful if you are handling multiple date formats from different apis</span>
+<span>type</span> <span>Api1DateTimeString</span> <span>=</span> `${<span>number</span><span>}</span>-${<span>number</span><span>}</span>-${<span>number</span><span>}</span> ${<span>number</span><span>}</span>:${<span>number</span><span>}</span>:${<span>number</span><span>}</span>`
+<span>// e.g. '2021-03-01 13:00:00'</span>
+
+<span>type</span> <span>Api2Timestamp</span> <span>=</span> `${<span>number</span><span>}</span>` <span>// e.g. '1635494400000'</span>
+
+<span>// ... and many more potential use-cases</span></pre></div>
+<p dir="auto">If we assign a value that doesn't match the definition of the shape <code>TypeScript</code> will throw an
+error.</p>
+
+
+<p dir="auto"><h2 tabindex="-1" dir="auto">Conclusion</h2><a id="user-content-conclusion" aria-label="Permalink: Conclusion" href="#conclusion"></a>
+<p dir="auto">You should now have a feeling what is possible with <code>TypeScript</code> and how you can use it within your
+<code>Svelte</code> and <code>SvelteKit</code> applications. You probably have learned something new about <code>TypeScript</code> as
+well. Just because the examples are listed here doesn't mean you <strong>need</strong> to type everything as
+strict as possible. For some cases it makes sense to be stricter and sometimes beeing so strict will
+introduce complexity you need to maintain over the lifetime of a project.</p>
+
+
+<p dir="auto"><h2 tabindex="-1" dir="auto">JSDoc comments</h2><a id="user-content-jsdoc-comments" aria-label="Permalink: JSDoc comments" href="#jsdoc-comments"></a>
+<p dir="auto">You probably don't need <code>TypeScript</code> directly to profit from a strong type-checking experience
+inside your <code>Svelte</code> and <code>SvelteKit</code> applications. <code>VS Code</code> and the <code>Svelte</code> extension can also
+offer help if you annotate your components with <a href="https://jsdoc.app/" rel="nofollow"><code>JSDoc</code> comments</a>.</p>
+<p dir="auto">Here is a simple example:</p>
+<ul dir="auto">
+<li>
+<p dir="auto">JSDoc:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<script>
+   /** @type {string} */
+   export let name
+</script>
+
+Hello {name}!"><pre>&lt;<span>script</span>&gt;<span></span>
+<span>   <span><span>/**</span> <span>@type</span> <span>{string}</span> <span>*/</span></span></span>
+<span>   <span>export</span> <span>let</span> name</span>
+<span></span>&lt;/<span>script</span>&gt;
+
+Hello {<span>name</span>}!</pre></div>
+</li>
+<li>
+<p dir="auto">TypeScript:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<script lang=&quot;ts&quot;>
+   export let name: string
+</script>
+
+Hello {name}!"><pre>&lt;<span>script</span> <span>lang</span>=<span><span>"</span>ts<span>"</span></span>&gt;<span></span>
+<span>   <span>export</span> <span>let</span> name<span>:</span> <span>string</span></span>
+<span></span>&lt;/<span>script</span>&gt;
+
+Hello {<span>name</span>}!</pre></div>
+</li>
+</ul>
+<p dir="auto">It is up to you which syntax you prefer. Some parts of the <code>SvelteKit</code> codebase are written in plain
+<code>JavaScript</code> files annotated with <code>JSDoc</code> comments.</p>
+<p dir="auto">I would suggest directly using ´TypeScript´ because if you need more complex types, you will need to
+write
+<a href="https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html" rel="nofollow"><code>declaration files</code></a>
+in <code>TypeScript</code> syntax. It will be harder for you to write them if you are not used to the
+<code>TypeScript</code> syntax.</p>
+<p dir="auto">Also if you need to use generics inside your <code>JSDoc</code> comments, you may find the syntax a bit messy:</p>
+<ul dir="auto">
+<li>JSDoc:</li>
+</ul>
+<div dir="auto" data-snippet-clipboard-copy-content="/**
+ * @typedef { import('./my-types').Type1 } Type1,
+ * @typedef { import('./my-types').GenericType<Type1> } Type1GenericType,
+ */
+
+/**
+ * @param {Type1GenericType} param
+ * @returns {void}
+ */
+export const myFunction = (param) => {
+   // ... implementation
+}"><pre><span>/**</span>
+<span> * <span>@typedef</span> {<span> import('./my-types').Type1 </span>} Type1,</span>
+<span> * <span>@typedef</span> {<span> import('./my-types').GenericType&lt;Type1&gt; </span>} Type1GenericType,</span>
+<span> */</span>
+
+<span>/**</span>
+<span> * <span>@param</span> {<span>Type1GenericType</span>} param</span>
+<span> * <span>@returns</span> {<span>void</span>}</span>
+<span> */</span>
+<span>export</span> <span>const</span> <span>myFunction</span> <span>=</span> <span>(</span><span>param</span><span>)</span> <span>=&gt;</span> <span>{</span>
+   <span>// ... implementation</span>
+<span>}</span></pre></div>
+<ul dir="auto">
+<li>TypeScript:</li>
+</ul>
+<div dir="auto" data-snippet-clipboard-copy-content="import type { Type1, GenericType } from ('./my-types')
+
+export const myFunction = (param: GenericType<Type1>): void => {
+   // ... implementation
+}"><pre><span>import</span> <span>type</span> <span>{</span> <span>Type1</span><span>,</span> <span>GenericType</span> <span>}</span> <span>from</span> <span>(</span><span>'./my-types'</span><span>)</span>
+
+<span>export</span> <span>const</span> <span>myFunction</span> <span>=</span> <span>(</span><span>param</span>: <span>GenericType</span><span>&lt;</span><span>Type1</span><span>&gt;</span><span>)</span>: <span><span>void</span></span> <span>=&gt;</span> <span>{</span>
+   <span>// ... implementation</span>
+<span>}</span></pre></div>
+<p dir="auto">See the
+<a href="https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html" rel="nofollow">official documentation</a> to
+learn more about the <code>JSDoc</code>-syntax.</p>
+
+
+<p dir="auto"><h2 tabindex="-1" dir="auto">Sponsors</h2><a id="user-content-sponsors" aria-label="Permalink: Sponsors" href="#sponsors"></a>
+<p dir="auto"><a href="https://github.com/sponsors/ivanhofer">Become a sponsor ❤️</a> if you want to support my open source contributions.</p>
+<p dir="auto">
+   <a href="https://cdn.jsdelivr.net/gh/ivanhofer/sponsors/sponsorkit/sponsors.svg" title="ivanhofer's sponsors" rel="nofollow">
+      
+   </a>
+</p>
+<p dir="auto">
+   Thanks for sponsoring my open source work!
+</p>
+</article></div></div></article></body></html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>ZeroEntropy &mdash; Specialized AI Models for Every System</title><meta name="author" content=""><meta name="description" content="ZeroEntropy trains small, specialized AI models — state-of-the-art rerankers, embeddings, and custom-trained models for production AI systems. Higher accuracy, lower latency, lower cost than the generalist alternatives."><meta name="dendron:source-url" content="https://www.zeroentropy.dev/blog/improving-rag-with-elo-scores"><meta name="dendron:length" content="900"><meta name="dendron:time-to-read-minutes" content="1"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div><div><div><p>Ship Models That Work</p><p>Integrate ZeroEntropy models in minutes. Production-ready, latency-optimized, available everywhere.</p></div><div><p><span>Partner Providers</span></p><p>Access all models through a single, latency-optimized API, or through our partner providers.</p></div></div><div><pre><code><span># Create an API Key at https://dashboard.zeroentropy.dev</span>
+<!-- -->
+<span>from</span><span> </span><span>zeroentropy</span><span> </span><span>import</span><span> </span><span>ZeroEntropy</span>
+<!-- -->
+<span>zclient</span><span> </span><span>=</span><span> </span><span>ZeroEntropy</span><span>(</span><span>)</span>
+<!-- -->
+<span>response</span><span> </span><span>=</span><span> </span><span>zclient</span><span>.</span><span>models</span><span>.</span><span>rerank</span><span>(</span>
+<span> </span><span> </span><span> </span><span> </span><span>model</span><span>=</span><span>"zerank-2"</span><span>,</span>
+<span> </span><span> </span><span> </span><span> </span><span>query</span><span>=</span><span>"What is Retrieval Augmented Generation?"</span><span>,</span>
+<span> </span><span> </span><span> </span><span> </span><span>documents</span><span>=</span><span>[</span>
+<span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span> </span><span>"RAG combines retrieval with generation..."</span><span>,</span>
+<span> </span><span> </span><span> </span><span> </span><span>]</span><span>,</span>
+<span>)</span>
+<!-- -->
+<span>for</span><span> </span><span>doc</span><span> </span><span>in</span><span> </span><span>response</span><span>.</span><span>results</span><span>:</span>
+<span> </span><span> </span><span> </span><span> </span><span>print</span><span>(</span><span>doc</span><span>)</span></code></pre></div></div><div><div><div><p></p><a href="https://docs.zeroentropy.dev/" target="_blank" rel="noopener noreferrer" aria-label="ZeroEntropy API"></a></div><p><span>ZeroEntropy API</span></p><p>Start building in minutes with Python and TypeScript SDKs.</p></div><div><div><p></p><a href="https://aws.amazon.com/marketplace/seller-profile?id=seller-nurj4uavxb4z2" target="_blank" rel="noopener noreferrer" aria-label="ZeroEntropy VPC"></a></div><p><span>ZeroEntropy VPC</span></p><p>Deploy in your own cloud with dedicated infrastructure. Available on AWS Marketplace and Azure.</p></div><div><div><p></p><a href="https://cal.com/ghita-houir-alami-ekgjti/30min" target="_blank" rel="noopener noreferrer" aria-label="Enterprise and Model Licensing"></a></div><p><span>Enterprise and Model Licensing</span></p><p>Custom deployments, dedicated capacity, model licensing, model fine-tuning, and SLAs. Talk to us.</p></div></div></div></article></body></html>
