@@ -953,4 +953,4 @@ Semantic Enrichment: the critical step after parsing. This is a step that signif
 ![](https://www.lemagit.fr/visuals/LeMagIT/hero_article/LeBonCoin_PacMan.jpg)
 Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d’Internet, les attaques sur la couche applicative sont plus complexes à traiter. LeBonCoin a fait le choix d’une solution de sécurité collaborative pour compléter son dispositif anti-DDoS : l’agent de la startup française CrowdSec.
 
-[TODO]
+[TODO] [Security]
