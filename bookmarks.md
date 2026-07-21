@@ -954,3 +954,10 @@ Semantic Enrichment: the critical step after parsing. This is a step that signif
 Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d’Internet, les attaques sur la couche applicative sont plus complexes à traiter. LeBonCoin a fait le choix d’une solution de sécurité collaborative pour compléter son dispositif anti-DDoS : l’agent de la startup française CrowdSec.
 
 [TODO] [Security] [Ddos]
+
+# Introducing Gemini 3.6 Flash, 3.5 Flash-Lite, and 3.5 Flash Cyber
+[https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/](https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/)
+![](https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-3-5_3-6_3-5-Cyber__key-art__statement_.width-1300.jpg)
+We’re introducing new Gemini models, including Gemini 3.6 Flash, 3.5 Flash-Lite and 3.5 Flash Cyber.
+
+[TODO]
