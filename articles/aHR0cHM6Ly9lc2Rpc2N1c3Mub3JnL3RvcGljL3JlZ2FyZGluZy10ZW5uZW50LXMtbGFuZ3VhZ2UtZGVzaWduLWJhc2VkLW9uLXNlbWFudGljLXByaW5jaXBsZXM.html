@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>regarding Tennent's "Language Design based on Semantic Principles"</title><meta name="author" content=""><meta name="description" content="[since I was lucky enough to be near a good university library
+some 15 years ago, and have a long-standing interest in
+language design, I'll try to respond to questions from the
+other thread here; the hope is to turn those principles from
+an obstacle to a tool in Ecmascript design]"><meta name="dendron:source-url" content="https://esdiscuss.org/topic/regarding-tennent-s-language-design-based-on-semantic-principles"><meta name="dendron:length" content="8338"><meta name="dendron:time-to-read-minutes" content="7"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div><p>[since I was lucky enough to be near a good university library
+some 15 years ago, and have a long-standing interest in
+language design, I'll try to respond to questions from the
+other thread here; the hope is to turn those principles from
+an obstacle to a tool in Ecmascript design]</p><p>As a long-time fan of semantic principles for language design,
+I've been reading the very odd references to Tennent's design
+principles in discussions here with some discomfort. In the
+list archives, 'TCP' sometimes sounds like almost as big a
+source of problems as 'ASI'. Also, some of the references
+bear little or no resemblance to the principles I read about!</p><p>The principles are open to interpretation, and we all have our
+own misconceptions about them, especially when they seem
+to support what we wanted to do anyway(*). But they were
+not taken out of thin air, either: they were collected from
+early work on language design and language semantics.</p><p>I've always found them to lead to simpler, more consistent
+language designs - they point out problems, and show how
+to remove problems, but they do not make problems.</p><p>My knowledge of Tennent's principles comes from his
+paper [1], not from his book, but I doubt that the difference
+are that great. If you have a university library nearby, the
+paper and its references are well worth reading for anyone
+involved in language design - they don't have all the answers,
+but many of todays problems were already under discussion
+back then (you'd be surprised at the similarities;-).</p><p>Let me try to state the two principles from that paper first
+(try, because I have to collect and paraphrase from the text),
+followed by interpretations that I've found useful.</p><p>// principle of abstraction</p><pre><code>Abstraction facilities may be provided for any
+semantically meaningful category of syntactic
+constructs
+</code></pre><p>Tennent refers to 'abstraction' in a technical sense, citing
+motivating examples from set theory, relations and functions,
+that is from mathematics and theory of computation. Concrete
+examples from programming languages include abstraction
+over statements (procedures) and over expressions (functions).</p><p>Interpretation</p><p>Note the "semantically meaningful" - Tennent is talking
+about semantic abstractions, represented in syntax, not
+about merely syntactic abstractions!</p><p>I've found that to be the single most important issue when
+using this principle: what are the semantic objects we need
+to talk about, and how are they represented in our syntax?</p><pre><code>We could, of course, decide that our language should
+also serve as its own meta-language, then syntax phrases
+would be semantically meaningful, and we would want
+to support syntactic abstractions/macros (syntax-level
+functions).
+</code></pre><p>But without such a decision, we should not try to apply
+the principle of abstraction to arbitrary pieces of syntax.</p><p>The second most interesting issue is that our ideas about
+which parts of our language are semantically meaningful
+may evolve - modules are a prime example here:</p><pre><code>at first, we just have abstractions of statements and
+expressions, and declarations happen to be a syntactic
+consequence of that. But as our programs grow larger,
+we notice that we want to talk about groups of declarations
+as semantic objects, so now the principle of abstraction
+applies, and we end up with some form of modules.
+</code></pre><p>Something similar applies to break and labels:</p><pre><code>in current Javascript, neither 'break label' nor 'label' on
+its own has any meaning, they are part of loops or switch
+statements. So it simply makes no sense to abstract over
+break statements independent of their loop/switch - the
+principle does not apply!
+
+We might, however, decide to work out semantics for
+'break label' or for 'label' on its own, and then the principle
+of abstraction would ask us to think about abstractions
+over these (Tennent discusses sequels as abstractions
+over the 'break label' form, and mentions label parameters
+as well).
+
+The former very quickly leads towards call/cc, the latter
+might be easier to implement, but also encourages more
+complicated uses of labels. Either variant needs semantics
+before talking about their interactions with lambdas and
+the like. Similarly for 'this' and 'return'.
+</code></pre><p>// principle of correspondence (paraphrasing):</p><pre><code>The rules governing names in a language should be
+designed together in order to avoid irregularities in
+the manner in which the names may be used. In
+particular, there should be a one-to-one correspondence
+between declarative and parametric forms of introducing
+names.
+</code></pre><p>This goes back directly to Landin [2], and comes with an
+example, comparing variable declaration for 'x' with formal
+function parameter 'x':</p><pre><code>x*(x+a) where x= b+2*c
+
+f(b+2*c) where f(x)= x*(x+a)
+</code></pre><p>Interpretation</p><p>The principle of correspondence interacts with the principle
+of abstraction: our two most common ways of introducing
+abstractions in programming languages involve names,
+names for things we already know (variable declarations,
+function declarations, constant declarations, ..) and names
+for things we do not know yet (function parameters).</p><p>Abstraction tells us when to introduce naming schemes,
+correspondence tells us to keep these two common forms
+of naming in sync. It should not matter whether a name
+comes from a declaration or formal parameter list - any
+such differences needlessly complicate the language.</p><p>Correspondence is the principle that lets us say that</p><pre><code>let(this=obj, x=5) { .. }
+</code></pre><p>and</p><pre><code>((function(x) { .. }).call(obj,5))
+</code></pre><p>should be equivalent, and that anything we can do in
+formal parameter lists, we should also be able to do in
+declarations, and vice versa.</p><p>Generally, Tennent's paper is heavily influenced by lambda
+calculus, both as a programming language (among other
+work, Landin gave translations of Algol 60 into Church's
+lambda calculus) and as a representation of mathematical
+functions (early work on denotational semantics of
+programming languages, by Strachey and others).</p><p>In particular, Landin's influence [2] is strong: Landin was
+perhaps the first to separate languages into sets of problem-
+oriented primitives (domain-specific, in todays terminology)
+and general language framework, and he was concerned
+with removing idiosyncracies from the general framework.</p><p>So my favourite way of reading Tennent's principles is as
+rules for completing a language design:</p><pre><code>- first, we choose what we want to talk about, and
+    how to represent it (strings, numbers, arrays, regexps,
+    expressions, statements, ..)
+
+- then, we apply the principles to build up a consistent
+    general framework around our chosen primitives
+    (functions, procedures, modules, ..)
+</code></pre><p>But we can also use the principles to spot gaps and
+inconsistencies in existing language designs, again
+focusing on the domain-independent parts of the
+language.</p><p>It is of interest that Tennent's paper includes an analysis
+of Pascal wrt the principles, followed by a synthesis section:
+suggestions for completing Pascal to avoid the problems
+discussed in the analysis section.</p><p>Hope this helps,
+Claus</p><p>[1] R.D.Tennent, "Language Design Methods Based on
+Semantic Principles", Acta Informatica 8, 97-112, 1977</p><pre><code>(if you or your library have a springerlink subscription:
+http://www.springerlink.com/content/n43h438l03811671/ )
+</code></pre><p>[2] P.J.Landin, "The next 700 programming languages",
+Communications of the ACM 9, 157-164, 1966</p><pre><code>http://scholar.google.com/scholar?hl=en&amp;lr=&amp;cluster=2856797924573721037&amp;um=1&amp;ie=UTF-8&amp;sa=X&amp;oi=science_links&amp;resnum=1&amp;ct=sl-allversions
+</code></pre><p>(*) My own excursion in this area happened when I had
+just about finished with a couple of design problems,
+and was doing background research for the write-up.</p><pre><code>After I encountered Tennent's way of looking at papers
+I already admired, it became clear that his principles
+were the simplest way to summarize the design
+decisions I had made. After I finished that dissertation,
+I tried to write up this view - unlike the papers above,
+this isn't a must-read: you'll probably want to skip the
+introduction, and possibly section 2 as well, but the
+report goes into a third principle that I found very
+useful, and the application of the principles to modules
+might sound familiar to Ecmascript modules authors.
+
+"On functional programming, language design, and persistence"
+http://community.haskell.org/~claus/publications/fpldp.html</code></pre></div></div></article></body></html>
