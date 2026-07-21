@@ -960,4 +960,4 @@ Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d’In
 ![](https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-3-5_3-6_3-5-Cyber__key-art__statement_.width-1300.jpg)
 We’re introducing new Gemini models, including Gemini 3.6 Flash, 3.5 Flash-Lite and 3.5 Flash Cyber.
 
-[TODO]
+[TODO] [AI]
