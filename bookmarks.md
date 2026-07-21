@@ -946,7 +946,7 @@ Do you want to know more about an incremental parsing library used at GitHub and
 ![](https://tomassetti.me/wp-content/uploads/2024/12/Foto-sitoweb-15.jpg)
 Semantic Enrichment: the critical step after parsing. This is a step that significantly increases the value of the ASTs we got from parsing
 
-[TODO] [Parser] [Parsing] [semantic]
+[Parser] [Parsing] [semantic] [TODO]
 
 # Comment LeBonCoin éteint les attaques DDoS de niveau 7 | LeMagIT
 [https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec](https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec)
