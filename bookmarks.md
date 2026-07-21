@@ -744,12 +744,6 @@ Things you do need CRDTs for …
 
 [Crdt] [poireau]
 
-# 
-[Anthropic's Code with Claude Announces Managed Agents, Proactive Workflows, Capability Curve - InfoQ](Anthropic's Code with Claude Announces Managed Agents, Proactive Workflows, Capability Curve - InfoQ)
-![]()
-
-
-
 # How to get people to disagree with you
 [https://hivekit.io/blog/how-to-get-people-to-disagree-with-you/](https://hivekit.io/blog/how-to-get-people-to-disagree-with-you/)
 ![]()
@@ -940,3 +934,17 @@ Why Domain-Specific Languages and good abstractions make LLM code generation rel
 Reflections on autonomy and the value of thinking for ourselves
 
 [TODO] [AI] [thinking]
+
+# Anthropic's Code with Claude Announces  Managed Agents, Proactive Workflows, Capability Curve
+[https://www.infoq.com/news/2026/05/code-with-claude/](https://www.infoq.com/news/2026/05/code-with-claude/)
+![](https://res.infoq.com/news/2026/05/code-with-claude/en/headerimage/codewithclaude-1779025768208.jpeg)
+Anthropic hosted "Code with Claude 2026" in San Francisco, featuring livestream sessions focused on Claude Code, the Claude API platform, and other projects. Key topics included developer experience, autonomy features, model step-changes, and the impact of AI on product architecture. Discussions included insights from GitHub, Vercel, and AI-native startups on engineering strategies and challenges.
+
+[AI]
+
+# GitHub - Strumenta/SmartReader: SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla
+[https://github.com/Strumenta/SmartReader](https://github.com/Strumenta/SmartReader)
+![SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla - Strumenta/SmartReader](https://opengraph.githubassets.com/8a274907f84bd344b5e1d3274e223fd97fe5be2ceb7f061c2d57eb0ef1957a46/Strumenta/SmartReader)
+SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla - Strumenta/SmartReader
+
+[TODO]
