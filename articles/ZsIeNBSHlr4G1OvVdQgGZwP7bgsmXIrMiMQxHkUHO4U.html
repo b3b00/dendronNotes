@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Incremental Parsing Using Tree-sitter</title><meta name="author" content="Gabriele Tomassetti"><meta name="description" content="Do you want to know more about an incremental parsing library used at GitHub and that was born out of a failed software?"><meta name="dendron:source-url" content="https://tomassetti.me/incremental-parsing-using-tree-sitter/"><meta name="dendron:length" content="37163"><meta name="dendron:time-to-read-minutes" content="30"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-id="c3849b8" data-element_type="widget" data-e-type="widget" id="allcont" data-widget_type="theme-post-content.default"><p>Do you want to know more about an incremental parsing library used at GitHub and that was born out of failed software? Then, keep reading, because we are going to talk about Tree-sitter.</p><p>Tree-sitter is an incremental parsing library, which means that it is designed to efficiently update the tree, without throwing away the work already done. This is ideal for parsing a file that is being written in a code editor. If you are interested in <a href="https://tomassetti.me/guide-parsing-algorithms-terminology/">knowing more about GLR</a>, the kind of algorithm that powers Tree-sitter, you can read about our introduction to parsing algorithms. That explains what incremental parsing is.</p><p>Tree-sitter was created as part of Atom, the editor by GitHub that battled with VS Code and Brackets, a few years ago, for the title of best lightweight, cross-platform editor. As you know, Atom lost and VS Code won. However, Tree-sitter survived and it is still used at GitHub.</p><p>Tree-sitter is used at GitHub and creates efficient parsers. It also comes with support for syntax highlighting. So, it looks like a great fit for an editor. Here at Strumenta, we are fan of ANTLR, a robust and flexible parser generator. However, we found that Tree-sitter has its merits and in this article we are going to show you where it shines and how to use it.</p><p>For instance, Tree-sitter:</p><ul>
+<li>has excellent performance</li>
+
+
+
+<li>comes with included support for syntax highlighting</li>
+
+
+
+<li>there are parsers available ready-to-use in many languages</li>
+</ul><p>In this tutorial, we are going to see:</p><ul>
+<li>how to create a parser in Tree-sitter</li>
+
+
+
+<li>how to define rules to support syntax highlighting</li>
+
+
+
+<li>how to identify elements and tag them</li>
+
+
+
+<li>how to use the generated parser in Python and do things like walking the tree</li>
+</ul><p>You can find the repository with the code for this example at <a href="https://github.com/gabriele-tomassetti/tree-sitter-story">tree-sitter-story</a>.</p><h2>What is Tree-sitter designed for?</h2><p>This is how the official documentation introduces it:</p><ul>
+<li><strong>General</strong> enough to parse any programming language</li>
+
+
+
+<li><strong>Fast</strong> enough to parse on every keystroke in a text editor</li>
+
+
+
+<li><strong>Robust</strong> enough to provide useful results even in the presence of syntax errors</li>
+
+
+
+<li><strong>Dependency-free</strong> so that the runtime library (which is written in pure C11) can be embedded in any application</li>
+</ul><p>Tree-sitter was tailored for GitHub needs in supporting an editor. So it is a great software, worthy of such a company, but it has some peculiarities. It has great performance, but a bit of a complex setup. Tree-sitter is written in Rust, but the parsers are generated in C. Do not worry, you do not actually have to write C to use it, because you are supposed to use JavaScript to write grammars.&nbsp;</p><p>It is a parser generator tool: you write a grammar (in JavaScript) describing a language and then Tree-sitter (written in Rust) creates a parser (in C or WebAssembly) to handle that language.</p><p>You then use the parser in your favorite language, as long as there has bindings available for this language. There are <a href="https://tree-sitter.github.io/tree-sitter/">many bindings available</a>, official (Go, C#, Java, Kotlin, etc.) and community-supported. Bindings are essentially a bridge between two programming languages. You end up in an interface (for instance in Kotlin) allowing you to use a library or code written in one language (like C) naturally.</p><figure><table><thead><tr><th>What</th><th>Language Used</th><th>When You Should Care</th></tr></thead><tbody><tr><td>Tree-sitter itself</td><td>Rust</td><td>If you want to contribute to the project</td></tr><tr><td>Grammar</td><td>JavaScript</td><td>If you want to create a new parser</td></tr><tr><td>Generated Parser</td><td>C compiled to native library/WebAssembly</td><td>If you want to run the parser</td></tr><tr><td>Client libraries</td><td>All that have bindings available</td><td>If you want to use the parser</td></tr></tbody></table></figure><p>You can see look at the table for getting a summary of what you should care about for what you want to accomplish. The most important parts are relative to writing the grammar and running the parser.&nbsp;</p><p>You need to use JavaScript to write the grammar. Tree-sitter will generate C code and compile into a native library. If you want to use a parser, you do not need to care about JavaScript, you need to take care that the running environment can run the generated parser. If you are compiling the generated C code to a native library, you need to do that for the platform you care about. For instance, if you want to use the parser on macOS, you need to compile the code on a macOS system in order to generate a <code>.dylib</code> library.&nbsp;</p><p>You could also generate a WebAssembly (WASM) module to run in <a href="https://webassembly.org/features/">any platform that can handle WebAssembly</a>. Usually these platforms are browsers, but there are other options.</p><p>It is written in Rust because that is a productive language. It outputs C, because that is a widely supported language. This allows to embed it in many software and define bindings for a variety of languages. It is also possible to consume WebAssembly, that allows to easily connect JavaScript and C code.</p><p>So, it is complex software that works well if you want to build editors. It has the performance necessary to be used in compilers and interpreters.</p><p>It is also used in static analysis: it provides parsing to implement partial symbol resolution in the online code viewer on GitHub. For instance, if you open a Java file on GitHub and select a property you can see the references and potential definitions on the sidebar. This system uses Tree-sitter based parsers.</p><p>This makes sense for GitHub because they are a company providing web software (hence the JavaScript) which also needs the performance of system software (hence the Rust/C).</p><h2>Using Tree-sitter</h2><p>Now that we understand what is Tree-sitter for, we can start using it. There are actually several ways to take advantage of it. If you are interested in just using an existing parser, you can use a library in many of the languages for which there are bindings. The <a href="https://github.com/tree-sitter/">tree-sitter organization</a> on GitHub has parsers for many languages. As a side note, they are both official languages and <a href="https://github.com/tree-sitter-grammars">community-provided ones</a>.</p><p>This is a good reason to use Tree-sitter:</p><ul>
+<li>there are parsers available for many languages</li>
+
+
+
+<li>if you write a parser in Tree-sitter, you can process your parser and all other languages supported by Tree-sitter in one pipeline</li>
+</ul><p>However, take notice the quality and integrations with the respective ecosystems varies, for instance the Python binding works, but the Kotlin one it does not work well. When we tried it, they were not generated.</p><p>If instead you want to build parsers, you need to use JavaScript.&nbsp;</p><p>So, let’s start by installing the <code>tree-sitter-cli</code> globally via NPM.</p><pre data-enlighter-language="bash" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">npm install -g tree-sitter-cli</pre><p>There are other options, including downloading the binary from GitHub or using a Rust crate, but this is the easiest way to install the software.</p><p>You can now:</p><ol>
+<li>create a folder for your project, like <code>tree-sitter-story</code> for this tutorial</li>
+
+
+
+<li>create the project with <code>tree-sitter init</code>. The first time you run it on an empty directory it will ask you some questions to create the project. Subsequent times will do nothing because it detects that a project is already there</li>
+</ol><p>Running the command you will see something like this.&nbsp;</p><figure></figure><p>Once you run the command, you will end up with something like this.</p><figure></figure><p>A folder with all the files to run, test and compile the parser.&nbsp;</p><h2>Exploring a Tree-sitter Project</h2><p>It is useful to look around this newly created project, since the CLI relies on this project structure to fulfill its role. One thing that is missing from the generated project is a test/corpus folder. This should contain example files to validate your parser.</p><p>You can see a lot of language-specific build files, like <code>CMakeLists.txt</code> for C/CMake or <code>pyproject.toml</code> for Python. The C-related ones will build the main parser, while the other ones handle the bindings. You can control which bindings are created by going into the file <code>tree-sitter.json</code> and changing the bindings values.</p><pre data-enlighter-language="js" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">"bindings": {
+    "c": true,
+&nbsp;&nbsp;&nbsp;&nbsp;"go": true,
+&nbsp;&nbsp;&nbsp;&nbsp;"node": true,
+&nbsp;&nbsp;&nbsp;&nbsp;"python": true,
+&nbsp;&nbsp;&nbsp;&nbsp;"rust": true,
+&nbsp;&nbsp;&nbsp;&nbsp;"swift": false,
+&nbsp;&nbsp;&nbsp;&nbsp;"zig": false,
+&nbsp;&nbsp;&nbsp;&nbsp;"kotlin": false
+&nbsp;&nbsp;}</pre><p>For instance, if you set <code>swift</code> to <code>false</code> and delete the Swift-related files, they will not be there when you run the command <code>tree-sitter init --update</code>. This does not seem to work perfectly though, because we tried to set <code>kotlin</code> to <code>true</code>, but nothing happened. You also cannot remove Rust or C.</p><p>The main project however is the JavaScript project, that relies on <code>package.json</code>. The file sets up the running of the tests and even to run the parser in sample editor (the command start).&nbsp;</p><figure></figure><p>You can do directly with the CLI, but the JavaScript project makes it easier. The main file you care about is <code>grammar.js</code>, which will contain your grammar. The default project has a grammar for a hello language, literally a language that accepts hello.</p><p>All you need to do now is to install the necessary dependencies with <code>npm install</code>.</p><h2>The Tree-sitter Workflow</h2><p>The CLI creates a working setup with a usable language, this means that you can already experience the basic Tree-sitter workflow:</p><ol>
+<li>run <code>tree-sitter</code> generate to create the C parser under the <code>src/</code> folder.</li>
+
+
+
+<li><code>run npm test</code></li>
+
+
+
+<li>run <code>npm start</code> to launch a web editor to test your parser</li>
+</ol><p>Running the test and the web editor requires a C compiler and Emscripten (<code>emcc</code>) to compile the code to WebAssembly. If you have installed Docker on your system, running <code>tree-sitter build --wasm</code> will automatically pull and create a docker image that will contain Emscripten and will generate a WebAssembly module. If you are using Windows, it is better to use Windows Subsystem for Linux (WSL) to work with tree-sitter projects.</p><p>This is quite a simple workflow for such a powerful system. So, that is good. You could also run the command <code>tree-sitter parse example.story</code> to test the parser on a file. This would produce a parse tree, even if errors are present in the example file. This is useful to check that there are no errors, and also save you from the need to have Emscripten on your main development computer. However, it is complicated to analyze parse trees in terminal.</p><p>The playground web editor requires you to compile the generated parser in a WebAssembly module. So, if you cannot compile to WebAssembly in your development machine you will be forced to debug the grammar and explore the parser tree looking at the terminal.</p><p>Compare this view (from the terminal).</p><figure></figure><p>With this one (from the editor).</p><figure></figure><p>It is much more readable, and you can also click on the parse tree elements to highlight the source code that corresponds to them. In case you are wondering, the editor used for the playground is <code>codemirror</code>. You can use this editor by running <code>tree-sitter playground</code>, but you need to have a working grammar and generate a WebAssembly module.</p><h2>Writing a Grammar</h2><p>We now know how to use the software, how can you write a grammar? The short version is like in a parser combinator, but with a better organization. The longer version is the following section.</p><p>You write rules similarly to what you would do using a parser combinator, which is a software that provides parsing functions that you combine to parse things.</p><pre data-enlighter-language="js" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">module.exports = grammar({
+&nbsp;&nbsp;name: "story",
+&nbsp;&nbsp;rules: {
+&nbsp;&nbsp;&nbsp;&nbsp;source_file: $ =&gt; seq(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.title,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.characters,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.inputs,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.constraints,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.text,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.question
+&nbsp;&nbsp;&nbsp;&nbsp;),</pre><p>For instance, the start rule is <code>source_file</code>, which is also the first one you define. You can see that in our example the rule defines a seq(uence) of rules. This means that a file in our language must have all these elements in the correct order to be valid. The elements prepended by <code>$.</code> like <code>$.title</code> are a reference to other rules. What happens if the file is not valid?</p><figure></figure><p>You get an error node, but the parsing continues unabated.</p><h3>Parsing Lists</h3><p>You can combine functions like seq, optional and repeat to parse something like a list of identifiers:</p><p><code>one, two, the_unbeareable_sadness_of_using_c</code></p><p>This is what they do individually:</p><ul>
+<li>repeat parses zero or more of its arguments. If you want to parse at least one or more, you need to use repeat1.</li>
+
+
+
+<li>optional indicates that that part of the rule is optional</li>
+</ul><p>You can combine them with seq to parse a list in the rule. We do just that in _list, that we use when parsing the list of characters in our story and other rules.</p><pre data-enlighter-language="js" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">    characters: $ =&gt; seq(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'characters', ':', $._list
+&nbsp;&nbsp;&nbsp;&nbsp;),
+
+&nbsp;&nbsp;&nbsp;&nbsp;_list: $ =&gt; seq(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"(",
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;optional(
+    &nbsp;&nbsp;&nbsp;&nbsp;seq(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.expression, repeat(
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;seq(",", $.expression)
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")"
+&nbsp;&nbsp;&nbsp;&nbsp;),</pre><p>The rule <code>_list</code> shows how it is done:</p><ul>
+<li>we start with <code>seq</code>, because in tree-sitter a rule cannot match an empty string, so we start the sequence with delimiters like square brackets or parentheses. If you do not want delimiters you can make the list always contains at least one identifier. Basically, just the part between lines 8-12
+<ul>
+<li>this parses
+<ul>
+<li><code>(</code></li>
+</ul>
+</li>
+</ul>
+</li>
+
+
+
+<li>we continue with <code>optional</code>, because the list could be empty</li>
+
+
+
+<li>we then use <code>seq</code></li>
+
+
+
+<li>we continue with <code>$.identifier</code>, on line 8, because we need to match the first element
+<ul>
+<li>this parses
+<ul>
+<li><code>one</code></li>
+</ul>
+</li>
+</ul>
+</li>
+
+
+
+<li>then we use repeat because the first element can, but it does not have to, be followed by other elements</li>
+
+
+
+<li>we use <code>seq</code>, on line 10, because these other elements are a sequence of identifiers, each separated by a comma
+<ul>
+<li>this parses
+<ul>
+<li><code>, two, the_unbeareable_sadness_of_using_c</code></li>
+</ul>
+</li>
+</ul>
+</li>
+
+
+
+<li>we finally match the ending parenthesis
+<ul>
+<li>this parses
+<ul>
+<li><code>)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul><p>It seems complicated at first, but once you get the hang of it, combining rules became easy. And the availability of many ready-to-use grammars gives you the chance to see how to parse real programming languages.</p><p>One interesting think that we noticed is that Tree-sitter is stringent on forbidding to write rules that can match an empty string. When using a parser generator like ANTLR you may receive a warning about such rules, in Tree-sitter you cannot write rules like that all.&nbsp;</p><h3>Parsing Expressions</h3><p>Another common feature that you want to parse are expressions.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">_expression: $ =&gt; choice(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prec(1, seq('(', $._expression, ')')),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.identifier,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.number,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$.binary_expression
+&nbsp;&nbsp;&nbsp;&nbsp;),
+
+&nbsp;&nbsp;&nbsp;&nbsp;binary_expression: $ =&gt;
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;choice(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prec.left(2, seq($._expression, "&gt;", $._expression)),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prec.left(2, seq($._expression, "&lt;", $._expression)),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prec.left(3, seq($._expression, "/", $._expression)),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prec.left(3, seq($._expression, "*", $._expression)),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prec.left(4, seq($._expression, "+", $._expression)),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prec.left(4, seq($._expression, "-", $._expression)),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;),</pre><p>The main rule to accomplish that is <code>_expression</code>. It starts with the function choice, which means that the rule matches one of the options available. The first option is for parsing an expression between parentheses. That is what the <code>seq('(', $._expression, ')'</code> is for.</p><p>You can parse combined expressions in different ways. Imagine you want to evaluate an expression like:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">1 + 2 * 3</pre><p>Assuming you knew nothing about mathematics you could try to evaluate the expressions in the order that they appear, so <code>1 + 2</code> and then multiply the results for <code>3</code>. However, we know that we must something different: you first need to evaluate the multiplication and then the addition, so you multiply <code>2 * 3</code> and then add <code>1</code>. In other words, there is a specific order in which the expressions need to be evaluated, and your parser must be able to handle that.&nbsp;</p><p>This rule shows how you can do just that: it is wrapped in a <code>prec</code> method. There are also a <code>prec.right</code> and a <code>prec.left</code> method that could be used. The <code>prec</code> method indicates a precedence between expressions, the lower the first argument, the higher the precedence is. Higher precedence means that is picked before options with lower precedence.&nbsp;</p><p>If you do not use this method, the precedence for all options is set to <code>0</code>. So, the way we have written the rules, it means that parentheses would have a lower precedence than other alternatives. This has no effect on this particular case, since the option with parentheses is not ambiguous with respect to any other option.</p><p>The <code>binary_expression</code> rules employs the method <code>prec.left</code>, which combines precedence with associativity. Associativity determines in which order expressions using the same operators are evaluated. For instance:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">1 * 2 * 3</pre><p>Do we mean <code>(1 * 2) * 3</code> or <code>1 * (2 * 3)</code>? By picking left associativity we pick the first interpretation. It is a similar concept to order of precedence but determine the order for expressions of the same type.</p><p>Most common mathematical operators are left-associative, but exponentiation is right-associative.</p><h2>Lexing Rules</h2><p>Before moving on to see the last interesting feature of our grammar, we need to see how Tree-sitter implements lexing: it does it with regular expressions, the end.</p><p>Ok, we need to tell something more. A parser rule tells the parser how the input is organized. For instance, what sequence of elements defines a list. However, the parser does not handle the source code directly. The parser handles tokens. The lexer transforms the source code into tokens using its own rules, the tokens are then evaluated using the parse rules.</p><p>Imagine this process applied to a natural language such as English. You are reading the single characters, putting them together until they make a word, and then you combine the different words to form a sentence. Words in English are like the tokens that are analyze to form the sentence (parser rule).</p><p>For instance, the sequence of character <code>91</code> becomes the token <code>number</code>, the sequence of characters <code>if</code> becomes a token <code>if</code>.</p><p>This is what you need to know about the difference between lexing and parsing to write Tree-sitter parsers, if you want to go deeper, we recommend reading <a href="https://tomassetti.me/guide-parsing-algorithms-terminology/">our introductory article about parsing</a>.</p><p>The way Tree-sitter defines tokens is with strings or regular expressions. We have already seen how you can use strings, like parsing expressions. We have indicated the tokens for operators (like <code>"&gt;"</code> or <code>“+”</code>) directly into the parser rules.&nbsp;</p><p>This works well for tokens that you are going to use just once. For frequent tokens you want to define them separately.</p><p>For instance, this is how you create tokens for identifies and numbers.</p><pre data-enlighter-language="js" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">    identifier: $ =&gt; /[a-zA-Z_]+/,
+
+&nbsp;&nbsp;&nbsp;&nbsp;number: $ =&gt; /\d+/</pre><p>You can use regular expressions, as you would in regular Rust. Yes, this is not a typo. You are defining using the JavaScript syntax, so they are wrapped in slashes, but they are actually powered by the Rust regular expression engine.&nbsp;</p><p>This is relevant, because there <a href="https://docs.rs/regex/1.1.8/regex/#grouping-and-flags">the Rust engine has some limitations</a> compared to that of JavaScript. In addition to that, they are far more stringent limitations related to performance needs.&nbsp;</p><p>You can only use regular expressions in the computer science sense. By that we mean that they follow the computer science definition of a regular language, so they do not support features like lookahead and lookaround. The short version is that you cannot define regular expressions that select elements based on other parts of the string, such as “find the second comma in this string”. We point you to the same introductory article we mentioned before, if you want to know more about what regular language means in computer science.&nbsp;</p><p>This is a design choice by the Tree-sitter designers to guarantee a certain level of performance. In fact, Tree-sitter grammars are <code>LR(1)</code> grammars, which means that the parser should be able to decide which rule to match only looking one symbol ahead of the current one that the parser is analyzing. This puts some restrictions on the rules you can write and this is one of them.&nbsp;</p><p>Another peculiarity of Tree-sitter lexing is that whitespace, like spaces or newlines characters, are already handled by the engine. So, you do not need to create specific rules to handle them. And what about elements where handling whitespace is necessary, such as indentation in Python? You need to define an <a href="https://tree-sitter.github.io/tree-sitter/creating-parsers/4-external-scanners.html">external lexer (also called scanner) in C</a>, using the Tree-sitter API.</p><p>This is quite different from a parser generator like ANTLR, where you can add custom code in any target language supported by ANTLR. Both methods have advantages and disadvantages:</p><ul>
+<li>with ANTLR, you can write custom code in any language, but this also means that the whole grammar is not language-independent anymore. So, if you write custom code in Java in your grammar, you can only generate a parser in Java for your language</li>
+
+
+
+<li>with Tree-sitter, you must use C, which requires you to be proficient in it. On the other hand, the parsers are always generated in C, and interoperability with other language is achieved through bindings</li>
+</ul><p>Effectively this means that Tree-sitter is a perfect fit, only if your organization is already using C or it can handle it. For such users, Tree-sitter is a quicker and more efficient way of creating parsers usable in many languages.</p><p>Now, we can go back to looking at the parser.</p><h2>A Simple Way to Parse Interpolated Strings</h2><pre data-enlighter-language="js" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">    _inner: $ =&gt; choice(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field("text", token(/[ \r\n\.\,\?a-zA-Z]+/)),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;field("vars", $.interpolation)
+&nbsp;&nbsp;&nbsp;&nbsp;),
+
+&nbsp;&nbsp;&nbsp;&nbsp;string: $ =&gt; seq(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'"', repeat1(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$._inner
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;) , '"'
+&nbsp;&nbsp;&nbsp;&nbsp;),
+
+&nbsp;&nbsp;&nbsp;interpolation: $ =&gt; seq(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'{', $.identifier, '}'
+&nbsp;&nbsp;&nbsp;&nbsp;),</pre><p>Our language also enables string interpolation. We use the rules <code>string</code>, <code>_inner</code> and interpolation to achieve that. The rule <code>string</code> does not use any new parsing function. We are parsing a sequence of elements starting with the double quotes and ending also with double quotes. In the middle there are one or more elements captured by the rule <code>_inner</code>.</p><p>This rule starts with a choice, so it matches one of two alternatives. The function field does not affect parsing per se, but the concrete syntax tree created by a tree-sitter parser. It allows us to give a specific name to each element matched by the subrule. In this case we name <code>text</code> the free text between the double quotes and <code>vars</code> the interpolated element.</p><p>There is another interesting part of this rule: we use the function <code>token</code>. Usually Tree-sitter create a separate token for each match of a token rule. For instance, the regular expression that is the argument of the function <code>token</code> matches all text, including words and symbol. If you put into a separate rule Tree-sitter will create separate text tokens between each interpolation.</p><figure></figure><p>By using the <code>token</code> method, instead we create just one text token.</p><figure></figure><p>The <code>token</code> method accepts only terminal rules, so you cannot reference other rules. You need to define everything you need inside the <code>token</code> method.</p><p>Finally, the rule <code>interpolation</code> is just a sequence of one identifier wrapped between two angle brackets.</p><h2>The Word Token</h2><p>Tree-sitter uses <strong>context-aware lexing</strong>, which means that it performs lexing on-demand, during the parsing process. It tries to match the current input only with tokens that are valid in the particular context is parsing at the moment. That makes it more robust than your typical lexer technology, but this is not necessarily a good thing.</p><p>The problem becomes evident when you think about the following example. The language C# has an <strong>is</strong> operator, which checks whether an expression is compatible with the specified type. For example, the following code checks whether the variable c is a string.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">c is string</pre><p>So, writing this code is invalid.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">c isstring</pre><p>That is because a traditional lexer would match <code>isstring</code> as one identifier. Thanks to its context-aware approach, instead, Tree-sitter would correctly match both <code>is</code> and <code>string</code>. This makes some invalid code looks valid.</p><p>You can avoid this issue using a feature called <strong>keyword extraction</strong>.</p><p>You would first use the property <code>word</code><strong> </strong>to identify a specific token before defining the rules.</p><pre data-enlighter-language="js" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">module.exports = grammar({
+&nbsp;&nbsp;name: "story",
+&nbsp;&nbsp;word: $ =&gt; $.identifier,
+&nbsp;&nbsp;rules: {
+   &nbsp;&nbsp;// ..
+   &nbsp;&nbsp;identifier: $ =&gt; /[a-zA-Z]+/,
+&nbsp;&nbsp;}</pre><p>In this case, we use <code>word</code> to identify the rule <code>identifier</code>. This will tell Tree-sitter that it should consider all literal tokens as keywords. For instance, given this rule:</p><pre data-enlighter-language="js" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">   question: $ =&gt; seq(
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'question', ':', $.string,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;':', $._expression
+&nbsp;&nbsp;&nbsp;&nbsp;),</pre><p>The literal <code>question</code> would become a <code>keyword</code>. During lexing, Tree-sitter will try to scan for <code>identifier</code> before trying to match the keyword and therefore would match <code>isstring</code> rather than <code>is</code>. This would allow it to correctly recognize the code as invalid.</p><h2>Parsers Built For Editors</h2><p>An interesting thing to note is that every rule that starts with an underscore will be invisible in the parse tree. We have seen examples like<code>_list</code> and <code>_expressions</code>. This allows you to both create a well organized grammar, but also make sure that the parse tree is still readable. This is a small feature, but it is a nice one, if you are building an editor.</p><p>You typically want to use this feature for repeatable fragments, like defining a list, or for nodes that capture a single choice among many options, like an expression, which can be one of many kinds of expressions.&nbsp;</p><p>This is not the only feature designed for editors. Tree-sitter comes with support for syntax highlighting and tagging elements. Both of these rely on defining rules inside specific files using <strong>query patterns</strong>.</p><p>You can think about tagging elements as a lightweight form of symbol resolution: you are going to define patterns to power a feature such as <strong>Go To Definition</strong>.</p><p>You are going to define these patterns using the query language: you are going to describe the shape of a tree that matches what you want. For instance, you are going to say that all identifiers inside an interpolated string are references.</p><h2>Highlighting is Included</h2><p>All you need to implement syntax highlighting is defining patterns and add a setting, Tree-sitter will do the rest. Let’s start with the setting to be added in <code>tree-sitter.json</code>, in the grammars section, next to <code>injection-regex</code> property.</p><pre data-enlighter-language="js" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">&amp;nbsp;"highlights": "queries/highlights.scm"</pre><p>The path, name and extension of the file are the standard values for a Tree-sitter grammar. You can use whatever you want, but published Tree-sitter grammar will use this value.</p><p>You can now create the directory queries and the file <code>highlights.scm</code> and put there this content.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">(identifier) @variable
+
+[
+&nbsp; "title"
+&nbsp; "characters"
+&nbsp; "inputs"
+&nbsp; "constraints"
+&nbsp; "story"
+&nbsp; "question"
+] @keyword
+
+
+; Identifiers
+
+; Literals
+
+[
+&nbsp; (string)
+] @string
+
+[
+&nbsp; (number)
+] @number
+
+(interpolation
+&nbsp; "{" @punctuation.special
+&nbsp; "}" @punctuation.special) @embedded
+
+; Operators
+
+[
+&nbsp; ","
+&nbsp; ":"
+] @punctuation.delimiter
+
+[
+&nbsp; "("
+&nbsp; ")"
+] @punctuation.bracket
+
+[
+&nbsp; "&gt;"
+&nbsp; "&lt;"
+&nbsp; "+"
+&nbsp; "*"
+] @operator</pre><p>As you can see, it is all quite simple: </p><ul>
+<li>you define a query to identify the nodes captured (eg., <code>(identifier)</code>)</li>
+
+
+
+<li>you assign it a highlight name (e.g., <code>@variable</code>)</li>
+</ul><p>A query uses a Lisp-like syntax (i.e, an S-expression) to define a pattern that, if matched, will make Tree-sitter assign the highlight name to the nodes. To indicate a node, you put its name between parentheses. In the case of a literal token, you can just type the literal (e.g., <code>“{“</code>).</p><p>While you can make queries as complicated as you like, queries for syntax highlighting are fairly simple. You can see for yourself the queries for <a href="https://github.com/tree-sitter/tree-sitter-ruby/blob/master/queries/highlights.scm">a real language like Ruby</a>, are not much more complicated than what you see here.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">(interpolation
+    "{" @punctuation.special
+    "}" @punctuation.special) @embedded</pre><p>The query to highlight the interpolated element is the most complicated in our example. And even that is fairly simple. We are saying that inside an <code>interpolation</code> node there are curly brackets that must both be assigned the <code>punctuation.special</code> highlight name. The whole interpolation node should have the highlight for <code>embedded</code>.</p><p>We do not need to highlight here the identifier inside the interpolation node, since that is already highlighted by our first rule in the file, which captures all identifier nodes.</p><p>You can try to modify the query to give a specific name to the identifiers inside interpolation.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">(interpolation
+    "{" @punctuation.special(identifier) @number
+  &nbsp; "}" @punctuation.special) @embedded</pre><p>We are giving it the name <code>number</code> just to make it easily distinguishable in the following screenshot.</p><figure></figure><p>The interpolated identifiers are colored a light orange/brown. You can see the results of highlighting using the command tree-sitter highlight example-file.story. Assuming you have created an <code>example-file.story</code> with some code on your system.</p><p>If you restore the previous query, instead you get this result for the whole file.</p><figure></figure><p>All identifiers, inside or outside an interpolation are colored white.</p><p>What about the highlight names?&nbsp;</p><p>Are they arbitrary?&nbsp;</p><p>Who picked the colors?</p><p>We are going to answer all of your questions. If you try to run <code>tree-sitter highlight</code> you will be prompted to run&nbsp;</p><p><code>tree-sitter init-config</code></p><p>Which will create a standard configuration file with some default colors for standard highlight names. You can actually use any arbitrary name, but if you use standard ones you will not have to define colors for yourself or your users. So, there is a strong incentive to use standard names. You can find a list of standard name in the repository of <a href="https://github.com/tree-sitter/tree-sitter/blob/master/highlight/README.md">tree-sitter highlight</a>.</p><h2>Tagging Elements</h2><p>Queries also power another features called tags. You should start the same way of syntax highlighting, adding a property inside tree-sitter.json.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">    "tags": "queries/tags.scm"</pre><p>You can then create the file <code>queries/tags.scm</code> and start writing your queries.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">; Variable definition
+
+(characters
+	people: [
+    	(identifier) @name
+	]
+) @definition.module
+
+; Calls
+
+(text
+	(string
+     	(interpolation
+         	(identifier) @name
+     	)
+)) @reference.call</pre><p>The principle is the same as for syntax highlighting: you define tree patterns and assign names along the way. You can see the <a href="https://tree-sitter.github.io/tree-sitter/4-code-navigation.html">list of standard names in the documentation</a>. The patterns tend to me more complicated because the scope is different.</p><p>While it is clear what syntax highlighting does, it is not obvious what is tagging. We think the easiest way to explain is that it powers features like <strong>Go To definition</strong> in your editor.&nbsp;</p><p>It is not technically a form of symbol resolution, because you are not trying to solve the symbols. You are just trying to look at the tree in each file and collecting <em>things that can be referenced</em>, like modules or classes, and <em>references</em>, like method calls. An editor that supports Tree-sitter grammars can then look through these lists when you click the button Go To. It is the best you can do, with a standard approach and without having to actually perform language-specific symbol resolution. You can think of it as <em>syntax resolution</em>: gaining all the information you can just by looking at the tree itself.</p><h2>Testing</h2><p>Tree-sitter also comes with specific support for testing. There is testing for syntax highlighting and tagging, but we are going to take a look to testing for the grammar itself.</p><p>Using the magic of default directories, you can add test inside the directory test/corpus. The extension is not relevant, typically you use .txt. You do not want to use the extension for your language, because the file will not be a valid one for your language.</p><p>So, you create a file like test/corpus/structure.txt, the name should be meaningful to your test.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">==================
+Structure
+==================
+
+title:
+"Hello story"
+
+---
+
+(source_file
+  (title
+	(string)
+  )
+)</pre><p>Then you add three sections:</p><ul>
+<li><strong>name of the test</strong>, between the lines of <code>=</code></li>
+
+
+
+<li>the <strong>example source code</strong></li>
+
+
+
+<li>the <strong>tree that the parser should create</strong> when given the source code. The tree is defined like a query, but it should match the whole example</li>
+</ul><p>In case you are wondering, for this example we changed the grammar to have most elements as optional. We did this in order to make the example easy to see at once.</p><h2>Setting Up the Parser in Python</h2><p>We have seen how to define a grammar, including syntax highlighting and tagging elements. All that remains is to show how to use a parser.</p><p>Tree-sitter provides various binding, so we are going to test Python. A word of warning, not all Tree-sitter software (like the CLI) and libraries are released at the same time. For instance, if you try to run a parser generated with the latest CLI (version <code>0.25.2</code>) and the latest <code>tree-sitter</code> library in Python, you would receive a warning like this one:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">ValueError: Incompatible Language version 15. Must be between 13 and 14</pre><p>Therefore, if you want to run our example, you should use the <code>0.24.0</code> version of Tree-sitter.</p><p>Assuming you have the right versions of the libraries, you can build the parser from the grammar with the command <code>tree-sitter build</code>. You should have already generated the grammar with <code>tree-sitter generate</code>.</p><p>You can now install your parser as a local library with:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">python .\setup.py install</pre><p>You would also need to install other requirements, if they are missing.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">pip install setuptools&nbsp;
+
+pip install tree-sitter</pre><h2>Finally Parsing</h2><p>Once you have set up everything, parsing is easy.</p><pre data-enlighter-language="python" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">import tree_sitter_story
+from tree_sitter import Parser, Language
+
+def parse():
+&nbsp;&nbsp;&nbsp;language = Language(tree_sitter_story.language())
+&nbsp;&nbsp;&nbsp;parser = Parser(language=language)
+
+&nbsp;&nbsp;&nbsp;# Example source code
+&nbsp;&nbsp;&nbsp;with open("./example-file.story", "rb") as file:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_code = file.read()
+
+&nbsp;&nbsp;&nbsp;# Parse the source code into a tree
+&nbsp;&nbsp;&nbsp;tree = parser.parse(source_code)
+
+&nbsp;&nbsp;&nbsp;# Walk the tree from the root
+&nbsp;&nbsp;&nbsp;walk_tree(tree.root_node)</pre><p>All you need to do is to set your language and pass it to the standard Parser class of <code>tree_sitter</code>. Using the parse method, you obtain a CST (Concrete Syntax Tree) that you can walk.</p><p>The method <code>walk_tree</code> is not a standard method of Tree sitter, but it uses the three standard walking methods to walk the tree.</p><pre data-enlighter-language="python" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">def walk_tree(node):
+&nbsp;&nbsp;&nbsp;cursor = node.walk()
+&nbsp;&nbsp;&nbsp;visited = set()
+&nbsp;&nbsp;&nbsp;depth = 0
+
+&nbsp;&nbsp;&nbsp;while True:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if cursor.node.id not in visited:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;visited.add(cursor.node.id)
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(f"{depth * ' '}({cursor.node.type}&nbsp; "
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f"Start: {cursor.node.start_point}, "
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f"End: {cursor.node.end_point}"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f"Text: {cursor.node.text.decode()[0:12]} {'...' if len(cursor.node.text.decode()) &gt; 12 else '' }"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;f")")
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Traverse the tree
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if cursor.goto_first_child():
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;depth += 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;continue
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;while not cursor.goto_next_sibling():
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if cursor.goto_parent():
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;depth -= 1
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return</pre><p>These methods are:</p><ul>
+<li><code>goto_first_child</code></li>
+
+
+
+<li><code>goto_next_sibling</code></li>
+
+
+
+<li><code>goto_parent</code></li>
+</ul><p>Their names are self-explanatory, using them you can navigate any tree. That is simply because every node can have some children and at most one parent node. The root node, of course, has no parent.&nbsp;</p><p>These methods return <code>false</code> if they are not successful, for example <code>goto_first_child</code> return false if the current node has no children. If the node has no children the cursor cannot move to the first child of the current node.</p><p>The cursor is nothing else that the current node: when you start the walk the current node is the root node. Then the current node is changed by walking the tree.</p><h2>Navigating with Queries</h2><p>Usually you walk the tree to find some node you are looking for. Tree-sitter offers another way to accomplish that: using queries.</p><p>You can define a query and then ask Tree-sitter to find the matching nodes given a root node.</p><pre data-enlighter-language="python" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">query = """(interpolation
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"{"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(identifier) @interpolated
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"}"
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)"""
+
+query_obj = language.query(query)
+captures = query_obj.captures(tree.root_node)
+for name in captures.keys():
+&nbsp;&nbsp;&nbsp;for node in captures[name]:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(node.text.decode())</pre><p>You define a query just like you did when defining rules for syntax highlighting or tagging.&nbsp;</p><p>Next, you build the query object and obtain the results, for the given <code>tree.root_node</code>. We assume that you are re-using the <code>root_node</code> we obtained from parsing in the previous section.&nbsp;</p><p>You obtain a dictionary having as keys the name of the query elements (e.g. interpolated) and as values the list of nodes that matches the query.</p><p>If you run this code, it will print the list of identifiers inside the text string.</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">main
+given
+apples
+dogs</pre><h2>Summary</h2><p>We have explored Tree-sitter, a great parser generator library. We have seen how to create a parser, add support for syntax highlighting and tagging.</p><p>Finally, we have seen how to use the generated parser from Python; how to walk the tree and find specific nodes using queries.</p><p>That is not all there is to Tree-sitter, you can find more reading the <a href="https://tree-sitter.github.io/tree-sitter/index.html">official documentation</a>. For example, one thing we did not show is how to add tokens using an external scanner, because that requires defining the scanner in C.</p><p>Tree-sitter is a good software, with excellent performance. It also comes with support for highlighting and tagging elements. This makes it great for its intended use: providing language support in editors or similar tools to navigate code. For instance, it powers the GitHub tool that allow you to find symbols in the online code viewer: <a href="https://github.com/github/semantic">semantic</a>. They explained <a href="https://github.com/github/semantic/blob/main/docs/why-tree-sitter.md">why they picked tree-sitter</a>. They list many advantages, such as:</p><blockquote>
+<p>Secure and well-tested. We’ve actively invested in fuzzing and other security measures to properly deal with corner cases.</p>
+</blockquote><p>And some drawbacks:</p><blockquote>
+<p>Support for Unicode is currently lagging.</p>
+</blockquote><p>Of course, not everything listed there could be applicable to your use case, but it is a useful expert opinion on Tree-sitter strong and weak points.</p><p>In short, it is designed to quickly create parsers that you can use in a pipeline of software to handle generic concrete syntax trees. In theory, it would be great to use for things like providing code completion. However, unlike ANTLR, nobody created a generic <a href="https://github.com/mike-lischke/antlr4-c3">code completion engine to get code completion for free from any grammar</a>. So, we would probably use ANTLR for that. It is a bit slower and less robust to errors, but the advantage of having a ready-to-use code completion engine is hard to beat.</p><p>Another issue we encountered with tree-sitter it seems that is used mainly by GitHub. So, it is less tested in environments that they do not use. It is actively developed, which means that community supported parsers sometimes broke and nobody is tending to them. This is not an issue if you just care about your parser, but that means that the ecosystem is less valuable to you.</p><p>You can find the repository with the code for this example at <a href="https://github.com/gabriele-tomassetti/tree-sitter-story">tree-sitter-story</a>.</p></div></div></article></body></html>
