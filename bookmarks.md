@@ -948,3 +948,10 @@ Anthropic hosted "Code with Claude 2026" in San Francisco, featuring livestream 
 SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla - Strumenta/SmartReader
 
 [TODO]
+
+# Incremental Parsing Using Tree-sitter - Strumenta
+[https://tomassetti.me/incremental-parsing-using-tree-sitter/](https://tomassetti.me/incremental-parsing-using-tree-sitter/)
+![](https://tomassetti.me/wp-content/uploads/2025/02/Foto-sitoweb-21.jpg)
+Do you want to know more about an incremental parsing library used at GitHub and that was born out of a failed software?
+
+[TODO]
