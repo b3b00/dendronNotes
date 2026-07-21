@@ -1,11 +1,3 @@
-# We raised $7M to Simplify App Deployment with our Global Serverless Platform - Koyeb
-[https://www.koyeb.com/blog/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform](https://www.koyeb.com/blog/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform)
-![](https://www.koyeb.com/static/images/illustrations/og/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform.png)
-We're excited to announce our $7M seed round led by Serena with the participation of ISAI, Samsung Next, MongoDB, and incredible angels. In this post, we dive into our mission, why we are uniquely positionned and what's next.
-[X] to read
-
-[koyeb] [serverless]
-
 # Comment LeBonCoin éteint les attaques DDoS de niveau 7 | LeMagIT
 [https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec](https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec)
 ![](https://www.lemagit.fr/visuals/LeMagIT/hero_article/LeBonCoin_PacMan.jpg)
