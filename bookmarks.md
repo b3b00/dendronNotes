@@ -947,7 +947,7 @@ Anthropic hosted "Code with Claude 2026" in San Francisco, featuring livestream 
 ![SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla - Strumenta/SmartReader](https://opengraph.githubassets.com/8a274907f84bd344b5e1d3274e223fd97fe5be2ceb7f061c2d57eb0ef1957a46/Strumenta/SmartReader)
 SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla - Strumenta/SmartReader
 
-[TODO]
+
 
 # Incremental Parsing Using Tree-sitter - Strumenta
 [https://tomassetti.me/incremental-parsing-using-tree-sitter/](https://tomassetti.me/incremental-parsing-using-tree-sitter/)
