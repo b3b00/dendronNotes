@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike. features.offline
 title: Perso.projects.dendronlike. features.offline
 desc: Offline mode
-updated: 1784706997645
+updated: 1784711676985
 created: 0
 ---
 # Use dendr-Online offline
@@ -15,6 +15,8 @@ When offline it should still be possible to browse :
   - tree notes
   - stash notes
   - bookmarks : list and read available content
+
+When coming online todo bookmarks' content must be relaoded 
 
 ### adding content offline
 
@@ -30,6 +32,9 @@ Even though dendrOnline is single user concurrent modifications may occur. for e
    4. Phone is back but no network , still v1
    5. Phone add some content  => v2.phone
    6. Phone back online and synchronize => need some conflict resolution
+
+
+
 
 ## How
 
