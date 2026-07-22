@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike. features.offline.plan3
 title: Perso.projects.dendronlike. features.offline.plan3
 desc: plan #3
-updated: 0
+updated: 1784724068892
 created: 0
 ---
 # Use dendr-Online Offline
@@ -50,6 +50,9 @@ Mutations made while offline must be saved locally and applied optimistically.
 - Create the local bookmark object with a flag: `incomplete: true` (or a specific tag).
 - **Styling**: Add a visual indicator (e.g., a violet or red border) for incomplete bookmarks.
 - **Reloading TODOs**: During synchronization, the system will automatically fetch the full HTML content for any TODO bookmarks added offline once the network returns.
+- **Load all bookmarks' content** will populate cache for ALL bookmark. this will be async so that user can follow using app. If possible a toast or some notification will be  displayed to alert user that content is now available. 
+- **open bookmark offline** : when offline cliking a bookmark will lead to cached content directly if present. when online it will open the original link. 
+
 
 ### 5. Synchronization & Automatic Conflict Resolution
 
