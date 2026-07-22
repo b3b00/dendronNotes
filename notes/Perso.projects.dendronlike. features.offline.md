@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike. features.offline
 title: Perso.projects.dendronlike. features.offline
 desc: Offline mode
-updated: 1784711676985
+updated: 1784718318148
 created: 0
 ---
 # Use dendr-Online offline
@@ -33,7 +33,12 @@ Even though dendrOnline is single user concurrent modifications may occur. for e
    5. Phone add some content  => v2.phone
    6. Phone back online and synchronize => need some conflict resolution
 
-
+**bookmarks**
+When offline a bookmark if added is necessarily incomplete, it only contains the link.
+So when offline adding a bookmark should : 
+  1. ask user for a short description to be displayed while not complete
+  2. mark bookmark as incomplete. when synced backend will retrieve all missing informations and return it to  FE
+  3. incomplete bookmark must be clearly identified in the bookmarks view. Maybe a different border (red or violet) 
 
 
 ## How
