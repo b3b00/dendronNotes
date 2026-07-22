@@ -1,8 +1,8 @@
 ---
 id: Perso.projects.dendronlike. features.offline.plan
 title: Perso.projects.dendronlike. features.offline.plan
-desc: Plan 1
-updated: 0
+desc: Plan #1
+updated: 1784720768753
 created: 0
 ---
 # Use dendr-Online Offline
