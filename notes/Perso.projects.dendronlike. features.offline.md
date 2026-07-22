@@ -2,7 +2,7 @@
 id: Perso.projects.dendronlike. features.offline
 title: Perso.projects.dendronlike. features.offline
 desc: Offline mode
-updated: 1784706840324
+updated: 1784706997645
 created: 0
 ---
 # Use dendr-Online offline
@@ -37,8 +37,11 @@ Even though dendrOnline is single user concurrent modifications may occur. for e
 
 ### data availibility
 Of course we need some client side storage. This is already the cas for : 
-   - stash notes (localstorage) : both categories and notes' content
-   - tree (localstorage) : only for tree structure, not notes' content
+   - localstorage 
+       - stash notes  : both categories and notes' content
+       - tree : only for tree structure, not notes' content
+   - indexeddb :
+       - bookmark articles' content
 
 
 
