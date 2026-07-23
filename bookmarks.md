@@ -954,3 +954,10 @@ Semantic Enrichment: the critical step after parsing. This is a step that signif
 Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d’Internet, les attaques sur la couche applicative sont plus complexes à traiter. LeBonCoin a fait le choix d’une solution de sécurité collaborative pour compléter son dispositif anti-DDoS : l’agent de la startup française CrowdSec.
 
 [Security] [Ddos]
+
+# How Claude Code Works, From Tokens to Agents • nem035
+[https://nem035.com/thoughts/how-claude-code-works?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2324](https://nem035.com/thoughts/how-claude-code-works?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2324)
+![](https://nem035.com/images/nem035.png)
+A visual walkthrough of what happens inside AI coding tools, built up layer by layer from a basic prompt to a full agent loop.
+
+[TODO]
