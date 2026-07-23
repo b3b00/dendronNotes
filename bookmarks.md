@@ -960,4 +960,4 @@ Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d’In
 ![](https://nem035.com/images/nem035.png)
 A visual walkthrough of what happens inside AI coding tools, built up layer by layer from a basic prompt to a full agent loop.
 
-[TODO]
+[TODO] [AI]
