@@ -974,4 +974,4 @@ Traditional code review is broken by AI. Learn how shifting review upstream to d
 ![](https://pic.clubic.com/v1/images/2436010/raw)
 Un an après le lancement de son assistant IA confidentiel, Proton a présenté Lumo 2.0 le 30 juin 2026. Cette nouvelle version change les modèles de langage utilisés, ajoute la génération et la retouche d'image, une mémoire contrôlable et des assistants personnalisables.
 
-[TODO]
+[TODO] [AI]
