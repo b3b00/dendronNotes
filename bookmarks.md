@@ -967,7 +967,7 @@ A visual walkthrough of what happens inside AI coding tools, built up layer by l
 ![](https://cdn.thenewstack.io/media/2026/07/e1faa31b-daniel-mirlea-hy_rw4tunvu-unsplash.jpg)
 Traditional code review is broken by AI. Learn how shifting review upstream to developer intent scales engineering and saves time.
 
-[TODO] [AI]
+[TODO] [AI] [software engineering]
 
 # On a testé Lumo 2.0 de Proton, l'IA confidentielle deux fois moins chère que ChatGPT et Claude
 [https://www.clubic.com/avis-622471-proton-lumo.html](https://www.clubic.com/avis-622471-proton-lumo.html)
