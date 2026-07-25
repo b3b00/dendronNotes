@@ -968,3 +968,10 @@ A visual walkthrough of what happens inside AI coding tools, built up layer by l
 Traditional code review is broken by AI. Learn how shifting review upstream to developer intent scales engineering and saves time.
 
 [TODO]
+
+# On a testé Lumo 2.0 de Proton, l'IA confidentielle deux fois moins chère que ChatGPT et Claude
+[https://www.clubic.com/avis-622471-proton-lumo.html](https://www.clubic.com/avis-622471-proton-lumo.html)
+![](https://pic.clubic.com/v1/images/2436010/raw)
+Un an après le lancement de son assistant IA confidentiel, Proton a présenté Lumo 2.0 le 30 juin 2026. Cette nouvelle version change les modèles de langage utilisés, ajoute la génération et la retouche d'image, une mémoire contrôlable et des assistants personnalisables.
+
+[TODO]
