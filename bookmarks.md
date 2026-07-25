@@ -961,3 +961,10 @@ Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d’In
 A visual walkthrough of what happens inside AI coding tools, built up layer by layer from a basic prompt to a full agent loop.
 
 [TODO] [AI] [agent]
+
+# Move code review before the code
+[https://thenewstack.io/move-code-review-upstream/](https://thenewstack.io/move-code-review-upstream/)
+![](https://cdn.thenewstack.io/media/2026/07/e1faa31b-daniel-mirlea-hy_rw4tunvu-unsplash.jpg)
+Traditional code review is broken by AI. Learn how shifting review upstream to developer intent scales engineering and saves time.
+
+[TODO]
