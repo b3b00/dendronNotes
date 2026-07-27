@@ -981,4 +981,4 @@ Un an après le lancement de son assistant IA confidentiel, Proton a présenté 
 ![](https://content.wolfram.com/sites/43/2026/07/bugs-tweet-v3-darkmode.png)
 Stephen Wolfram investigates developing a general 
 
-[TODO]
+[TODO] [Software] [software engineering]
