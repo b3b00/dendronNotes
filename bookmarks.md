@@ -975,3 +975,10 @@ Traditional code review is broken by AI. Learn how shifting review upstream to d
 Un an après le lancement de son assistant IA confidentiel, Proton a présenté Lumo 2.0 le 30 juin 2026. Cette nouvelle version change les modèles de langage utilisés, ajoute la génération et la retouche d'image, une mémoire contrôlable et des assistants personnalisables.
 
 [AI]
+
+# Towards a Theory of Bugs: The Ruliology of the Unexpected
+[https://writings.stephenwolfram.com/2026/07/towards-a-theory-of-bugs-the-ruliology-of-the-unexpected/](https://writings.stephenwolfram.com/2026/07/towards-a-theory-of-bugs-the-ruliology-of-the-unexpected/)
+![](https://content.wolfram.com/sites/43/2026/07/bugs-tweet-v3-darkmode.png)
+Stephen Wolfram investigates developing a general 
+
+[TODO]
