@@ -988,4 +988,4 @@ Stephen Wolfram investigates developing a general
 ![](https://staysaasy.com/assets/template/stay-saasy-black-ogimage.jpeg)
 The best way to prioritize... is to not prioritize.
 
-[TODO]
+[TODO] [Prioritization]
