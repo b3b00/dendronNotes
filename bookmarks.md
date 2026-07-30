@@ -982,3 +982,10 @@ Un an après le lancement de son assistant IA confidentiel, Proton a présenté 
 Stephen Wolfram investigates developing a general 
 
 [TODO] [Software] [software engineering] [Bug]
+
+# The Best Prioritization Is No Prioritization
+[https://staysaasy.com/strategy/2026/07/16/the-best-prioritization-is-no-prioritization.html?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2332](https://staysaasy.com/strategy/2026/07/16/the-best-prioritization-is-no-prioritization.html?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2332)
+![](https://staysaasy.com/assets/template/stay-saasy-black-ogimage.jpeg)
+The best way to prioritize... is to not prioritize.
+
+[TODO]
