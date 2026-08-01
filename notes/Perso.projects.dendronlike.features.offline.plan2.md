@@ -1,7 +1,7 @@
 ---
 id: Perso.projects.dendronlike.features.offline.plan2
 title: plan2
-desc: Plan
+desc: Plan2
 updated: 0
 created: 0
 ---
