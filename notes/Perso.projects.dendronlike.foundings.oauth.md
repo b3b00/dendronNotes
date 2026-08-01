@@ -1,5 +1,5 @@
 ---
-id: lc11vatl9v4rm8kocfm0ke6
+id: Perso.projects.dendronlike.foundings.oauth
 title: Perso.projects.dendronlike.foundings.oauth
 desc: middleware OAuth2 GitHub
 updated: 1711636027002

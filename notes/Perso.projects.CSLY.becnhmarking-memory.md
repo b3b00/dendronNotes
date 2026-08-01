@@ -1,5 +1,5 @@
 ---
-id: Perso.projects.CSLY.benchmarking-memory
+id: Perso.projects.CSLY.becnhmarking-memory
 title: becnhmarking-memory
 desc: Memory usage benchmark
 updated: 1723191532058

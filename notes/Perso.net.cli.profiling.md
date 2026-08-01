@@ -1,5 +1,5 @@
 ---
-id: J9GllM45dtH
+id: Perso.net.cli.profiling
 title: Perso.net.cli.profiling
 desc: collect profiling using dot net CLI
 updated: 1743506236990

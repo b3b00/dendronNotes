@@ -1,5 +1,5 @@
 ---
-id: qe4oivbevl6854qsvrbiifq
+id: Perso.net.localhost-certificates
 title: localhost-certificates
 desc: allow localhost certificates with .Net
 updated: 1704192768595

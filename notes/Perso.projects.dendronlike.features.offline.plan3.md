@@ -1,5 +1,5 @@
 ---
-id: Perso.projects.dendronlike. features.offline.plan3
+id: Perso.projects.dendronlike.features.offline.plan3
 title: plan3
 desc: plan
 updated: 1784724068892

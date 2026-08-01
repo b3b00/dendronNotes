@@ -1,5 +1,5 @@
 ---
-id: 61rtuf0a40e9pr4iqhj40w0
+id: perso.projects.dendronlike.dumb
 title: Perso.projects.dendronlike.dumb
 desc: dumb tests
 updated: 1770037354713

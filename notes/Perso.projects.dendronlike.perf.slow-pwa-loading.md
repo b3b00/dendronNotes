@@ -1,5 +1,5 @@
 ---
-id: Perso.projects.dendronlike. perf
+id: Perso.projects.dendronlike.perf.slow-pwa-loading
 title: slow-pwa-loading
 desc: "Slow PWA loading\_"
 updated: 1781333671194

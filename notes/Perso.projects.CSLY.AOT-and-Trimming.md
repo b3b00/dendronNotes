@@ -1,5 +1,5 @@
 ---
-id: 3u3uszvmt5mpwd9oh9vspuo
+id: Perso.projects.CSLY.AOT-and-Trimming
 title: AOT-and-Trimming
 desc: AOT and trimming
 updated: 1729683213397

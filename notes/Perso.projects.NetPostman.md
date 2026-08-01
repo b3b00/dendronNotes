@@ -1,5 +1,5 @@
 ---
-id: h56hcsfcmwivattnykhzlwe
+id: Perso.projects.NetPostman
 title: Postman.Net
 desc: Postman revisited in .Net
 updated: 1692893603305

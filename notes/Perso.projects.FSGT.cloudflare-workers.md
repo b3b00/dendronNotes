@@ -1,5 +1,5 @@
 ---
-id: y6nyisoi5tajk6mb5knke3k
+id: Perso.projects.FSGT.cloudflare-workers
 title: Perso.projects.FSGT.cloudflare-workers
 desc: FSGT-Calendars on cloudFlare workers
 updated: 1681393569623

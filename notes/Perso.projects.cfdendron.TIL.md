@@ -1,5 +1,5 @@
 ---
-id: kwv28442iw6w42zuit9ollw
+id: Perso.projects.cfdendron.TIL
 title: Perso.projects.cfdendron.TIL
 desc: Things I've learned
 updated: 1711635714775

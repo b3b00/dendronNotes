@@ -1,5 +1,5 @@
 ---
-id: Perso.projects.CSLY.ambiguous
+id: Perso.projects.CSLY.ambiguous.goal
 title: Perso.projects.CSLY.ambiguous
 desc: manage ambiguous gramars
 updated: 0

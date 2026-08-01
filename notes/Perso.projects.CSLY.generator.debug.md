@@ -1,5 +1,5 @@
 ---
-id: gfblc85c895c72c76fwo7c5
+id: Perso.projects.CSLY.generator.debug
 title: debug
 desc: ''
 updated: 1764231332129

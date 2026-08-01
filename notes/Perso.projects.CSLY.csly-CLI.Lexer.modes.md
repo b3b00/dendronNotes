@@ -1,5 +1,5 @@
 ---
-id: f1nxlhz4ar5qq4megq44mgs
+id: Perso.projects.CSLY.csly-CLI.Lexer.modes
 title: Perso.projects.CSLY.csly-CLI.Lexer.modes
 desc: generic lexer modes support
 updated: 1670244034114

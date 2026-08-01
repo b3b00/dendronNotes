@@ -1,5 +1,5 @@
 ---
-id: 12OESVeNgR
+id: Perso.projects.dendronlike.foundings.CSRF
 title: Perso.projects.dendronlike.foundings.CSRF
 desc: Razor/Htmx CSRF configuration
 updated: 1710920186396

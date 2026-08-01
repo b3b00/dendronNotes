@@ -1,5 +1,5 @@
 ---
-id: ts1k8crs82j8fxdag3j4389
+id: Perso.projects.CSLY.csly-CLI
 title: Perso.projects.CSLY.csly-CLI
 desc: CLI Companion tool for CSLY
 updated: 1713510398628

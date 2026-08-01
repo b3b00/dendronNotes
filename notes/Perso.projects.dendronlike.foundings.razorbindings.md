@@ -1,5 +1,5 @@
 ---
-id: eurzrk1bhilnotouzsfg36q
+id: Perso.projects.dendronlike.foundings.razorbindings
 title: Perso.projects.dendronlike.foundings.razorbindings
 desc: Razor Bindings
 updated: 1711636014957

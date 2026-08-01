@@ -1,5 +1,5 @@
 ---
-id: Perso.projects.dendronlike. features.offline
+id: Perso.projects.dendronlike.features.offline
 title: offline
 desc: Offline mode
 updated: 1784718318148

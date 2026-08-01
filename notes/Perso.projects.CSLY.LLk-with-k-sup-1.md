@@ -1,5 +1,5 @@
 ---
-id: eafo36iywegvpr8pq9p7vd4
+id: Perso.projects.CSLY.LLk-with-k-sup-1
 title: LL(k) where k > 1
 desc: greater lookahead if grammar is LL(k) with k > 1
 updated: 1660139784094

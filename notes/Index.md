@@ -1,5 +1,5 @@
 ---
-id: J9GllM45dH
+id: Index
 title: Index
 desc: collect profiling using dot net CLI
 updated: 1711635960434

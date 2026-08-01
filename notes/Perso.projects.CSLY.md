@@ -1,5 +1,5 @@
 ---
-id: ts1k8crs82j6bxdag3j4389
+id: Perso.projects.CSLY
 title: CSLY
 desc: CSLY project
 updated: 1662976945346

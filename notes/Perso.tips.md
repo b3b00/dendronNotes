@@ -1,5 +1,5 @@
 ---
-id: s12gtefpi6u4ztdni3andaz
+id: Perso.tips
 title: Perso.tips
 desc: Tips and Tricks
 updated: 1711635927802

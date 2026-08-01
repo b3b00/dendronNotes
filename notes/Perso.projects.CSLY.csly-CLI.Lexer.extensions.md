@@ -1,5 +1,5 @@
 ---
-id: 3m8g1sl5bu2bkehp9a456ms
+id: Perso.projects.CSLY.csly-CLI.Lexer.extensions
 title: Perso.projects.CSLY.csly-CLI.Lexer.extensions
 desc: generic lexer extension support
 updated: 1707468931373

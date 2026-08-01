@@ -1,5 +1,5 @@
 ---
-id: cf8jysrvqjkfxhklg0dfgr8
+id: Perso.projects.CSLY.iterativeParse
 title: iterativeParse
 desc: use a hand managed stack instead of recursivity?
 updated: 1660214349531

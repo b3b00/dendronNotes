@@ -1,5 +1,5 @@
 ---
-id: 5lgec6henmp4n805pwla8mq
+id: Perso.projects.CSLY.generator.working-notes
 title: Perso.projects.CSLY.generator.working-notes
 desc: working notes
 updated: 1764950309588

@@ -1,5 +1,5 @@
 ---
-id: Perso.projects.dendronlike. features.bookmarks
+id: Perso.projects.dendronlike.features.bookmarks
 title: bookmarks
 desc: "Bookmarks\_"
 updated: 1780033919341

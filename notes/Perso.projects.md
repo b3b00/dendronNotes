@@ -1,5 +1,5 @@
 ---
-id: 8z3fw8biie0ie2ofw4jmy2j
+id: Perso.projects
 title: Perso.projects
 desc: Personal side projects
 updated: 1711636040483

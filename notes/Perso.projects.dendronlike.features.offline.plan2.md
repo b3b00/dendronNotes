@@ -1,5 +1,5 @@
 ---
-id: Perso.projects.dendronlike. features.offline.plan2
+id: Perso.projects.dendronlike.features.offline.plan2
 title: plan2
 desc: Plan
 updated: 0

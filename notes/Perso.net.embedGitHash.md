@@ -1,5 +1,5 @@
 ---
-id: e9l8togkv1n4q2sxdai6zzt
+id: Perso.net.embedGitHash
 title: Perso.net.embedGitHash
 desc: How to embed git hash in a .net assembly.
 updated: 1711635897416

@@ -1,5 +1,5 @@
 ---
-id: lvsd5uo6f38wpi72a3ppssu
+id: Perso.projects.CSLY.perfs.indentation-strings
 title: Perso.projects.CSLY.perfs.indentation-strings
 desc: indentation string[] allocation
 updated: 1729687369176

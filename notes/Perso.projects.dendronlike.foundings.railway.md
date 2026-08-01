@@ -1,5 +1,5 @@
 ---
-id: s59tzayf6fmlwm4gfwne1uh
+id: Perso.projects.dendronlike.foundings.railway
 title: railway quirks
 desc: railway deployment
 updated: 1697196276209

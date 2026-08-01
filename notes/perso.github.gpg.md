@@ -1,5 +1,5 @@
 ---
-id: jii2t0ifhpyt03s58kpd58z
+id: perso.github.gpg
 title: perso.github.gpg
 desc: use GPG with git
 updated: 1711635944087

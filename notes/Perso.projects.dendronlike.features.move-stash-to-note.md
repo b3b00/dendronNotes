@@ -1,8 +1,8 @@
 ---
-id: Perso.projects.dendronlike. features. move-stash-to-note
+id: Perso.projects.dendronlike.features.move-stash-to-note
 title: move-stash-to-note
 desc: Promote a stash to note
-updated: 1775379659025
+updated: 1785570095099
 created: 0
 ---
 

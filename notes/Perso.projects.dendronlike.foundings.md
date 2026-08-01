@@ -1,5 +1,5 @@
 ---
-id: opqra71ud5q1xdhsfkci040
+id: Perso.projects.dendronlike.foundings
 title: Perso.projects.dendronlike.foundings
 desc: Things I ve learned while doing DendrOnline using htmx
 updated: 1713183432270
