@@ -2,10 +2,9 @@
 id: Perso.projects.dendronlike.features.bookmarks.reader.bookmark
 title: Perso.projects.dendronlike.features.bookmarks.reader.bookmark
 desc: Reading bookmark
-updated: 0
+updated: 1785599577786
 created: 0
 ---
-# Write something really smart here.
 
 # add a reading bookmark 
 
