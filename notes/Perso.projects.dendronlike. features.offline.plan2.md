@@ -1,6 +1,6 @@
 ---
-id: Perso.projects.dendronlike. features.offline.plan2
-title: Perso.projects.dendronlike. features.offline.plan2
+id: Perso.projects.dendronlike.features.offline.plan2
+title: Perso.projects.dendronlike.features.offline.plan2
 desc: Plan #2
 updated: 0
 created: 0

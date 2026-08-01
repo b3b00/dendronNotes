@@ -1,8 +1,8 @@
 ---
-id: Perso.projects.dendronlike. features.offline
-title: Perso.projects.dendronlike. features.offline
+id: Perso.projects.dendronlike.features.offline
+title: Perso.projects.dendronlike.features.offline
 desc: Offline mode
-updated: 1784718318148
+updated: 1785570325942
 created: 0
 ---
 # Use dendr-Online offline

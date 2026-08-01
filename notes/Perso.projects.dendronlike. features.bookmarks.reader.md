@@ -1,8 +1,8 @@
 ---
-id: Perso.projects.dendronlike. features.bookmarks.reader
-title: Perso.projects.dendronlike. features.bookmarks.reader
+id: Perso.projects.dendronlike.features.bookmarks.reader
+title: Perso.projects.dendronlike.features.bookmarks.reader
 desc: Remove <nav>
-updated: 1785090042582
+updated: 1785570285170
 created: 0
 ---
 # Write something really smart here.

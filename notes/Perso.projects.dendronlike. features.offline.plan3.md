@@ -1,6 +1,6 @@
 ---
-id: Perso.projects.dendronlike. features.offline.plan3
-title: Perso.projects.dendronlike. features.offline.plan3
+id: Perso.projects.dendronlike.features.offline.plan3
+title: Perso.projects.dendronlike.features.offline.plan3
 desc: plan #3
 updated: 1784724068892
 created: 0
