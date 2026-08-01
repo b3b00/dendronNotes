@@ -989,3 +989,10 @@ Stephen Wolfram investigates developing a general
 The best way to prioritize... is to not prioritize.
 
 [TODO] [Prioritization]
+
+# The Free-Lunch Guide to Idea Circularity 
+[https://www.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/?utm_source=notification_email&utm_campaign=notifications&utm_medium=link&utm_content=content_in_followed_topic&utm_term=daily](https://www.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/?utm_source=notification_email&utm_campaign=notifications&utm_medium=link&utm_content=content_in_followed_topic&utm_term=daily)
+![](https://res.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/en/card_header_image/holly-cummins-twitter-card-1783578321356.jpg)
+Holly Cummins discusses why "nothing is new under the sun" in tech. She maps historical architectural tradeoffs to modern cloud, microservices, and AI hype cycles. She connects financial debt (post-ZIRP) and technical debt to epistemic and sleep debt, showing engineering leaders how to navigate shifts in assumptions, embrace sustainability, and revive proven engineering disciplines.
+
+[TODO]
