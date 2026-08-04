@@ -996,10 +996,3 @@ The best way to prioritize... is to not prioritize.
 Holly Cummins discusses why "nothing is new under the sun" in tech. She maps historical architectural tradeoffs to modern cloud, microservices, and AI hype cycles. She connects financial debt (post-ZIRP) and technical debt to epistemic and sleep debt, showing engineering leaders how to navigate shifts in assumptions, embrace sustainability, and revive proven engineering disciplines.
 
 [TODO]
-
-# Why etymologies matter
-[https://resobscura.substack.com/p/why-i-love-etymologies](https://resobscura.substack.com/p/why-i-love-etymologies)
-![](https://substackcdn.com/image/fetch/$s_!Wrwd!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https://substack-post-media.s3.amazonaws.com/public/images/89f02731-9a7b-4aff-b9b0-7a6d3a559e82_2048x1351.png)
-How tracing words can illuminate history
-
-[TODO]
