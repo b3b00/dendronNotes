@@ -1003,3 +1003,9 @@ Holly Cummins discusses why "nothing is new under the sun" in tech. She maps his
 Not everyone who doubts themselves is suffering from impostor syndrome. Sometimes the real problem...
 
 [TODO]
+
+# Parse, don’t validate
+[https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/)
+![](/bookmarks/image?url=https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/)
+
+[TODO]
