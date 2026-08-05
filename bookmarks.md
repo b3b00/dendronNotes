@@ -996,3 +996,10 @@ The best way to prioritize... is to not prioritize.
 Holly Cummins discusses why "nothing is new under the sun" in tech. She maps historical architectural tradeoffs to modern cloud, microservices, and AI hype cycles. She connects financial debt (post-ZIRP) and technical debt to epistemic and sleep debt, showing engineering leaders how to navigate shifts in assumptions, embrace sustainability, and revive proven engineering disciplines.
 
 [TODO]
+
+# Stop Calling Everything Impostor Syndrome: The Myth of "Just Push Harder"
+[https://dev.to/sylwia-lask/stop-calling-everything-impostor-syndrome-the-myth-of-just-push-harder-1dmm?context=digest](https://dev.to/sylwia-lask/stop-calling-everything-impostor-syndrome-the-myth-of-just-push-harder-1dmm?context=digest)
+![](https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/9og3swd8h7293d79kegi.png)
+Not everyone who doubts themselves is suffering from impostor syndrome. Sometimes the real problem...
+
+[TODO]
