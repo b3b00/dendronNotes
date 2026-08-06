@@ -1009,3 +1009,10 @@ Not everyone who doubts themselves is suffering from impostor syndrome. Sometime
 ![](/bookmarks/image?url=https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/)
 
 [TODO]
+
+# Reflecting on My Failure to Build a Billion-Dollar Company
+[https://sahillavingia.com/reflecting?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2337](https://sahillavingia.com/reflecting?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2337)
+![](https://sahillavingia.com/gr.png)
+In 2011, I left my job as the second employee at Pinterest — before I vested any of my stock — to work on what I thought would be my life's work...
+
+[TODO]
