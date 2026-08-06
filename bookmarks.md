@@ -1015,4 +1015,4 @@ Not everyone who doubts themselves is suffering from impostor syndrome. Sometime
 ![](https://sahillavingia.com/gr.png)
 In 2011, I left my job as the second employee at Pinterest — before I vested any of my stock — to work on what I thought would be my life's work...
 
-[TODO] [Software]
+[TODO] [Software] [entrepreneuriat]
