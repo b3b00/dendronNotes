@@ -1004,12 +1004,6 @@ Not everyone who doubts themselves is suffering from impostor syndrome. Sometime
 
 [TODO]
 
-# Parse, don’t validate
-[https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/](https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/)
-![](/bookmarks/image?url=https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/)
-
-[TODO]
-
 # Reflecting on My Failure to Build a Billion-Dollar Company
 [https://sahillavingia.com/reflecting?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2337](https://sahillavingia.com/reflecting?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2337)
 ![](https://sahillavingia.com/gr.png)
