@@ -1016,10 +1016,3 @@ Not everyone who doubts themselves is suffering from impostor syndrome. Sometime
 In 2011, I left my job as the second employee at Pinterest — before I vested any of my stock — to work on what I thought would be my life's work...
 
 [TODO] [Software] [entrepreneuriat]
-
-# GitHub - b3b00/csly: a C# embeddable lexer and parser generator (.Net core)
-[https://www.github.com/b3b00/csly](https://www.github.com/b3b00/csly)
-![a C# embeddable lexer and parser generator (.Net core) - b3b00/csly](https://opengraph.githubassets.com/185388b9cd2f6fca8ccc63ed1225e72cf1d989245d82269b9bc47a6875f4d5d4/b3b00/csly)
-a C# embeddable lexer and parser generator (.Net core) - b3b00/csly
-
-[TODO]
