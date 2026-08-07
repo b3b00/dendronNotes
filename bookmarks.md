@@ -1016,3 +1016,10 @@ Not everyone who doubts themselves is suffering from impostor syndrome. Sometime
 In 2011, I left my job as the second employee at Pinterest — before I vested any of my stock — to work on what I thought would be my life's work...
 
 [TODO] [Software] [entrepreneuriat]
+
+# GitHub · Change is constant. GitHub keeps you ahead.
+[https://github.co/b3b00/csly](https://github.co/b3b00/csly)
+![Join the world's most widely adopted, AI-powered developer platform where millions of developers, businesses, and the largest open source community build software that advances humanity.](https://images.ctfassets.net/8aevphvgewt8/4pe4eOtUJ0ARpZRE4fNekf/f52b1f9c52f059a33170229883731ed0/GH-Homepage-Universe-img.png)
+Join the world's most widely adopted, AI-powered developer platform where millions of developers, businesses, and the largest open source community build software that advances humanity.
+
+[TODO]
