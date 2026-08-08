@@ -1011,9 +1011,16 @@ In 2011, I left my job as the second employee at Pinterest — before I vested a
 
 [TODO] [Software] [entrepreneuriat]
 
-# From your doorbell to your home network | 
+# From your doorbell to your home network |
 [https://adepts.of0x.cc/eufy-doorbell-hacking/](https://adepts.of0x.cc/eufy-doorbell-hacking/)
 ![](https://adepts.of0x.cc/assets/img/ogp.png)
 Analyzing Eufy Security Ecosystem and reverse engineering of its doorbell component
+
+[TODO]
+
+# Why Is Everyone In Tech So Sad? | NOEMA
+[https://www.noemamag.com/why-is-everyone-in-tech-so-sad/](https://www.noemamag.com/why-is-everyone-in-tech-so-sad/)
+![](https://noemamag.imgix.net/2026/08/HR_Knitting_Noema_LeonieBos-copy.jpg?fit=crop&fm=pjpg&h=628&ixlib=php-3.3.1&rect=0,32,945,495&w=1200&wpsize=noema-social-facebook&s=ff77fe7391cba53b40080273232ce909)
+A lot of people seem to be realizing that knowledge work is mostly pointless. AI might give us the pleasure of finding out what happens if an entire class of workers loses faith in their careers.
 
 [TODO]
