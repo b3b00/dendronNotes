@@ -1010,3 +1010,10 @@ Not everyone who doubts themselves is suffering from impostor syndrome. Sometime
 In 2011, I left my job as the second employee at Pinterest — before I vested any of my stock — to work on what I thought would be my life's work...
 
 [TODO] [Software] [entrepreneuriat]
+
+# From your doorbell to your home network | 
+[https://adepts.of0x.cc/eufy-doorbell-hacking/](https://adepts.of0x.cc/eufy-doorbell-hacking/)
+![](https://adepts.of0x.cc/assets/img/ogp.png)
+Analyzing Eufy Security Ecosystem and reverse engineering of its doorbell component
+
+[TODO]
