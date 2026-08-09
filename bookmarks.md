@@ -1020,7 +1020,7 @@ Analyzing Eufy Security Ecosystem and reverse engineering of its doorbell compon
 
 # Why Is Everyone In Tech So Sad? | NOEMA
 [https://www.noemamag.com/why-is-everyone-in-tech-so-sad/](https://www.noemamag.com/why-is-everyone-in-tech-so-sad/)
-![](https://noemamag.imgix.net/2026/08/HR_Knitting_Noema_LeonieBos-copy.jpg?fit=crop&fm=pjpg&h=628&ixlib=php-3.3.1&rect=0,32,945,495&w=1200&wpsize=noema-social-facebook&s=ff77fe7391cba53b40080273232ce909)
+![](https://noemamag.imgix.net/2026/08/HR_Knitting_Noema_LeonieBos-copy.jpg?fit=crop&fm=pjpg&h=628&ixlib=php-3.3.1&rect=0%2C32%2C945%2C495&w=1200&wpsize=noema-social-facebook&s=ff77fe7391cba53b40080273232ce909)
 A lot of people seem to be realizing that knowledge work is mostly pointless. AI might give us the pleasure of finding out what happens if an entire class of workers loses faith in their careers.
 
 [TODO]
