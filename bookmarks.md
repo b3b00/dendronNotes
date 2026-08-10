@@ -1024,3 +1024,10 @@ Analyzing Eufy Security Ecosystem and reverse engineering of its doorbell compon
 A lot of people seem to be realizing that knowledge work is mostly pointless. AI might give us the pleasure of finding out what happens if an entire class of workers loses faith in their careers.
 
 [TODO]
+
+# Beyond Happy Path Engineering: Time
+[https://blog.gaborkoos.com/posts/2026-07-19-Beyond-Happy-Path-Engineering-Time/?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2339](https://blog.gaborkoos.com/posts/2026-07-19-Beyond-Happy-Path-Engineering-Time/?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2339)
+![](https://opengraph.b-cdn.net/production/images/74740c4e-d40d-49be-83fb-7170084dbda1.png?token=3Pxj4Ccc7Z93zXgN6-HhJM8U3lpcnqtTs8xNIPoUzF4&height=614&width=620&expires=33290472379)
+Time is where application code meets uncertainty: clock skew, wall-clock corrections, ambiguous ordering, late schedulers, and business-calendar boundaries.
+
+[TODO]
