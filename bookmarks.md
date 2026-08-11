@@ -1023,7 +1023,7 @@ Analyzing Eufy Security Ecosystem and reverse engineering of its doorbell compon
 ![](https://noemamag.imgix.net/2026/08/HR_Knitting_Noema_LeonieBos-copy.jpg?fit=crop&fm=pjpg&h=628&ixlib=php-3.3.1&rect=0%2C32%2C945%2C495&w=1200&wpsize=noema-social-facebook&s=ff77fe7391cba53b40080273232ce909)
 A lot of people seem to be realizing that knowledge work is mostly pointless. AI might give us the pleasure of finding out what happens if an entire class of workers loses faith in their careers.
 
-[TODO]
+[TODO] [FAVORITE]
 
 # Beyond Happy Path Engineering: Time
 [https://blog.gaborkoos.com/posts/2026-07-19-Beyond-Happy-Path-Engineering-Time/?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2339](https://blog.gaborkoos.com/posts/2026-07-19-Beyond-Happy-Path-Engineering-Time/?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2339)
