@@ -1037,4 +1037,4 @@ Time is where application code meets uncertainty: clock skew, wall-clock correct
 ![](https://martinfowler.com/articles/exploring-gen-ai/donkey-card.png)
 Notes from my Thoughtworks colleagues on AI-assisted software delivery
 
-[TODO]
+[TODO] [AI]
