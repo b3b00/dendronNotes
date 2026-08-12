@@ -1031,3 +1031,10 @@ A lot of people seem to be realizing that knowledge work is mostly pointless. AI
 Time is where application code meets uncertainty: clock skew, wall-clock corrections, ambiguous ordering, late schedulers, and business-calendar boundaries.
 
 [TODO]
+
+# TDD inside the agent loop - theater or actual value?
+[https://martinfowler.com/articles/exploring-gen-ai/tdd-in-the-agent-loop.html](https://martinfowler.com/articles/exploring-gen-ai/tdd-in-the-agent-loop.html)
+![](https://martinfowler.com/articles/exploring-gen-ai/donkey-card.png)
+Notes from my Thoughtworks colleagues on AI-assisted software delivery
+
+[TODO]
