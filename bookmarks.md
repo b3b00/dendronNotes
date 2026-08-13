@@ -1016,7 +1016,7 @@ In 2011, I left my job as the second employee at Pinterest — before I vested a
 ![](https://adepts.of0x.cc/assets/img/ogp.png)
 Analyzing Eufy Security Ecosystem and reverse engineering of its doorbell component
 
-[TODO]
+
 
 # Why Is Everyone In Tech So Sad? | NOEMA
 [https://www.noemamag.com/why-is-everyone-in-tech-so-sad/](https://www.noemamag.com/why-is-everyone-in-tech-so-sad/)
