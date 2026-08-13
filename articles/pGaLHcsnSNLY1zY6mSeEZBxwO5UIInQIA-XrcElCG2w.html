@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>GitHub - sebastienros/jint: Javascript Interpreter for .NET</title><meta name="author" content=""><meta name="description" content="Javascript Interpreter for .NET. Contribute to sebastienros/jint development by creating an account on GitHub."><meta name="dendron:source-url" content="https://github.com/sebastienros/jint"><meta name="dendron:length" content="19550"><meta name="dendron:time-to-read-minutes" content="15"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-hpc="true" containertiming="hpc"><article itemprop="text"><p dir="auto"><a href="https://github.com/sebastienros/jint/actions/workflows/build.yml"></a>
+<html><head><meta charset="utf-8"><title>GitHub - sebastienros/jint: Javascript Interpreter for .NET</title><meta name="author" content=""><meta name="description" content="Javascript Interpreter for .NET. Contribute to sebastienros/jint development by creating an account on GitHub."><meta name="dendron:source-url" content="https://github.com/sebastienros/jint"><meta name="dendron:length" content="52461"><meta name="dendron:time-to-read-minutes" content="43"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-hpc="true" containertiming="hpc"><article itemprop="text"><p dir="auto"><a href="https://github.com/sebastienros/jint/actions/workflows/build.yml"></a>
 <a href="https://www.nuget.org/packages/Jint" rel="nofollow"></a>
 <a href="https://www.nuget.org/packages/Jint" rel="nofollow"></a>
 <a href="https://www.myget.org/feed/jint/package/nuget/Jint" rel="nofollow"></a>
@@ -41,11 +41,13 @@ and many more.</p>
 <li>✔ Reflect</li>
 <li>✔ Proxies</li>
 <li>✔ Symbols</li>
-<li>❌ Tail calls</li>
+<li>✔ Proper tail calls in strict functions</li>
 <li>✔ Typed arrays</li>
 <li>✔ Unicode</li>
 <li>✔ Weakmap and Weakset</li>
 </ul>
+<p dir="auto">Proper tail calls replace the calling strict-function frame, as required by ECMAScript. Consequently,
+intermediate tail callers are intentionally absent from <code>error.stack</code> and host stack telemetry.</p>
 <p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2016</h4><a id="user-content-ecmascript-2016" aria-label="Permalink: ECMAScript 2016" href="#ecmascript-2016"></a>
 <ul dir="auto">
 <li>✔ <code>Array.prototype.includes</code></li>
@@ -147,6 +149,9 @@ and many more.</p>
 <li>✔ Explicit Resource Management (<code>using</code> and <code>await using</code>)</li>
 <li>✔ Immutable Arraybuffers</li>
 <li>✔ Import Bytes (<code>import x from './file' with { type: 'bytes' }</code>)</li>
+<li>✔ Iterator Chunking (<code>Iterator.prototype.chunks</code>, <code>Iterator.prototype.windows</code>)</li>
+<li>✔ Iterator Includes (<code>Iterator.prototype.includes</code>)</li>
+<li>✔ Iterator Join (<code>Iterator.prototype.join</code>)</li>
 <li>✔ Iterator Sequencing</li>
 <li>✔ Joint Iteration</li>
 <li>✔ JSON.parse source text access</li>
@@ -168,6 +173,233 @@ and many more.</p>
 <li>You should prefer running engine in strict mode, it improves performance</li>
 </ul>
 <p dir="auto">You can check out <a href="https://github.com/sebastienros/jint/blob/main/Jint.Benchmark">the engine comparison results</a>, bear in mind that every use case is different and benchmarks might not reflect your real-world usage.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Embedding performance</h2><a id="user-content-embedding-performance" aria-label="Permalink: Embedding performance" href="#embedding-performance"></a>
+<p dir="auto">Notes for hosts that project their own objects into script, pool engines, or bound execution. Each of these
+is a cost model rather than a rule; the XML documentation on the named APIs has the detail.</p>
+<p dir="auto"><strong>Projecting host data.</strong> Subclassing <code>ObjectInstance</code> is the most expensive way to expose data. Such a
+receiver gets no own-property inline caching — every own read reaches your <code>GetOwnProperty</code> and allocates the
+<code>PropertyDescriptor</code> it returns. Cheaper options, in order of preference:</p>
+<ul dir="auto">
+<li>
+<p dir="auto">For fixed-shape records, do not subclass at all: <code>JsObject.Create(engine, layout, values)</code> and
+<code>JsObject.CreateFromEntries</code> build straight into the hidden-class representation, so every object sharing a
+<code>JsObjectLayout</code> shares one hidden class and a script reading a batch of them keeps a monomorphic inline
+cache. A record with expensive members most items never have read — a body that must be parsed, a field that
+must be decoded — declares them with <code>JsObjectLayout.CreateBuilder().AddLazy(name, factory)</code> and passes the
+raw payload as the <code>lazySlotState</code> argument of <code>JsObject.Create</code>: the factory runs on the first read that
+observes that member's value and the result is memoized on the object, while enumerating keys, <code>in</code> and
+<code>hasOwnProperty</code> never run it. The object stays a hidden-class object throughout.</p>
+</li>
+<li>
+<p dir="auto">For CLR objects, <code>engine.SetValue(name, obj)</code> wraps them in <code>ObjectWrapper</code>, whose member resolution and
+compiled accessors are cached process-wide on the <code>TypeResolver</code>.</p>
+</li>
+<li>
+<p dir="auto">For the <em>prototypes</em> those objects sit behind, declare the members once per process with <code>JsObjectShape</code> and
+create one object per engine with <code>Instantiate</code>: members materialize only when a script touches them, and
+because the engine stores and versions the whole member set itself, a shaped prototype can serve the
+prototype-method inline cache — which an <code>ObjectInstance</code> subclass used as a prototype can never do.</p>
+</li>
+<li>
+<p dir="auto">For a <strong>live indexed collection</strong> — a DOM <code>NodeList</code>, a result window, any list computed on demand — derive
+from <code>ArrayLikeObject</code> rather than assembling the property model yourself. You implement two members,
+<code>uint Length</code> and <code>bool TryGetIndex(uint index, out JsValue value)</code>; the base class derives everything else
+(index and <code>length</code> descriptors, enumeration order, the existence and value hooks, WebIDL-shaped <code>delete</code> /
+<code>defineProperty</code> refusals) and the engine keys two lanes on the type, so <code>list[i]</code>, <code>Array.prototype</code>
+generics, <code>for-of</code> / spread / <code>Array.from</code> / destructuring and <code>JSON.stringify</code> each cost one
+<code>TryGetIndex</code> per element with no descriptor and no key allocation. It is array-<em>like</em>, not an array:
+<code>Array.isArray</code> stays <code>false</code> by design, the same answer a browser gives for a <code>NodeList</code>. If your backing
+store can test containment more cheaply than it can produce an element, also override
+<code>protected virtual bool HasIndex(uint index)</code>, and <code>in</code> / <code>hasOwnProperty</code> / <code>Object.keys</code> / <code>delete</code> stop
+projecting elements they only ever discard. Reach for it when the collection is live; when it is a snapshot,
+copying into a <code>JsArray</code> once is cheaper still — and give it a <code>JsObjectShape</code> prototype, per the bullet
+above, for the collection's own methods.</p>
+</li>
+<li>
+<p dir="auto">If you must subclass, override <code>TryGetOwnPropertyValue</code> so an own read hands the value over with no
+descriptor at all, and <code>ProbeOwnProperty</code> so existence and enumerability questions (<code>in</code>, <code>Object.keys</code>,
+spread, <code>JSON.stringify</code>) are answered without materializing one either. Both carry an obligation to agree
+with <code>GetOwnProperty</code>, and neither is re-verified on the hot path — a <code>ProbeOwnProperty</code> that wrongly reports
+a key as absent drops it from every enumeration, silently. Run your integration suite once with
+<strong>host-contract verification</strong> on and every such disagreement throws instead, naming the type, the key and
+both answers:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// before the first use of any Jint type — the flag is read once, at type initialization
+AppContext.SetSwitch(&quot;Jint.EnableHostContractVerification&quot;, true);"><pre><span>// before the first use of any Jint type — the flag is read once, at type initialization</span>
+<span>AppContext</span><span>.</span><span>SetSwitch</span><span>(</span><span>"Jint.EnableHostContractVerification"</span><span>,</span> <span>true</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">It also checks a declared <code>PropertyAccessSemantics.Ordinary</code>, an <code>ArrayLikeObject</code>'s <code>HasIndex</code>, and an
+<code>IObjectConverter</code> registered with <code>AddObjectConverter(converter, handledTypes)</code> converting a type it did not
+declare. Turn it on in a test or staging host, never in production: the checks deliberately redo the work the
+hooks exist to avoid. A Debug build of Jint has them on already and needs no switch.</p>
+</li>
+</ul>
+<p dir="auto"><strong>Lazy values.</strong> <code>PropertyFlag.CustomJsValue</code> is the supported hook for a property whose value is <em>computed on
+every read</em>: a <code>PropertyDescriptor</code> subclass overriding <code>CustomValue</code> keeps working under the read inline
+caches, because every caching lane re-reads the flag on each hit and caches the descriptor reference rather
+than a value snapshot. When the value is lazy only <em>once</em>, use <code>PropertyDescriptor.CreateLazy(state, factory)</code>
+instead — it memoizes the produced value and then stops being custom-valued, which readmits the property to the
+member-write fast path and the global-identifier cache that a permanently custom-valued descriptor is declined
+by; store it wherever you store descriptors (<code>SetOwnProperty</code> or <code>GetOwnProperty</code> on a host subclass,
+<code>FastSetProperty</code>, a hand-rolled global). It is the descriptor-shaped member of the same family as
+<code>JsObjectLayout.AddLazy</code> (records) and <code>JsObjectShape</code> (prototypes), and it does not exempt you from the rule
+above them: storing any raw descriptor under a string key still moves a shape-mode object to the dictionary
+representation. For a whole global that may never be touched, <code>Options.AddLazyGlobal</code> defers building
+the value until script reads the name, and <code>engine.Advanced.AddLazyGlobal</code> does the same on an engine that
+already exists — which is what you need when the value comes from the request you are about to serve rather
+than from process-wide configuration. Both install the property eagerly, so <code>in</code>, <code>hasOwnProperty</code> and
+<code>Object.keys(globalThis)</code> see the name without building anything; only reading the value runs the factory,
+once. The per-engine overload receives its engine, so unlike an <code>Options</code>-registered factory it may capture
+engine-affine state — and where it would do nothing but capture, the overload taking the state,
+<code>engine.Advanced.AddLazyGlobal(name, state, static (e, s) =&gt; ...)</code>, hands it to a <code>static</code> factory instead.
+That matters only because this registration is per engine: a capturing factory costs a display class and a
+delegate for every global on every engine you build, which on <code>FreshEngineGlobalsBenchmark</code>'s forty-global
+row is 32 bytes per global. There is deliberately no <code>Options</code> counterpart — a registration made there is
+recorded once for the process and replayed per engine, so its closure is already a one-off.</p>
+<p dir="auto"><strong>Per-request state behind an engine.</strong> Every host-facing factory in this API receives the engine and nothing
+else, which is a problem when the value depends on the request rather than on process-wide configuration.
+<code>engine.Advanced.HostDefined</code> closes that gap: an opaque <code>object?</code> the engine never reads or interprets — the
+<code>[[HostDefined]]</code> field the specification reserves on a Realm Record — so a factory that captures nothing can
+still reach the scope it is running in. The alternative embedders reach for is a
+<code>static ConditionalWeakTable&lt;Engine, IServiceProvider&gt;</code>, which takes its internal write lock every time a
+host associates state with an engine, across every tenant in the process.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// once per process — the factory captures nothing, so one Options serves every engine
+var options = new Options()
+    .AddLazyGlobal(&quot;user&quot;, static engine =>
+        JsValue.FromObject(engine, ((RequestContext) engine.Advanced.HostDefined!).User));
+
+// per request, before you run anything
+engine.Advanced.HostDefined = requestContext;"><pre><span>// once per process — the factory captures nothing, so one Options serves every engine</span>
+<span>var</span> <span>options</span> <span>=</span> <span>new</span> <span>Options</span><span>(</span><span>)</span>
+    <span>.</span><span>AddLazyGlobal</span><span>(</span><span>"user"</span><span>,</span> <span>static</span> engine <span>=&gt;</span>
+        <span>JsValue</span><span>.</span><span>FromObject</span><span>(</span><span>engine</span><span>,</span> <span>(</span><span>(</span><span>RequestContext</span><span>)</span> <span>engine</span><span>.</span><span>Advanced</span><span>.</span><span>HostDefined</span><span>!</span><span>)</span><span>.</span><span>User</span><span>)</span><span>)</span><span>;</span>
+
+<span>// per request, before you run anything</span>
+<span>engine</span><span>.</span><span>Advanced</span><span>.</span><span>HostDefined</span> <span>=</span> <span>requestContext</span><span>;</span></pre></div>
+<p dir="auto">It is the <em>principal</em> realm's field, not the current one, so it answers the same value inside a <code>ShadowRealm</code>
+callback as outside. A shadow realm is a distinct realm and gets its own, empty by specification — deliberate,
+since propagating the outer request's services into sandboxed code is exactly the ambient authority a shadow
+realm exists to withhold; <code>Host.InitializeShadowRealm</code> is the hook if you do want to populate it. The value
+dies with the engine, and nothing in the engine clears it: a restore (below) does not touch it, so a pooled
+engine keeps it across one and you replace it yourself, typically right after restoring.</p>
+<p dir="auto"><strong>Sparse data.</strong> Hosts that read deep chains off optional data — <code>input.Address.City.length</code>, where any link
+may be absent — usually install an <code>IReferenceResolver</code> so a nullish base yields a value instead of throwing.
+Register <code>NullPropagatingReferenceResolver.Instance</code> rather than writing that class yourself: the engine
+recognizes the singleton and serves the propagation inline, with no interface call and no pooled <code>Reference</code>
+per nullish read, which an equivalent hand-written resolver cannot get. Pass
+<code>ReferenceResolverInterests.NullishPropertyBase</code> alongside it so every unrelated read lane stays armed. The
+boundary is that <em>reads</em> propagate: a call on a nullish base still throws, and a host that needs callable
+substitution or unresolvable-identifier handling writes its own resolver and forgoes the inline lane.</p>
+<p dir="auto"><strong>Prepared scripts and engine reuse.</strong> <code>Engine.PrepareScript</code> / <code>PrepareModule</code> return an object that is
+reusable <em>and</em> thread-safe: prepare once at startup and feed the same <code>Prepared&lt;T&gt;</code> to as many engines, on as
+many threads, as you like. The engine's own per-node caches are a separate matter — they are engine-owned and
+engage only on the <strong>second</strong> evaluation of a given script on a given engine, so a host that builds a fresh
+engine per operation never reaches them by design. Note the mirror image if you pool engines instead: a
+warmed call site holds a reference to the last receiver it served until it caches a different one, so pooled
+engines can keep host objects alive between runs.</p>
+<p dir="auto"><strong>Sharing a module graph across pooled engines.</strong> A host whose templates or plugins are ES modules pays for
+that graph per engine: <code>IModuleLoader.LoadModule</code> is called by every engine that imports a module, so the
+obvious loader re-reads and re-parses the whole graph for every engine in the pool. Prepare each module once
+per <em>build</em> instead — cache the <code>Prepared&lt;AstModule&gt;</code> (<code>AstModule</code> being Acornima's <code>Module</code>, which an alias
+keeps apart from Jint's runtime <code>Module</code>) keyed by module location, and hand it to the overload that takes an
+already prepared AST, <code>ModuleFactory.BuildSourceTextModule(engine, in prepared)</code>. Name the prepared module
+exactly as the engine would: <code>Engine.PrepareModule(code, source)</code> takes the name up front, and it becomes
+<code>Module.Location</code> and therefore the <code>referencingModuleLocation</code> echoed back into <code>IModuleLoader.Resolve</code> for
+that module's own imports — so a name derived by hand that differs from the engine's breaks relative-import
+resolution with nothing to point at. <code>ModuleFactory.LocationOf(resolved)</code> <em>is</em> that rule; call it rather than
+reimplementing it.</p>
+<p dir="auto">Single-flight the cache. <code>ConcurrentDictionary.GetOrAdd</code> does not run its factory under a lock, so N engines
+filling a pool concurrently each prepare the same module and N-1 results are prepared only to be discarded.
+Wrapping the value in a <code>Lazy&lt;T&gt;</code> — whose default thread-safety mode is exactly "one factory run, everyone
+else waits" — is enough:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="using AstModule = Acornima.Ast.Module; // Jint.Runtime.Modules.Module is a different type
+
+private readonly ConcurrentDictionary<string, Lazy<Prepared<AstModule>>> _prepared
+    = new(StringComparer.Ordinal);
+
+public Module LoadModule(Engine engine, ResolvedSpecifier resolved)
+{
+    var location = ModuleFactory.LocationOf(resolved);
+    var prepared = _prepared.GetOrAdd(location,
+        static key => new Lazy<Prepared<AstModule>>(() => Engine.PrepareModule(ReadSource(key), key))).Value;
+
+    return ModuleFactory.BuildSourceTextModule(engine, in prepared);
+}"><pre><span>using</span> <span>AstModule</span> <span>=</span> <span>Acornima</span><span>.</span><span>Ast</span><span>.</span><span>Module</span><span>;</span> <span>// Jint.Runtime.Modules.Module is a different type</span>
+
+<span>private</span> <span>readonly</span> <span>ConcurrentDictionary</span><span>&lt;</span><span>string</span><span>,</span> <span>Lazy</span><span>&lt;</span><span>Prepared</span><span>&lt;</span><span>AstModule</span><span>&gt;</span><span>&gt;</span><span>&gt;</span> <span>_prepared</span>
+    <span>=</span> <span>new</span><span>(</span><span>StringComparer</span><span>.</span><span>Ordinal</span><span>)</span><span>;</span>
+
+<span>public</span> <span>Module</span> <span>LoadModule</span><span>(</span><span>Engine</span> <span>engine</span><span>,</span> <span>ResolvedSpecifier</span> <span>resolved</span><span>)</span>
+<span>{</span>
+    <span>var</span> <span>location</span> <span>=</span> <span>ModuleFactory</span><span>.</span><span>LocationOf</span><span>(</span><span>resolved</span><span>)</span><span>;</span>
+    <span>var</span> <span>prepared</span> <span>=</span> <span>_prepared</span><span>.</span><span>GetOrAdd</span><span>(</span><span>location</span><span>,</span>
+        <span>static</span> key <span>=&gt;</span> <span>new</span> <span>Lazy</span><span>&lt;</span><span>Prepared</span><span>&lt;</span><span>AstModule</span><span>&gt;</span><span>&gt;</span><span>(</span><span>(</span><span>)</span> <span>=&gt;</span> <span>Engine</span><span>.</span><span>PrepareModule</span><span>(</span><span>ReadSource</span><span>(</span><span>key</span><span>)</span><span>,</span> <span>key</span><span>)</span><span>)</span><span>)</span><span>.</span><span>Value</span><span>;</span>
+
+    <span>return</span> <span>ModuleFactory</span><span>.</span><span>BuildSourceTextModule</span><span>(</span><span>engine</span><span>,</span> <span>in</span> <span>prepared</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto">Invalidate by build, not by file. The prepared ASTs are derived from a compilation, so key the cache to the
+same identity the rest of your host already uses for that compilation and let a rebuild drop the whole set at
+once, rather than expiring entries per file and serving a graph half of which is stale.</p>
+<p dir="auto">Be clear about what the thread-safety of <code>Prepared&lt;T&gt;</code> buys. It is safe to share and safe to run concurrently,
+which is what lets one cache serve the pool — it does not make the <em>engines</em> shareable (one engine, one
+thread) and it does not make the module registry shared: every engine still builds, links and evaluates its
+own module records from the shared ASTs, and <code>engine.Modules</code> is per engine. That per-engine cost is real, and
+it is what the pool pays no matter how much preparation is shared.</p>
+<p dir="auto"><code>StaticAnalysis</code> is a trade with a break-even, not a speed-up. Preparing with
+<code>new ModulePreparationOptions { StaticAnalysis = false }</code> skips the pass that pre-publishes interpreter state
+onto the parsed tree, leaving preparation at roughly the cost of a plain parse; each engine then rebuilds
+lazily what the pass would have published once for all of them. Measured on <code>ModuleGraphEmbeddingBenchmark</code>'s
+ten-module graph, preparation cost -47.6% time and -27.5% allocation, while each engine materializing that
+graph from the shared cache paid +4.8% time and +9.5% allocation — break-even, on that graph, at about ten
+engines on time and about two on allocation. A long-lived pool should therefore keep the default (<code>true</code>);
+the option is for preparation that sits on a latency-critical path — a cold start, a rebuild in a dev loop —
+or for a host whose prepared programs outnumber the engines that ever run them.
+<code>ScriptPreparationOptions.StaticAnalysis</code> is the same option for scripts.</p>
+<p dir="auto"><strong>Registering only what a script uses.</strong> When the ambient API is large and scripts touch little of it,
+prepare with <code>ScriptPreparationOptions.CollectReferencedGlobals</code> and read <code>Prepared&lt;T&gt;.ReferencedGlobals</code>:
+the free identifiers the program actually references, resolved per binding site, as an immutable set you can
+intersect with your registry — including the CLR-side context you would otherwise build speculatively, which
+lazy globals cannot defer. Honor <code>HasDirectEvalCall</code>: a program with direct <code>eval</code> can reference anything,
+so install everything for those.</p>
+<p dir="auto"><strong>Reusing a configured engine.</strong> If you build a fresh engine per evaluation only because you need a clean
+global, <code>engine.Advanced.CaptureGlobalSnapshot()</code> and <code>RestoreGlobalSnapshot(snapshot)</code> are the cheaper route:
+capture once after your <code>SetValue</code> calls and module setup, then restore between evaluations. Restore reverts
+the global object's own properties, its prototype and extensibility, and the top-level <code>let</code>/<code>const</code>/<code>class</code>
+declarations (which nothing else can clear, so a script with a top-level <code>let</code> can otherwise only be run once
+per engine); it also clears the <code>RegExp.$1</code>-style legacy statics and resets the interop wrapper caches. The
+per-node caches above are deliberately kept, so the next run starts warm. Keep the snapshot in a field beside
+the engine and put the restore in a <code>finally</code> — a script that throws still declared its globals, so restoring
+only on the success path hands them to the next caller. <code>engine.Advanced.WithRestoredGlobals(snapshot, action)</code>
+is exactly that <code>try</code>/<code>finally</code> in one call, so the restore cannot be left off the throwing path; it adds
+nothing else, and in particular no isolation the restore does not already give you.</p>
+<p dir="auto">Choosing between this and <code>AddLazyGlobal</code> is a question of engine lifetime: a fresh-engine-per-evaluation
+host wants lazy globals (nothing to restore — the win is never building what the script does not read); a
+pooled host wants the snapshot. They compose: restore returns a global that was still lazy at capture to its
+unmaterialized state, so a pooled engine keeps both benefits.</p>
+<p dir="auto">Restore also ends the previous cycle on the event loop. Queued jobs are discarded, and — because discarding
+cannot reach work that has not been enqueued yet — any promise registered before the restore is dropped when
+it settles instead of resuming its continuation, so a fire-and-forget <code>async</code> function suspended on a host
+<code>Task</code> never wakes up against the restored globals. Register a promise that is meant to outlive a restore
+<em>after</em> it. Restore refuses (<code>InvalidOperationException</code>) while an evaluation is in progress, including an
+<code>EvaluateAsync</code>/<code>ExecuteAsync</code>/<code>InvokeAsync</code> whose <code>Task</code> you still hold. What it cannot fence is you calling
+back in: invoking a function a previous evaluation handed you runs it against the restored surface.</p>
+<p dir="auto"><strong>It is a configuration-reuse primitive, not an isolation boundary</strong> — mutations of <code>Object.prototype</code> and
+other intrinsics, of object graphs behind restored bindings, of host CLR state, plus <code>Symbol.for</code>
+registrations and registered modules, all survive a restore, so mutually distrusting scripts still need
+separate engines. Note that surviving intrinsic pollution is a surviving <em>binding</em>, not just a surviving
+property: bare identifiers resolve through the global's prototype chain, so <code>Object.prototype.leaked = 1</code> in
+one evaluation makes <code>leaked</code> a name the next one can read with no qualifier. (The global's own
+<code>[[Prototype]]</code> is captured and restored, so a <code>setPrototypeOf(globalThis, …)</code> is reverted.) A snapshot also
+keeps its engine and every captured value strongly reachable, so do not cache one past that engine's
+lifetime.</p>
+<p dir="auto"><strong>Constraints and options.</strong> An <code>Options</code> instance is meant to be shared across engines, including concurrent
+ones — the built-in constraint helpers register a <em>factory</em>, so each engine gets its own counter and its own
+deadline. (Sharing it is not required: building an <code>Options</code> per scope is fine when your globals depend on
+scoped state.) Watch for the sentinel trap: <code>MaxStatements(int.MaxValue)</code>, <code>LimitMemory(long.MaxValue)</code> and
+<code>TimeoutInterval(TimeSpan.MaxValue)</code> register <em>no</em> constraint at all and remove any previously registered one
+of that kind, so spelling "effectively unlimited" that way leaves you with no limit rather than a large one.</p>
+<p dir="auto"><strong>Values do not cross engines.</strong> A <code>JsValue</code> that is an <code>ObjectInstance</code> holds a hard reference to the engine
+and realm that created it, and passing one to a different engine is not supported — it is neither validated
+nor made safe. <code>Prepared&lt;Script&gt;</code> / <code>Prepared&lt;Module&gt;</code> and <code>ModuleBuilder</code> are the supported ways to share
+work between engines; convert to CLR values (<code>ToObject()</code>) to move data.</p>
 <p dir="auto"><h2 tabindex="-1" dir="auto">Discussion</h2><a id="user-content-discussion" aria-label="Permalink: Discussion" href="#discussion"></a>
 <p dir="auto">Join the chat on <a href="https://gitter.im/sebastienros/jint" rel="nofollow">Gitter</a> or post your questions with the <code>jint</code> tag on <a href="http://stackoverflow.com/questions/tagged/jint" rel="nofollow">stackoverflow</a>.</p>
 <p dir="auto"><h2 tabindex="-1" dir="auto">Video</h2><a id="user-content-video" aria-label="Permalink: Video" href="#video"></a>
@@ -478,6 +710,51 @@ var engine = new Engine(options =>
 <span>{</span>
     <span>options</span><span>.</span><span>Constraint</span><span>(</span><span>new</span> <span>MyCPUConstraint</span><span>(</span><span>)</span><span>)</span><span>;</span>
 <span>}</span><span>)</span><span>;</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Bounding an operation that makes several calls into the engine</h3><a id="user-content-bounding-an-operation-that-makes-several-calls-into-the-engine" aria-label="Permalink: Bounding an operation that makes several calls into the engine" href="#bounding-an-operation-that-makes-several-calls-into-the-engine"></a>
+<p dir="auto">Every call into the engine — <code>Execute</code>, <code>Evaluate</code>, <code>Invoke</code>, <code>Call</code> — is a complete run, and the engine
+resets the constraints around each one. <code>TimeoutInterval</code> therefore bounds <em>one</em> call, not a sequence of
+them: a loop such as <code>foreach (var row in rows) engine.Invoke("render", row);</code> gives every row the full
+interval to itself, so the loop as a whole is unbounded.</p>
+<p dir="auto">When the thing you need to bound is your own operation — a whole render, a whole request — rather than one
+call, use <code>OperationDeadlineConstraint</code>. Its budget is started and stopped by you, and the engine's
+per-call reset leaves it alone:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// one instance per engine, and you keep the reference
+var deadline = new OperationDeadlineConstraint();
+var engine = new Engine(options => options.Constraint(deadline));
+
+deadline.Begin(TimeSpan.FromSeconds(2), cancellationToken);
+try
+{
+    foreach (var row in rows)
+    {
+        engine.Invoke(&quot;render&quot;, row);
+    }
+}
+finally
+{
+    deadline.End();
+}"><pre><span>// one instance per engine, and you keep the reference</span>
+<span>var</span> <span>deadline</span> <span>=</span> <span>new</span> <span>OperationDeadlineConstraint</span><span>(</span><span>)</span><span>;</span>
+<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>options</span><span>.</span><span>Constraint</span><span>(</span><span>deadline</span><span>)</span><span>)</span><span>;</span>
+
+<span>deadline</span><span>.</span><span>Begin</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>2</span><span>)</span><span>,</span> <span>cancellationToken</span><span>)</span><span>;</span>
+<span>try</span>
+<span>{</span>
+    <span>foreach</span> <span>(</span><span>var</span> <span>row</span> <span>in</span> <span>rows</span><span>)</span>
+    <span>{</span>
+        <span>engine</span><span>.</span><span>Invoke</span><span>(</span><span>"render"</span><span>,</span> <span>row</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span>
+<span>finally</span>
+<span>{</span>
+    <span>deadline</span><span>.</span><span>End</span><span>(</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto">The whole loop shares the two seconds. When it runs out, the next call fails with a <code>TimeoutException</code> —
+the same exception the built-in timeout throws. If the token is cancelled, the call fails with a real
+<code>OperationCanceledException</code> carrying that token, so cancellation you asked for stays distinguishable from
+a script failure. Outside a <code>Begin</code>/<code>End</code> pair the constraint is inert, which makes it safe to leave
+registered on a pooled engine between operations. The two constraints are independent, so you can keep a
+<code>TimeoutInterval</code> as a per-call ceiling alongside it.</p>
 <p dir="auto">When you reuse the engine and want to use cancellation tokens you have to reset the token before each call of <code>Execute</code>:</p>
 <div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
 {
@@ -512,6 +789,43 @@ for (var i = 0; i < 10; i++)
         <span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"a++"</span><span>)</span><span>;</span>
     <span>}</span>
 <span>}</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Surviving an unbounded recursion</h3><a id="user-content-surviving-an-unbounded-recursion" aria-label="Permalink: Surviving an unbounded recursion" href="#surviving-an-unbounded-recursion"></a>
+<p dir="auto">A script that recurses without bound does not throw. It exhausts the native stack of the thread it is
+running on, and that ends the host process: no exception, nothing to <code>catch</code>, nothing in the log but an
+exit code. Every route into a function body can do it — a call, <code>new</code>, a getter or setter, a
+<code>valueOf</code>/<code>toString</code> coercion, a Proxy trap, a callback a built-in invokes, a host delegate that calls
+back into the engine.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
+{
+    options.Constraints.StackOverflowGuard = true;
+});"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
+<span>{</span>
+    <span>options</span><span>.</span><span>Constraints</span><span>.</span><span>StackOverflowGuard</span> <span>=</span> <span>true</span><span>;</span>
+<span>}</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">With the guard on, every entry into a script function first checks that the native stack has not been used
+up, and the same script raises <code>RangeError: Maximum call stack size exceeded</code> while there is still room to
+unwind — an ordinary JavaScript error, catchable by the script itself and by your
+<code>catch (JavaScriptException)</code>, with the engine still usable afterwards. It measures the remaining stack
+rather than counting calls, so it covers all of those routes and adapts to the thread the engine runs on:
+a host that provisions a larger stack gets proportionally more depth, rather than the frame count someone
+had to guess in advance.</p>
+<p dir="auto">A proper tail call in a strict function is exempt, and does not need the guard: it replaces the caller's
+frame instead of stacking one on top, so the recursion consumes no native stack however deep it runs. The
+check sits on the entries that do add a frame, so a strict tail recursion neither pays for it nor is
+stopped by it. Sloppy-mode recursion, a call out of tail position, and the non-call routes above are what
+remain in scope.</p>
+<p dir="auto">It is off by default because the check runs at every entry into a script function and that is not free.
+The benchmark gate measured recursion-heavy workloads (<code>Fib</code>, <code>DeepSum</code>, <code>Tak</code>) 1.7–2.3% slower with it
+on, with hot shallow calls unaffected. Enable it when the engine runs script you did not write, where a
+couple of percent on deep recursion in exchange for keeping your process is plainly the trade you want.
+Leave it off when every script is yours and you can bound it yourself.</p>
+<p dir="auto"><code>options.LimitRecursion(n)</code> answers a different question and composes with it. The recursion limit counts
+frames and is checked before the callee is entered, so where it is configured it is what fires; the guard
+answers only when no limit was set, or when the limit was set higher than the thread's stack can actually
+hold — which is easy to do by accident, since how many frames a stack holds is not something a host can
+see. A third and older setting, <code>options.Constraints.MaxExecutionStackCount</code>, continues the call chain on
+a fresh thread instead of throwing; it is checked at call expressions only, so it does not cover the other
+routes above, and it takes precedence over the guard when both are set.</p>
 <p dir="auto"><h2 tabindex="-1" dir="auto">Using Modules</h2><a id="user-content-using-modules" aria-label="Permalink: Using Modules" href="#using-modules"></a>
 <p dir="auto">You can use modules to <code>import</code> and <code>export</code> variables from multiple script files:</p>
 <div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
@@ -577,6 +891,111 @@ var id = ns.Get(&quot;result&quot;).AsInteger();"><pre><span>// Create the modul
 <span>// The result contains "live" bindings to the module</span>
 <span>var</span> <span>id</span> <span>=</span> <span>ns</span><span>.</span><span>Get</span><span>(</span><span>"result"</span><span>)</span><span>.</span><span>AsInteger</span><span>(</span><span>)</span><span>;</span></pre></div>
 <p dir="auto">Note that you don't need to <code>EnableModules</code> if you only use modules created using <code>Engine.Modules.Add</code>.</p>
+<p dir="auto">If you serve the same modules from a pool of engines, see <strong>Sharing a module graph across pooled engines</strong>
+under <a href="#embedding-performance">Embedding performance</a>: a loader that caches prepared modules keeps every
+engine but the first from parsing them again.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">How a module is named</h3><a id="user-content-how-a-module-is-named" aria-label="Permalink: How a module is named" href="#how-a-module-is-named"></a>
+<p dir="auto">Every module has a location — the string it knows itself by, <code>Module.Location</code> — and for a module a loader
+produced, that string is <code>ModuleFactory.LocationOf(resolved)</code>: the <code>LocalPath</code> of an absolute <code>file:</code> uri, and
+otherwise <code>ResolvedSpecifier.Key</code>, exactly as your <code>Resolve</code> wrote it. It is never null.</p>
+<p dir="auto">It is worth getting right because four things read it:</p>
+<ul dir="auto">
+<li>your own <code>ModuleLoader.Resolve</code>, as <code>referencingModuleLocation</code>, whenever that module imports something
+relative;</li>
+<li><code>error.stack</code>, and any <code>SyntaxError</code> a malformed module raises, through <code>SourceLocation.SourceFile</code>;</li>
+<li>the debugger, which keys breakpoints on it — <code>new BreakPoint(location, line, column)</code>;</li>
+<li><code>import.meta.url</code>, if you report it. Jint leaves <code>import.meta</code> to the host, so it is your
+<code>Host.GetImportMetaProperties</code> override that puts the location there.</li>
+</ul>
+<p dir="auto">So a loader serving modules over a transport should key them by the whole url rather than by a path. A module
+that knows itself as <code>/lib/entry.js</code> has no origin left for its own <code>./dep.js</code> to resolve against; one that
+knows itself as <code>http://localhost/lib/entry.js</code> resolves it the way a browser would. The key is used verbatim
+rather than <code>Uri.AbsoluteUri</code>, which canonicalizes — strips a default port, lowercases the host, collapses
+dot segments, percent-encodes — and whose .NET Framework and .NET Core parsers disagree on parts of that, so
+a canonicalized name would differ per target framework and could drift from the key the module map is cached
+under. Loading from disk is unaffected: a <code>file:</code> uri keeps its path, which is what <code>DefaultModuleLoader</code>
+resolves against a filesystem base path.</p>
+<p dir="auto">One consequence to weigh if the url carries anything sensitive. This string reaches script through
+<code>new Error().stack</code>, so a loader keying modules by <code>https://svc:s3cr3t@internal.corp/lib/a.js?apikey=...</code>
+hands untrusted script the credential and the api key. A browser's <code>import.meta.url</code> carries the query too,
+so this follows from naming a module by its url at all; keep secrets out of the key, or out of the url.</p>
+<p dir="auto">If you name modules yourself — preparing each one once and sharing the <code>Prepared&lt;AstModule&gt;</code> across pooled
+engines, per <strong>Sharing a module graph across pooled engines</strong> — call <code>ModuleFactory.LocationOf</code> for the name
+rather than deriving it by hand. A name that differs from the engine's own answer breaks relative-import
+resolution with nothing to point at.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Loading modules asynchronously</h3><a id="user-content-loading-modules-asynchronously" aria-label="Permalink: Loading modules asynchronously" href="#loading-modules-asynchronously"></a>
+<p dir="auto"><code>IModuleLoader.LoadModule</code> must return a parsed module immediately, so a loader that fetches module source over I/O — HTTP, a dev server, an asset pipeline — would have to block the calling thread. Implement <code>IAsyncModuleLoader</code> instead, or derive from the <code>AsyncModuleLoader</code> template, and no thread is held while the fetch is in flight:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="internal sealed class HttpModuleLoader : AsyncModuleLoader
+{
+    private readonly HttpClient _client = new() { BaseAddress = new Uri(&quot;http://localhost:5173/&quot;) };
+
+    // Resolution stays synchronous — only fetching an unseen module is allowed to take time
+    public override ResolvedSpecifier Resolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
+    {
+        var baseUri = new Uri(referencingModuleLocation ?? _client.BaseAddress!.ToString());
+        var uri = new Uri(baseUri, moduleRequest.Specifier);
+        return new ResolvedSpecifier(moduleRequest, uri.AbsoluteUri, uri, SpecifierType.RelativeOrAbsolute);
+    }
+
+    protected override Task<string> LoadModuleContentsAsync(Engine engine, ResolvedSpecifier resolved, CancellationToken cancellationToken)
+        => _client.GetStringAsync(resolved.Uri);
+}
+
+var engine = new Engine(options => options.EnableModules(new HttpModuleLoader()));
+
+var ns = await engine.Modules.ImportAsync(&quot;./main.js&quot;);"><pre><span>internal</span> <span>sealed</span> <span>class</span> <span>HttpModuleLoader</span> <span>:</span> <span>AsyncModuleLoader</span>
+<span>{</span>
+    <span>private</span> <span>readonly</span> <span>HttpClient</span> <span>_client</span> <span>=</span> <span>new</span><span>(</span><span>)</span> <span>{</span> <span>BaseAddress</span> <span>=</span> <span>new</span> <span>Uri</span><span>(</span><span>"http://localhost:5173/"</span><span>)</span> <span>}</span><span>;</span>
+
+    <span>// Resolution stays synchronous — only fetching an unseen module is allowed to take time</span>
+    <span>public</span> <span>override</span> <span>ResolvedSpecifier</span> <span>Resolve</span><span>(</span><span>string</span><span>?</span> <span>referencingModuleLocation</span><span>,</span> <span>ModuleRequest</span> <span>moduleRequest</span><span>)</span>
+    <span>{</span>
+        <span>var</span> <span>baseUri</span> <span>=</span> <span>new</span> <span>Uri</span><span>(</span><span>referencingModuleLocation</span> <span>??</span> <span>_client</span><span>.</span><span>BaseAddress</span><span>!</span><span>.</span><span>ToString</span><span>(</span><span>)</span><span>)</span><span>;</span>
+        <span>var</span> <span>uri</span> <span>=</span> <span>new</span> <span>Uri</span><span>(</span><span>baseUri</span><span>,</span> <span>moduleRequest</span><span>.</span><span>Specifier</span><span>)</span><span>;</span>
+        <span>return</span> <span>new</span> <span>ResolvedSpecifier</span><span>(</span><span>moduleRequest</span><span>,</span> <span>uri</span><span>.</span><span>AbsoluteUri</span><span>,</span> <span>uri</span><span>,</span> <span>SpecifierType</span><span>.</span><span>RelativeOrAbsolute</span><span>)</span><span>;</span>
+    <span>}</span>
+
+    <span>protected</span> <span>override</span> <span>Task</span><span>&lt;</span><span>string</span><span>&gt;</span> <span>LoadModuleContentsAsync</span><span>(</span><span>Engine</span> <span>engine</span><span>,</span> <span>ResolvedSpecifier</span> <span>resolved</span><span>,</span> <span>CancellationToken</span> <span>cancellationToken</span><span>)</span>
+        <span>=&gt;</span> <span>_client</span><span>.</span><span>GetStringAsync</span><span>(</span><span>resolved</span><span>.</span><span>Uri</span><span>)</span><span>;</span>
+<span>}</span>
+
+<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>options</span><span>.</span><span>EnableModules</span><span>(</span><span>new</span> <span>HttpModuleLoader</span><span>(</span><span>)</span><span>)</span><span>)</span><span>;</span>
+
+<span>var</span> <span>ns</span> <span>=</span> <span>await</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>ImportAsync</span><span>(</span><span>"./main.js"</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">Static imports inside an asynchronously loaded module are fetched the same way, transitively, before anything is linked; a module wanted by several importers is fetched once. A loader failure — a faulted task, or <code>ModuleLoadCompletion.SetError</code> — becomes a rejected promise rather than an exception on the calling thread, and a dynamic <code>import()</code> in script keeps working with nothing blocked:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Returns immediately; the promise settles on a later turn of the event loop
+engine.Execute(&quot;import('./late.js').then(ns => log(ns.value));&quot;);"><pre><span>// Returns immediately; the promise settles on a later turn of the event loop</span>
+<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"import('./late.js').then(ns =&gt; log(ns.value));"</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">For full control over when and where the load finishes, implement <code>IAsyncModuleLoader</code> directly and settle the <code>ModuleLoadCompletion</code> whenever the content arrives, from any thread:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="public void LoadModuleAsync(Engine engine, ResolvedSpecifier resolved, ModuleLoadCompletion completion)
+{
+    // e.g. a Unity coroutine, a callback-based transport, a worker queue
+    StartCoroutine(Fetch(resolved.Uri, onSuccess: completion.SetSource, onError: completion.SetError));
+}"><pre><span>public</span> <span>void</span> <span>LoadModuleAsync</span><span>(</span><span>Engine</span> <span>engine</span><span>,</span> <span>ResolvedSpecifier</span> <span>resolved</span><span>,</span> <span>ModuleLoadCompletion</span> <span>completion</span><span>)</span>
+<span>{</span>
+    <span>// e.g. a Unity coroutine, a callback-based transport, a worker queue</span>
+    <span>StartCoroutine</span><span>(</span><span>Fetch</span><span>(</span><span>resolved</span><span>.</span><span>Uri</span><span>,</span> <span>onSuccess</span><span>:</span> <span>completion</span><span>.</span><span>SetSource</span><span>,</span> <span>onError</span><span>:</span> <span>completion</span><span>.</span><span>SetError</span><span>)</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto">The engine is single-threaded, and settling the completion does not change that: the outcome is queued and applied when the engine is next given a turn. On a thread the engine must not block — a game loop, a UI thread — drive the import from your own loop instead of awaiting it:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// once
+var import = engine.Modules.StartImport(&quot;./main.js&quot;);
+
+// every frame
+engine.Advanced.ProcessTasks();
+if (import.IsCompleted)
+{
+    var ns = import.GetResult();   // throws PromiseRejectedException if the load or evaluation failed
+}"><pre><span>// once</span>
+<span>var</span> <span>import</span> <span>=</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>StartImport</span><span>(</span><span>"./main.js"</span><span>)</span><span>;</span>
+
+<span>// every frame</span>
+<span>engine</span><span>.</span><span>Advanced</span><span>.</span><span>ProcessTasks</span><span>(</span><span>)</span><span>;</span>
+<span>if</span> <span>(</span><span>import</span><span>.</span><span>IsCompleted</span><span>)</span>
+<span>{</span>
+    <span>var</span> <span>ns</span> <span>=</span> <span>import</span><span>.</span><span>GetResult</span><span>(</span><span>)</span><span>;</span>   <span>// throws PromiseRejectedException if the load or evaluation failed</span>
+<span>}</span></pre></div>
+<p dir="auto">The synchronous <code>Engine.Modules.Import</code> still works with an async loader, but the calling thread is what drives the event loop while the loads are in flight — so it deadlocks if the loader's own completions need that same thread. Prefer <code>ImportAsync</code> or <code>StartImport</code> there. Existing synchronous <code>IModuleLoader</code> implementations are unaffected; async loading is opt-in.</p>
+<p dir="auto">A completion settled <em>before</em> <code>LoadModuleAsync</code> returns — a cache hit, source already in hand — is the exception to all of the above: the load finishes on the calling stack, no event loop involved, so a graph made entirely of such answers keeps the blocking <code>Import</code> fully synchronous, exactly as if a synchronous <code>IModuleLoader</code> had served it. <code>AsyncModuleLoader</code> does this automatically whenever <code>LoadModuleContentsAsync</code> returns an already-completed task.</p>
 <p dir="auto"><h2 tabindex="-1" dir="auto">Asynchronous Execution</h2><a id="user-content-asynchronous-execution" aria-label="Permalink: Asynchronous Execution" href="#asynchronous-execution"></a>
 <p dir="auto">Jint supports non-blocking execution of JavaScript that involves <code>async</code>/<code>await</code> and Promises. This is important in ASP.NET Core and other environments where blocking a thread while waiting for I/O can cause thread-pool exhaustion.</p>
 <p dir="auto"><h3 tabindex="-1" dir="auto">EvaluateAsync / ExecuteAsync / InvokeAsync</h3><a id="user-content-evaluateasync--executeasync--invokeasync" aria-label="Permalink: EvaluateAsync / ExecuteAsync / InvokeAsync" href="#evaluateasync--executeasync--invokeasync"></a>
@@ -721,6 +1140,94 @@ result = result.UnwrapIfPromise();"><pre><span>var</span> <span>engine</span> <s
 </li>
 <li>Extensions methods</li>
 </ul>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Error handling</h2><a id="user-content-error-handling" aria-label="Permalink: Error handling" href="#error-handling"></a>
+<p dir="auto"><h3 tabindex="-1" dir="auto">A CLR exception thrown by host code</h3><a id="user-content-a-clr-exception-thrown-by-host-code" aria-label="Permalink: A CLR exception thrown by host code" href="#a-clr-exception-thrown-by-host-code"></a>
+<p dir="auto">By default an exception thrown by host code — a delegate you registered, a reflected member, a proxy trap —
+is <strong>not</strong> converted into anything. It bubbles straight out of <code>Execute</code>/<code>Evaluate</code>/<code>Invoke</code> to you, with its
+message, .NET stack trace and inner exceptions untouched, and the script gets no chance to catch it:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine();
+engine.SetValue(&quot;parse&quot;, new Action<string>(s => new XmlDocument().LoadXml(s)));
+
+// throws System.Xml.XmlException, with its own stack trace
+engine.Evaluate(&quot;parse('<not xml')&quot;);"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span><span>;</span>
+<span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"parse"</span><span>,</span> <span>new</span> <span>Action</span><span>&lt;</span><span>string</span><span>&gt;</span><span>(</span>s <span>=&gt;</span> <span>new</span> <span>XmlDocument</span><span>(</span><span>)</span><span>.</span><span>LoadXml</span><span>(</span><span>s</span><span>)</span><span>)</span><span>)</span><span>;</span>
+
+<span>// throws System.Xml.XmlException, with its own stack trace</span>
+<span>engine</span><span>.</span><span>Evaluate</span><span>(</span><span>"parse('&lt;not xml')"</span><span>)</span><span>;</span></pre></div>
+<p dir="auto"><code>CatchClrExceptions</code> changes that: the exception becomes a JavaScript <code>Error</code> carrying its message, which the
+script can <code>try</code>/<code>catch</code> like any other. The predicate overload decides per exception, so you can let the
+script handle what it should handle and keep the rest fatal.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options => options.CatchClrExceptions(e => e is not OperationCanceledException));"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>options</span><span>.</span><span>CatchClrExceptions</span><span>(</span>e <span>=&gt;</span> <span>e</span> <span>is</span> not <span>OperationCanceledException</span><span>)</span><span>)</span><span>;</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Getting the original exception back</h3><a id="user-content-getting-the-original-exception-back" aria-label="Permalink: Getting the original exception back" href="#getting-the-original-exception-back"></a>
+<p dir="auto">Once an exception has been turned into a JavaScript error, the error is what travels — so when the script does
+not catch it and it reaches you as a <code>JavaScriptException</code>, the message alone is rarely enough to diagnose
+anything. <code>JintException.TryGetClrException</code> gives you the exception itself:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="try
+{
+    engine.Evaluate(script);
+}
+catch (JavaScriptException e) when (JintException.TryGetClrException(e, out var clrException))
+{
+    logger.LogError(clrException, &quot;host call failed while running {Script}&quot;, name);
+}"><pre><span>try</span>
+<span>{</span>
+    <span>engine</span><span>.</span><span>Evaluate</span><span>(</span><span>script</span><span>)</span><span>;</span>
+<span>}</span>
+<span>catch</span> <span>(</span><span>JavaScriptException</span> <span>e</span><span>)</span> <span>when</span> <span>(</span><span>JintException</span><span>.</span><span>TryGetClrException</span><span>(</span><span>e</span><span>,</span> <span>out</span> <span>var</span> <span>clrException</span><span>)</span><span>)</span>
+<span>{</span>
+    <span>logger</span><span>.</span><span>LogError</span><span>(</span><span>clrException</span><span>,</span> <span>"host call failed while running {Script}"</span><span>,</span> <span>name</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto">It survives nested frames, a script catching and rethrowing the same error, module evaluation and a rejected
+promise (<code>PromiseRejectedException</code>), and it follows the standard <code>cause</code> chain, so a script that rewraps with
+<code>throw new Error(msg, { cause: err })</code> keeps it too. A script that throws something unrelated instead keeps
+nothing, which is correct — it discarded the original.</p>
+<p dir="auto">The exception is host-only. It is CLR state on the error object rather than a JavaScript property, so a script
+can neither read it nor strip it, and it does not appear in <code>Object.getOwnPropertyNames</code>, <code>Reflect.ownKeys</code> or
+<code>JSON.stringify</code>. Note that the error object holds the exception, and everything the exception's object graph
+reaches, for as long as the script keeps the error reachable.</p>
+<p dir="auto">If you would rather your logging pipeline find it without asking, <code>ChainClrExceptions</code> also hangs it in the
+<code>InnerException</code> chain, so <code>ToString()</code> and any chain-walking logger render your own frames alongside the
+JavaScript ones. It is off by default because it puts host stack traces into whatever consumes that string —
+treat it the way an ASP.NET application treats developer exception details.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options => options
+    .CatchClrExceptions()
+    .ChainClrExceptions());"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>options</span>
+    <span>.</span><span>CatchClrExceptions</span><span>(</span><span>)</span>
+    <span>.</span><span>ChainClrExceptions</span><span>(</span><span>)</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">Two related accessors work the same way: <code>JintException.TryGetJavaScriptLocation</code> and
+<code>TryGetJavaScriptCallStack</code> give the JavaScript position for both <code>JavaScriptException</code> and a bubbled CLR
+exception, and <code>TryGetClrType</code>/<code>TryGetClrMemberName</code> report the type and member behind a failed interop
+resolution. To shape what the <em>script</em> sees — rewrite the message, attach an error code —
+use <code>DecorateClrExceptionErrors</code>.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Raising an error from host code</h3><a id="user-content-raising-an-error-from-host-code" aria-label="Permalink: Raising an error from host code" href="#raising-an-error-from-host-code"></a>
+<p dir="auto">To fail a host function in a way the script can catch, throw a <code>JavaScriptException</code>. The overload taking a
+CLR exception records it for <code>TryGetClrException</code>, so the script sees an ordinary <code>Error</code> while you keep the
+original:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="engine.SetValue(&quot;parse&quot;, new Action<string>(s =>
+{
+    try
+    {
+        new XmlDocument().LoadXml(s);
+    }
+    catch (XmlException e)
+    {
+        throw new JavaScriptException(engine.Intrinsics.Error, &quot;XML parsing failed&quot;, e);
+    }
+}));"><pre><span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"parse"</span><span>,</span> <span>new</span> <span>Action</span><span>&lt;</span><span>string</span><span>&gt;</span><span>(</span>s <span>=&gt;</span>
+<span>{</span>
+    <span>try</span>
+    <span>{</span>
+        <span>new</span> <span>XmlDocument</span><span>(</span><span>)</span><span>.</span><span>LoadXml</span><span>(</span><span>s</span><span>)</span><span>;</span>
+    <span>}</span>
+    <span>catch</span> <span>(</span><span>XmlException</span> <span>e</span><span>)</span>
+    <span>{</span>
+        <span>throw</span> <span>new</span> <span>JavaScriptException</span><span>(</span><span>engine</span><span>.</span><span>Intrinsics</span><span>.</span><span>Error</span><span>,</span> <span>"XML parsing failed"</span><span>,</span> <span>e</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span><span>)</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">Do not throw the exception projected into the script instead
+(<code>new JavaScriptException(JsValue.FromObject(engine, e))</code>). That value is not an <code>Error</code> — it has no <code>stack</code>
+and fails <code>instanceof Error</code> — and it hands the running script the exception's members, including its .NET
+stack trace and inner exceptions.</p>
 <p dir="auto"><h2 tabindex="-1" dir="auto">Security</h2><a id="user-content-security" aria-label="Permalink: Security" href="#security"></a>
 <p dir="auto">The following features provide you with a secure, sand-boxed environment to run user scripts.</p>
 <ul dir="auto">
@@ -729,6 +1236,8 @@ result = result.UnwrapIfPromise();"><pre><span>var</span> <span>engine</span> <s
 <li>Limit number of statements to prevent infinite loops.</li>
 <li>Limit depth of calls to prevent deep recursion calls.</li>
 <li>Define a timeout, to prevent scripts from taking too long to finish.</li>
+<li>Turn an unbounded recursion into a catchable error rather than a stack overflow that ends the process
+(see <a href="#surviving-an-unbounded-recursion">Surviving an unbounded recursion</a>; off by default).</li>
 </ul>
 <p dir="auto"><h2 tabindex="-1" dir="auto">Branches and releases</h2><a id="user-content-branches-and-releases" aria-label="Permalink: Branches and releases" href="#branches-and-releases"></a>
 <ul dir="auto">
