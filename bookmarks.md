@@ -1002,14 +1002,14 @@ Holly Cummins discusses why "nothing is new under the sun" in tech. She maps his
 ![](https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/9og3swd8h7293d79kegi.png)
 Not everyone who doubts themselves is suffering from impostor syndrome. Sometimes the real problem...
 
-
+[TODO]
 
 # Reflecting on My Failure to Build a Billion-Dollar Company
 [https://sahillavingia.com/reflecting?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2337](https://sahillavingia.com/reflecting?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2337)
 ![](https://sahillavingia.com/gr.png)
 In 2011, I left my job as the second employee at Pinterest — before I vested any of my stock — to work on what I thought would be my life's work...
 
-[TODO] [Software] [entrepreneuriat]
+[Software] [entrepreneuriat]
 
 # From your doorbell to your home network |
 [https://adepts.of0x.cc/eufy-doorbell-hacking/](https://adepts.of0x.cc/eufy-doorbell-hacking/)
