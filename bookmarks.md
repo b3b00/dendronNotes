@@ -981,14 +981,14 @@ Un an après le lancement de son assistant IA confidentiel, Proton a présenté 
 ![](https://content.wolfram.com/sites/43/2026/07/bugs-tweet-v3-darkmode.png)
 Stephen Wolfram investigates developing a general 
 
-[Software] [software engineering] [Bug] [FAVORITE]
+[TODO] [Software] [software engineering] [Bug] [FAVORITE]
 
 # The Best Prioritization Is No Prioritization
 [https://staysaasy.com/strategy/2026/07/16/the-best-prioritization-is-no-prioritization.html?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2332](https://staysaasy.com/strategy/2026/07/16/the-best-prioritization-is-no-prioritization.html?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2332)
 ![](https://staysaasy.com/assets/template/stay-saasy-black-ogimage.jpeg)
 The best way to prioritize... is to not prioritize.
 
-[TODO] [Prioritization]
+[Prioritization]
 
 # The Free-Lunch Guide to Idea Circularity
 [https://www.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/?utm_source=notification_email&utm_campaign=notifications&utm_medium=link&utm_content=content_in_followed_topic&utm_term=daily](https://www.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/?utm_source=notification_email&utm_campaign=notifications&utm_medium=link&utm_content=content_in_followed_topic&utm_term=daily)
