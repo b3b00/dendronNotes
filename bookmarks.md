@@ -995,7 +995,7 @@ The best way to prioritize... is to not prioritize.
 ![](https://res.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/en/card_header_image/holly-cummins-twitter-card-1783578321356.jpg)
 Holly Cummins discusses why "nothing is new under the sun" in tech. She maps historical architectural tradeoffs to modern cloud, microservices, and AI hype cycles. She connects financial debt (post-ZIRP) and technical debt to epistemic and sleep debt, showing engineering leaders how to navigate shifts in assumptions, embrace sustainability, and revive proven engineering disciplines.
 
-[TODO] [FAVORITE]
+[FAVORITE]
 
 # Stop Calling Everything Impostor Syndrome: The Myth of "Just Push Harder"
 [https://dev.to/sylwia-lask/stop-calling-everything-impostor-syndrome-the-myth-of-just-push-harder-1dmm?context=digest](https://dev.to/sylwia-lask/stop-calling-everything-impostor-syndrome-the-myth-of-just-push-harder-1dmm?context=digest)
