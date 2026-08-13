@@ -1044,4 +1044,4 @@ Notes from my Thoughtworks colleagues on AI-assisted software delivery
 ![](/bookmarks/image?url=https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html)
 search the web
 
-[TODO]
+[TODO] [FAVORITE]
