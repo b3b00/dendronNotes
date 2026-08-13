@@ -1038,3 +1038,10 @@ Time is where application code meets uncertainty: clock skew, wall-clock correct
 Notes from my Thoughtworks colleagues on AI-assisted software delivery
 
 [TODO] [AI] [TDD]
+
+# How I built a 500k-Domain Search Engine for Makers in a Weekend for $10
+[https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html](https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html)
+![](/bookmarks/image?url=https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html)
+search the web
+
+[TODO]
