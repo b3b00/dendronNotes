@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>Publication de packages Node.js - Documentation GitHub</title><meta name="author" content=""><meta name="description" content="Dans ce tutoriel, vous allez apprendre à publier des packages Node.js dans un registre dans le cadre de votre workflow d’intégration continue (CI)."><meta name="dendron:source-url" content="https://docs.github.com/fr/actions/publishing-packages/publishing-nodejs-packages"><meta name="dendron:length" content="9860"><meta name="dendron:time-to-read-minutes" content="7"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div id="article-intro"><p>Dans ce tutoriel, vous allez apprendre à publier des packages Node.js dans un registre dans le cadre de votre workflow d’intégration continue (CI).</p></div><div id="article-contents" data-container="article" data-search="article-body"><h2 id="introduction" tabindex="-1"><a href="#introduction">Présentation</a></h2><p>Ce guide vous montre comment créer un flux de travail qui publie des packages Node.js sur les GitHub Packages registres et npm après la réussite des tests d’intégration continue (CI).</p><h2 id="prerequisites" tabindex="-1"><a href="#prerequisites">Prérequis</a></h2><p>Il est recommandé d’avoir une compréhension de base des options de configuration de workflows et de la création de fichiers de workflow. Pour plus d’informations, consultez «&nbsp;<a href="https://docs.github.com/fr/actions/how-tos/write-workflows">Écriture de workflows</a>&nbsp;».</p><p>Pour plus d’informations sur la création d’un workflow&nbsp;CI pour votre projet Node.js, consultez <a href="https://docs.github.com/fr/actions/tutorials/build-and-test-code/nodejs">Création et test de code Node.js</a>.</p><p>Vous pouvez également trouver utile d’avoir une compréhension de base des éléments suivants&nbsp;:</p><ul>
+<html><head><meta charset="utf-8"><title>Publication de packages Node.js - Documentation GitHub</title><meta name="author" content=""><meta name="description" content="Dans ce tutoriel, vous allez apprendre à publier des packages Node.js dans un registre dans le cadre de votre workflow d’intégration continue (CI)."><meta name="dendron:source-url" content="https://docs.github.com/fr/actions/publishing-packages/publishing-nodejs-packages"><meta name="dendron:length" content="9810"><meta name="dendron:time-to-read-minutes" content="7"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div id="article-intro"><p>Dans ce tutoriel, vous allez apprendre à publier des packages Node.js dans un registre dans le cadre de votre workflow d’intégration continue (CI).</p></div><div id="article-contents" data-container="article" data-search="article-body"><h2 id="introduction" tabindex="-1"><a href="#introduction">Présentation</a></h2><p>Ce guide vous montre comment créer un flux de travail qui publie des packages Node.js sur les GitHub Packages registres et npm après la réussite des tests d’intégration continue (CI).</p><h2 id="prerequisites" tabindex="-1"><a href="#prerequisites">Prérequis</a></h2><p>Il est recommandé d’avoir une compréhension de base des options de configuration de workflows et de la création de fichiers de workflow. Pour plus d’informations, consultez «&nbsp;<a href="https://docs.github.com/fr/actions/how-tos/write-workflows">Écriture de workflows</a>&nbsp;».</p><p>Pour plus d’informations sur la création d’un workflow&nbsp;CI pour votre projet Node.js, consultez <a href="https://docs.github.com/fr/actions/tutorials/build-and-test-code/nodejs">Création et test de code Node.js</a>.</p><p>Vous pouvez également trouver utile d’avoir une compréhension de base des éléments suivants&nbsp;:</p><ul>
 <li><a href="https://docs.github.com/fr/packages/working-with-a-github-packages-registry/working-with-the-npm-registry">Utilisation du registre npm</a></li>
 <li><a href="https://docs.github.com/fr/actions/how-tos/write-workflows/choose-what-workflows-do/use-variables">Stocker des informations dans des variables</a></li>
 <li><a href="https://docs.github.com/fr/actions/how-tos/write-workflows/choose-what-workflows-do/use-secrets">Utilisation de secrets dans GitHub Actions</a></li>
@@ -17,7 +17,7 @@
     <span>steps:</span>
       <span>-</span> <span>uses:</span> <span>actions/checkout@v6</span>
       <span># Setup .npmrc file to publish to npm</span>
-      <span>-</span> <span>uses:</span> <span>actions/setup-node@v4</span>
+      <span>-</span> <span>uses:</span> <span>actions/setup-node@v7</span>
         <span>with:</span>
           <span>node-version:</span> <span>'20.x'</span>
           <span>registry-url:</span> <span>'https://registry.npmjs.org'</span>
@@ -48,7 +48,7 @@ always-auth=true
     <span>steps:</span>
       <span>-</span> <span>uses:</span> <span>actions/checkout@v6</span>
       <span># Setup .npmrc file to publish to GitHub Packages</span>
-      <span>-</span> <span>uses:</span> <span>actions/setup-node@v4</span>
+      <span>-</span> <span>uses:</span> <span>actions/setup-node@v7</span>
         <span>with:</span>
           <span>node-version:</span> <span>'20.x'</span>
           <span>registry-url:</span> <span>'https://npm.pkg.github.com'</span>
@@ -71,7 +71,7 @@ always-auth=true
     <span>steps:</span>
       <span>-</span> <span>uses:</span> <span>actions/checkout@v6</span>
       <span># Setup .npmrc file to publish to npm</span>
-      <span>-</span> <span>uses:</span> <span>actions/setup-node@v4</span>
+      <span>-</span> <span>uses:</span> <span>actions/setup-node@v7</span>
         <span>with:</span>
           <span>node-version:</span> <span>'20.x'</span>
           <span>registry-url:</span> <span>'https://registry.npmjs.org'</span>
