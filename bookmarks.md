@@ -911,7 +911,7 @@ Why working harder has stopped working and the five game-theoretical mechanisms 
 ![](https://martinfowler.com/logo-sq.png)
 Why Domain-Specific Languages and good abstractions make LLM code generation reliable and reviewable.
 
-[TODO] [AI] [DSL] [FAVORITE]
+[AI] [DSL] [FAVORITE]
 
 # Are we offloading too much of our thinking to AI?
 [https://www.artfish.ai/p/offloading-thinking-to-ai?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2326](https://www.artfish.ai/p/offloading-thinking-to-ai?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2326)
