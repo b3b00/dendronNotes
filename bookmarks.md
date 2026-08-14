@@ -1044,10 +1044,4 @@ Notes from my Thoughtworks colleagues on AI-assisted software delivery
 ![](/bookmarks/image?url=https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html)
 search the web
 
-# Comment exploiter les conventions collectives avec Claude : la recette pas-à-pas avec PISTE
-[https://www.astruc-avocat.fr/post/comment-exploiter-les-conventions-collectives-avec-claude-la-recette-pas-%C3%A0-pas-avec-piste](https://www.astruc-avocat.fr/post/comment-exploiter-les-conventions-collectives-avec-claude-la-recette-pas-%C3%A0-pas-avec-piste)
 
-[TODO] [AI]
-
-
-[TODO] [FAVORITE]
