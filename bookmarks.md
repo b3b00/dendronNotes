@@ -981,7 +981,7 @@ Un an après le lancement de son assistant IA confidentiel, Proton a présenté 
 ![](https://content.wolfram.com/sites/43/2026/07/bugs-tweet-v3-darkmode.png)
 Stephen Wolfram investigates developing a general 
 
-[TODO] [Software] [software engineering] [Bug]
+[TODO] [Software] [software engineering] [Bug] [FAVORITE]
 
 # The Best Prioritization Is No Prioritization
 [https://staysaasy.com/strategy/2026/07/16/the-best-prioritization-is-no-prioritization.html?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2332](https://staysaasy.com/strategy/2026/07/16/the-best-prioritization-is-no-prioritization.html?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2332)
@@ -995,7 +995,7 @@ The best way to prioritize... is to not prioritize.
 ![](https://res.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/en/card_header_image/holly-cummins-twitter-card-1783578321356.jpg)
 Holly Cummins discusses why "nothing is new under the sun" in tech. She maps historical architectural tradeoffs to modern cloud, microservices, and AI hype cycles. She connects financial debt (post-ZIRP) and technical debt to epistemic and sleep debt, showing engineering leaders how to navigate shifts in assumptions, embrace sustainability, and revive proven engineering disciplines.
 
-[FAVORITE]
+
 
 # Stop Calling Everything Impostor Syndrome: The Myth of "Just Push Harder"
 [https://dev.to/sylwia-lask/stop-calling-everything-impostor-syndrome-the-myth-of-just-push-harder-1dmm?context=digest](https://dev.to/sylwia-lask/stop-calling-everything-impostor-syndrome-the-myth-of-just-push-harder-1dmm?context=digest)
