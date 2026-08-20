@@ -1066,3 +1066,10 @@ If you are an Emacs user with a keen eye, you will have noticed that in Emacs Li
 I remember walking to the bus from high school, staring at a Motorola 6800 instruction set manual.
 
 [TODO]
+
+# Don't paste the AI.
+[https://dontpastetheai.com/](https://dontpastetheai.com/)
+![](https://dontpastetheai.com/assets/og-image.png)
+If someone asks you a question, paste your answer — not the chatbot's.
+
+[TODO]
