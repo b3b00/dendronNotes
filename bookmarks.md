@@ -1065,7 +1065,7 @@ If you are an Emacs user with a keen eye, you will have noticed that in Emacs Li
 ![](https://substackcdn.com/image/fetch/$s_!PlwL!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F961d0b32-94f1-43bf-84a9-af749bcc28c9_768x1024.jpeg)
 I remember walking to the bus from high school, staring at a Motorola 6800 instruction set manual.
 
-[TODO]
+
 
 # Don't paste the AI.
 [https://dontpastetheai.com/](https://dontpastetheai.com/)
