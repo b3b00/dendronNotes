@@ -1058,7 +1058,7 @@ Pourquoi ce projetMon premier outil m'avait permis d'exploiter efficacement les 
 ![](https://www.chiply.dev/images/escher-drawing-hands.jpg)
 If you are an Emacs user with a keen eye, you will have noticed that in Emacs Lisp, code is data. After all, 'Lisp' is shorthand for 'List Processing'. One of E...
 
-[TODO]
+
 
 # Baking a Model
 [https://newsletter.kentbeck.com/p/baking-a-model?utm_source=post-email-title&publication_id=256838&post_id=208706172&utm_campaign=email-post-title&isFreemail=true&r=sg2bw&triedRedirect=true&utm_medium=email](https://newsletter.kentbeck.com/p/baking-a-model?utm_source=post-email-title&publication_id=256838&post_id=208706172&utm_campaign=email-post-title&isFreemail=true&r=sg2bw&triedRedirect=true&utm_medium=email)
