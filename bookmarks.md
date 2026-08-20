@@ -1051,7 +1051,7 @@ search the web
 ![](/bookmarks/image?url=https://www.astruc-avocat.fr/post/comment-exploiter-les-conventions-collectives-avec-claude-la-recette-pas-à-pas-avec-piste)
 Pourquoi ce projetMon premier outil m'avait permis d'exploiter efficacement les accords collectifs d'entreprise (la base ACCO de data.gouv.fr — 268 000 textes au moment où j'écris). Demeurait l'autre partie du paysage conventionnel : les conventions collectives de branche.Deux problèmes empêchent de simplement « demander à ChatGPT ou Claude » :1. Les IA généralistes hallucinent. Elles « connaissent » les conventions collectives à grands traits, mais elles citent des numéros d'articles qui n'exis
 
-[TODO] [FAVORITE]
+[FAVORITE]
 
 # Gödel, Escher, Elisp: The Beauty of Macros
 [https://www.chiply.dev/post-elisp-macros-are-beautiful](https://www.chiply.dev/post-elisp-macros-are-beautiful)
