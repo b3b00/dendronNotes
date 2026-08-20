@@ -1037,7 +1037,7 @@ Time is where application code meets uncertainty: clock skew, wall-clock correct
 ![](https://martinfowler.com/articles/exploring-gen-ai/donkey-card.png)
 Notes from my Thoughtworks colleagues on AI-assisted software delivery
 
-[TODO] [AI] [TDD]
+[TODO] [AI] [TDD] [FAVORITE]
 
 # How I built a 500k-Domain Search Engine for Makers in a Weekend for $10
 [https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html](https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html)
