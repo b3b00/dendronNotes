@@ -1073,3 +1073,10 @@ I remember walking to the bus from high school, staring at a Motorola 6800 instr
 If someone asks you a question, paste your answer — not the chatbot's.
 
 
+
+# Pourquoi le remplacement du personnel par l'IA se retourne contre les entreprises – et 5 façons de créer une véritable valeur ajoutée - ZDNET
+[https://www.zdnet.fr/actualites/pourquoi-le-remplacement-du-personnel-par-lia-se-retourne-contre-les-entreprises-et-5-facons-dont-les-dirigeants-avises-creent-une-veritable-valeur-ajoutee-500376.htm](https://www.zdnet.fr/actualites/pourquoi-le-remplacement-du-personnel-par-lia-se-retourne-contre-les-entreprises-et-5-facons-dont-les-dirigeants-avises-creent-une-veritable-valeur-ajoutee-500376.htm)
+![purplepeople-gettyimages-2227030316](https://www.zdnet.fr/wp-content/uploads/zdnet/2026/08/purplepeople-gettyimages-2227030316.webp)
+Les trois quarts des entreprises ont constaté que les licenciements liés à l'IA coûtaient plus cher que ce qu'ils permettaient d'économiser, et pas moins de neuf entreprises sur dix y réfléchiraient à deux fois si elles pouvaient revenir en arrière.
+
+[TODO]
