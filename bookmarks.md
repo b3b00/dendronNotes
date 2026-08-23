@@ -1080,3 +1080,10 @@ If someone asks you a question, paste your answer — not the chatbot's.
 Les trois quarts des entreprises ont constaté que les licenciements liés à l'IA coûtaient plus cher que ce qu'ils permettaient d'économiser, et pas moins de neuf entreprises sur dix y réfléchiraient à deux fois si elles pouvaient revenir en arrière.
 
 [TODO]
+
+# I dream of quieter computing | Henry From Online
+[https://henry.codes/writing/i-dream-of-quieter-computing/](https://henry.codes/writing/i-dream-of-quieter-computing/)
+![](https://v1.screenshot.11ty.dev/https%3A%2F%2Fhenry.codes%2Fopengraph%2Fwriting%2Fi-dream-of-quieter-computing/opengraph)
+A quick note about future of computing and indieweb. It's about a 2 minute read.
+
+[TODO]
