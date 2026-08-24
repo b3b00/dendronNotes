@@ -1087,3 +1087,10 @@ Les trois quarts des entreprises ont constaté que les licenciements liés à l'
 A quick note about future of computing and indieweb. It's about a 2 minute read.
 
 [TODO] [FAVORITE]
+
+# Faster blob copying in Azure Blob Storage
+[https://markheath.net/post/2026/7/24/fast-blob-copy-azure](https://markheath.net/post/2026/7/24/fast-blob-copy-azure)
+![](https://markheath.net/images/sound_code_logo2.png)
+I generally try to avoid copying blobs in Azure and just reference a single copy, but there are some situations where you do need to make a copy. The…
+
+[TODO]
