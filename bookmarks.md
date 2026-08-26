@@ -1094,3 +1094,10 @@ A quick note about future of computing and indieweb. It's about a 2 minute read.
 I generally try to avoid copying blobs in Azure and just reference a single copy, but there are some situations where you do need to make a copy. The…
 
 [TODO] [.net] [cloud] [blob]
+
+# You could have invented PageRank - Pravesh Koirala
+[https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/](https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/)
+![](/bookmarks/image?url=https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/)
+Picture this, the year is 1996. You find yourself frustrated with the incumbent search engines like AltaVista, which primarily does a content-based search (it'll give you an article on "Hotels for Chickens" if you search "Hotels" because the word matches). There's gotta be a better way, right? Well, in hindsight, of course. Sergey Brin and
+
+[TODO]
