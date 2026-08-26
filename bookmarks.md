@@ -1100,4 +1100,4 @@ I generally try to avoid copying blobs in Azure and just reference a single copy
 ![](/bookmarks/image?url=https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/)
 Picture this, the year is 1996. You find yourself frustrated with the incumbent search engines like AltaVista, which primarily does a content-based search (it'll give you an article on "Hotels for Chickens" if you search "Hotels" because the word matches). There's gotta be a better way, right? Well, in hindsight, of course. Sergey Brin and
 
-[TODO]
+[TODO] [FAVORITE]
