@@ -1107,4 +1107,4 @@ Picture this, the year is 1996. You find yourself frustrated with the incumbent 
 ![](https://substackcdn.com/image/fetch/$s_!UZLs!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F30186662-5010-4c83-a672-e33c53deeaa3_1080x669.webp)
 The whole OpenAI/Hugging Face story in plain English
 
-[TODO]
+[TODO] [AI]
