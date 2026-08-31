@@ -1108,3 +1108,10 @@ Picture this, the year is 1996. You find yourself frustrated with the incumbent 
 The whole OpenAI/Hugging Face story in plain English
 
 [TODO] [AI]
+
+# The Hugging Face attack surprised me
+[https://www.planned-obsolescence.org/p/the-hugging-face-attack-surprised](https://www.planned-obsolescence.org/p/the-hugging-face-attack-surprised)
+![](https://substackcdn.com/image/fetch/$s_!6stx!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F2dca53b4-f6ee-4ba3-9ffd-daf022835cca_1880x1048.png)
+It’s a major warning shot, and might be the last one we get
+
+[TODO]
