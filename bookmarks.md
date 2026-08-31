@@ -1101,3 +1101,10 @@ I generally try to avoid copying blobs in Azure and just reference a single copy
 Picture this, the year is 1996. You find yourself frustrated with the incumbent search engines like AltaVista, which primarily does a content-based search (it'll give you an article on "Hotels for Chickens" if you search "Hotels" because the word matches). There's gotta be a better way, right? Well, in hindsight, of course. Sergey Brin and
 
 [TODO] [FAVORITE]
+
+# The Rise and Fall of Agent Civilizations
+[https://www.dwarkesh.com/p/openai-huggingface](https://www.dwarkesh.com/p/openai-huggingface)
+![](https://substackcdn.com/image/fetch/$s_!UZLs!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F30186662-5010-4c83-a672-e33c53deeaa3_1080x669.webp)
+The whole OpenAI/Hugging Face story in plain English
+
+[TODO]
