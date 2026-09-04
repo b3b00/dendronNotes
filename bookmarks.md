@@ -1115,3 +1115,10 @@ The whole OpenAI/Hugging Face story in plain English
 It’s a major warning shot, and might be the last one we get
 
 [TODO] [AI]
+
+# NPC-Forge/docs/development.md at main · gioblu/NPC-Forge
+[https://github.com/gioblu/NPC-Forge/blob/main/docs%2Fdevelopment.md](https://github.com/gioblu/NPC-Forge/blob/main/docs%2Fdevelopment.md)
+![NPC-Forge is a framework for building conversational agents that run on the CPU without relying on machine learning or LLMs. - gioblu/NPC-Forge](https://opengraph.githubassets.com/371e70517807dc93b6457778b447d298d84ed2caffc16aae0033f5312066929e/gioblu/NPC-Forge)
+NPC-Forge is a framework for building conversational agents that run on the CPU without relying on machine learning or LLMs. - gioblu/NPC-Forge
+
+[TODO]
