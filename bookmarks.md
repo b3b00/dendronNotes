@@ -1141,7 +1141,7 @@ NPC-Forge is a framework for building conversational agents that run on the CPU 
 ![](https://kciter.so/images/2026-07-12-the-expensive-main-thread/thumbnail.png)
 What comes to mind when you hear "frontend optimization"? For most of us it's things like reducing network requests, shrinking the bundle,…
 
-[TODO]
+[TODO] [Web]
 
 # The good ol’ days of building Java - Stack Overflow
 [https://stackoverflow.blog/2026/09/01/the-good-ol-days-of-building-java/?utm_source=braze&utm_medium=email&utm_campaign=the-overflow-newsletter&lid=r6wrf5bimdvj](https://stackoverflow.blog/2026/09/01/the-good-ol-days-of-building-java/?utm_source=braze&utm_medium=email&utm_campaign=the-overflow-newsletter&lid=r6wrf5bimdvj)
