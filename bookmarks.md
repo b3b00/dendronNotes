@@ -1079,7 +1079,7 @@ If someone asks you a question, paste your answer — not the chatbot's.
 ![purplepeople-gettyimages-2227030316](https://www.zdnet.fr/wp-content/uploads/zdnet/2026/08/purplepeople-gettyimages-2227030316.webp)
 Les trois quarts des entreprises ont constaté que les licenciements liés à l'IA coûtaient plus cher que ce qu'ils permettaient d'économiser, et pas moins de neuf entreprises sur dix y réfléchiraient à deux fois si elles pouvaient revenir en arrière.
 
-[TODO] [AI]
+[AI]
 
 # I dream of quieter computing | Henry From Online
 [https://henry.codes/writing/i-dream-of-quieter-computing/](https://henry.codes/writing/i-dream-of-quieter-computing/)
