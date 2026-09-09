@@ -1128,7 +1128,7 @@ NPC-Forge is a framework for building conversational agents that run on the CPU 
 ![🚀 Catalyst is a C# Natural Language Processing library built for speed. Inspired by spaCy&#39;s design, it brings pre-trained models, out-of-the box support for training word and document embedding...](https://repository-images.githubusercontent.com/200471228/daa08a00-bb76-11e9-83f8-c6d4f80f68a8)
 🚀 Catalyst is a C# Natural Language Processing library built for speed. Inspired by spaCy&#39;s design, it brings pre-trained models, out-of-the box support for training word and document embedding...
 
-[AI] [.net] [C#]
+[AI] [.net] [C#] [NLP]
 
 # A Definition of AGI
 [https://www.agidefinition.ai/](https://www.agidefinition.ai/)
