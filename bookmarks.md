@@ -1121,14 +1121,14 @@ It’s a major warning shot, and might be the last one we get
 ![NPC-Forge is a framework for building conversational agents that run on the CPU without relying on machine learning or LLMs. - gioblu/NPC-Forge](https://opengraph.githubassets.com/371e70517807dc93b6457778b447d298d84ed2caffc16aae0033f5312066929e/gioblu/NPC-Forge)
 NPC-Forge is a framework for building conversational agents that run on the CPU without relying on machine learning or LLMs. - gioblu/NPC-Forge
 
-[AI]
+[TODO] [AI]
 
 # GitHub - curiosity-ai/catalyst: 🚀 Catalyst is a C# Natural Language Processing library built for speed. Inspired by spaCy's design, it brings pre-trained models, out-of-the box support for training word and document embeddings, and flexible entity recognition models.
 [https://github.com/curiosity-ai/catalyst](https://github.com/curiosity-ai/catalyst)
 ![🚀 Catalyst is a C# Natural Language Processing library built for speed. Inspired by spaCy&#39;s design, it brings pre-trained models, out-of-the box support for training word and document embedding...](https://repository-images.githubusercontent.com/200471228/daa08a00-bb76-11e9-83f8-c6d4f80f68a8)
 🚀 Catalyst is a C# Natural Language Processing library built for speed. Inspired by spaCy&#39;s design, it brings pre-trained models, out-of-the box support for training word and document embedding...
 
-[TODO] [AI] [.net] [C#]
+[AI] [.net] [C#]
 
 # A Definition of AGI
 [https://www.agidefinition.ai/](https://www.agidefinition.ai/)
