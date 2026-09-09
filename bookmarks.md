@@ -1134,7 +1134,7 @@ NPC-Forge is a framework for building conversational agents that run on the CPU 
 [https://www.agidefinition.ai/](https://www.agidefinition.ai/)
 ![](/bookmarks/image?url=https://www.agidefinition.ai/)
 
-[TODO]
+[TODO] [AI]
 
 # The Browser's Main Thread Is Expensive | kciter.so
 [https://kciter.so/posts/the-expensive-main-thread/en/?utm_source=braze&utm_medium=email&utm_campaign=the-overflow-newsletter&lid=n588u4dxz0ia](https://kciter.so/posts/the-expensive-main-thread/en/?utm_source=braze&utm_medium=email&utm_campaign=the-overflow-newsletter&lid=n588u4dxz0ia)
