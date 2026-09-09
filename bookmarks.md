@@ -1086,7 +1086,7 @@ Les trois quarts des entreprises ont constaté que les licenciements liés à l'
 ![](https://v1.screenshot.11ty.dev/https%3A%2F%2Fhenry.codes%2Fopengraph%2Fwriting%2Fi-dream-of-quieter-computing/opengraph)
 A quick note about future of computing and indieweb. It's about a 2 minute read.
 
-[TODO] [FAVORITE]
+[FAVORITE]
 
 # Faster blob copying in Azure Blob Storage
 [https://markheath.net/post/2026/7/24/fast-blob-copy-azure](https://markheath.net/post/2026/7/24/fast-blob-copy-azure)
