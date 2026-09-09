@@ -1093,7 +1093,7 @@ A quick note about future of computing and indieweb. It's about a 2 minute read.
 ![](https://markheath.net/images/sound_code_logo2.png)
 I generally try to avoid copying blobs in Azure and just reference a single copy, but there are some situations where you do need to make a copy. The…
 
-[TODO] [.net] [cloud] [blob]
+[.net] [cloud] [blob]
 
 # You could have invented PageRank - Pravesh Koirala
 [https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/](https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/)
