@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.stack
 title: Perso.projects.CSLY.stack
 desc: stack parser
 updated: 1746629619447
-created: 0
 ---
+
 # First bench (still work in progress).
 
 ## parser

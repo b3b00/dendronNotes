@@ -2,9 +2,8 @@
 id: Perso.projects.CSLY.ambiguous.goal
 title: Perso.projects.CSLY.ambiguous
 desc: manage ambiguous gramars
-updated: 0
-created: 0
 ---
+
 # Goal.
 
 For now CSLY only manage unambiguous grammars. When parsing a n ambiguous grammar it resolves ambiguity returning the first derivation.

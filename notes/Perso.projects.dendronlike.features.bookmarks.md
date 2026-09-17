@@ -1,10 +1,10 @@
 ---
 id: Perso.projects.dendronlike.features.bookmarks
 title: bookmarks
-desc: "Bookmarks\_"
+desc: Bookmarks\_
 updated: 1780033919341
-created: 0
 ---
+
 ### Add a bookmarks feature to dendronline. 
 
 Still nipht.io will go off soon, I need a replacement.

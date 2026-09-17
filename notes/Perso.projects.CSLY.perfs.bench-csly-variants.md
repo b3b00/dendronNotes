@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.perfs.bench-csly-variants
 title: Perso.projects.CSLY.perfs.bench-csly-variants
 desc: Bench CSLY variants
 updated: 1779216647833
-created: 0
 ---
+
 #Goal
 
 CSLY may be used in 3 different ways :

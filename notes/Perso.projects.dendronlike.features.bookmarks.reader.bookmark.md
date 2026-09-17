@@ -3,8 +3,8 @@ id: Perso.projects.dendronlike.features.bookmarks.reader.bookmark
 title: Perso.projects.dendronlike.features.bookmarks.reader.bookmark
 desc: Reading bookmark
 updated: 1785599577786
-created: 0
 ---
+
 
 # add a reading bookmark 
 

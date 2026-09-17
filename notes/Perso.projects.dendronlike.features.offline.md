@@ -3,8 +3,8 @@ id: Perso.projects.dendronlike.features.offline
 title: offline
 desc: Offline mode
 updated: 1784718318148
-created: 0
 ---
+
 # Use dendr-Online offline
 
 ## What

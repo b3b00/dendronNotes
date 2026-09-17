@@ -6,6 +6,7 @@ updated: 1711635897416
 created: 1691651184259
 ---
 
+
 How to embed git commit hash in a .net assembly
 
 # set the hash in the csproj

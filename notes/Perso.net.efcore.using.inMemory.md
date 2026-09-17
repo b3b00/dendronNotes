@@ -3,8 +3,8 @@ id: Perso.net.efcore.using.inMemory
 title: Perso.net.efcore.using.inMemory
 desc: using in memory EF database
 updated: 1711616884810
-created: 0
 ---
+
 # use in memory database.
 
 ## Nuget dependencies

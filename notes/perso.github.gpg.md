@@ -6,6 +6,7 @@ updated: 1711635944087
 created: 1676985339817
 ---
 
+
 # sources 
 
 https://www.francoz.net/doc/gpg/x218.html

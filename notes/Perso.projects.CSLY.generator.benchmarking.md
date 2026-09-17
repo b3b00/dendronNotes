@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.generator.benchmarking
 title: Perso.projects.CSLY.generator.benchmarking
 desc: Benchmarks
 updated: 1764880124478
-created: 0
 ---
+
 # JSON
 
 CSLY seems to outperform generator on a big json file. 

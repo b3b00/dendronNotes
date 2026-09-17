@@ -7,6 +7,7 @@ created: 1660218991601
 ---
 
 
+
 ## AltGr
 
 `Shift` + `Caps Lock` + `AltGr` 

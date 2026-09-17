@@ -5,6 +5,7 @@ desc: Razor Bindings
 updated: 1711636014957
 created: 1659527230794
 ---
+
  
  pour pouvoir utiliser correctement le ```asp-for```
  il faut avoir déclarer un binding sur l'attribut du modele

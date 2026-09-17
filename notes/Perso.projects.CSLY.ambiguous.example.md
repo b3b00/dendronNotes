@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.ambiguous.example
 title: Perso.projects.CSLY.ambiguous.example
 desc: Simple ambiguous grammar
 updated: 1769847919502
-created: 0
 ---
+
 # simple ambiguous grammar.
 
 ## grammar

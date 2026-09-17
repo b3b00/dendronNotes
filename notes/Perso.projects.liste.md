@@ -3,8 +3,8 @@ id: Perso.projects.liste
 title: Perso.projects.liste
 desc: Listes
 updated: 1750062678127
-created: 0
 ---
+
 # liste de courses.
 
 <https://github.com/b3b00/liste/>

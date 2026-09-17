@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.becnhmarking-memory
 title: becnhmarking-memory
 desc: Memory usage benchmark
 updated: 1723191532058
-created: 0
 ---
+
 # trying to reduce memory
 
 Profiling memory on SimpleExpressionParser, we find that we create a lot of `List<UnexpectedTokenSyntaxErorr<EpressionToken>>`. This can be explained by backtracking but since CSLY expression parsing try to limit backtracking there may be room to better memory usage.

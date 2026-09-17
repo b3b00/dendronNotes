@@ -1,10 +1,10 @@
 ---
 id: Perso.projects.dendronlike.perf.slow-pwa-loading
 title: slow-pwa-loading
-desc: "Slow PWA loading\_"
+desc: Slow PWA loading\_
 updated: 1781333671194
-created: 0
 ---
+
 # PWA Android Splash Screen Cold-Boot Optimization Guide
 
 This document outlines architectural adjustments to eliminate PWA launch hangs (specifically after Android OS reboots/cold starts). The setup optimizes a **Svelte 4 + Rollup** frontend paired with an **ASP.NET Core 8** backend.

@@ -3,8 +3,8 @@ id: Perso.net.efcore.using.sqlite
 title: Perso.net.efcore.using.sqlite
 desc: use Sqlite
 updated: 1711621923968
-created: 0
 ---
+
 # use Sqlite database.
 
 ## Nuget dependencies

@@ -3,8 +3,8 @@ id: Perso.projects.dendronlike.foundings.css
 title: Perso.projects.dendronlike.foundings.css
 desc: Classless css
 updated: 1707421571593
-created: 0
 ---
+
 using [axist css](https://github.com/dbohdan/classless-css?tab=readme-ov-file#axist) makes dendronline look a bit weirdy !
 
 I's even weirder with [bamboo css](https://github.com/rilwis/bamboo)

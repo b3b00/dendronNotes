@@ -6,6 +6,7 @@ updated: 1711635855489
 created: 1709890487941
 ---
 
+
 github issue [#27](https://github.com/b3b00/classements/issues/27)
 
 ## description 

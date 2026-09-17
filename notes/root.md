@@ -1,10 +1,11 @@
 ---
 id: root
 title: root
-desc: ''
+desc: root
 updated: 1659449155335
 created: 1658923179318
 ---
+
 this is the root node for notes. A boring place in fact. WTF !? Holly shit !
 
 

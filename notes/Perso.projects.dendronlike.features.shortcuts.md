@@ -2,9 +2,8 @@
 id: Perso.projects.dendronlike.features.shortcuts
 title: Perso.projects.dendronlike.features.shortcuts
 desc: Shortcuts
-updated: 0
-created: 0
 ---
+
 
 
 This document lists the keyboard shortcuts and command palette commands available across the different views.

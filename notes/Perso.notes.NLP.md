@@ -2,9 +2,8 @@
 id: Perso.notes.NLP
 title: Perso.notes.NLP
 desc: NLP
-updated: 0
-created: 0
 ---
+
 # Présentation : Concepts de base du NLP Classique
 
 Ce document récapitule les notions fondamentales du Traitement Automatique du Langage Naturel (NLP) classique, basé sur des approches symboliques et statistiques.

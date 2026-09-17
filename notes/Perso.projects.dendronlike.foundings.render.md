@@ -1,10 +1,11 @@
 ---
 id: Perso.projects.dendronlike.foundings.render
 title: Perso.projects.dendronlike.foundings.render
-desc: Render.com deployment 
+desc: Render.com deployment
 updated: 1707246825298
 created: 1697268783132
 ---
+
 
 
 # [Render](http://Reynders.com) deployments

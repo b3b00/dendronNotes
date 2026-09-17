@@ -3,8 +3,8 @@ id: Perso.projects.liste.copilot
 title: Perso.projects.liste.copilot
 desc: working with copilot
 updated: 1767773421823
-created: 0
 ---
+
 # comment fonctionner avec copilot
 
 Aussi souvent que possible demander une doc (format md). Ceci permettra de mitiger le code qui n'est pas forcément d'une top qualité.

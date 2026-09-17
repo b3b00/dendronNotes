@@ -3,8 +3,8 @@ id: Perso.notes.allstar
 title: Perso.notes.allstar
 desc: ALL*
 updated: 1765965811805
-created: 0
 ---
+
 
 
 # Synthèse de l’algorithme **ALL(*) (Adaptive LL*)**

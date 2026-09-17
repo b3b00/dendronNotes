@@ -3,8 +3,8 @@ id: Perso.projects.liste.TIL
 title: Perso.projects.liste.TIL
 desc: TIL
 updated: 1767686491072
-created: 0
 ---
+
 
 # pages and durable objects : 
 

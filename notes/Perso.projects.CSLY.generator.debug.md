@@ -1,10 +1,11 @@
 ---
 id: Perso.projects.CSLY.generator.debug
 title: debug
-desc: ''
+desc: debug
 updated: 1764231332129
 created: 1764231190819
 ---
+
 
 
 lexer :ebnf.grammar

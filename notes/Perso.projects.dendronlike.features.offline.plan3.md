@@ -3,8 +3,8 @@ id: Perso.projects.dendronlike.features.offline.plan3
 title: plan3
 desc: plan3
 updated: 1784724068892
-created: 0
 ---
+
 # Use dendr-Online Offline
 
 This plan outlines the architecture and implementation steps to enable offline capabilities for dendr-Online. Users will be able to browse and add tree notes, stash notes, and bookmarks while offline, with changes synchronizing to the server (and GitHub) upon reconnecting.

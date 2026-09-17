@@ -6,6 +6,7 @@ updated: 1711636027002
 created: 1659685379252
 ---
 
+
 il ne semble pas exister de middleware oauth permettant d'accéder simplement à l'access_token retourner par le server oauth.
 
 mise en place d'un middleware minimal : 

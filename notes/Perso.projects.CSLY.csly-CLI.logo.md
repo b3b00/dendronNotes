@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.csly-CLI.logo
 title: Perso.projects.CSLY.csly-CLI.logo
 desc: logo parser
 updated: 1769933483919
-created: 0
 ---
+
 tutle all the way down.
 
 ```
