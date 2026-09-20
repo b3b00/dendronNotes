@@ -1,16 +1,3 @@
-# We raised $7M to Simplify App Deployment with our Global Serverless Platform - Koyeb
-[https://www.koyeb.com/blog/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform](https://www.koyeb.com/blog/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform)
-![](https://www.koyeb.com/static/images/illustrations/og/we-raised-7m-to-simplify-app-deployment-with-our-global-serverless-platform.png)
-We're excited to announce our $7M seed round led by Serena with the participation of ISAI, Samsung Next, MongoDB, and incredible angels. In this post, we dive into our mission, why we are uniquely positionned and what's next.
-[X] to read
-[koyeb] [serverless]
-
-# Comment LeBonCoin éteint les attaques DDoS de niveau 7 | LeMagIT
-[https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec](https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec)
-![](https://www.lemagit.fr/visuals/LeMagIT/hero_article/LeBonCoin_PacMan.jpg)
-Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d'Internet, les attaques sur la couche applicative sont plus complexes à traiter. LeBonCoin a fait le choix d'une solution de sécurité collaborative pour compléter son dispositif anti-DDoS : l'agent de la startup française CrowdSec.
-[Ddos] [Security]
-
 # Everything you need to know about configuration and secret management in .NET
 [https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730](https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest&amp;utm_medium&amp;utm_campaign=1730)
 ![](https://stenbrinke.nl/images/blog/configuration-and-secret-management-in-dotnet/dark/configuration-overview.webp)
@@ -617,9 +604,6 @@ First lets get the ‘what-about-ery’ out the way…
 Things you do need CRDTs for …
 [Crdt] [poireau]
 
-# [Anthropic's Code with Claude Announces Managed Agents, Proactive Workflows, Capability Curve - InfoQ](Anthropic's Code with Claude Announces Managed Agents, Proactive Workflows, Capability Curve - InfoQ)
-![](data:image/svg+xml;base64,CiAgICAgICAgICAgIDxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiPgogICAgICAgICAgICAgIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNjBhOTc1Ii8+CiAgICAgICAgICAgICAgPHRleHQgeD0iMjAwIiB5PSIxNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExMCIgZm9udC13ZWlnaHQ9ImJvbGQiCiAgICAgICAgICAgICAgICAgICAgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+WDwvdGV4dD4KICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgIA==)
-
 # How to get people to disagree with you
 [https://hivekit.io/blog/how-to-get-people-to-disagree-with-you/](https://hivekit.io/blog/how-to-get-people-to-disagree-with-you/)
 ![](data:image/svg+xml;base64,CiAgICAgICAgICAgIDxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiPgogICAgICAgICAgICAgIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNjA3OGE5Ii8+CiAgICAgICAgICAgICAgPHRleHQgeD0iMjAwIiB5PSIxNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExMCIgZm9udC13ZWlnaHQ9ImJvbGQiCiAgICAgICAgICAgICAgICAgICAgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SDwvdGV4dD4KICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgIA==)
@@ -767,5 +751,164 @@ When we measure effort instead of value, we lose sight of what we are trying to 
 [https://structuralist.substack.com/p/the-laws-of-this-world?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2322](https://structuralist.substack.com/p/the-laws-of-this-world?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2322)
 ![](https://substackcdn.com/image/fetch/$s_!NyYu!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https://substack-post-media.s3.amazonaws.com/public/images/3f73473d-6107-4c54-ae94-d3b7b4002598_1536x1024.png)
 Why working harder has stopped working and the five game-theoretical mechanisms no one explains.
-[work] [reward] [TODO]
+[work] [reward]
+
+# DSLs Enable Reliable Use of LLMs
+[https://martinfowler.com/articles/llm-and-dsls.html](https://martinfowler.com/articles/llm-and-dsls.html)
+![](https://martinfowler.com/logo-sq.png)
+Why Domain-Specific Languages and good abstractions make LLM code generation reliable and reviewable.
+[AI] [DSL] [FAVORITE]
+
+# Are we offloading too much of our thinking to AI?
+[https://www.artfish.ai/p/offloading-thinking-to-ai?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2326](https://www.artfish.ai/p/offloading-thinking-to-ai?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2326)
+![](https://substackcdn.com/image/fetch/$s_!NTK9!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https://substack-post-media.s3.amazonaws.com/public/images/fb548edd-f827-4d19-aa23-3bd68fdc980c_1456x1092.webp)
+Reflections on autonomy and the value of thinking for ourselves
+[AI] [thinking]
+
+# Anthropic's Code with Claude Announces  Managed Agents, Proactive Workflows, Capability Curve
+[https://www.infoq.com/news/2026/05/code-with-claude/](https://www.infoq.com/news/2026/05/code-with-claude/)
+![](https://res.infoq.com/news/2026/05/code-with-claude/en/headerimage/codewithclaude-1779025768208.jpeg)
+Anthropic hosted "Code with Claude 2026" in San Francisco, featuring livestream sessions focused on Claude Code, the Claude API platform, and other projects. Key topics included developer experience, autonomy features, model step-changes, and the impact of AI on product architecture. Discussions included insights from GitHub, Vercel, and AI-native startups on engineering strategies and challenges.
+[AI]
+
+# GitHub - Strumenta/SmartReader: SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla
+[https://github.com/Strumenta/SmartReader](https://github.com/Strumenta/SmartReader)
+![](https://opengraph.githubassets.com/8a274907f84bd344b5e1d3274e223fd97fe5be2ceb7f061c2d57eb0ef1957a46/Strumenta/SmartReader)
+SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla - Strumenta/SmartReader
+
+# Incremental Parsing Using Tree-sitter - Strumenta
+[https://tomassetti.me/incremental-parsing-using-tree-sitter/](https://tomassetti.me/incremental-parsing-using-tree-sitter/)
+![](https://tomassetti.me/wp-content/uploads/2025/02/Foto-sitoweb-21.jpg)
+Do you want to know more about an incremental parsing library used at GitHub and that was born out of a failed software?
+[Parser] [Parsing] [incremental] [FAVORITE]
+
+# Semantic Enrichment: The Critical Step After Parsing - Strumenta
+[https://tomassetti.me/semantic-enrichment-the-critical-step-after-parsing/](https://tomassetti.me/semantic-enrichment-the-critical-step-after-parsing/)
+![](https://tomassetti.me/wp-content/uploads/2024/12/Foto-sitoweb-15.jpg)
+Semantic Enrichment: the critical step after parsing. This is a step that significantly increases the value of the ASTs we got from parsing
+[Parser] [Parsing] [semantic] [FAVORITE]
+
+# Comment LeBonCoin éteint les attaques DDoS de niveau 7 | LeMagIT
+[https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec](https://www.lemagit.fr/etude/LeBonCoin-eteint-les-attaques-DDoS-de-niveau-7-avec-CrowdSec)
+![](https://www.lemagit.fr/visuals/LeMagIT/hero_article/LeBonCoin_PacMan.jpg)
+Si les attaques DDoS réseau sont bien éliminées par les grands acteurs d’Internet, les attaques sur la couche applicative sont plus complexes à traiter. LeBonCoin a fait le choix d’une solution de sécurité collaborative pour compléter son dispositif anti-DDoS : l’agent de la startup française CrowdSec.
+[Security] [Ddos]
+
+# How Claude Code Works, From Tokens to Agents • nem035
+[https://nem035.com/thoughts/how-claude-code-works?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2324](https://nem035.com/thoughts/how-claude-code-works?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2324)
+![](https://nem035.com/images/nem035.png)
+A visual walkthrough of what happens inside AI coding tools, built up layer by layer from a basic prompt to a full agent loop.
+[AI] [agent]
+
+# Move code review before the code
+[https://thenewstack.io/move-code-review-upstream/](https://thenewstack.io/move-code-review-upstream/)
+![](https://cdn.thenewstack.io/media/2026/07/e1faa31b-daniel-mirlea-hy_rw4tunvu-unsplash.jpg)
+Traditional code review is broken by AI. Learn how shifting review upstream to developer intent scales engineering and saves time.
+[AI] [software engineering]
+
+# On a testé Lumo 2.0 de Proton, l'IA confidentielle deux fois moins chère que ChatGPT et Claude
+[https://www.clubic.com/avis-622471-proton-lumo.html](https://www.clubic.com/avis-622471-proton-lumo.html)
+![](https://pic.clubic.com/v1/images/2436010/raw)
+Un an après le lancement de son assistant IA confidentiel, Proton a présenté Lumo 2.0 le 30 juin 2026. Cette nouvelle version change les modèles de langage utilisés, ajoute la génération et la retouche d'image, une mémoire contrôlable et des assistants personnalisables.
+[AI]
+
+# Towards a Theory of Bugs: The Ruliology of the Unexpected
+[https://writings.stephenwolfram.com/2026/07/towards-a-theory-of-bugs-the-ruliology-of-the-unexpected/](https://writings.stephenwolfram.com/2026/07/towards-a-theory-of-bugs-the-ruliology-of-the-unexpected/)
+![](https://content.wolfram.com/sites/43/2026/07/bugs-tweet-v3-darkmode.png)
+Stephen Wolfram investigates developing a general
+[Software] [software engineering] [Bug] [FAVORITE]
+
+# The Best Prioritization Is No Prioritization
+[https://staysaasy.com/strategy/2026/07/16/the-best-prioritization-is-no-prioritization.html?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2332](https://staysaasy.com/strategy/2026/07/16/the-best-prioritization-is-no-prioritization.html?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2332)
+![](https://staysaasy.com/assets/template/stay-saasy-black-ogimage.jpeg)
+The best way to prioritize... is to not prioritize.
+[Prioritization]
+
+# The Free-Lunch Guide to Idea Circularity
+[https://www.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/?utm_source=notification_email&utm_campaign=notifications&utm_medium=link&utm_content=content_in_followed_topic&utm_term=daily](https://www.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/?utm_source=notification_email&utm_campaign=notifications&utm_medium=link&utm_content=content_in_followed_topic&utm_term=daily)
+![](https://res.infoq.com/presentations/tech-hype-cycles-architectural-tradeoffs/en/card_header_image/holly-cummins-twitter-card-1783578321356.jpg)
+Holly Cummins discusses why "nothing is new under the sun" in tech. She maps historical architectural tradeoffs to modern cloud, microservices, and AI hype cycles. She connects financial debt (post-ZIRP) and technical debt to epistemic and sleep debt, showing engineering leaders how to navigate shifts in assumptions, embrace sustainability, and revive proven engineering disciplines.
+
+# Stop Calling Everything Impostor Syndrome: The Myth of "Just Push Harder"
+[https://dev.to/sylwia-lask/stop-calling-everything-impostor-syndrome-the-myth-of-just-push-harder-1dmm?context=digest](https://dev.to/sylwia-lask/stop-calling-everything-impostor-syndrome-the-myth-of-just-push-harder-1dmm?context=digest)
+![](https://media2.dev.to/dynamic/image/width=1200,height=627,fit=cover,gravity=auto,format=auto/https://dev-to-uploads.s3.us-east-2.amazonaws.com/uploads/articles/9og3swd8h7293d79kegi.png)
+Not everyone who doubts themselves is suffering from impostor syndrome. Sometimes the real problem...
+
+# Reflecting on My Failure to Build a Billion-Dollar Company
+[https://sahillavingia.com/reflecting?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2337](https://sahillavingia.com/reflecting?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2337)
+![](https://sahillavingia.com/gr.png)
+In 2011, I left my job as the second employee at Pinterest — before I vested any of my stock — to work on what I thought would be my life's work...
+[Software] [entrepreneuriat]
+
+# From your doorbell to your home network |
+[https://adepts.of0x.cc/eufy-doorbell-hacking/](https://adepts.of0x.cc/eufy-doorbell-hacking/)
+![](https://adepts.of0x.cc/assets/img/ogp.png)
+Analyzing Eufy Security Ecosystem and reverse engineering of its doorbell component
+
+# Why Is Everyone In Tech So Sad? | NOEMA
+[https://www.noemamag.com/why-is-everyone-in-tech-so-sad/](https://www.noemamag.com/why-is-everyone-in-tech-so-sad/)
+![](https://noemamag.imgix.net/2026/08/HR_Knitting_Noema_LeonieBos-copy.jpg?fit=crop&fm=pjpg&h=628&ixlib=php-3.3.1&rect=0%2C32%2C945%2C495&w=1200&wpsize=noema-social-facebook&s=ff77fe7391cba53b40080273232ce909)
+A lot of people seem to be realizing that knowledge work is mostly pointless. AI might give us the pleasure of finding out what happens if an entire class of workers loses faith in their careers.
+[FAVORITE]
+
+# Beyond Happy Path Engineering: Time
+[https://blog.gaborkoos.com/posts/2026-07-19-Beyond-Happy-Path-Engineering-Time/?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2339](https://blog.gaborkoos.com/posts/2026-07-19-Beyond-Happy-Path-Engineering-Time/?utm_source=bonobopress&utm_medium=newsletter&utm_campaign=2339)
+![](https://opengraph.b-cdn.net/production/images/74740c4e-d40d-49be-83fb-7170084dbda1.png?token=3Pxj4Ccc7Z93zXgN6-HhJM8U3lpcnqtTs8xNIPoUzF4&height=614&width=620&expires=33290472379)
+Time is where application code meets uncertainty: clock skew, wall-clock corrections, ambiguous ordering, late schedulers, and business-calendar boundaries.
+
+# TDD inside the agent loop - theater or actual value?
+[https://martinfowler.com/articles/exploring-gen-ai/tdd-in-the-agent-loop.html](https://martinfowler.com/articles/exploring-gen-ai/tdd-in-the-agent-loop.html)
+![](https://martinfowler.com/articles/exploring-gen-ai/donkey-card.png)
+Notes from my Thoughtworks colleagues on AI-assisted software delivery
+[TODO] [AI] [TDD] [FAVORITE]
+
+# How I built a 500k-Domain Search Engine for Makers in a Weekend for $10
+[https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html](https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html)
+![](/bookmarks/image?url=https://alexmorleyfinch.github.io/marlin/history/v1/article/the_birth.html)
+search the web
+
+# Comment exploiter les conventions collectives avec Claude : la recette pas-à-pas avec PISTE
+[https://www.astruc-avocat.fr/post/comment-exploiter-les-conventions-collectives-avec-claude-la-recette-pas-%C3%A0-pas-avec-piste](https://www.astruc-avocat.fr/post/comment-exploiter-les-conventions-collectives-avec-claude-la-recette-pas-%C3%A0-pas-avec-piste)
+![](/bookmarks/image?url=https://www.astruc-avocat.fr/post/comment-exploiter-les-conventions-collectives-avec-claude-la-recette-pas-à-pas-avec-piste)
+Pourquoi ce projetMon premier outil m'avait permis d'exploiter efficacement les accords collectifs d'entreprise (la base ACCO de data.gouv.fr — 268 000 textes au moment où j'écris). Demeurait l'autre partie du paysage conventionnel : les conventions collectives de branche.Deux problèmes empêchent de simplement « demander à ChatGPT ou Claude » :1. Les IA généralistes hallucinent. Elles « connaissent » les conventions collectives à grands traits, mais elles citent des numéros d'articles qui n'exis
+[FAVORITE]
+
+# Gödel, Escher, Elisp: The Beauty of Macros
+[https://www.chiply.dev/post-elisp-macros-are-beautiful](https://www.chiply.dev/post-elisp-macros-are-beautiful)
+![](https://www.chiply.dev/images/escher-drawing-hands.jpg)
+If you are an Emacs user with a keen eye, you will have noticed that in Emacs Lisp, code is data. After all, 'Lisp' is shorthand for 'List Processing'. One of E...
+
+# Baking a Model
+[https://newsletter.kentbeck.com/p/baking-a-model?utm_source=post-email-title&publication_id=256838&post_id=208706172&utm_campaign=email-post-title&isFreemail=true&r=sg2bw&triedRedirect=true&utm_medium=email](https://newsletter.kentbeck.com/p/baking-a-model?utm_source=post-email-title&publication_id=256838&post_id=208706172&utm_campaign=email-post-title&isFreemail=true&r=sg2bw&triedRedirect=true&utm_medium=email)
+![](https://substackcdn.com/image/fetch/$s_!PlwL!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F961d0b32-94f1-43bf-84a9-af749bcc28c9_768x1024.jpeg)
+I remember walking to the bus from high school, staring at a Motorola 6800 instruction set manual.
+
+# Don't paste the AI.
+[https://dontpastetheai.com/](https://dontpastetheai.com/)
+![](https://dontpastetheai.com/assets/og-image.png)
+If someone asks you a question, paste your answer — not the chatbot's.
+
+# Pourquoi le remplacement du personnel par l'IA se retourne contre les entreprises – et 5 façons de créer une véritable valeur ajoutée - ZDNET
+[https://www.zdnet.fr/actualites/pourquoi-le-remplacement-du-personnel-par-lia-se-retourne-contre-les-entreprises-et-5-facons-dont-les-dirigeants-avises-creent-une-veritable-valeur-ajoutee-500376.htm](https://www.zdnet.fr/actualites/pourquoi-le-remplacement-du-personnel-par-lia-se-retourne-contre-les-entreprises-et-5-facons-dont-les-dirigeants-avises-creent-une-veritable-valeur-ajoutee-500376.htm)
+![](https://www.zdnet.fr/wp-content/uploads/zdnet/2026/08/purplepeople-gettyimages-2227030316.webp)
+Les trois quarts des entreprises ont constaté que les licenciements liés à l'IA coûtaient plus cher que ce qu'ils permettaient d'économiser, et pas moins de neuf entreprises sur dix y réfléchiraient à deux fois si elles pouvaient revenir en arrière.
+[TODO]
+
+# I dream of quieter computing | Henry From Online
+[https://henry.codes/writing/i-dream-of-quieter-computing/](https://henry.codes/writing/i-dream-of-quieter-computing/)
+![](https://v1.screenshot.11ty.dev/https%3A%2F%2Fhenry.codes%2Fopengraph%2Fwriting%2Fi-dream-of-quieter-computing/opengraph)
+A quick note about future of computing and indieweb. It's about a 2 minute read.
+[TODO] [FAVORITE]
+
+# Faster blob copying in Azure Blob Storage
+[https://markheath.net/post/2026/7/24/fast-blob-copy-azure](https://markheath.net/post/2026/7/24/fast-blob-copy-azure)
+![](https://markheath.net/images/sound_code_logo2.png)
+I generally try to avoid copying blobs in Azure and just reference a single copy, but there are some situations where you do need to make a copy. The…
+[TODO] [.net] [cloud] [blob]
+
+# You could have invented PageRank - Pravesh Koirala
+[https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/](https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/)
+![](/bookmarks/image?url=https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/)
+Picture this, the year is 1996. You find yourself frustrated with the incumbent search engines like AltaVista, which primarily does a content-based search (it'll give you an article on "Hotels for Chickens" if you search "Hotels" because the word matches). There's gotta be a better way, right? Well, in hindsight, of course. Sergey Brin and
+[TODO] [FAVORITE]
 
