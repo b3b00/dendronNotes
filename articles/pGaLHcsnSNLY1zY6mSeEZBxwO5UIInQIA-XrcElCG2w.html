@@ -1,1248 +1,259 @@
-<!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>GitHub - sebastienros/jint: Javascript Interpreter for .NET</title><meta name="author" content=""><meta name="description" content="Javascript Interpreter for .NET. Contribute to sebastienros/jint development by creating an account on GitHub."><meta name="dendron:source-url" content="https://github.com/sebastienros/jint"><meta name="dendron:length" content="52461"><meta name="dendron:time-to-read-minutes" content="43"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-hpc="true" containertiming="hpc"><article itemprop="text"><p dir="auto"><a href="https://github.com/sebastienros/jint/actions/workflows/build.yml"></a>
-<a href="https://www.nuget.org/packages/Jint" rel="nofollow"></a>
-<a href="https://www.nuget.org/packages/Jint" rel="nofollow"></a>
-<a href="https://www.myget.org/feed/jint/package/nuget/Jint" rel="nofollow"></a>
-<a href="https://gitter.im/sebastienros/jint" rel="nofollow"></a></p>
+<html><head><meta charset="utf-8"><title>GitHub - sebastienros/jint: Javascript Interpreter for .NET</title><meta content="Javascript Interpreter for .NET. Contribute to sebastienros/jint development by creating an account on GitHub." name="description"><meta content="https://github.com/sebastienros/jint" name="dendron:source-url"><meta content="6843" name="dendron:length"><meta content="4.28" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div data-hpc="true" containertiming="hpc"><article itemprop="text"><p dir="auto"><a href="https://github.com/sebastienros/jint/actions/workflows/build.yml"><img src="https://github.com/sebastienros/jint/actions/workflows/build.yml/badge.svg" alt="Build"></a>
+<a href="https://www.nuget.org/packages/Jint" rel="nofollow"><img src="https://camo.githubusercontent.com/fc8ebedb5d3c61f691d8974ccb92fcb060bb96550c8ab6914f817c0c27c86c14/68747470733a2f2f696d672e736869656c64732e696f2f6e756765742f762f4a696e742e737667" alt="NuGet" data-canonical-src="https://img.shields.io/nuget/v/Jint.svg"></a>
+<a href="https://feedz.io/org/sebastienros/repository/jint/packages/Jint" rel="nofollow"><img src="https://camo.githubusercontent.com/0a8c8dc1ccec9e27b9ddaa8b875d8cc06477f7ab0c9b5a2a21db201cf6f67ec2/68747470733a2f2f696d672e736869656c64732e696f2f666565647a2f767072652f73656261737469656e726f732f6a696e742f4a696e742e7376673f6c6162656c3d466565647a" alt="Feedz" data-canonical-src="https://img.shields.io/feedz/vpre/sebastienros/jint/Jint.svg?label=Feedz"></a></p>
 
-<p dir="auto">Jint is a <strong>Javascript interpreter</strong> for .NET which can run on <strong>any modern .NET platform</strong> as it supports .NET Standard 2.0 and .NET 4.6.2 targets (and later).</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Use cases and users</h2><a id="user-content-use-cases-and-users" aria-label="Permalink: Use cases and users" href="#use-cases-and-users"></a>
+<p dir="auto">Jint is a modern ECMAScript interpreter for .NET. It runs JavaScript directly in
+your process without native dependencies, bytecode generation, or a separate
+runtime.</p>
+<p dir="auto">Jint targets .NET Framework 4.7.2, .NET Standard 2.0/2.1, .NET 8, and .NET 10.
+Start with the <a href="https://sebastienros.github.io/jint/" rel="nofollow">documentation</a> or install
+the core package:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="dotnet add package Jint"><pre>dotnet add package Jint</pre></div>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Quick start</h2><a id="user-content-quick-start" aria-label="Permalink: Quick start" href="#quick-start"></a><p></p>
+<p dir="auto">The examples below assume <code>using Jint;</code>.</p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Evaluate JavaScript</h3><a id="user-content-evaluate-javascript" aria-label="Permalink: Evaluate JavaScript" href="#evaluate-javascript"></a><p></p>
+
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine();
+var result = engine.Evaluate(&quot;40 + 2&quot;).AsNumber();"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span><span>;</span>
+<span>var</span> <span>result</span> <span>=</span> <span>engine</span><span>.</span><span>Evaluate</span><span>(</span><span>"40 + 2"</span><span>)</span><span>.</span><span>AsNumber</span><span>(</span><span>)</span><span>;</span></pre></div>
+
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Expose .NET and call JavaScript</h3><a id="user-content-expose-net-and-call-javascript" aria-label="Permalink: Expose .NET and call JavaScript" href="#expose-net-and-call-javascript"></a><p></p>
+
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine()
+    .SetValue(&quot;log&quot;, new Action<string>(Console.WriteLine))
+    .Execute(&quot;&quot;&quot;
+        function greet(name) {
+            const message = `Hello, ${name}!`;
+            log(message);
+            return message;
+        }
+        &quot;&quot;&quot;);
+
+var greeting = engine.Invoke(&quot;greet&quot;, &quot;Ada&quot;).AsString();"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
+    <span>.</span><span>SetValue</span><span>(</span><span>"log"</span><span>,</span> <span>new</span> <span>Action</span><span>&lt;</span><span>string</span><span>&gt;</span><span>(</span><span>Console</span><span>.</span><span>WriteLine</span><span>)</span><span>)</span>
+    <span>.</span><span>Execute</span><span>(</span><span>"""</span>
+<span>        function greet(name) {</span>
+<span>            const message = `Hello, ${name}!`;</span>
+<span>            log(message);</span>
+<span>            return message;</span>
+<span>        }</span>
+<span>        """</span><span>)</span><span>;</span>
+
+<span>var</span> <span>greeting</span> <span>=</span> <span>engine</span><span>.</span><span>Invoke</span><span>(</span><span>"greet"</span><span>,</span> <span>"Ada"</span><span>)</span><span>.</span><span>AsString</span><span>(</span><span>)</span><span>;</span></pre></div>
+
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Prepare code that runs repeatedly</h3><a id="user-content-prepare-code-that-runs-repeatedly" aria-label="Permalink: Prepare code that runs repeatedly" href="#prepare-code-that-runs-repeatedly"></a><p></p>
+
+<div dir="auto" data-snippet-clipboard-copy-content="var script = Engine.PrepareScript(
+    &quot;items.reduce((sum, value) => sum + value, 0)&quot;,
+    source: &quot;sum.js&quot;,
+    strict: true);
+
+var engine = new Engine();
+engine.SetValue(&quot;items&quot;, new[] { 1, 2, 3 });
+
+var total = engine.Evaluate(in script).AsNumber();"><pre><span>var</span> <span>script</span> <span>=</span> <span>Engine</span><span>.</span><span>PrepareScript</span><span>(</span>
+    <span>"items.reduce((sum, value) =&gt; sum + value, 0)"</span><span>,</span>
+    <span>source</span><span>:</span> <span>"sum.js"</span><span>,</span>
+    <span>strict</span><span>:</span> <span>true</span><span>)</span><span>;</span>
+
+<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span><span>;</span>
+<span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"items"</span><span>,</span> <span>new</span><span>[</span><span>]</span> <span>{</span> <span>1</span><span>,</span> <span>2</span><span>,</span> <span>3</span> <span>}</span><span>)</span><span>;</span>
+
+<span>var</span> <span>total</span> <span>=</span> <span>engine</span><span>.</span><span>Evaluate</span><span>(</span><span>in</span> <span>script</span><span>)</span><span>.</span><span>AsNumber</span><span>(</span><span>)</span><span>;</span></pre></div>
+
+<p dir="auto"><code>Prepared&lt;Script&gt;</code> and <code>Prepared&lt;Module&gt;</code> are thread-safe and may be shared
+across engines. JavaScript objects are not: a <code>JsValue</code> that contains an object
+belongs to the engine and realm that created it.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Features</h2><a id="user-content-features" aria-label="Permalink: Features" href="#features"></a><p></p>
 <ul dir="auto">
-<li>Run JavaScript inside your .NET application in a safe sand-boxed environment</li>
-<li>Expose native .NET objects and functions to your JavaScript code (get database query results as JSON, call .NET methods, etc.)</li>
-<li>Support scripting in your .NET application, allowing users to customize your application using JavaScript (like Unity games)</li>
+<li>Modern ECMAScript, modules, promises, async functions, generators, <code>Intl</code>,
+and <code>Temporal</code></li>
+<li>Direct projection of .NET values, delegates, objects, collections, and types</li>
+<li>Synchronous and asynchronous module loaders</li>
+<li>Execution constraints, hardened untrusted-code defaults, and security
+diagnostics</li>
+<li>Profiling, statement coverage, debugging, and Chrome DevTools Protocol
+integration</li>
+<li>Opt-in Web APIs and Node-compatible modules</li>
+<li>A headless browser, command-line tool, and MCP server</li>
 </ul>
-<p dir="auto">Some users of Jint include
+<p dir="auto">Browser and Node APIs are not installed by default. Hosts explicitly grant the
+capabilities each script needs.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Used by</h2><a id="user-content-used-by" aria-label="Permalink: Used by" href="#used-by"></a><p></p>
+<p dir="auto">Projects using Jint include
 <a href="https://github.com/ravendb/ravendb">RavenDB</a>,
-<a href="https://github.com/EventStore/EventStore">EventStore</a>,
-<a href="https://github.com/OrchardCMS/OrchardCore">OrchardCore</a>,
-<a href="https://github.com/elsa-workflows/elsa-core">ELSA Workflows</a>,
-<a href="https://github.com/dotnet/docfx">docfx</a>,
-<a href="https://github.com/Taritsyn/JavaScriptEngineSwitcher">JavaScript Engine Switcher</a>,
-and many more.</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Supported features</h2><a id="user-content-supported-features" aria-label="Permalink: Supported features" href="#supported-features"></a>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2015 (ES6)</h4><a id="user-content-ecmascript-2015-es6" aria-label="Permalink: ECMAScript 2015 (ES6)" href="#ecmascript-2015-es6"></a>
-<ul dir="auto">
-<li>✔ ArrayBuffer</li>
-<li>✔ Arrow function expression</li>
-<li>✔ Binary and octal literals</li>
-<li>✔ Class support</li>
-<li>✔ DataView</li>
-<li>✔ Destructuring</li>
-<li>✔ Default, rest and spread</li>
-<li>✔ Enhanced object literals</li>
-<li>✔ <code>for...of</code></li>
-<li>✔ Generators</li>
-<li>✔ Template strings</li>
-<li>✔ Lexical scoping of variables (let and const)</li>
-<li>✔ Map and Set</li>
-<li>✔ Modules and module loaders</li>
-<li>✔ Promises (Experimental, API is unstable)</li>
-<li>✔ Reflect</li>
-<li>✔ Proxies</li>
-<li>✔ Symbols</li>
-<li>✔ Proper tail calls in strict functions</li>
-<li>✔ Typed arrays</li>
-<li>✔ Unicode</li>
-<li>✔ Weakmap and Weakset</li>
-</ul>
-<p dir="auto">Proper tail calls replace the calling strict-function frame, as required by ECMAScript. Consequently,
-intermediate tail callers are intentionally absent from <code>error.stack</code> and host stack telemetry.</p>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2016</h4><a id="user-content-ecmascript-2016" aria-label="Permalink: ECMAScript 2016" href="#ecmascript-2016"></a>
-<ul dir="auto">
-<li>✔ <code>Array.prototype.includes</code></li>
-<li>✔ <code>await</code>, <code>async</code></li>
-<li>✔ Block-scoping of variables and functions</li>
-<li>✔ Exponentiation operator <code>**</code></li>
-<li>✔ Destructuring patterns (of variables)</li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2017</h4><a id="user-content-ecmascript-2017" aria-label="Permalink: ECMAScript 2017" href="#ecmascript-2017"></a>
-<ul dir="auto">
-<li>✔ <code>Object.values</code>, <code>Object.entries</code> and <code>Object.getOwnPropertyDescriptors</code></li>
-<li>✔ Shared memory and atomics</li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2018</h4><a id="user-content-ecmascript-2018" aria-label="Permalink: ECMAScript 2018" href="#ecmascript-2018"></a>
-<ul dir="auto">
-<li>✔ Asynchronous iteration</li>
-<li>✔ <code>Promise.prototype.finally</code></li>
-<li>✔ RegExp named capture groups</li>
-<li>✔ Rest/spread operators for object literals (<code>...identifier</code>)</li>
-<li>✔ SharedArrayBuffer</li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2019</h4><a id="user-content-ecmascript-2019" aria-label="Permalink: ECMAScript 2019" href="#ecmascript-2019"></a>
-<ul dir="auto">
-<li>✔ <code>Array.prototype.flat</code>, <code>Array.prototype.flatMap</code></li>
-<li>✔ <code>String.prototype.trimStart</code>, <code>String.prototype.trimEnd</code></li>
-<li>✔ <code>Object.fromEntries</code></li>
-<li>✔ <code>Symbol.description</code></li>
-<li>✔ Optional catch binding</li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2020</h4><a id="user-content-ecmascript-2020" aria-label="Permalink: ECMAScript 2020" href="#ecmascript-2020"></a>
-<ul dir="auto">
-<li>✔ <code>BigInt</code></li>
-<li>✔ <code>export * as ns from</code></li>
-<li>✔ <code>for-in</code> enhancements</li>
-<li>✔ <code>globalThis</code> object</li>
-<li>✔ <code>import</code></li>
-<li>✔ <code>import.meta</code></li>
-<li>✔ Nullish coalescing operator (<code>??</code>)</li>
-<li>✔ Optional chaining</li>
-<li>✔ <code>Promise.allSettled</code></li>
-<li>✔ <code>String.prototype.matchAll</code></li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2021</h4><a id="user-content-ecmascript-2021" aria-label="Permalink: ECMAScript 2021" href="#ecmascript-2021"></a>
-<ul dir="auto">
-<li>✔ Logical Assignment Operators (<code>&amp;&amp;=</code> <code>||=</code> <code>??=</code>)</li>
-<li>✔ Numeric Separators (<code>1_000</code>)</li>
-<li>✔ <code>AggregateError</code></li>
-<li>✔ <code>Promise.any</code></li>
-<li>✔ <code>String.prototype.replaceAll</code></li>
-<li>✔ <code>WeakRef</code></li>
-<li>✔ <code>FinalizationRegistry</code></li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2022</h4><a id="user-content-ecmascript-2022" aria-label="Permalink: ECMAScript 2022" href="#ecmascript-2022"></a>
-<ul dir="auto">
-<li>✔ Class Fields</li>
-<li>✔ RegExp Match Indices</li>
-<li>✔ Top-level await</li>
-<li>✔ Ergonomic brand checks for Private Fields</li>
-<li>✔ <code>.at()</code></li>
-<li>✔ Accessible <code>Object.prototype.hasOwnProperty</code> (<code>Object.hasOwn</code>)</li>
-<li>✔ Class Static Block</li>
-<li>✔ Error Cause</li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2023</h4><a id="user-content-ecmascript-2023" aria-label="Permalink: ECMAScript 2023" href="#ecmascript-2023"></a>
-<ul dir="auto">
-<li>✔ Array find from last</li>
-<li>✔ Change Array by copy</li>
-<li>✔ Hashbang Grammar</li>
-<li>✔ Symbols as WeakMap keys</li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2024</h4><a id="user-content-ecmascript-2024" aria-label="Permalink: ECMAScript 2024" href="#ecmascript-2024"></a>
-<ul dir="auto">
-<li>✔ ArrayBuffer enhancements - <code>ArrayBuffer.prototype.resize</code> and <code>ArrayBuffer.prototype.transfer</code></li>
-<li>✔ <code>Atomics.waitAsync</code></li>
-<li>✔ Ensuring that strings are well-formed - <code>String.prototype.ensureWellFormed</code> and <code>String.prototype.isWellFormed</code></li>
-<li>✔ Grouping synchronous iterables - <code>Object.groupBy</code> and <code>Map.groupBy</code></li>
-<li>✔ <code>Promise.withResolvers</code></li>
-<li>✔ Regular expression flag <code>/v</code></li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2025</h4><a id="user-content-ecmascript-2025" aria-label="Permalink: ECMAScript 2025" href="#ecmascript-2025"></a>
-<ul dir="auto">
-<li>✔ 16-bit floating point numbers (float16), Requires NET 8 or higher, <code>Float16Array</code>, <code>Math.f16round()</code></li>
-<li>✔ Array.fromAsync</li>
-<li>✔ Import attributes</li>
-<li>✔ Iterator helper methods</li>
-<li>✔ JSON modules</li>
-<li>✔ <code>Promise.try</code></li>
-<li>✔ <code>RegExp.escape()</code></li>
-<li>✔ Regular expression pattern modifiers (inline flags)</li>
-<li>✔ Duplicate named capture groups</li>
-<li>✔ Set methods (<code>intersection</code>, <code>union</code>, <code>difference</code>, <code>symmetricDifference</code>, <code>isSubsetOf</code>, <code>isSupersetOf</code>, <code>isDisjointFrom</code>)</li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript proposals (no version yet)</h4><a id="user-content-ecmascript-proposals-no-version-yet" aria-label="Permalink: ECMAScript proposals (no version yet)" href="#ecmascript-proposals-no-version-yet"></a>
-<ul dir="auto">
-<li>✔ Await Dictionary (<code>Promise.allKeyed</code>, <code>Promise.allSettledKeyed</code>)</li>
-<li>✔ Decorators (<code>@decorator</code> syntax for classes, methods, fields, and accessors)</li>
-<li>✔ <code>Error.isError</code></li>
-<li>✔ <code>Error.prototype.stack</code> accessor (error-stack-accessor)</li>
-<li>✔ Explicit Resource Management (<code>using</code> and <code>await using</code>)</li>
-<li>✔ Immutable Arraybuffers</li>
-<li>✔ Import Bytes (<code>import x from './file' with { type: 'bytes' }</code>)</li>
-<li>✔ Iterator Chunking (<code>Iterator.prototype.chunks</code>, <code>Iterator.prototype.windows</code>)</li>
-<li>✔ Iterator Includes (<code>Iterator.prototype.includes</code>)</li>
-<li>✔ Iterator Join (<code>Iterator.prototype.join</code>)</li>
-<li>✔ Iterator Sequencing</li>
-<li>✔ Joint Iteration</li>
-<li>✔ JSON.parse source text access</li>
-<li>✔ <code>Math.sumPrecise</code></li>
-<li>✔ <code>ShadowRealm</code></li>
-<li>✔ <code>Temporal</code></li>
-<li>✔ <code>Uint8Array</code> to/from base64</li>
-<li>✔ <code>Upsert</code></li>
-</ul>
-<p dir="auto"><h4 tabindex="-1" dir="auto">Other</h4><a id="user-content-other" aria-label="Permalink: Other" href="#other"></a>
-<ul dir="auto">
-<li>Further refined .NET CLR interop capabilities</li>
-<li>Constraints for execution (recursion, memory usage, duration)</li>
-</ul>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Performance</h2><a id="user-content-performance" aria-label="Permalink: Performance" href="#performance"></a>
-<ul dir="auto">
-<li>Because Jint neither generates any .NET bytecode nor uses the DLR it runs relatively small scripts really fast</li>
-<li>If you repeatedly run the same script, you should prepare it for execution using <code>Engine.PrepareScript</code> or <code>Engine.PrepareModule</code>, cache the returned <code>Prepared&lt;...&gt;</code> object and feed it to Jint instead of the content string</li>
-<li>You should prefer running engine in strict mode, it improves performance</li>
-</ul>
-<p dir="auto">You can check out <a href="https://github.com/sebastienros/jint/blob/main/Jint.Benchmark">the engine comparison results</a>, bear in mind that every use case is different and benchmarks might not reflect your real-world usage.</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Embedding performance</h2><a id="user-content-embedding-performance" aria-label="Permalink: Embedding performance" href="#embedding-performance"></a>
-<p dir="auto">Notes for hosts that project their own objects into script, pool engines, or bound execution. Each of these
-is a cost model rather than a rule; the XML documentation on the named APIs has the detail.</p>
-<p dir="auto"><strong>Projecting host data.</strong> Subclassing <code>ObjectInstance</code> is the most expensive way to expose data. Such a
-receiver gets no own-property inline caching — every own read reaches your <code>GetOwnProperty</code> and allocates the
-<code>PropertyDescriptor</code> it returns. Cheaper options, in order of preference:</p>
-<ul dir="auto">
-<li>
-<p dir="auto">For fixed-shape records, do not subclass at all: <code>JsObject.Create(engine, layout, values)</code> and
-<code>JsObject.CreateFromEntries</code> build straight into the hidden-class representation, so every object sharing a
-<code>JsObjectLayout</code> shares one hidden class and a script reading a batch of them keeps a monomorphic inline
-cache. A record with expensive members most items never have read — a body that must be parsed, a field that
-must be decoded — declares them with <code>JsObjectLayout.CreateBuilder().AddLazy(name, factory)</code> and passes the
-raw payload as the <code>lazySlotState</code> argument of <code>JsObject.Create</code>: the factory runs on the first read that
-observes that member's value and the result is memoized on the object, while enumerating keys, <code>in</code> and
-<code>hasOwnProperty</code> never run it. The object stays a hidden-class object throughout.</p>
-</li>
-<li>
-<p dir="auto">For CLR objects, <code>engine.SetValue(name, obj)</code> wraps them in <code>ObjectWrapper</code>, whose member resolution and
-compiled accessors are cached process-wide on the <code>TypeResolver</code>.</p>
-</li>
-<li>
-<p dir="auto">For the <em>prototypes</em> those objects sit behind, declare the members once per process with <code>JsObjectShape</code> and
-create one object per engine with <code>Instantiate</code>: members materialize only when a script touches them, and
-because the engine stores and versions the whole member set itself, a shaped prototype can serve the
-prototype-method inline cache — which an <code>ObjectInstance</code> subclass used as a prototype can never do.</p>
-</li>
-<li>
-<p dir="auto">For a <strong>live indexed collection</strong> — a DOM <code>NodeList</code>, a result window, any list computed on demand — derive
-from <code>ArrayLikeObject</code> rather than assembling the property model yourself. You implement two members,
-<code>uint Length</code> and <code>bool TryGetIndex(uint index, out JsValue value)</code>; the base class derives everything else
-(index and <code>length</code> descriptors, enumeration order, the existence and value hooks, WebIDL-shaped <code>delete</code> /
-<code>defineProperty</code> refusals) and the engine keys two lanes on the type, so <code>list[i]</code>, <code>Array.prototype</code>
-generics, <code>for-of</code> / spread / <code>Array.from</code> / destructuring and <code>JSON.stringify</code> each cost one
-<code>TryGetIndex</code> per element with no descriptor and no key allocation. It is array-<em>like</em>, not an array:
-<code>Array.isArray</code> stays <code>false</code> by design, the same answer a browser gives for a <code>NodeList</code>. If your backing
-store can test containment more cheaply than it can produce an element, also override
-<code>protected virtual bool HasIndex(uint index)</code>, and <code>in</code> / <code>hasOwnProperty</code> / <code>Object.keys</code> / <code>delete</code> stop
-projecting elements they only ever discard. Reach for it when the collection is live; when it is a snapshot,
-copying into a <code>JsArray</code> once is cheaper still — and give it a <code>JsObjectShape</code> prototype, per the bullet
-above, for the collection's own methods.</p>
-</li>
-<li>
-<p dir="auto">If you must subclass, override <code>TryGetOwnPropertyValue</code> so an own read hands the value over with no
-descriptor at all, and <code>ProbeOwnProperty</code> so existence and enumerability questions (<code>in</code>, <code>Object.keys</code>,
-spread, <code>JSON.stringify</code>) are answered without materializing one either. Both carry an obligation to agree
-with <code>GetOwnProperty</code>, and neither is re-verified on the hot path — a <code>ProbeOwnProperty</code> that wrongly reports
-a key as absent drops it from every enumeration, silently. Run your integration suite once with
-<strong>host-contract verification</strong> on and every such disagreement throws instead, naming the type, the key and
-both answers:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="// before the first use of any Jint type — the flag is read once, at type initialization
-AppContext.SetSwitch(&quot;Jint.EnableHostContractVerification&quot;, true);"><pre><span>// before the first use of any Jint type — the flag is read once, at type initialization</span>
-<span>AppContext</span><span>.</span><span>SetSwitch</span><span>(</span><span>"Jint.EnableHostContractVerification"</span><span>,</span> <span>true</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">It also checks a declared <code>PropertyAccessSemantics.Ordinary</code>, an <code>ArrayLikeObject</code>'s <code>HasIndex</code>, and an
-<code>IObjectConverter</code> registered with <code>AddObjectConverter(converter, handledTypes)</code> converting a type it did not
-declare. Turn it on in a test or staging host, never in production: the checks deliberately redo the work the
-hooks exist to avoid. A Debug build of Jint has them on already and needs no switch.</p>
-</li>
-</ul>
-<p dir="auto"><strong>Lazy values.</strong> <code>PropertyFlag.CustomJsValue</code> is the supported hook for a property whose value is <em>computed on
-every read</em>: a <code>PropertyDescriptor</code> subclass overriding <code>CustomValue</code> keeps working under the read inline
-caches, because every caching lane re-reads the flag on each hit and caches the descriptor reference rather
-than a value snapshot. When the value is lazy only <em>once</em>, use <code>PropertyDescriptor.CreateLazy(state, factory)</code>
-instead — it memoizes the produced value and then stops being custom-valued, which readmits the property to the
-member-write fast path and the global-identifier cache that a permanently custom-valued descriptor is declined
-by; store it wherever you store descriptors (<code>SetOwnProperty</code> or <code>GetOwnProperty</code> on a host subclass,
-<code>FastSetProperty</code>, a hand-rolled global). It is the descriptor-shaped member of the same family as
-<code>JsObjectLayout.AddLazy</code> (records) and <code>JsObjectShape</code> (prototypes), and it does not exempt you from the rule
-above them: storing any raw descriptor under a string key still moves a shape-mode object to the dictionary
-representation. For a whole global that may never be touched, <code>Options.AddLazyGlobal</code> defers building
-the value until script reads the name, and <code>engine.Advanced.AddLazyGlobal</code> does the same on an engine that
-already exists — which is what you need when the value comes from the request you are about to serve rather
-than from process-wide configuration. Both install the property eagerly, so <code>in</code>, <code>hasOwnProperty</code> and
-<code>Object.keys(globalThis)</code> see the name without building anything; only reading the value runs the factory,
-once. The per-engine overload receives its engine, so unlike an <code>Options</code>-registered factory it may capture
-engine-affine state — and where it would do nothing but capture, the overload taking the state,
-<code>engine.Advanced.AddLazyGlobal(name, state, static (e, s) =&gt; ...)</code>, hands it to a <code>static</code> factory instead.
-That matters only because this registration is per engine: a capturing factory costs a display class and a
-delegate for every global on every engine you build, which on <code>FreshEngineGlobalsBenchmark</code>'s forty-global
-row is 32 bytes per global. There is deliberately no <code>Options</code> counterpart — a registration made there is
-recorded once for the process and replayed per engine, so its closure is already a one-off.</p>
-<p dir="auto"><strong>Per-request state behind an engine.</strong> Every host-facing factory in this API receives the engine and nothing
-else, which is a problem when the value depends on the request rather than on process-wide configuration.
-<code>engine.Advanced.HostDefined</code> closes that gap: an opaque <code>object?</code> the engine never reads or interprets — the
-<code>[[HostDefined]]</code> field the specification reserves on a Realm Record — so a factory that captures nothing can
-still reach the scope it is running in. The alternative embedders reach for is a
-<code>static ConditionalWeakTable&lt;Engine, IServiceProvider&gt;</code>, which takes its internal write lock every time a
-host associates state with an engine, across every tenant in the process.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="// once per process — the factory captures nothing, so one Options serves every engine
-var options = new Options()
-    .AddLazyGlobal(&quot;user&quot;, static engine =>
-        JsValue.FromObject(engine, ((RequestContext) engine.Advanced.HostDefined!).User));
-
-// per request, before you run anything
-engine.Advanced.HostDefined = requestContext;"><pre><span>// once per process — the factory captures nothing, so one Options serves every engine</span>
-<span>var</span> <span>options</span> <span>=</span> <span>new</span> <span>Options</span><span>(</span><span>)</span>
-    <span>.</span><span>AddLazyGlobal</span><span>(</span><span>"user"</span><span>,</span> <span>static</span> engine <span>=&gt;</span>
-        <span>JsValue</span><span>.</span><span>FromObject</span><span>(</span><span>engine</span><span>,</span> <span>(</span><span>(</span><span>RequestContext</span><span>)</span> <span>engine</span><span>.</span><span>Advanced</span><span>.</span><span>HostDefined</span><span>!</span><span>)</span><span>.</span><span>User</span><span>)</span><span>)</span><span>;</span>
-
-<span>// per request, before you run anything</span>
-<span>engine</span><span>.</span><span>Advanced</span><span>.</span><span>HostDefined</span> <span>=</span> <span>requestContext</span><span>;</span></pre></div>
-<p dir="auto">It is the <em>principal</em> realm's field, not the current one, so it answers the same value inside a <code>ShadowRealm</code>
-callback as outside. A shadow realm is a distinct realm and gets its own, empty by specification — deliberate,
-since propagating the outer request's services into sandboxed code is exactly the ambient authority a shadow
-realm exists to withhold; <code>Host.InitializeShadowRealm</code> is the hook if you do want to populate it. The value
-dies with the engine, and nothing in the engine clears it: a restore (below) does not touch it, so a pooled
-engine keeps it across one and you replace it yourself, typically right after restoring.</p>
-<p dir="auto"><strong>Sparse data.</strong> Hosts that read deep chains off optional data — <code>input.Address.City.length</code>, where any link
-may be absent — usually install an <code>IReferenceResolver</code> so a nullish base yields a value instead of throwing.
-Register <code>NullPropagatingReferenceResolver.Instance</code> rather than writing that class yourself: the engine
-recognizes the singleton and serves the propagation inline, with no interface call and no pooled <code>Reference</code>
-per nullish read, which an equivalent hand-written resolver cannot get. Pass
-<code>ReferenceResolverInterests.NullishPropertyBase</code> alongside it so every unrelated read lane stays armed. The
-boundary is that <em>reads</em> propagate: a call on a nullish base still throws, and a host that needs callable
-substitution or unresolvable-identifier handling writes its own resolver and forgoes the inline lane.</p>
-<p dir="auto"><strong>Prepared scripts and engine reuse.</strong> <code>Engine.PrepareScript</code> / <code>PrepareModule</code> return an object that is
-reusable <em>and</em> thread-safe: prepare once at startup and feed the same <code>Prepared&lt;T&gt;</code> to as many engines, on as
-many threads, as you like. The engine's own per-node caches are a separate matter — they are engine-owned and
-engage only on the <strong>second</strong> evaluation of a given script on a given engine, so a host that builds a fresh
-engine per operation never reaches them by design. Note the mirror image if you pool engines instead: a
-warmed call site holds a reference to the last receiver it served until it caches a different one, so pooled
-engines can keep host objects alive between runs.</p>
-<p dir="auto"><strong>Sharing a module graph across pooled engines.</strong> A host whose templates or plugins are ES modules pays for
-that graph per engine: <code>IModuleLoader.LoadModule</code> is called by every engine that imports a module, so the
-obvious loader re-reads and re-parses the whole graph for every engine in the pool. Prepare each module once
-per <em>build</em> instead — cache the <code>Prepared&lt;AstModule&gt;</code> (<code>AstModule</code> being Acornima's <code>Module</code>, which an alias
-keeps apart from Jint's runtime <code>Module</code>) keyed by module location, and hand it to the overload that takes an
-already prepared AST, <code>ModuleFactory.BuildSourceTextModule(engine, in prepared)</code>. Name the prepared module
-exactly as the engine would: <code>Engine.PrepareModule(code, source)</code> takes the name up front, and it becomes
-<code>Module.Location</code> and therefore the <code>referencingModuleLocation</code> echoed back into <code>IModuleLoader.Resolve</code> for
-that module's own imports — so a name derived by hand that differs from the engine's breaks relative-import
-resolution with nothing to point at. <code>ModuleFactory.LocationOf(resolved)</code> <em>is</em> that rule; call it rather than
-reimplementing it.</p>
-<p dir="auto">Single-flight the cache. <code>ConcurrentDictionary.GetOrAdd</code> does not run its factory under a lock, so N engines
-filling a pool concurrently each prepare the same module and N-1 results are prepared only to be discarded.
-Wrapping the value in a <code>Lazy&lt;T&gt;</code> — whose default thread-safety mode is exactly "one factory run, everyone
-else waits" — is enough:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="using AstModule = Acornima.Ast.Module; // Jint.Runtime.Modules.Module is a different type
-
-private readonly ConcurrentDictionary<string, Lazy<Prepared<AstModule>>> _prepared
-    = new(StringComparer.Ordinal);
-
-public Module LoadModule(Engine engine, ResolvedSpecifier resolved)
-{
-    var location = ModuleFactory.LocationOf(resolved);
-    var prepared = _prepared.GetOrAdd(location,
-        static key => new Lazy<Prepared<AstModule>>(() => Engine.PrepareModule(ReadSource(key), key))).Value;
-
-    return ModuleFactory.BuildSourceTextModule(engine, in prepared);
-}"><pre><span>using</span> <span>AstModule</span> <span>=</span> <span>Acornima</span><span>.</span><span>Ast</span><span>.</span><span>Module</span><span>;</span> <span>// Jint.Runtime.Modules.Module is a different type</span>
-
-<span>private</span> <span>readonly</span> <span>ConcurrentDictionary</span><span>&lt;</span><span>string</span><span>,</span> <span>Lazy</span><span>&lt;</span><span>Prepared</span><span>&lt;</span><span>AstModule</span><span>&gt;</span><span>&gt;</span><span>&gt;</span> <span>_prepared</span>
-    <span>=</span> <span>new</span><span>(</span><span>StringComparer</span><span>.</span><span>Ordinal</span><span>)</span><span>;</span>
-
-<span>public</span> <span>Module</span> <span>LoadModule</span><span>(</span><span>Engine</span> <span>engine</span><span>,</span> <span>ResolvedSpecifier</span> <span>resolved</span><span>)</span>
-<span>{</span>
-    <span>var</span> <span>location</span> <span>=</span> <span>ModuleFactory</span><span>.</span><span>LocationOf</span><span>(</span><span>resolved</span><span>)</span><span>;</span>
-    <span>var</span> <span>prepared</span> <span>=</span> <span>_prepared</span><span>.</span><span>GetOrAdd</span><span>(</span><span>location</span><span>,</span>
-        <span>static</span> key <span>=&gt;</span> <span>new</span> <span>Lazy</span><span>&lt;</span><span>Prepared</span><span>&lt;</span><span>AstModule</span><span>&gt;</span><span>&gt;</span><span>(</span><span>(</span><span>)</span> <span>=&gt;</span> <span>Engine</span><span>.</span><span>PrepareModule</span><span>(</span><span>ReadSource</span><span>(</span><span>key</span><span>)</span><span>,</span> <span>key</span><span>)</span><span>)</span><span>)</span><span>.</span><span>Value</span><span>;</span>
-
-    <span>return</span> <span>ModuleFactory</span><span>.</span><span>BuildSourceTextModule</span><span>(</span><span>engine</span><span>,</span> <span>in</span> <span>prepared</span><span>)</span><span>;</span>
-<span>}</span></pre></div>
-<p dir="auto">Invalidate by build, not by file. The prepared ASTs are derived from a compilation, so key the cache to the
-same identity the rest of your host already uses for that compilation and let a rebuild drop the whole set at
-once, rather than expiring entries per file and serving a graph half of which is stale.</p>
-<p dir="auto">Be clear about what the thread-safety of <code>Prepared&lt;T&gt;</code> buys. It is safe to share and safe to run concurrently,
-which is what lets one cache serve the pool — it does not make the <em>engines</em> shareable (one engine, one
-thread) and it does not make the module registry shared: every engine still builds, links and evaluates its
-own module records from the shared ASTs, and <code>engine.Modules</code> is per engine. That per-engine cost is real, and
-it is what the pool pays no matter how much preparation is shared.</p>
-<p dir="auto"><code>StaticAnalysis</code> is a trade with a break-even, not a speed-up. Preparing with
-<code>new ModulePreparationOptions { StaticAnalysis = false }</code> skips the pass that pre-publishes interpreter state
-onto the parsed tree, leaving preparation at roughly the cost of a plain parse; each engine then rebuilds
-lazily what the pass would have published once for all of them. Measured on <code>ModuleGraphEmbeddingBenchmark</code>'s
-ten-module graph, preparation cost -47.6% time and -27.5% allocation, while each engine materializing that
-graph from the shared cache paid +4.8% time and +9.5% allocation — break-even, on that graph, at about ten
-engines on time and about two on allocation. A long-lived pool should therefore keep the default (<code>true</code>);
-the option is for preparation that sits on a latency-critical path — a cold start, a rebuild in a dev loop —
-or for a host whose prepared programs outnumber the engines that ever run them.
-<code>ScriptPreparationOptions.StaticAnalysis</code> is the same option for scripts.</p>
-<p dir="auto"><strong>Registering only what a script uses.</strong> When the ambient API is large and scripts touch little of it,
-prepare with <code>ScriptPreparationOptions.CollectReferencedGlobals</code> and read <code>Prepared&lt;T&gt;.ReferencedGlobals</code>:
-the free identifiers the program actually references, resolved per binding site, as an immutable set you can
-intersect with your registry — including the CLR-side context you would otherwise build speculatively, which
-lazy globals cannot defer. Honor <code>HasDirectEvalCall</code>: a program with direct <code>eval</code> can reference anything,
-so install everything for those.</p>
-<p dir="auto"><strong>Reusing a configured engine.</strong> If you build a fresh engine per evaluation only because you need a clean
-global, <code>engine.Advanced.CaptureGlobalSnapshot()</code> and <code>RestoreGlobalSnapshot(snapshot)</code> are the cheaper route:
-capture once after your <code>SetValue</code> calls and module setup, then restore between evaluations. Restore reverts
-the global object's own properties, its prototype and extensibility, and the top-level <code>let</code>/<code>const</code>/<code>class</code>
-declarations (which nothing else can clear, so a script with a top-level <code>let</code> can otherwise only be run once
-per engine); it also clears the <code>RegExp.$1</code>-style legacy statics and resets the interop wrapper caches. The
-per-node caches above are deliberately kept, so the next run starts warm. Keep the snapshot in a field beside
-the engine and put the restore in a <code>finally</code> — a script that throws still declared its globals, so restoring
-only on the success path hands them to the next caller. <code>engine.Advanced.WithRestoredGlobals(snapshot, action)</code>
-is exactly that <code>try</code>/<code>finally</code> in one call, so the restore cannot be left off the throwing path; it adds
-nothing else, and in particular no isolation the restore does not already give you.</p>
-<p dir="auto">Choosing between this and <code>AddLazyGlobal</code> is a question of engine lifetime: a fresh-engine-per-evaluation
-host wants lazy globals (nothing to restore — the win is never building what the script does not read); a
-pooled host wants the snapshot. They compose: restore returns a global that was still lazy at capture to its
-unmaterialized state, so a pooled engine keeps both benefits.</p>
-<p dir="auto">Restore also ends the previous cycle on the event loop. Queued jobs are discarded, and — because discarding
-cannot reach work that has not been enqueued yet — any promise registered before the restore is dropped when
-it settles instead of resuming its continuation, so a fire-and-forget <code>async</code> function suspended on a host
-<code>Task</code> never wakes up against the restored globals. Register a promise that is meant to outlive a restore
-<em>after</em> it. Restore refuses (<code>InvalidOperationException</code>) while an evaluation is in progress, including an
-<code>EvaluateAsync</code>/<code>ExecuteAsync</code>/<code>InvokeAsync</code> whose <code>Task</code> you still hold. What it cannot fence is you calling
-back in: invoking a function a previous evaluation handed you runs it against the restored surface.</p>
-<p dir="auto"><strong>It is a configuration-reuse primitive, not an isolation boundary</strong> — mutations of <code>Object.prototype</code> and
-other intrinsics, of object graphs behind restored bindings, of host CLR state, plus <code>Symbol.for</code>
-registrations and registered modules, all survive a restore, so mutually distrusting scripts still need
-separate engines. Note that surviving intrinsic pollution is a surviving <em>binding</em>, not just a surviving
-property: bare identifiers resolve through the global's prototype chain, so <code>Object.prototype.leaked = 1</code> in
-one evaluation makes <code>leaked</code> a name the next one can read with no qualifier. (The global's own
-<code>[[Prototype]]</code> is captured and restored, so a <code>setPrototypeOf(globalThis, …)</code> is reverted.) A snapshot also
-keeps its engine and every captured value strongly reachable, so do not cache one past that engine's
-lifetime.</p>
-<p dir="auto"><strong>Constraints and options.</strong> An <code>Options</code> instance is meant to be shared across engines, including concurrent
-ones — the built-in constraint helpers register a <em>factory</em>, so each engine gets its own counter and its own
-deadline. (Sharing it is not required: building an <code>Options</code> per scope is fine when your globals depend on
-scoped state.) Watch for the sentinel trap: <code>MaxStatements(int.MaxValue)</code>, <code>LimitMemory(long.MaxValue)</code> and
-<code>TimeoutInterval(TimeSpan.MaxValue)</code> register <em>no</em> constraint at all and remove any previously registered one
-of that kind, so spelling "effectively unlimited" that way leaves you with no limit rather than a large one.</p>
-<p dir="auto"><strong>Values do not cross engines.</strong> A <code>JsValue</code> that is an <code>ObjectInstance</code> holds a hard reference to the engine
-and realm that created it, and passing one to a different engine is not supported — it is neither validated
-nor made safe. <code>Prepared&lt;Script&gt;</code> / <code>Prepared&lt;Module&gt;</code> and <code>ModuleBuilder</code> are the supported ways to share
-work between engines; convert to CLR values (<code>ToObject()</code>) to move data.</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Discussion</h2><a id="user-content-discussion" aria-label="Permalink: Discussion" href="#discussion"></a>
-<p dir="auto">Join the chat on <a href="https://gitter.im/sebastienros/jint" rel="nofollow">Gitter</a> or post your questions with the <code>jint</code> tag on <a href="http://stackoverflow.com/questions/tagged/jint" rel="nofollow">stackoverflow</a>.</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Video</h2><a id="user-content-video" aria-label="Permalink: Video" href="#video"></a>
-<p dir="auto">Here is a short video of how Jint works and some sample usage</p>
-<p dir="auto"><a href="https://docs.microsoft.com/shows/code-conversations/sebastien-ros-on-jint-javascript-interpreter-net" rel="nofollow">https://docs.microsoft.com/shows/code-conversations/sebastien-ros-on-jint-javascript-interpreter-net</a></p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Thread-safety</h2><a id="user-content-thread-safety" aria-label="Permalink: Thread-safety" href="#thread-safety"></a>
-<p dir="auto">Engine instances are not thread-safe and they should not accessed from multiple threads simultaneously.</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Examples</h2><a id="user-content-examples" aria-label="Permalink: Examples" href="#examples"></a>
-<p dir="auto">This example defines a new value named <code>log</code> pointing to <code>Console.WriteLine</code>, then runs
-a script calling <code>log('Hello World!')</code>.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine()
-    .SetValue(&quot;log&quot;, new Action<object>(Console.WriteLine));
-    
-engine.Execute(@&quot;
-    function hello() { 
-        log('Hello World');
-    };
- 
-    hello();
-&quot;);"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
-    <span>.</span><span>SetValue</span><span>(</span><span>"log"</span><span>,</span> <span>new</span> <span>Action</span><span>&lt;</span><span>object</span><span>&gt;</span><span>(</span><span>Console</span><span>.</span><span>WriteLine</span><span>)</span><span>)</span><span>;</span>
-    
-<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>@"</span>
-<span>    function hello() { </span>
-<span>        log('Hello World');</span>
-<span>    };</span>
-<span> </span>
-<span>    hello();</span>
-<span>"</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">Here, the variable <code>x</code> is set to <code>3</code> and <code>x * x</code> is evaluated in JavaScript. The result is returned to .NET directly, in this case as a <code>double</code> value <code>9</code>.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var square = new Engine()
-    .SetValue(&quot;x&quot;, 3) // define a new variable
-    .Evaluate(&quot;x * x&quot;) // evaluate a statement
-    .ToObject(); // converts the value to .NET"><pre><span>var</span> <span>square</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
-    <span>.</span><span>SetValue</span><span>(</span><span>"x"</span><span>,</span> <span>3</span><span>)</span> <span>// define a new variable</span>
-    <span>.</span><span>Evaluate</span><span>(</span><span>"x * x"</span><span>)</span> <span>// evaluate a statement</span>
-    <span>.</span><span>ToObject</span><span>(</span><span>)</span><span>;</span> <span>// converts the value to .NET</span></pre></div>
-<p dir="auto">You can also directly pass POCOs or anonymous objects and use them from JavaScript. In this example for instance a new <code>Person</code> instance is manipulated from JavaScript.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var p = new Person {
-    Name = &quot;Mickey Mouse&quot;
-};
-
-var engine = new Engine()
-    .SetValue(&quot;p&quot;, p)
-    .Execute(&quot;p.Name = 'Minnie'&quot;);
-
-Assert.AreEqual(&quot;Minnie&quot;, p.Name);"><pre><span>var</span> <span>p</span> <span>=</span> <span>new</span> <span>Person</span> <span>{</span>
-    <span>Name</span> <span>=</span> <span>"Mickey Mouse"</span>
-<span>}</span><span>;</span>
-
-<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
-    <span>.</span><span>SetValue</span><span>(</span><span>"p"</span><span>,</span> <span>p</span><span>)</span>
-    <span>.</span><span>Execute</span><span>(</span><span>"p.Name = 'Minnie'"</span><span>)</span><span>;</span>
-
-<span>Assert</span><span>.</span><span>AreEqual</span><span>(</span><span>"Minnie"</span><span>,</span> <span>p</span><span>.</span><span>Name</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">You can invoke JavaScript function reference</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var result = new Engine()
-    .Execute(&quot;function add(a, b) { return a + b; }&quot;)
-    .Invoke(&quot;add&quot;,1, 2); // -> 3"><pre><span>var</span> <span>result</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
-    <span>.</span><span>Execute</span><span>(</span><span>"function add(a, b) { return a + b; }"</span><span>)</span>
-    <span>.</span><span>Invoke</span><span>(</span><span>"add"</span><span>,</span><span>1</span><span>,</span> <span>2</span><span>)</span><span>;</span> <span>// -&gt; 3</span></pre></div>
-<p dir="auto">or directly by name</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine()
-   .Execute(&quot;function add(a, b) { return a + b; }&quot;);
-
-engine.Invoke(&quot;add&quot;, 1, 2); // -> 3"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
-   <span>.</span><span>Execute</span><span>(</span><span>"function add(a, b) { return a + b; }"</span><span>)</span><span>;</span>
-
-<span>engine</span><span>.</span><span>Invoke</span><span>(</span><span>"add"</span><span>,</span> <span>1</span><span>,</span> <span>2</span><span>)</span><span>;</span> <span>// -&gt; 3</span></pre></div>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Accessing .NET assemblies and classes</h2><a id="user-content-accessing-net-assemblies-and-classes" aria-label="Permalink: Accessing .NET assemblies and classes" href="#accessing-net-assemblies-and-classes"></a>
-<p dir="auto">You can allow an engine to access any .NET class by configuring the engine instance like this:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(cfg => cfg.AllowClr());"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>cfg <span>=&gt;</span> <span>cfg</span><span>.</span><span>AllowClr</span><span>(</span><span>)</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">Then you have access to the <code>System</code> namespace as a global value. Here is how it's used in the context on the command line utility:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="jint> var file = new System.IO.StreamWriter('log.txt');
-jint> file.WriteLine('Hello World !');
-jint> file.Dispose();"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>file</span> <span>=</span> <span>new</span> <span>System</span><span>.</span><span>IO</span><span>.</span><span>StreamWriter</span><span>(</span><span>'log.txt'</span><span>)</span><span>;</span>
-<span>jint</span><span>&gt;</span> <span>file</span><span>.</span><span>WriteLine</span><span>(</span><span>'Hello World !'</span><span>)</span><span>;</span>
-<span>jint</span><span>&gt;</span> <span>file</span><span>.</span><span>Dispose</span><span>(</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">And even create shortcuts to common .NET methods</p>
-<div dir="auto" data-snippet-clipboard-copy-content="jint> var log = System.Console.WriteLine;
-jint> log('Hello World !');
-=> &quot;Hello World !&quot;"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>log</span> <span>=</span> <span>System</span><span>.</span><span>Console</span><span>.</span><span>WriteLine</span><span>;</span>
-<span>jint</span><span>&gt;</span> <span>log</span><span>(</span><span>'Hello World !'</span><span>)</span><span>;</span>
-<span>=&gt;</span> <span>"Hello World !"</span></pre></div>
-<p dir="auto">When allowing the CLR, you can optionally pass custom assemblies to load types from.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(cfg => cfg
-    .AllowClr(typeof(Bar).Assembly)
-);"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>cfg <span>=&gt;</span> <span>cfg</span>
-    <span>.</span><span>AllowClr</span><span>(</span><span>typeof</span><span>(</span><span>Bar</span><span>)</span><span>.</span><span>Assembly</span><span>)</span>
-<span>)</span><span>;</span></pre></div>
-<p dir="auto">and then to assign local namespaces the same way <code>System</code> does it for you, use <code>importNamespace</code></p>
-<div dir="auto" data-snippet-clipboard-copy-content="jint> var Foo = importNamespace('Foo');
-jint> var bar = new Foo.Bar();
-jint> log(bar.ToString());"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>Foo</span> <span>=</span> <span>importNamespace</span><span>(</span><span>'Foo'</span><span>)</span><span>;</span>
-<span>jint</span><span>&gt;</span> <span>var</span> <span>bar</span> <span>=</span> <span>new</span> <span>Foo</span><span>.</span><span>Bar</span><span>(</span><span>)</span><span>;</span>
-<span>jint</span><span>&gt;</span> <span>log</span><span>(</span><span>bar</span><span>.</span><span>ToString</span><span>(</span><span>)</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">adding a specific CLR type reference can be done like this</p>
-<div dir="auto" data-snippet-clipboard-copy-content="engine.SetValue(&quot;TheType&quot;, TypeReference.CreateTypeReference<TheType>(engine));"><pre><span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"TheType"</span><span>,</span> <span>TypeReference</span><span>.</span><span>CreateTypeReference</span><span>&lt;</span><span>TheType</span><span>&gt;</span><span>(</span><span>engine</span><span>)</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">and used this way</p>
-<div dir="auto" data-snippet-clipboard-copy-content="jint> var o = new TheType();"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>o</span> <span>=</span> <span>new</span> <span>TheType</span><span>(</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">Generic types are also supported. Here is how to declare, instantiate and use a <code>List&lt;string&gt;</code>:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="jint> var ListOfString = System.Collections.Generic.List(System.String);
-jint> var list = new ListOfString();
-jint> list.Add('foo');
-jint> list.Add(1); // automatically converted to String
-jint> list.Count; // 2"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>ListOfString</span> <span>=</span> <span>System</span><span>.</span><span>Collections</span><span>.</span><span>Generic</span><span>.</span><span>List</span><span>(</span><span>System</span><span>.</span><span>String</span><span>)</span><span>;</span>
-<span>jint</span><span>&gt;</span> <span>var</span> <span>list</span> <span>=</span> <span>new</span> <span>ListOfString</span><span>(</span><span>)</span><span>;</span>
-<span>jint</span><span>&gt;</span> <span>list</span><span>.</span><span>Add</span><span>(</span><span>'foo'</span><span>)</span><span>;</span>
-<span>jint</span><span>&gt;</span> <span>list</span><span>.</span><span>Add</span><span>(</span><span>1</span><span>)</span><span>;</span> <span>// automatically converted to String</span>
-<span>jint</span><span>&gt;</span> <span>list</span><span>.</span><span>Count</span><span>;</span> <span>// 2</span></pre></div>
-<p dir="auto"><h3 tabindex="-1" dir="auto">Intercepting access to .NET objects</h3><a id="user-content-intercepting-access-to-net-objects" aria-label="Permalink: Intercepting access to .NET objects" href="#intercepting-access-to-net-objects"></a>
-<p dir="auto">ECMAScript Proxy traps can be implemented in .NET by deriving from <code>ProxyHandler</code> and creating the proxy via <code>engine.Advanced.CreateProxy</code> (or <code>CreateRevocableProxy</code>). A trap returning <code>null</code> forwards the operation to the target, exactly like an absent trap on a JavaScript handler object, and all proxy invariants are enforced on trap results. Combine with <code>SetWrapObjectHandler</code> to transparently intercept every wrapped .NET object. Note that <code>proxy.method()</code> fires the <code>Get</code> trap (then calls the returned value) — the <code>Apply</code> trap only fires when the proxy itself is invoked, so intercepting method calls means returning a wrapping function from <code>Get</code>. <code>new Proxy(target, handlerObject)</code> from script remains the JavaScript-side equivalent.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="class LoggingHandler : ProxyHandler
-{
-    public override JsValue? Get(ObjectInstance target, JsValue property, JsValue receiver)
-    {
-        Console.WriteLine($&quot;get {property}&quot;);
-        return null; // forward to the target
-    }
-
-    public override bool? Has(ObjectInstance target, JsValue property)
-    {
-        Console.WriteLine($&quot;has {property}&quot;);
-        return null;
-    }
-}
-
-var engine = new Engine(options =>
-{
-    // wrap every interop object in a logging proxy
-    options.SetWrapObjectHandler((e, obj, type) =>
-        e.Advanced.CreateProxy(ObjectWrapper.Create(e, obj, type), new LoggingHandler()));
-});"><pre><span>class</span> <span>LoggingHandler</span> <span>:</span> <span>ProxyHandler</span>
-<span>{</span>
-    <span>public</span> <span>override</span> <span>JsValue</span><span>?</span> <span>Get</span><span>(</span><span>ObjectInstance</span> <span>target</span><span>,</span> <span>JsValue</span> <span>property</span><span>,</span> <span>JsValue</span> <span>receiver</span><span>)</span>
-    <span>{</span>
-        <span>Console</span><span>.</span><span>WriteLine</span><span>(</span><span><span>$</span>"get <span>{</span><span>property</span><span>}</span>"</span><span>)</span><span>;</span>
-        <span>return</span> <span>null</span><span>;</span> <span>// forward to the target</span>
-    <span>}</span>
-
-    <span>public</span> <span>override</span> <span>bool</span><span>?</span> <span>Has</span><span>(</span><span>ObjectInstance</span> <span>target</span><span>,</span> <span>JsValue</span> <span>property</span><span>)</span>
-    <span>{</span>
-        <span>Console</span><span>.</span><span>WriteLine</span><span>(</span><span><span>$</span>"has <span>{</span><span>property</span><span>}</span>"</span><span>)</span><span>;</span>
-        <span>return</span> <span>null</span><span>;</span>
-    <span>}</span>
-<span>}</span>
-
-<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
-<span>{</span>
-    <span>// wrap every interop object in a logging proxy</span>
-    <span>options</span><span>.</span><span>SetWrapObjectHandler</span><span>(</span><span>(</span><span>e</span><span>,</span> <span>obj</span><span>,</span> <span>type</span><span>)</span> <span>=&gt;</span>
-        <span>e</span><span>.</span><span>Advanced</span><span>.</span><span>CreateProxy</span><span>(</span><span>ObjectWrapper</span><span>.</span><span>Create</span><span>(</span><span>e</span><span>,</span> <span>obj</span><span>,</span> <span>type</span><span>)</span><span>,</span> <span>new</span> <span>LoggingHandler</span><span>(</span><span>)</span><span>)</span><span>)</span><span>;</span>
-<span>}</span><span>)</span><span>;</span></pre></div>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Internationalization</h2><a id="user-content-internationalization" aria-label="Permalink: Internationalization" href="#internationalization"></a>
-<p dir="auto">You can enforce what Time Zone or Culture the engine should use when locale JavaScript methods are used if you don't want to use the computer's default values.</p>
-<p dir="auto">This example forces the Time Zone to Pacific Standard Time.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var PST = TimeZoneInfo.FindSystemTimeZoneById(&quot;Pacific Standard Time&quot;);
-var engine = new Engine(cfg => cfg.LocalTimeZone(PST));
-    
-engine.Execute(&quot;new Date().toString()&quot;); // Wed Dec 31 1969 16:00:00 GMT-08:00"><pre><span>var</span> <span>PST</span> <span>=</span> <span>TimeZoneInfo</span><span>.</span><span>FindSystemTimeZoneById</span><span>(</span><span>"Pacific Standard Time"</span><span>)</span><span>;</span>
-<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>cfg <span>=&gt;</span> <span>cfg</span><span>.</span><span>LocalTimeZone</span><span>(</span><span>PST</span><span>)</span><span>)</span><span>;</span>
-    
-<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"new Date().toString()"</span><span>)</span><span>;</span> <span>// Wed Dec 31 1969 16:00:00 GMT-08:00</span></pre></div>
-<p dir="auto">This example is using French as the default culture.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var FR = CultureInfo.GetCultureInfo(&quot;fr-FR&quot;);
-var engine = new Engine(cfg => cfg.Culture(FR));
-    
-engine.Execute(&quot;new Number(1.23).toString()&quot;); // 1.23
-engine.Execute(&quot;new Number(1.23).toLocaleString()&quot;); // 1,23"><pre><span>var</span> <span>FR</span> <span>=</span> <span>CultureInfo</span><span>.</span><span>GetCultureInfo</span><span>(</span><span>"fr-FR"</span><span>)</span><span>;</span>
-<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>cfg <span>=&gt;</span> <span>cfg</span><span>.</span><span>Culture</span><span>(</span><span>FR</span><span>)</span><span>)</span><span>;</span>
-    
-<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"new Number(1.23).toString()"</span><span>)</span><span>;</span> <span>// 1.23</span>
-<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"new Number(1.23).toLocaleString()"</span><span>)</span><span>;</span> <span>// 1,23</span></pre></div>
-<p dir="auto"><h3 tabindex="-1" dir="auto">Extending Temporal and Intl with custom providers</h3><a id="user-content-extending-temporal-and-intl-with-custom-providers" aria-label="Permalink: Extending Temporal and Intl with custom providers" href="#extending-temporal-and-intl-with-custom-providers"></a>
-<p dir="auto">Jint ships English-only / ISO-only defaults to keep the binary small. Non-English CLDR
-data and full IANA timezone DST history are reachable via two pluggable providers:</p>
+<a href="https://github.com/EventStore/EventStore">EventStoreDB</a>,
+<a href="https://github.com/OrchardCMS/OrchardCore">Orchard Core</a>,
+<a href="https://github.com/elsa-workflows/elsa-core">Elsa Workflows</a>,
+<a href="https://github.com/dotnet/docfx">Docfx</a>, and
+<a href="https://github.com/Taritsyn/JavaScriptEngineSwitcher">JavaScript Engine Switcher</a>.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Additional packages</h2><a id="user-content-additional-packages" aria-label="Permalink: Additional packages" href="#additional-packages"></a><p></p>
+<p dir="auto"><code>Jint</code> is the core package used throughout this README. Add another package
+only when the application needs an optional debugging or browser surface.</p>
 <markdown-accessiblity-table><table>
 <thead>
 <tr>
-<th>Extension point</th>
-<th>Default</th>
-<th>What it covers</th>
-<th>Reusable example</th>
+<th>Package</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>Options.Temporal.TimeZoneProvider</code> (<code>ITimeZoneProvider</code>)</td>
-<td><code>DefaultTimeZoneProvider</code> (BCL <code>TimeZoneInfo</code> + Windows↔IANA mapping)</td>
-<td>UTC offsets, DST transitions, IANA canonicalization</td>
-<td><a href="https://github.com/sebastienros/jint/blob/main/Jint.Tests.Test262/NodaTimeZoneProvider.cs"><code>NodaTimeZoneProvider.cs</code></a> — uses NodaTime TZDB for full historical accuracy</td>
+<td><a href="https://www.nuget.org/packages/Jint.DevTools" rel="nofollow"><code>Jint.DevTools</code></a></td>
+<td>Chrome DevTools Protocol server for debugging and profiling an engine</td>
 </tr>
 <tr>
-<td><code>Options.Intl.CldrProvider</code> (<code>ICldrProvider</code>)</td>
-<td><code>DefaultCldrProvider</code> (English + .NET <code>CultureInfo</code>)</td>
-<td>locale names, currencies, units, plural rules, calendar month/era names</td>
-<td><a href="https://github.com/sebastienros/jint/blob/main/Jint.Tests.Test262/IcuCldrProvider.cs"><code>IcuCldrProvider.cs</code></a> — uses ICU4N for full CLDR coverage</td>
+<td><a href="https://www.nuget.org/packages/Jint.Browser" rel="nofollow"><code>Jint.Browser</code></a></td>
+<td>Headless HTML, DOM, navigation, networking, storage, and content extraction</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Jint.Browser.Tool" rel="nofollow"><code>Jint.Browser.Tool</code></a></td>
+<td><code>jint-browser</code> command-line tool</td>
+</tr>
+<tr>
+<td><a href="https://www.nuget.org/packages/Jint.Browser.Mcp" rel="nofollow"><code>Jint.Browser.Mcp</code></a></td>
+<td>Model Context Protocol server for browser automation</td>
 </tr>
 </tbody>
 </table></markdown-accessiblity-table>
-<p dir="auto">The provider files in <code>Jint.Tests.Test262/</code> are <strong>MIT-licensed copy-and-modify templates</strong>,
-not a stable API contract. They are also exactly how the test suite reaches its current
-test262 conformance numbers.</p>
-<p dir="auto">To wire them into your project, add the same NuGet packages (<code>NodaTime</code>, <code>ICU4N</code>), copy
-the provider files in, and register them on <code>Engine</code> options:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
-{
-    options.Temporal.TimeZoneProvider = new NodaTimeZoneProvider();
-    options.Intl.CldrProvider          = new IcuCldrProvider();
-});"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
-<span>{</span>
-    <span>options</span><span>.</span><span>Temporal</span><span>.</span><span>TimeZoneProvider</span> <span>=</span> <span>new</span> <span>NodaTimeZoneProvider</span><span>(</span><span>)</span><span>;</span>
-    <span>options</span><span>.</span><span>Intl</span><span>.</span><span>CldrProvider</span>          <span>=</span> <span>new</span> <span>IcuCldrProvider</span><span>(</span><span>)</span><span>;</span>
-<span>}</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">A separate <code>ICalendarProvider</code> for non-ISO calendar arithmetic (Islamic UmAlQura, Persian
-astronomical, Chinese/Dangi at extreme dates) is on the roadmap; until then non-ISO
-calendars use <code>System.Globalization.Calendar</code> subclasses, which constrains some date
-ranges (see <a href="https://github.com/sebastienros/jint/blob/main/Jint/Native/Temporal/NonIsoCalendars.cs"><code>Jint/Native/Temporal/NonIsoCalendars.cs</code></a>).</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Execution Constraints</h2><a id="user-content-execution-constraints" aria-label="Permalink: Execution Constraints" href="#execution-constraints"></a>
-<p dir="auto">Execution constraints are used during script execution to ensure that requirements around resource consumption are met, for example:</p>
+<p dir="auto">See <a href="https://sebastienros.github.io/jint/guide/choosing-a-package" rel="nofollow">Additional packages</a>
+for dependencies, target frameworks, and common combinations.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Branches and releases</h2><a id="user-content-branches-and-releases" aria-label="Permalink: Branches and releases" href="#branches-and-releases"></a><p></p>
+<p dir="auto">Jint 5 is under development on <code>main</code> and has not been released. This branch
+includes breaking changes; development packages are available from the
+<a href="https://sebastienros.github.io/jint/guide/preview-packages" rel="nofollow">preview feed</a>.</p>
+<p dir="auto">The <code>4.x</code> branch is the maintenance lane for Jint 4.16. Changes there preserve
+compatibility and focus on non-breaking correctness and conformance fixes. The
+<code>3.x</code> branch receives only security and severe-correctness maintenance.</p>
+<p dir="auto">Pull requests target <code>main</code> unless they are explicit backports. See
+<a href="https://sebastienros.github.io/jint/reference/releases" rel="nofollow">Branches and Releases</a>
+for the complete policy and
+<a href="https://sebastienros.github.io/jint/guide/migrating-to-v5" rel="nofollow">Migrating to Jint 5</a>
+when upgrading from Jint 4.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Standards conformance</h2><a id="user-content-standards-conformance" aria-label="Permalink: Standards conformance" href="#standards-conformance"></a><p></p>
+<p dir="auto">These percentages describe the pinned test corpora in this repository, not the
+entire web platform.</p>
+<markdown-accessiblity-table><table>
+<thead>
+<tr>
+<th>Surface</th>
+<th>Result</th>
+<th>Measured scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ECMAScript and ECMA-402</td>
+<td><strong>99.9%</strong> (102,585 / 102,692)</td>
+<td>Generated test262 cases from <code>annexB</code>, <code>built-ins</code>, <code>intl402</code>, <code>language</code>, and <code>staging</code>; 107 cases are skipped</td>
+</tr>
+<tr>
+<td>WinterTC Minimum Common API</td>
+<td><strong>79.5%</strong> (62 / 78)</td>
+<td>59 members present and 3 correctly absent for Jint's global shape; the remaining 16 are WebAssembly, which Jint declines by design</td>
+</tr>
+<tr>
+<td>Jint runtime Web APIs</td>
+<td><strong>92.9%</strong> (38,649 / 41,581)</td>
+<td>Assertions in the vendored <code>.any.js</code> WPT corpus across 44 suite directories</td>
+</tr>
+<tr>
+<td>Jint.Browser</td>
+<td><strong>84.0%</strong> (9,691 / 11,541)</td>
+<td>Tests in the gated in-process browser WPT corpus</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">The test262 result uses commit
+<a href="https://github.com/tc39/test262/commit/419d3e0a2273ba01a3bfcbec423f2801425b8e93"><code>419d3e0</code></a>.
+Read the detailed scope and exclusions for
+<a href="https://sebastienros.github.io/jint/reference/ecmascript" rel="nofollow">ECMAScript</a>,
+<a href="https://sebastienros.github.io/jint/reference/web-api-features" rel="nofollow">Web APIs</a>, and
+<a href="https://sebastienros.github.io/jint/reference/browser-compatibility" rel="nofollow">Jint.Browser</a>.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Recommended usage</h2><a id="user-content-recommended-usage" aria-label="Permalink: Recommended usage" href="#recommended-usage"></a><p></p>
 <ul dir="auto">
-<li>Scripts should not use more than X memory.</li>
-<li>Scripts should only run for a maximum amount of time.</li>
+<li>Enable strict mode when compatible with the scripts you run.</li>
+<li>Prepare and cache scripts or modules that execute repeatedly.</li>
+<li>Give each engine to only one operation at a time; await async operations
+before reusing or disposing it.</li>
+<li>Expose narrow, purpose-built host capabilities instead of broad CLR access.</li>
+<li>Use a fresh engine across trust domains. Global snapshots help trusted reuse,
+but they are not an isolation boundary.</li>
+<li>Measure with your own scripts and host objects. Interpreter performance
+depends heavily on call frequency and script-to-host traffic.</li>
 </ul>
-<p dir="auto">You can configure them via the options:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options => {
+<p dir="auto">See <a href="https://sebastienros.github.io/jint/guide/performance" rel="nofollow">performance</a>
+and <a href="https://sebastienros.github.io/jint/guide/advanced-hosting" rel="nofollow">advanced hosting</a>
+for engine lifetime, pooling, projection, and caching guidance.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Benchmarks</h2><a id="user-content-benchmarks" aria-label="Permalink: Benchmarks" href="#benchmarks"></a><p></p>
+<p dir="auto">The repository's current default-job BenchmarkDotNet comparison uses each
+engine's recommended cached execution path:</p>
+<ul dir="auto">
+<li>Jint is the fastest managed engine on 10 of 12 scripts and the fastest
+interpreter on all 12.</li>
+<li>Jint has the lowest managed allocation on 10 of 12 scripts.</li>
+<li>Script-to-host interop is 3.4x to 11.2x faster than the measured ClearScript
+lanes.</li>
+<li>The startup-shaped minimal script runs in about 1.1 us with a prepared Jint
+script, compared with about 380 us for the compiled V8 lane.</li>
+</ul>
+<p dir="auto">Native V8 remains faster on long, compute-heavy loops. Managed allocation
+figures also cannot include V8's native heap. Read the
+<a href="https://sebastienros.github.io/jint/guide/engine-comparison" rel="nofollow">engine comparison and methodology</a>
+before comparing engines; absolute numbers from different benchmark sessions
+are not comparable.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Running untrusted code</h2><a id="user-content-running-untrusted-code" aria-label="Permalink: Running untrusted code" href="#running-untrusted-code"></a><p></p>
+<p dir="auto">Jint is an in-process interpreter, not an operating-system security boundary.
+Start with the hardened profile, keep the host surface small, and add a
+process-level boundary for hostile input.</p>
 
-    // Limit memory allocations to 4 MB
-    options.LimitMemory(4_000_000);
+<div dir="auto" data-snippet-clipboard-copy-content="var limits = UntrustedCodeLimits.Default with
+{
+    TimeoutInterval = TimeSpan.FromSeconds(1),
+    MaxStatements = 50_000,
+    MemoryLimit = 16_000_000
+};
 
-    // Set a timeout to 4 seconds.
-    options.TimeoutInterval(TimeSpan.FromSeconds(4));
+var options = new Options().ForUntrustedCode(limits);
+using var engine = new Engine(options);
 
-    // Set limit of 1000 executed statements.
-    options.MaxStatements(1000);
+using (limits.BeginOperation(engine, cancellationToken))
+{
+    var value = engine.Evaluate(source);
+    return engine.ConvertResult(value, limits.ResultLimits);
+}"><pre><span>var</span> <span>limits</span> <span>=</span> <span>UntrustedCodeLimits</span><span>.</span><span>Default</span> <span>with</span>
+<span>{</span>
+    <span>TimeoutInterval</span> <span>=</span> <span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>1</span><span>)</span><span>,</span>
+    <span>MaxStatements</span> <span>=</span> <span>50_000</span><span>,</span>
+    <span>MemoryLimit</span> <span>=</span> <span>16_000_000</span>
+<span>}</span><span>;</span>
 
-    // Use a cancellation token.
-    options.CancellationToken(cancellationToken);
-}"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>{</span>
+<span>var</span> <span>options</span> <span>=</span> <span>new</span> <span>Options</span><span>(</span><span>)</span><span>.</span><span>ForUntrustedCode</span><span>(</span><span>limits</span><span>)</span><span>;</span>
+<span>using</span> <span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>options</span><span>)</span><span>;</span>
 
-    <span>// Limit memory allocations to 4 MB</span>
-    <span>options</span><span>.</span><span>LimitMemory</span><span>(</span><span>4_000_000</span><span>)</span><span>;</span>
-
-    <span>// Set a timeout to 4 seconds.</span>
-    <span>options</span><span>.</span><span>TimeoutInterval</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>4</span><span>)</span><span>)</span><span>;</span>
-
-    <span>// Set limit of 1000 executed statements.</span>
-    <span>options</span><span>.</span><span>MaxStatements</span><span>(</span><span>1000</span><span>)</span><span>;</span>
-
-    <span>// Use a cancellation token.</span>
-    <span>options</span><span>.</span><span>CancellationToken</span><span>(</span><span>cancellationToken</span><span>)</span><span>;</span>
+<span>using</span> <span>(</span><span>limits</span><span>.</span><span>BeginOperation</span><span>(</span><span>engine</span><span>,</span> <span>cancellationToken</span><span>)</span><span>)</span>
+<span>{</span>
+    <span>var</span> <span>value</span> <span>=</span> <span>engine</span><span>.</span><span>Evaluate</span><span>(</span><span>source</span><span>)</span><span>;</span>
+    <span>return</span> <span>engine</span><span>.</span><span>ConvertResult</span><span>(</span><span>value</span><span>,</span> <span>limits</span><span>.</span><span>ResultLimits</span><span>)</span><span>;</span>
 <span>}</span></pre></div>
-<p dir="auto">You can also write a custom constraint by deriving from the <code>Constraint</code> base class:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="public abstract class Constraint
-{
-    /// Called before script is run and useful when you use an engine object for multiple executions.
-    public abstract void Reset();
 
-    // Called before each statement to check if your requirements are met; if not - throws an exception.
-    public abstract void Check();
-}"><pre><span>public</span> <span>abstract</span> <span>class</span> <span>Constraint</span>
-<span>{</span>
-    <span>/// Called before script is run and useful when you use an engine object for multiple executions.</span>
-    <span>public</span> <span>abstract</span> <span>void</span> <span>Reset</span><span>(</span><span>)</span><span>;</span>
-
-    <span>// Called before each statement to check if your requirements are met; if not - throws an exception.</span>
-    <span>public</span> <span>abstract</span> <span>void</span> <span>Check</span><span>(</span><span>)</span><span>;</span>
-<span>}</span></pre></div>
-<p dir="auto">For example we can write a constraint that stops scripts when the CPU usage gets too high:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="class MyCPUConstraint : Constraint
-{
-    public override void Reset()
-    {
-    }
-
-    public override void Check()
-    {
-        var cpuUsage = GetCPUUsage();
-
-        if (cpuUsage > 0.8) // 80%
-        {
-            throw new OperationCancelledException();
-        }
-    }
-}
-
-var engine = new Engine(options =>
-{
-    options.Constraint(new MyCPUConstraint());
-});"><pre><span>class</span> <span>MyCPUConstraint</span> <span>:</span> <span>Constraint</span>
-<span>{</span>
-    <span>public</span> <span>override</span> <span>void</span> <span>Reset</span><span>(</span><span>)</span>
-    <span>{</span>
-    <span>}</span>
-
-    <span>public</span> <span>override</span> <span>void</span> <span>Check</span><span>(</span><span>)</span>
-    <span>{</span>
-        <span>var</span> <span>cpuUsage</span> <span>=</span> <span>GetCPUUsage</span><span>(</span><span>)</span><span>;</span>
-
-        <span>if</span> <span>(</span><span>cpuUsage</span> <span>&gt;</span> <span>0.8</span><span>)</span> <span>// 80%</span>
-        <span>{</span>
-            <span>throw</span> <span>new</span> <span>OperationCancelledException</span><span>(</span><span>)</span><span>;</span>
-        <span>}</span>
-    <span>}</span>
-<span>}</span>
-
-<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
-<span>{</span>
-    <span>options</span><span>.</span><span>Constraint</span><span>(</span><span>new</span> <span>MyCPUConstraint</span><span>(</span><span>)</span><span>)</span><span>;</span>
-<span>}</span><span>)</span><span>;</span></pre></div>
-<p dir="auto"><h3 tabindex="-1" dir="auto">Bounding an operation that makes several calls into the engine</h3><a id="user-content-bounding-an-operation-that-makes-several-calls-into-the-engine" aria-label="Permalink: Bounding an operation that makes several calls into the engine" href="#bounding-an-operation-that-makes-several-calls-into-the-engine"></a>
-<p dir="auto">Every call into the engine — <code>Execute</code>, <code>Evaluate</code>, <code>Invoke</code>, <code>Call</code> — is a complete run, and the engine
-resets the constraints around each one. <code>TimeoutInterval</code> therefore bounds <em>one</em> call, not a sequence of
-them: a loop such as <code>foreach (var row in rows) engine.Invoke("render", row);</code> gives every row the full
-interval to itself, so the loop as a whole is unbounded.</p>
-<p dir="auto">When the thing you need to bound is your own operation — a whole render, a whole request — rather than one
-call, use <code>OperationDeadlineConstraint</code>. Its budget is started and stopped by you, and the engine's
-per-call reset leaves it alone:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="// one instance per engine, and you keep the reference
-var deadline = new OperationDeadlineConstraint();
-var engine = new Engine(options => options.Constraint(deadline));
-
-deadline.Begin(TimeSpan.FromSeconds(2), cancellationToken);
-try
-{
-    foreach (var row in rows)
-    {
-        engine.Invoke(&quot;render&quot;, row);
-    }
-}
-finally
-{
-    deadline.End();
-}"><pre><span>// one instance per engine, and you keep the reference</span>
-<span>var</span> <span>deadline</span> <span>=</span> <span>new</span> <span>OperationDeadlineConstraint</span><span>(</span><span>)</span><span>;</span>
-<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>options</span><span>.</span><span>Constraint</span><span>(</span><span>deadline</span><span>)</span><span>)</span><span>;</span>
-
-<span>deadline</span><span>.</span><span>Begin</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>2</span><span>)</span><span>,</span> <span>cancellationToken</span><span>)</span><span>;</span>
-<span>try</span>
-<span>{</span>
-    <span>foreach</span> <span>(</span><span>var</span> <span>row</span> <span>in</span> <span>rows</span><span>)</span>
-    <span>{</span>
-        <span>engine</span><span>.</span><span>Invoke</span><span>(</span><span>"render"</span><span>,</span> <span>row</span><span>)</span><span>;</span>
-    <span>}</span>
-<span>}</span>
-<span>finally</span>
-<span>{</span>
-    <span>deadline</span><span>.</span><span>End</span><span>(</span><span>)</span><span>;</span>
-<span>}</span></pre></div>
-<p dir="auto">The whole loop shares the two seconds. When it runs out, the next call fails with a <code>TimeoutException</code> —
-the same exception the built-in timeout throws. If the token is cancelled, the call fails with a real
-<code>OperationCanceledException</code> carrying that token, so cancellation you asked for stays distinguishable from
-a script failure. Outside a <code>Begin</code>/<code>End</code> pair the constraint is inert, which makes it safe to leave
-registered on a pooled engine between operations. The two constraints are independent, so you can keep a
-<code>TimeoutInterval</code> as a per-call ceiling alongside it.</p>
-<p dir="auto">When you reuse the engine and want to use cancellation tokens you have to reset the token before each call of <code>Execute</code>:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
-{
-    options.CancellationToken(new CancellationToken(true));
-});
-
-var constraint = engine.Constraints.Find<CancellationConstraint>();
-
-for (var i = 0; i < 10; i++) 
-{
-    using (var tcs = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
-    {
-        constraint.Reset(tcs.Token);
-
-        engine.SetValue(&quot;a&quot;, 1);
-        engine.Execute(&quot;a++&quot;);
-    }
-}"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
-<span>{</span>
-    <span>options</span><span>.</span><span>CancellationToken</span><span>(</span><span>new</span> <span>CancellationToken</span><span>(</span><span>true</span><span>)</span><span>)</span><span>;</span>
-<span>}</span><span>)</span><span>;</span>
-
-<span>var</span> <span>constraint</span> <span>=</span> <span>engine</span><span>.</span><span>Constraints</span><span>.</span><span>Find</span><span>&lt;</span><span>CancellationConstraint</span><span>&gt;</span><span>(</span><span>)</span><span>;</span>
-
-<span>for</span> <span>(</span><span>var</span> <span>i</span> <span>=</span> <span>0</span><span>;</span> <span>i</span> <span>&lt;</span> <span>10</span><span>;</span> <span>i</span><span>++</span><span>)</span> 
-<span>{</span>
-    <span>using</span> <span>(</span><span>var</span> <span>tcs</span> <span>=</span> <span>new</span> <span>CancellationTokenSource</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>10</span><span>)</span><span>)</span><span>)</span>
-    <span>{</span>
-        <span>constraint</span><span>.</span><span>Reset</span><span>(</span><span>tcs</span><span>.</span><span>Token</span><span>)</span><span>;</span>
-
-        <span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"a"</span><span>,</span> <span>1</span><span>)</span><span>;</span>
-        <span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"a++"</span><span>)</span><span>;</span>
-    <span>}</span>
-<span>}</span></pre></div>
-<p dir="auto"><h3 tabindex="-1" dir="auto">Surviving an unbounded recursion</h3><a id="user-content-surviving-an-unbounded-recursion" aria-label="Permalink: Surviving an unbounded recursion" href="#surviving-an-unbounded-recursion"></a>
-<p dir="auto">A script that recurses without bound does not throw. It exhausts the native stack of the thread it is
-running on, and that ends the host process: no exception, nothing to <code>catch</code>, nothing in the log but an
-exit code. Every route into a function body can do it — a call, <code>new</code>, a getter or setter, a
-<code>valueOf</code>/<code>toString</code> coercion, a Proxy trap, a callback a built-in invokes, a host delegate that calls
-back into the engine.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
-{
-    options.Constraints.StackOverflowGuard = true;
-});"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
-<span>{</span>
-    <span>options</span><span>.</span><span>Constraints</span><span>.</span><span>StackOverflowGuard</span> <span>=</span> <span>true</span><span>;</span>
-<span>}</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">With the guard on, every entry into a script function first checks that the native stack has not been used
-up, and the same script raises <code>RangeError: Maximum call stack size exceeded</code> while there is still room to
-unwind — an ordinary JavaScript error, catchable by the script itself and by your
-<code>catch (JavaScriptException)</code>, with the engine still usable afterwards. It measures the remaining stack
-rather than counting calls, so it covers all of those routes and adapts to the thread the engine runs on:
-a host that provisions a larger stack gets proportionally more depth, rather than the frame count someone
-had to guess in advance.</p>
-<p dir="auto">A proper tail call in a strict function is exempt, and does not need the guard: it replaces the caller's
-frame instead of stacking one on top, so the recursion consumes no native stack however deep it runs. The
-check sits on the entries that do add a frame, so a strict tail recursion neither pays for it nor is
-stopped by it. Sloppy-mode recursion, a call out of tail position, and the non-call routes above are what
-remain in scope.</p>
-<p dir="auto">It is off by default because the check runs at every entry into a script function and that is not free.
-The benchmark gate measured recursion-heavy workloads (<code>Fib</code>, <code>DeepSum</code>, <code>Tak</code>) 1.7–2.3% slower with it
-on, with hot shallow calls unaffected. Enable it when the engine runs script you did not write, where a
-couple of percent on deep recursion in exchange for keeping your process is plainly the trade you want.
-Leave it off when every script is yours and you can bound it yourself.</p>
-<p dir="auto"><code>options.LimitRecursion(n)</code> answers a different question and composes with it. The recursion limit counts
-frames and is checked before the callee is entered, so where it is configured it is what fires; the guard
-answers only when no limit was set, or when the limit was set higher than the thread's stack can actually
-hold — which is easy to do by accident, since how many frames a stack holds is not something a host can
-see. A third and older setting, <code>options.Constraints.MaxExecutionStackCount</code>, continues the call chain on
-a fresh thread instead of throwing; it is checked at call expressions only, so it does not cover the other
-routes above, and it takes precedence over the guard when both are set.</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Using Modules</h2><a id="user-content-using-modules" aria-label="Permalink: Using Modules" href="#using-modules"></a>
-<p dir="auto">You can use modules to <code>import</code> and <code>export</code> variables from multiple script files:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
-{
-    options.EnableModules(@&quot;C:\Scripts&quot;);
-});
-
-var ns = engine.Modules.Import(&quot;./my-module.js&quot;);
-
-var value = ns.Get(&quot;value&quot;).AsString();"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
-<span>{</span>
-    <span>options</span><span>.</span><span>EnableModules</span><span>(</span><span>@"C:\Scripts"</span><span>)</span><span>;</span>
-<span>}</span><span>)</span><span>;</span>
-
-<span>var</span> <span>ns</span> <span>=</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Import</span><span>(</span><span>"./my-module.js"</span><span>)</span><span>;</span>
-
-<span>var</span> <span>value</span> <span>=</span> <span>ns</span><span>.</span><span>Get</span><span>(</span><span>"value"</span><span>)</span><span>.</span><span>AsString</span><span>(</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">By default, the module resolution algorithm will be restricted to the base path specified in <code>EnableModules</code>, and there is no package support. However you can provide your own packages in two ways.</p>
-<p dir="auto">Defining modules using JavaScript source code:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="engine.Modules.Add(&quot;user&quot;, &quot;export const name = 'John';&quot;);
-
-var ns = engine.Modules.Import(&quot;user&quot;);
-
-var name = ns.Get(&quot;name&quot;).AsString();"><pre><span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Add</span><span>(</span><span>"user"</span><span>,</span> <span>"export const name = 'John';"</span><span>)</span><span>;</span>
-
-<span>var</span> <span>ns</span> <span>=</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Import</span><span>(</span><span>"user"</span><span>)</span><span>;</span>
-
-<span>var</span> <span>name</span> <span>=</span> <span>ns</span><span>.</span><span>Get</span><span>(</span><span>"name"</span><span>)</span><span>.</span><span>AsString</span><span>(</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">Defining modules using the module builder, which allows you to export CLR classes and values from .NET:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="// Create the module 'lib' with the class MyClass and the variable version
-engine.Modules.Add(&quot;lib&quot;, builder => builder
-    .ExportType<MyClass>()
-    .ExportValue(&quot;version&quot;, 15)
-);
-
-// Create a user-defined module and do something with 'lib'
-engine.Modules.Add(&quot;custom&quot;, @&quot;
-    import { MyClass, version } from 'lib';
-    const x = new MyClass();
-    export const result = x.doSomething();
-&quot;);
-
-// Import the user-defined module; this will execute the import chain
-var ns = engine.Modules.Import(&quot;custom&quot;);
-
-// The result contains &quot;live&quot; bindings to the module
-var id = ns.Get(&quot;result&quot;).AsInteger();"><pre><span>// Create the module 'lib' with the class MyClass and the variable version</span>
-<span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Add</span><span>(</span><span>"lib"</span><span>,</span> builder <span>=&gt;</span> <span>builder</span>
-    <span>.</span><span>ExportType</span><span>&lt;</span><span>MyClass</span><span>&gt;</span><span>(</span><span>)</span>
-    <span>.</span><span>ExportValue</span><span>(</span><span>"version"</span><span>,</span> <span>15</span><span>)</span>
-<span>)</span><span>;</span>
-
-<span>// Create a user-defined module and do something with 'lib'</span>
-<span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Add</span><span>(</span><span>"custom"</span><span>,</span> <span>@"</span>
-<span>    import { MyClass, version } from 'lib';</span>
-<span>    const x = new MyClass();</span>
-<span>    export const result = x.doSomething();</span>
-<span>"</span><span>)</span><span>;</span>
-
-<span>// Import the user-defined module; this will execute the import chain</span>
-<span>var</span> <span>ns</span> <span>=</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Import</span><span>(</span><span>"custom"</span><span>)</span><span>;</span>
-
-<span>// The result contains "live" bindings to the module</span>
-<span>var</span> <span>id</span> <span>=</span> <span>ns</span><span>.</span><span>Get</span><span>(</span><span>"result"</span><span>)</span><span>.</span><span>AsInteger</span><span>(</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">Note that you don't need to <code>EnableModules</code> if you only use modules created using <code>Engine.Modules.Add</code>.</p>
-<p dir="auto">If you serve the same modules from a pool of engines, see <strong>Sharing a module graph across pooled engines</strong>
-under <a href="#embedding-performance">Embedding performance</a>: a loader that caches prepared modules keeps every
-engine but the first from parsing them again.</p>
-<p dir="auto"><h3 tabindex="-1" dir="auto">How a module is named</h3><a id="user-content-how-a-module-is-named" aria-label="Permalink: How a module is named" href="#how-a-module-is-named"></a>
-<p dir="auto">Every module has a location — the string it knows itself by, <code>Module.Location</code> — and for a module a loader
-produced, that string is <code>ModuleFactory.LocationOf(resolved)</code>: the <code>LocalPath</code> of an absolute <code>file:</code> uri, and
-otherwise <code>ResolvedSpecifier.Key</code>, exactly as your <code>Resolve</code> wrote it. It is never null.</p>
-<p dir="auto">It is worth getting right because four things read it:</p>
+<p dir="auto">The profile disables broad CLR and reflection access, module loading, string
+compilation, projected CLR writes, live CLR-array views, registered extension
+methods, and blocking <code>Atomics.wait</code>. It also applies finite parsing, execution,
+memory, recursion, regular-expression, promise, and result limits.</p>
+<p dir="auto">Constraints are cooperative and cannot preempt arbitrary host callbacks. Use
+an external deadline, restrict module and network loaders on every hop, and run
+hostile code in a least-privileged disposable process or container.</p>
+<p dir="auto">Read <a href="https://sebastienros.github.io/jint/guide/untrusted-code" rel="nofollow">Running untrusted code</a>
+and the <a href="https://github.com/sebastienros/jint/blob/main/.github/THREAT_MODEL.md">threat model</a>
+before deploying a script service.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Documentation and support</h2><a id="user-content-documentation-and-support" aria-label="Permalink: Documentation and support" href="#documentation-and-support"></a><p></p>
 <ul dir="auto">
-<li>your own <code>ModuleLoader.Resolve</code>, as <code>referencingModuleLocation</code>, whenever that module imports something
-relative;</li>
-<li><code>error.stack</code>, and any <code>SyntaxError</code> a malformed module raises, through <code>SourceLocation.SourceFile</code>;</li>
-<li>the debugger, which keys breakpoints on it — <code>new BreakPoint(location, line, column)</code>;</li>
-<li><code>import.meta.url</code>, if you report it. Jint leaves <code>import.meta</code> to the host, so it is your
-<code>Host.GetImportMetaProperties</code> override that puts the location there.</li>
+<li><a href="https://sebastienros.github.io/jint/" rel="nofollow">Documentation</a></li>
+<li><a href="https://feedz.io/org/sebastienros/repository/jint/packages" rel="nofollow">Preview packages</a></li>
+<li><a href="https://sebastienros.github.io/jint/guide/migrating-to-v5" rel="nofollow">Migration to Jint 5</a></li>
+<li><a href="https://github.com/sebastienros/jint/issues">Issues</a></li>
+<li><a href="https://sebastienros.github.io/jint/sponsors" rel="nofollow">Sponsors</a></li>
 </ul>
-<p dir="auto">So a loader serving modules over a transport should key them by the whole url rather than by a path. A module
-that knows itself as <code>/lib/entry.js</code> has no origin left for its own <code>./dep.js</code> to resolve against; one that
-knows itself as <code>http://localhost/lib/entry.js</code> resolves it the way a browser would. The key is used verbatim
-rather than <code>Uri.AbsoluteUri</code>, which canonicalizes — strips a default port, lowercases the host, collapses
-dot segments, percent-encodes — and whose .NET Framework and .NET Core parsers disagree on parts of that, so
-a canonicalized name would differ per target framework and could drift from the key the module map is cached
-under. Loading from disk is unaffected: a <code>file:</code> uri keeps its path, which is what <code>DefaultModuleLoader</code>
-resolves against a filesystem base path.</p>
-<p dir="auto">One consequence to weigh if the url carries anything sensitive. This string reaches script through
-<code>new Error().stack</code>, so a loader keying modules by <code>https://svc:s3cr3t@internal.corp/lib/a.js?apikey=...</code>
-hands untrusted script the credential and the api key. A browser's <code>import.meta.url</code> carries the query too,
-so this follows from naming a module by its url at all; keep secrets out of the key, or out of the url.</p>
-<p dir="auto">If you name modules yourself — preparing each one once and sharing the <code>Prepared&lt;AstModule&gt;</code> across pooled
-engines, per <strong>Sharing a module graph across pooled engines</strong> — call <code>ModuleFactory.LocationOf</code> for the name
-rather than deriving it by hand. A name that differs from the engine's own answer breaks relative-import
-resolution with nothing to point at.</p>
-<p dir="auto"><h3 tabindex="-1" dir="auto">Loading modules asynchronously</h3><a id="user-content-loading-modules-asynchronously" aria-label="Permalink: Loading modules asynchronously" href="#loading-modules-asynchronously"></a>
-<p dir="auto"><code>IModuleLoader.LoadModule</code> must return a parsed module immediately, so a loader that fetches module source over I/O — HTTP, a dev server, an asset pipeline — would have to block the calling thread. Implement <code>IAsyncModuleLoader</code> instead, or derive from the <code>AsyncModuleLoader</code> template, and no thread is held while the fetch is in flight:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="internal sealed class HttpModuleLoader : AsyncModuleLoader
-{
-    private readonly HttpClient _client = new() { BaseAddress = new Uri(&quot;http://localhost:5173/&quot;) };
-
-    // Resolution stays synchronous — only fetching an unseen module is allowed to take time
-    public override ResolvedSpecifier Resolve(string? referencingModuleLocation, ModuleRequest moduleRequest)
-    {
-        var baseUri = new Uri(referencingModuleLocation ?? _client.BaseAddress!.ToString());
-        var uri = new Uri(baseUri, moduleRequest.Specifier);
-        return new ResolvedSpecifier(moduleRequest, uri.AbsoluteUri, uri, SpecifierType.RelativeOrAbsolute);
-    }
-
-    protected override Task<string> LoadModuleContentsAsync(Engine engine, ResolvedSpecifier resolved, CancellationToken cancellationToken)
-        => _client.GetStringAsync(resolved.Uri);
-}
-
-var engine = new Engine(options => options.EnableModules(new HttpModuleLoader()));
-
-var ns = await engine.Modules.ImportAsync(&quot;./main.js&quot;);"><pre><span>internal</span> <span>sealed</span> <span>class</span> <span>HttpModuleLoader</span> <span>:</span> <span>AsyncModuleLoader</span>
-<span>{</span>
-    <span>private</span> <span>readonly</span> <span>HttpClient</span> <span>_client</span> <span>=</span> <span>new</span><span>(</span><span>)</span> <span>{</span> <span>BaseAddress</span> <span>=</span> <span>new</span> <span>Uri</span><span>(</span><span>"http://localhost:5173/"</span><span>)</span> <span>}</span><span>;</span>
-
-    <span>// Resolution stays synchronous — only fetching an unseen module is allowed to take time</span>
-    <span>public</span> <span>override</span> <span>ResolvedSpecifier</span> <span>Resolve</span><span>(</span><span>string</span><span>?</span> <span>referencingModuleLocation</span><span>,</span> <span>ModuleRequest</span> <span>moduleRequest</span><span>)</span>
-    <span>{</span>
-        <span>var</span> <span>baseUri</span> <span>=</span> <span>new</span> <span>Uri</span><span>(</span><span>referencingModuleLocation</span> <span>??</span> <span>_client</span><span>.</span><span>BaseAddress</span><span>!</span><span>.</span><span>ToString</span><span>(</span><span>)</span><span>)</span><span>;</span>
-        <span>var</span> <span>uri</span> <span>=</span> <span>new</span> <span>Uri</span><span>(</span><span>baseUri</span><span>,</span> <span>moduleRequest</span><span>.</span><span>Specifier</span><span>)</span><span>;</span>
-        <span>return</span> <span>new</span> <span>ResolvedSpecifier</span><span>(</span><span>moduleRequest</span><span>,</span> <span>uri</span><span>.</span><span>AbsoluteUri</span><span>,</span> <span>uri</span><span>,</span> <span>SpecifierType</span><span>.</span><span>RelativeOrAbsolute</span><span>)</span><span>;</span>
-    <span>}</span>
-
-    <span>protected</span> <span>override</span> <span>Task</span><span>&lt;</span><span>string</span><span>&gt;</span> <span>LoadModuleContentsAsync</span><span>(</span><span>Engine</span> <span>engine</span><span>,</span> <span>ResolvedSpecifier</span> <span>resolved</span><span>,</span> <span>CancellationToken</span> <span>cancellationToken</span><span>)</span>
-        <span>=&gt;</span> <span>_client</span><span>.</span><span>GetStringAsync</span><span>(</span><span>resolved</span><span>.</span><span>Uri</span><span>)</span><span>;</span>
-<span>}</span>
-
-<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>options</span><span>.</span><span>EnableModules</span><span>(</span><span>new</span> <span>HttpModuleLoader</span><span>(</span><span>)</span><span>)</span><span>)</span><span>;</span>
-
-<span>var</span> <span>ns</span> <span>=</span> <span>await</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>ImportAsync</span><span>(</span><span>"./main.js"</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">Static imports inside an asynchronously loaded module are fetched the same way, transitively, before anything is linked; a module wanted by several importers is fetched once. A loader failure — a faulted task, or <code>ModuleLoadCompletion.SetError</code> — becomes a rejected promise rather than an exception on the calling thread, and a dynamic <code>import()</code> in script keeps working with nothing blocked:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="// Returns immediately; the promise settles on a later turn of the event loop
-engine.Execute(&quot;import('./late.js').then(ns => log(ns.value));&quot;);"><pre><span>// Returns immediately; the promise settles on a later turn of the event loop</span>
-<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"import('./late.js').then(ns =&gt; log(ns.value));"</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">For full control over when and where the load finishes, implement <code>IAsyncModuleLoader</code> directly and settle the <code>ModuleLoadCompletion</code> whenever the content arrives, from any thread:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="public void LoadModuleAsync(Engine engine, ResolvedSpecifier resolved, ModuleLoadCompletion completion)
-{
-    // e.g. a Unity coroutine, a callback-based transport, a worker queue
-    StartCoroutine(Fetch(resolved.Uri, onSuccess: completion.SetSource, onError: completion.SetError));
-}"><pre><span>public</span> <span>void</span> <span>LoadModuleAsync</span><span>(</span><span>Engine</span> <span>engine</span><span>,</span> <span>ResolvedSpecifier</span> <span>resolved</span><span>,</span> <span>ModuleLoadCompletion</span> <span>completion</span><span>)</span>
-<span>{</span>
-    <span>// e.g. a Unity coroutine, a callback-based transport, a worker queue</span>
-    <span>StartCoroutine</span><span>(</span><span>Fetch</span><span>(</span><span>resolved</span><span>.</span><span>Uri</span><span>,</span> <span>onSuccess</span><span>:</span> <span>completion</span><span>.</span><span>SetSource</span><span>,</span> <span>onError</span><span>:</span> <span>completion</span><span>.</span><span>SetError</span><span>)</span><span>)</span><span>;</span>
-<span>}</span></pre></div>
-<p dir="auto">The engine is single-threaded, and settling the completion does not change that: the outcome is queued and applied when the engine is next given a turn. On a thread the engine must not block — a game loop, a UI thread — drive the import from your own loop instead of awaiting it:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="// once
-var import = engine.Modules.StartImport(&quot;./main.js&quot;);
-
-// every frame
-engine.Advanced.ProcessTasks();
-if (import.IsCompleted)
-{
-    var ns = import.GetResult();   // throws PromiseRejectedException if the load or evaluation failed
-}"><pre><span>// once</span>
-<span>var</span> <span>import</span> <span>=</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>StartImport</span><span>(</span><span>"./main.js"</span><span>)</span><span>;</span>
-
-<span>// every frame</span>
-<span>engine</span><span>.</span><span>Advanced</span><span>.</span><span>ProcessTasks</span><span>(</span><span>)</span><span>;</span>
-<span>if</span> <span>(</span><span>import</span><span>.</span><span>IsCompleted</span><span>)</span>
-<span>{</span>
-    <span>var</span> <span>ns</span> <span>=</span> <span>import</span><span>.</span><span>GetResult</span><span>(</span><span>)</span><span>;</span>   <span>// throws PromiseRejectedException if the load or evaluation failed</span>
-<span>}</span></pre></div>
-<p dir="auto">The synchronous <code>Engine.Modules.Import</code> still works with an async loader, but the calling thread is what drives the event loop while the loads are in flight — so it deadlocks if the loader's own completions need that same thread. Prefer <code>ImportAsync</code> or <code>StartImport</code> there. Existing synchronous <code>IModuleLoader</code> implementations are unaffected; async loading is opt-in.</p>
-<p dir="auto">A completion settled <em>before</em> <code>LoadModuleAsync</code> returns — a cache hit, source already in hand — is the exception to all of the above: the load finishes on the calling stack, no event loop involved, so a graph made entirely of such answers keeps the blocking <code>Import</code> fully synchronous, exactly as if a synchronous <code>IModuleLoader</code> had served it. <code>AsyncModuleLoader</code> does this automatically whenever <code>LoadModuleContentsAsync</code> returns an already-completed task.</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Asynchronous Execution</h2><a id="user-content-asynchronous-execution" aria-label="Permalink: Asynchronous Execution" href="#asynchronous-execution"></a>
-<p dir="auto">Jint supports non-blocking execution of JavaScript that involves <code>async</code>/<code>await</code> and Promises. This is important in ASP.NET Core and other environments where blocking a thread while waiting for I/O can cause thread-pool exhaustion.</p>
-<p dir="auto"><h3 tabindex="-1" dir="auto">EvaluateAsync / ExecuteAsync / InvokeAsync</h3><a id="user-content-evaluateasync--executeasync--invokeasync" aria-label="Permalink: EvaluateAsync / ExecuteAsync / InvokeAsync" href="#evaluateasync--executeasync--invokeasync"></a>
-<p dir="auto">Use <code>EvaluateAsync</code> when you want to evaluate JavaScript code that may return a Promise (e.g., an <code>async</code> function call). The method awaits Promise settlement without blocking any thread — the calling thread is released back to the pool while I/O is in flight:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine();
-
-// Expose an async .NET method to JavaScript
-engine.SetValue(&quot;fetchData&quot;, new Func<string, Task<string>>(async url =>
-{
-    using var client = new HttpClient();
-    return await client.GetStringAsync(url);
-}));
-
-// EvaluateAsync properly awaits the Promise returned by the async IIFE
-var result = await engine.EvaluateAsync(&quot;&quot;&quot;
-    (async () => {
-        const data = await fetchData('https://example.com/api');
-        return data;
-    })()
-    &quot;&quot;&quot;);
-
-Console.WriteLine(result.AsString());"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span><span>;</span>
-
-<span>// Expose an async .NET method to JavaScript</span>
-<span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"fetchData"</span><span>,</span> <span>new</span> <span>Func</span><span>&lt;</span><span>string</span><span>,</span> <span>Task</span><span>&lt;</span><span>string</span><span>&gt;</span><span>&gt;</span><span>(</span><span>async</span> url <span>=&gt;</span>
-<span>{</span>
-    <span>using</span> <span>var</span> <span>client</span> <span>=</span> <span>new</span> <span>HttpClient</span><span>(</span><span>)</span><span>;</span>
-    <span>return</span> <span>await</span> <span>client</span><span>.</span><span>GetStringAsync</span><span>(</span><span>url</span><span>)</span><span>;</span>
-<span>}</span><span>)</span><span>)</span><span>;</span>
-
-<span>// EvaluateAsync properly awaits the Promise returned by the async IIFE</span>
-<span>var</span> <span>result</span> <span>=</span> <span>await</span> <span>engine</span><span>.</span><span>EvaluateAsync</span><span>(</span><span>"""</span>
-<span>    (async () =&gt; {</span>
-<span>        const data = await fetchData('https://example.com/api');</span>
-<span>        return data;</span>
-<span>    })()</span>
-<span>    """</span><span>)</span><span>;</span>
-
-<span>Console</span><span>.</span><span>WriteLine</span><span>(</span><span>result</span><span>.</span><span>AsString</span><span>(</span><span>)</span><span>)</span><span>;</span></pre></div>
-<p dir="auto"><code>ExecuteAsync</code> and <code>InvokeAsync</code> follow the same pattern:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="// Execute a script that may produce a Promise and await its completion
-await engine.ExecuteAsync(&quot;async function init() { ... } init()&quot;);
-
-// Invoke a named async function and await its result
-var value = await engine.InvokeAsync(&quot;myAsyncFunction&quot;, arg1, arg2);"><pre><span>// Execute a script that may produce a Promise and await its completion</span>
-<span>await</span> <span>engine</span><span>.</span><span>ExecuteAsync</span><span>(</span><span>"async function init() { ... } init()"</span><span>)</span><span>;</span>
-
-<span>// Invoke a named async function and await its result</span>
-<span>var</span> <span>value</span> <span>=</span> <span>await</span> <span>engine</span><span>.</span><span>InvokeAsync</span><span>(</span><span>"myAsyncFunction"</span><span>,</span> <span>arg1</span><span>,</span> <span>arg2</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">By default, async execution respects <code>Options.Constraints.PromiseTimeout</code>. You can also pass a <code>CancellationToken</code>:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
-var result = await engine.EvaluateAsync(&quot;(async () => await fetchData(url))()&quot;, cancellationToken: cts.Token);"><pre><span>using</span> <span>var</span> <span>cts</span> <span>=</span> <span>new</span> <span>CancellationTokenSource</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>10</span><span>)</span><span>)</span><span>;</span>
-<span>var</span> <span>result</span> <span>=</span> <span>await</span> <span>engine</span><span>.</span><span>EvaluateAsync</span><span>(</span><span>"(async () =&gt; await fetchData(url))()"</span><span>,</span> <span>cancellationToken</span><span>:</span> <span>cts</span><span>.</span><span>Token</span><span>)</span><span>;</span></pre></div>
-<p dir="auto"><h3 tabindex="-1" dir="auto">UnwrapIfPromiseAsync</h3><a id="user-content-unwrapifpromiseasync" aria-label="Permalink: UnwrapIfPromiseAsync" href="#unwrapifpromiseasync"></a>
-<p dir="auto">When you already hold a <code>JsValue</code> that may be a Promise — for example returned from <code>engine.Invoke(...)</code>, <code>value.Call(...)</code>, or a property access — use <code>UnwrapIfPromiseAsync</code> to await it without blocking:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="// Obtain a JsValue that may be a Promise
-var jsValue = engine.Invoke(&quot;computeAsync&quot;, someArg);
-
-// Await it asynchronously (non-blocking)
-var result = await jsValue.UnwrapIfPromiseAsync();
-
-// With cancellation support
-using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-var result = await jsValue.UnwrapIfPromiseAsync(cts.Token);"><pre><span>// Obtain a JsValue that may be a Promise</span>
-<span>var</span> <span>jsValue</span> <span>=</span> <span>engine</span><span>.</span><span>Invoke</span><span>(</span><span>"computeAsync"</span><span>,</span> <span>someArg</span><span>)</span><span>;</span>
-
-<span>// Await it asynchronously (non-blocking)</span>
-<span>var</span> <span>result</span> <span>=</span> <span>await</span> <span>jsValue</span><span>.</span><span>UnwrapIfPromiseAsync</span><span>(</span><span>)</span><span>;</span>
-
-<span>// With cancellation support</span>
-<span>using</span> <span>var</span> <span>cts</span> <span>=</span> <span>new</span> <span>CancellationTokenSource</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>5</span><span>)</span><span>)</span><span>;</span>
-<span>var</span> <span>result</span> <span>=</span> <span>await</span> <span>jsValue</span><span>.</span><span>UnwrapIfPromiseAsync</span><span>(</span><span>cts</span><span>.</span><span>Token</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">If <code>jsValue</code> is not a Promise it is returned immediately. If it is a rejected Promise a <code>PromiseRejectedException</code> is thrown.</p>
-<p dir="auto">The synchronous <code>UnwrapIfPromise</code> is still available for scenarios where blocking is acceptable (e.g., CPU-bound scripts with no I/O), but <code>UnwrapIfPromiseAsync</code> should be preferred in any <code>async</code> call chain.</p>
-<p dir="auto"><h3 tabindex="-1" dir="auto">Task/ValueTask to Promise Interop (Experimental)</h3><a id="user-content-taskvaluetask-to-promise-interop-experimental" aria-label="Permalink: Task/ValueTask to Promise Interop (Experimental)" href="#taskvaluetask-to-promise-interop-experimental"></a>
-<p dir="auto">When the <code>TaskInterop</code> experimental feature is enabled, .NET <code>Task</code> and <code>ValueTask</code> return values are automatically converted to JavaScript Promises. This allows JavaScript code to <code>await</code> or <code>.then()</code> the results of .NET async methods without any manual wrapping:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
-{
-    options.ExperimentalFeatures = ExperimentalFeature.TaskInterop;
-});
-
-engine.SetValue(&quot;fetchData&quot;, new Func<string, Task<string>>(async url =>
-{
-    using var client = new HttpClient();
-    return await client.GetStringAsync(url);
-}));
-
-// .NET Task is automatically converted to a JavaScript Promise
-var result = engine.Evaluate(&quot;fetchData('https://example.com/api').then(data => data)&quot;);
-result = result.UnwrapIfPromise();"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
-<span>{</span>
-    <span>options</span><span>.</span><span>ExperimentalFeatures</span> <span>=</span> <span>ExperimentalFeature</span><span>.</span><span>TaskInterop</span><span>;</span>
-<span>}</span><span>)</span><span>;</span>
-
-<span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"fetchData"</span><span>,</span> <span>new</span> <span>Func</span><span>&lt;</span><span>string</span><span>,</span> <span>Task</span><span>&lt;</span><span>string</span><span>&gt;</span><span>&gt;</span><span>(</span><span>async</span> url <span>=&gt;</span>
-<span>{</span>
-    <span>using</span> <span>var</span> <span>client</span> <span>=</span> <span>new</span> <span>HttpClient</span><span>(</span><span>)</span><span>;</span>
-    <span>return</span> <span>await</span> <span>client</span><span>.</span><span>GetStringAsync</span><span>(</span><span>url</span><span>)</span><span>;</span>
-<span>}</span><span>)</span><span>)</span><span>;</span>
-
-<span>// .NET Task is automatically converted to a JavaScript Promise</span>
-<span>var</span> <span>result</span> <span>=</span> <span>engine</span><span>.</span><span>Evaluate</span><span>(</span><span>"fetchData('https://example.com/api').then(data =&gt; data)"</span><span>)</span><span>;</span>
-<span>result</span> <span>=</span> <span>result</span><span>.</span><span>UnwrapIfPromise</span><span>(</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">Without <code>TaskInterop</code>, .NET Tasks passed to JavaScript are exposed as opaque CLR objects. With it enabled, they become native Promises that support <code>await</code>, <code>.then()</code>, and <code>.catch()</code>.</p>
-<p dir="auto">You can configure the timeout for promise resolution via <code>Options.Constraints.PromiseTimeout</code>:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
-{
-    options.ExperimentalFeatures = ExperimentalFeature.TaskInterop;
-    options.Constraints.PromiseTimeout = TimeSpan.FromSeconds(10);
-});"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
-<span>{</span>
-    <span>options</span><span>.</span><span>ExperimentalFeatures</span> <span>=</span> <span>ExperimentalFeature</span><span>.</span><span>TaskInterop</span><span>;</span>
-    <span>options</span><span>.</span><span>Constraints</span><span>.</span><span>PromiseTimeout</span> <span>=</span> <span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>10</span><span>)</span><span>;</span>
-<span>}</span><span>)</span><span>;</span></pre></div>
-<p dir="auto"><h2 tabindex="-1" dir="auto">.NET Interoperability</h2><a id="user-content-net-interoperability" aria-label="Permalink: .NET Interoperability" href="#net-interoperability"></a>
-<ul dir="auto">
-<li>Manipulate CLR objects from JavaScript, including:
-<ul dir="auto">
-<li>Single values</li>
-<li>Objects
-<ul dir="auto">
-<li>Properties</li>
-<li>Methods</li>
-</ul>
-</li>
-<li>Delegates</li>
-<li>Anonymous objects</li>
-</ul>
-</li>
-<li>Convert JavaScript values to CLR objects
-<ul dir="auto">
-<li>Primitive values</li>
-<li>Object -&gt; expando objects (<code>IDictionary&lt;string, object&gt;</code> and dynamic)</li>
-<li>Array -&gt; object[]</li>
-<li>Date -&gt; DateTime</li>
-<li>number -&gt; double</li>
-<li>string -&gt; string</li>
-<li>boolean -&gt; bool</li>
-<li>RegExp -&gt; Regex</li>
-<li>Function -&gt; Delegate</li>
-</ul>
-</li>
-<li>Extensions methods</li>
-</ul>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Error handling</h2><a id="user-content-error-handling" aria-label="Permalink: Error handling" href="#error-handling"></a>
-<p dir="auto"><h3 tabindex="-1" dir="auto">A CLR exception thrown by host code</h3><a id="user-content-a-clr-exception-thrown-by-host-code" aria-label="Permalink: A CLR exception thrown by host code" href="#a-clr-exception-thrown-by-host-code"></a>
-<p dir="auto">By default an exception thrown by host code — a delegate you registered, a reflected member, a proxy trap —
-is <strong>not</strong> converted into anything. It bubbles straight out of <code>Execute</code>/<code>Evaluate</code>/<code>Invoke</code> to you, with its
-message, .NET stack trace and inner exceptions untouched, and the script gets no chance to catch it:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine();
-engine.SetValue(&quot;parse&quot;, new Action<string>(s => new XmlDocument().LoadXml(s)));
-
-// throws System.Xml.XmlException, with its own stack trace
-engine.Evaluate(&quot;parse('<not xml')&quot;);"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span><span>;</span>
-<span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"parse"</span><span>,</span> <span>new</span> <span>Action</span><span>&lt;</span><span>string</span><span>&gt;</span><span>(</span>s <span>=&gt;</span> <span>new</span> <span>XmlDocument</span><span>(</span><span>)</span><span>.</span><span>LoadXml</span><span>(</span><span>s</span><span>)</span><span>)</span><span>)</span><span>;</span>
-
-<span>// throws System.Xml.XmlException, with its own stack trace</span>
-<span>engine</span><span>.</span><span>Evaluate</span><span>(</span><span>"parse('&lt;not xml')"</span><span>)</span><span>;</span></pre></div>
-<p dir="auto"><code>CatchClrExceptions</code> changes that: the exception becomes a JavaScript <code>Error</code> carrying its message, which the
-script can <code>try</code>/<code>catch</code> like any other. The predicate overload decides per exception, so you can let the
-script handle what it should handle and keep the rest fatal.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options => options.CatchClrExceptions(e => e is not OperationCanceledException));"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>options</span><span>.</span><span>CatchClrExceptions</span><span>(</span>e <span>=&gt;</span> <span>e</span> <span>is</span> not <span>OperationCanceledException</span><span>)</span><span>)</span><span>;</span></pre></div>
-<p dir="auto"><h3 tabindex="-1" dir="auto">Getting the original exception back</h3><a id="user-content-getting-the-original-exception-back" aria-label="Permalink: Getting the original exception back" href="#getting-the-original-exception-back"></a>
-<p dir="auto">Once an exception has been turned into a JavaScript error, the error is what travels — so when the script does
-not catch it and it reaches you as a <code>JavaScriptException</code>, the message alone is rarely enough to diagnose
-anything. <code>JintException.TryGetClrException</code> gives you the exception itself:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="try
-{
-    engine.Evaluate(script);
-}
-catch (JavaScriptException e) when (JintException.TryGetClrException(e, out var clrException))
-{
-    logger.LogError(clrException, &quot;host call failed while running {Script}&quot;, name);
-}"><pre><span>try</span>
-<span>{</span>
-    <span>engine</span><span>.</span><span>Evaluate</span><span>(</span><span>script</span><span>)</span><span>;</span>
-<span>}</span>
-<span>catch</span> <span>(</span><span>JavaScriptException</span> <span>e</span><span>)</span> <span>when</span> <span>(</span><span>JintException</span><span>.</span><span>TryGetClrException</span><span>(</span><span>e</span><span>,</span> <span>out</span> <span>var</span> <span>clrException</span><span>)</span><span>)</span>
-<span>{</span>
-    <span>logger</span><span>.</span><span>LogError</span><span>(</span><span>clrException</span><span>,</span> <span>"host call failed while running {Script}"</span><span>,</span> <span>name</span><span>)</span><span>;</span>
-<span>}</span></pre></div>
-<p dir="auto">It survives nested frames, a script catching and rethrowing the same error, module evaluation and a rejected
-promise (<code>PromiseRejectedException</code>), and it follows the standard <code>cause</code> chain, so a script that rewraps with
-<code>throw new Error(msg, { cause: err })</code> keeps it too. A script that throws something unrelated instead keeps
-nothing, which is correct — it discarded the original.</p>
-<p dir="auto">The exception is host-only. It is CLR state on the error object rather than a JavaScript property, so a script
-can neither read it nor strip it, and it does not appear in <code>Object.getOwnPropertyNames</code>, <code>Reflect.ownKeys</code> or
-<code>JSON.stringify</code>. Note that the error object holds the exception, and everything the exception's object graph
-reaches, for as long as the script keeps the error reachable.</p>
-<p dir="auto">If you would rather your logging pipeline find it without asking, <code>ChainClrExceptions</code> also hangs it in the
-<code>InnerException</code> chain, so <code>ToString()</code> and any chain-walking logger render your own frames alongside the
-JavaScript ones. It is off by default because it puts host stack traces into whatever consumes that string —
-treat it the way an ASP.NET application treats developer exception details.</p>
-<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options => options
-    .CatchClrExceptions()
-    .ChainClrExceptions());"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>options</span>
-    <span>.</span><span>CatchClrExceptions</span><span>(</span><span>)</span>
-    <span>.</span><span>ChainClrExceptions</span><span>(</span><span>)</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">Two related accessors work the same way: <code>JintException.TryGetJavaScriptLocation</code> and
-<code>TryGetJavaScriptCallStack</code> give the JavaScript position for both <code>JavaScriptException</code> and a bubbled CLR
-exception, and <code>TryGetClrType</code>/<code>TryGetClrMemberName</code> report the type and member behind a failed interop
-resolution. To shape what the <em>script</em> sees — rewrite the message, attach an error code —
-use <code>DecorateClrExceptionErrors</code>.</p>
-<p dir="auto"><h3 tabindex="-1" dir="auto">Raising an error from host code</h3><a id="user-content-raising-an-error-from-host-code" aria-label="Permalink: Raising an error from host code" href="#raising-an-error-from-host-code"></a>
-<p dir="auto">To fail a host function in a way the script can catch, throw a <code>JavaScriptException</code>. The overload taking a
-CLR exception records it for <code>TryGetClrException</code>, so the script sees an ordinary <code>Error</code> while you keep the
-original:</p>
-<div dir="auto" data-snippet-clipboard-copy-content="engine.SetValue(&quot;parse&quot;, new Action<string>(s =>
-{
-    try
-    {
-        new XmlDocument().LoadXml(s);
-    }
-    catch (XmlException e)
-    {
-        throw new JavaScriptException(engine.Intrinsics.Error, &quot;XML parsing failed&quot;, e);
-    }
-}));"><pre><span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"parse"</span><span>,</span> <span>new</span> <span>Action</span><span>&lt;</span><span>string</span><span>&gt;</span><span>(</span>s <span>=&gt;</span>
-<span>{</span>
-    <span>try</span>
-    <span>{</span>
-        <span>new</span> <span>XmlDocument</span><span>(</span><span>)</span><span>.</span><span>LoadXml</span><span>(</span><span>s</span><span>)</span><span>;</span>
-    <span>}</span>
-    <span>catch</span> <span>(</span><span>XmlException</span> <span>e</span><span>)</span>
-    <span>{</span>
-        <span>throw</span> <span>new</span> <span>JavaScriptException</span><span>(</span><span>engine</span><span>.</span><span>Intrinsics</span><span>.</span><span>Error</span><span>,</span> <span>"XML parsing failed"</span><span>,</span> <span>e</span><span>)</span><span>;</span>
-    <span>}</span>
-<span>}</span><span>)</span><span>)</span><span>;</span></pre></div>
-<p dir="auto">Do not throw the exception projected into the script instead
-(<code>new JavaScriptException(JsValue.FromObject(engine, e))</code>). That value is not an <code>Error</code> — it has no <code>stack</code>
-and fails <code>instanceof Error</code> — and it hands the running script the exception's members, including its .NET
-stack trace and inner exceptions.</p>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Security</h2><a id="user-content-security" aria-label="Permalink: Security" href="#security"></a>
-<p dir="auto">The following features provide you with a secure, sand-boxed environment to run user scripts.</p>
-<ul dir="auto">
-<li>Define memory limits, to prevent allocations from depleting the memory.</li>
-<li>Enable/disable usage of BCL to prevent scripts from invoking .NET code.</li>
-<li>Limit number of statements to prevent infinite loops.</li>
-<li>Limit depth of calls to prevent deep recursion calls.</li>
-<li>Define a timeout, to prevent scripts from taking too long to finish.</li>
-<li>Turn an unbounded recursion into a catchable error rather than a stack overflow that ends the process
-(see <a href="#surviving-an-unbounded-recursion">Surviving an unbounded recursion</a>; off by default).</li>
-</ul>
-<p dir="auto"><h2 tabindex="-1" dir="auto">Branches and releases</h2><a id="user-content-branches-and-releases" aria-label="Permalink: Branches and releases" href="#branches-and-releases"></a>
-<ul dir="auto">
-<li>The recommended branch is <strong>main</strong>, any PR should target this branch</li>
-<li>The <strong>main</strong> branch is automatically built and published on <a href="https://www.myget.org/feed/Packages/jint" rel="nofollow">MyGet</a>. Add this feed to your NuGet sources to use it: <a href="https://www.myget.org/F/jint/api/v3/index.json" rel="nofollow">https://www.myget.org/F/jint/api/v3/index.json</a></li>
-<li>The <strong>main</strong> branch is occasionally published on <a href="https://www.nuget.org/packages/jint" rel="nofollow">NuGet</a></li>
-</ul>
+<p dir="auto">Jint is licensed under the <a href="/sebastienros/jint/blob/main/LICENSE.txt">BSD 2-Clause License</a>.</p>
 </article></div></div></article></body></html>
