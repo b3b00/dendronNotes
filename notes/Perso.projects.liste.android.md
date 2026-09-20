@@ -3,8 +3,8 @@ id: Perso.projects.liste.android
 title: Perso.projects.liste.android
 desc: Porting to android
 updated: 1778137115579
-created: 0
 ---
+
 # Port app from PWA to native Android.
 
 ## quirks

@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.relaxed.visitor.typing
 title: Perso.projects.CSLY.relaxed.visitor.typing
 desc: Relaxed visitor typing
 updated: 1759848879074
-created: 0
 ---
+
 # Goal
 Allow relaxed visitor typing.
 For now, visitor methods must be strongly typed with an unique return type.

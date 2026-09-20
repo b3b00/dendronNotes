@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>GitHub - sebastienros/jint: Javascript Interpreter for .NET</title><meta name="author" content=""><meta name="description" content="Javascript Interpreter for .NET. Contribute to sebastienros/jint development by creating an account on GitHub."><meta name="dendron:source-url" content="https://github.com/sebastienros/jint"><meta name="dendron:length" content="19550"><meta name="dendron:time-to-read-minutes" content="15"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-hpc="true" containertiming="hpc"><article itemprop="text"><p dir="auto"><a href="https://github.com/sebastienros/jint/actions/workflows/build.yml"></a>
+<a href="https://www.nuget.org/packages/Jint" rel="nofollow"></a>
+<a href="https://www.nuget.org/packages/Jint" rel="nofollow"></a>
+<a href="https://www.myget.org/feed/jint/package/nuget/Jint" rel="nofollow"></a>
+<a href="https://gitter.im/sebastienros/jint" rel="nofollow"></a></p>
+
+<p dir="auto">Jint is a <strong>Javascript interpreter</strong> for .NET which can run on <strong>any modern .NET platform</strong> as it supports .NET Standard 2.0 and .NET 4.6.2 targets (and later).</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Use cases and users</h2><a id="user-content-use-cases-and-users" aria-label="Permalink: Use cases and users" href="#use-cases-and-users"></a>
+<ul dir="auto">
+<li>Run JavaScript inside your .NET application in a safe sand-boxed environment</li>
+<li>Expose native .NET objects and functions to your JavaScript code (get database query results as JSON, call .NET methods, etc.)</li>
+<li>Support scripting in your .NET application, allowing users to customize your application using JavaScript (like Unity games)</li>
+</ul>
+<p dir="auto">Some users of Jint include
+<a href="https://github.com/ravendb/ravendb">RavenDB</a>,
+<a href="https://github.com/EventStore/EventStore">EventStore</a>,
+<a href="https://github.com/OrchardCMS/OrchardCore">OrchardCore</a>,
+<a href="https://github.com/elsa-workflows/elsa-core">ELSA Workflows</a>,
+<a href="https://github.com/dotnet/docfx">docfx</a>,
+<a href="https://github.com/Taritsyn/JavaScriptEngineSwitcher">JavaScript Engine Switcher</a>,
+and many more.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Supported features</h2><a id="user-content-supported-features" aria-label="Permalink: Supported features" href="#supported-features"></a>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2015 (ES6)</h4><a id="user-content-ecmascript-2015-es6" aria-label="Permalink: ECMAScript 2015 (ES6)" href="#ecmascript-2015-es6"></a>
+<ul dir="auto">
+<li>✔ ArrayBuffer</li>
+<li>✔ Arrow function expression</li>
+<li>✔ Binary and octal literals</li>
+<li>✔ Class support</li>
+<li>✔ DataView</li>
+<li>✔ Destructuring</li>
+<li>✔ Default, rest and spread</li>
+<li>✔ Enhanced object literals</li>
+<li>✔ <code>for...of</code></li>
+<li>✔ Generators</li>
+<li>✔ Template strings</li>
+<li>✔ Lexical scoping of variables (let and const)</li>
+<li>✔ Map and Set</li>
+<li>✔ Modules and module loaders</li>
+<li>✔ Promises (Experimental, API is unstable)</li>
+<li>✔ Reflect</li>
+<li>✔ Proxies</li>
+<li>✔ Symbols</li>
+<li>❌ Tail calls</li>
+<li>✔ Typed arrays</li>
+<li>✔ Unicode</li>
+<li>✔ Weakmap and Weakset</li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2016</h4><a id="user-content-ecmascript-2016" aria-label="Permalink: ECMAScript 2016" href="#ecmascript-2016"></a>
+<ul dir="auto">
+<li>✔ <code>Array.prototype.includes</code></li>
+<li>✔ <code>await</code>, <code>async</code></li>
+<li>✔ Block-scoping of variables and functions</li>
+<li>✔ Exponentiation operator <code>**</code></li>
+<li>✔ Destructuring patterns (of variables)</li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2017</h4><a id="user-content-ecmascript-2017" aria-label="Permalink: ECMAScript 2017" href="#ecmascript-2017"></a>
+<ul dir="auto">
+<li>✔ <code>Object.values</code>, <code>Object.entries</code> and <code>Object.getOwnPropertyDescriptors</code></li>
+<li>✔ Shared memory and atomics</li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2018</h4><a id="user-content-ecmascript-2018" aria-label="Permalink: ECMAScript 2018" href="#ecmascript-2018"></a>
+<ul dir="auto">
+<li>✔ Asynchronous iteration</li>
+<li>✔ <code>Promise.prototype.finally</code></li>
+<li>✔ RegExp named capture groups</li>
+<li>✔ Rest/spread operators for object literals (<code>...identifier</code>)</li>
+<li>✔ SharedArrayBuffer</li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2019</h4><a id="user-content-ecmascript-2019" aria-label="Permalink: ECMAScript 2019" href="#ecmascript-2019"></a>
+<ul dir="auto">
+<li>✔ <code>Array.prototype.flat</code>, <code>Array.prototype.flatMap</code></li>
+<li>✔ <code>String.prototype.trimStart</code>, <code>String.prototype.trimEnd</code></li>
+<li>✔ <code>Object.fromEntries</code></li>
+<li>✔ <code>Symbol.description</code></li>
+<li>✔ Optional catch binding</li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2020</h4><a id="user-content-ecmascript-2020" aria-label="Permalink: ECMAScript 2020" href="#ecmascript-2020"></a>
+<ul dir="auto">
+<li>✔ <code>BigInt</code></li>
+<li>✔ <code>export * as ns from</code></li>
+<li>✔ <code>for-in</code> enhancements</li>
+<li>✔ <code>globalThis</code> object</li>
+<li>✔ <code>import</code></li>
+<li>✔ <code>import.meta</code></li>
+<li>✔ Nullish coalescing operator (<code>??</code>)</li>
+<li>✔ Optional chaining</li>
+<li>✔ <code>Promise.allSettled</code></li>
+<li>✔ <code>String.prototype.matchAll</code></li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2021</h4><a id="user-content-ecmascript-2021" aria-label="Permalink: ECMAScript 2021" href="#ecmascript-2021"></a>
+<ul dir="auto">
+<li>✔ Logical Assignment Operators (<code>&amp;&amp;=</code> <code>||=</code> <code>??=</code>)</li>
+<li>✔ Numeric Separators (<code>1_000</code>)</li>
+<li>✔ <code>AggregateError</code></li>
+<li>✔ <code>Promise.any</code></li>
+<li>✔ <code>String.prototype.replaceAll</code></li>
+<li>✔ <code>WeakRef</code></li>
+<li>✔ <code>FinalizationRegistry</code></li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2022</h4><a id="user-content-ecmascript-2022" aria-label="Permalink: ECMAScript 2022" href="#ecmascript-2022"></a>
+<ul dir="auto">
+<li>✔ Class Fields</li>
+<li>✔ RegExp Match Indices</li>
+<li>✔ Top-level await</li>
+<li>✔ Ergonomic brand checks for Private Fields</li>
+<li>✔ <code>.at()</code></li>
+<li>✔ Accessible <code>Object.prototype.hasOwnProperty</code> (<code>Object.hasOwn</code>)</li>
+<li>✔ Class Static Block</li>
+<li>✔ Error Cause</li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2023</h4><a id="user-content-ecmascript-2023" aria-label="Permalink: ECMAScript 2023" href="#ecmascript-2023"></a>
+<ul dir="auto">
+<li>✔ Array find from last</li>
+<li>✔ Change Array by copy</li>
+<li>✔ Hashbang Grammar</li>
+<li>✔ Symbols as WeakMap keys</li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2024</h4><a id="user-content-ecmascript-2024" aria-label="Permalink: ECMAScript 2024" href="#ecmascript-2024"></a>
+<ul dir="auto">
+<li>✔ ArrayBuffer enhancements - <code>ArrayBuffer.prototype.resize</code> and <code>ArrayBuffer.prototype.transfer</code></li>
+<li>✔ <code>Atomics.waitAsync</code></li>
+<li>✔ Ensuring that strings are well-formed - <code>String.prototype.ensureWellFormed</code> and <code>String.prototype.isWellFormed</code></li>
+<li>✔ Grouping synchronous iterables - <code>Object.groupBy</code> and <code>Map.groupBy</code></li>
+<li>✔ <code>Promise.withResolvers</code></li>
+<li>✔ Regular expression flag <code>/v</code></li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript 2025</h4><a id="user-content-ecmascript-2025" aria-label="Permalink: ECMAScript 2025" href="#ecmascript-2025"></a>
+<ul dir="auto">
+<li>✔ 16-bit floating point numbers (float16), Requires NET 8 or higher, <code>Float16Array</code>, <code>Math.f16round()</code></li>
+<li>✔ Array.fromAsync</li>
+<li>✔ Import attributes</li>
+<li>✔ Iterator helper methods</li>
+<li>✔ JSON modules</li>
+<li>✔ <code>Promise.try</code></li>
+<li>✔ <code>RegExp.escape()</code></li>
+<li>✔ Regular expression pattern modifiers (inline flags)</li>
+<li>✔ Duplicate named capture groups</li>
+<li>✔ Set methods (<code>intersection</code>, <code>union</code>, <code>difference</code>, <code>symmetricDifference</code>, <code>isSubsetOf</code>, <code>isSupersetOf</code>, <code>isDisjointFrom</code>)</li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">ECMAScript proposals (no version yet)</h4><a id="user-content-ecmascript-proposals-no-version-yet" aria-label="Permalink: ECMAScript proposals (no version yet)" href="#ecmascript-proposals-no-version-yet"></a>
+<ul dir="auto">
+<li>✔ Await Dictionary (<code>Promise.allKeyed</code>, <code>Promise.allSettledKeyed</code>)</li>
+<li>✔ Decorators (<code>@decorator</code> syntax for classes, methods, fields, and accessors)</li>
+<li>✔ <code>Error.isError</code></li>
+<li>✔ <code>Error.prototype.stack</code> accessor (error-stack-accessor)</li>
+<li>✔ Explicit Resource Management (<code>using</code> and <code>await using</code>)</li>
+<li>✔ Immutable Arraybuffers</li>
+<li>✔ Import Bytes (<code>import x from './file' with { type: 'bytes' }</code>)</li>
+<li>✔ Iterator Sequencing</li>
+<li>✔ Joint Iteration</li>
+<li>✔ JSON.parse source text access</li>
+<li>✔ <code>Math.sumPrecise</code></li>
+<li>✔ <code>ShadowRealm</code></li>
+<li>✔ <code>Temporal</code></li>
+<li>✔ <code>Uint8Array</code> to/from base64</li>
+<li>✔ <code>Upsert</code></li>
+</ul>
+<p dir="auto"><h4 tabindex="-1" dir="auto">Other</h4><a id="user-content-other" aria-label="Permalink: Other" href="#other"></a>
+<ul dir="auto">
+<li>Further refined .NET CLR interop capabilities</li>
+<li>Constraints for execution (recursion, memory usage, duration)</li>
+</ul>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Performance</h2><a id="user-content-performance" aria-label="Permalink: Performance" href="#performance"></a>
+<ul dir="auto">
+<li>Because Jint neither generates any .NET bytecode nor uses the DLR it runs relatively small scripts really fast</li>
+<li>If you repeatedly run the same script, you should prepare it for execution using <code>Engine.PrepareScript</code> or <code>Engine.PrepareModule</code>, cache the returned <code>Prepared&lt;...&gt;</code> object and feed it to Jint instead of the content string</li>
+<li>You should prefer running engine in strict mode, it improves performance</li>
+</ul>
+<p dir="auto">You can check out <a href="https://github.com/sebastienros/jint/blob/main/Jint.Benchmark">the engine comparison results</a>, bear in mind that every use case is different and benchmarks might not reflect your real-world usage.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Discussion</h2><a id="user-content-discussion" aria-label="Permalink: Discussion" href="#discussion"></a>
+<p dir="auto">Join the chat on <a href="https://gitter.im/sebastienros/jint" rel="nofollow">Gitter</a> or post your questions with the <code>jint</code> tag on <a href="http://stackoverflow.com/questions/tagged/jint" rel="nofollow">stackoverflow</a>.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Video</h2><a id="user-content-video" aria-label="Permalink: Video" href="#video"></a>
+<p dir="auto">Here is a short video of how Jint works and some sample usage</p>
+<p dir="auto"><a href="https://docs.microsoft.com/shows/code-conversations/sebastien-ros-on-jint-javascript-interpreter-net" rel="nofollow">https://docs.microsoft.com/shows/code-conversations/sebastien-ros-on-jint-javascript-interpreter-net</a></p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Thread-safety</h2><a id="user-content-thread-safety" aria-label="Permalink: Thread-safety" href="#thread-safety"></a>
+<p dir="auto">Engine instances are not thread-safe and they should not accessed from multiple threads simultaneously.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Examples</h2><a id="user-content-examples" aria-label="Permalink: Examples" href="#examples"></a>
+<p dir="auto">This example defines a new value named <code>log</code> pointing to <code>Console.WriteLine</code>, then runs
+a script calling <code>log('Hello World!')</code>.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine()
+    .SetValue(&quot;log&quot;, new Action<object>(Console.WriteLine));
+    
+engine.Execute(@&quot;
+    function hello() { 
+        log('Hello World');
+    };
+ 
+    hello();
+&quot;);"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
+    <span>.</span><span>SetValue</span><span>(</span><span>"log"</span><span>,</span> <span>new</span> <span>Action</span><span>&lt;</span><span>object</span><span>&gt;</span><span>(</span><span>Console</span><span>.</span><span>WriteLine</span><span>)</span><span>)</span><span>;</span>
+    
+<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>@"</span>
+<span>    function hello() { </span>
+<span>        log('Hello World');</span>
+<span>    };</span>
+<span> </span>
+<span>    hello();</span>
+<span>"</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">Here, the variable <code>x</code> is set to <code>3</code> and <code>x * x</code> is evaluated in JavaScript. The result is returned to .NET directly, in this case as a <code>double</code> value <code>9</code>.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var square = new Engine()
+    .SetValue(&quot;x&quot;, 3) // define a new variable
+    .Evaluate(&quot;x * x&quot;) // evaluate a statement
+    .ToObject(); // converts the value to .NET"><pre><span>var</span> <span>square</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
+    <span>.</span><span>SetValue</span><span>(</span><span>"x"</span><span>,</span> <span>3</span><span>)</span> <span>// define a new variable</span>
+    <span>.</span><span>Evaluate</span><span>(</span><span>"x * x"</span><span>)</span> <span>// evaluate a statement</span>
+    <span>.</span><span>ToObject</span><span>(</span><span>)</span><span>;</span> <span>// converts the value to .NET</span></pre></div>
+<p dir="auto">You can also directly pass POCOs or anonymous objects and use them from JavaScript. In this example for instance a new <code>Person</code> instance is manipulated from JavaScript.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var p = new Person {
+    Name = &quot;Mickey Mouse&quot;
+};
+
+var engine = new Engine()
+    .SetValue(&quot;p&quot;, p)
+    .Execute(&quot;p.Name = 'Minnie'&quot;);
+
+Assert.AreEqual(&quot;Minnie&quot;, p.Name);"><pre><span>var</span> <span>p</span> <span>=</span> <span>new</span> <span>Person</span> <span>{</span>
+    <span>Name</span> <span>=</span> <span>"Mickey Mouse"</span>
+<span>}</span><span>;</span>
+
+<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
+    <span>.</span><span>SetValue</span><span>(</span><span>"p"</span><span>,</span> <span>p</span><span>)</span>
+    <span>.</span><span>Execute</span><span>(</span><span>"p.Name = 'Minnie'"</span><span>)</span><span>;</span>
+
+<span>Assert</span><span>.</span><span>AreEqual</span><span>(</span><span>"Minnie"</span><span>,</span> <span>p</span><span>.</span><span>Name</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">You can invoke JavaScript function reference</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var result = new Engine()
+    .Execute(&quot;function add(a, b) { return a + b; }&quot;)
+    .Invoke(&quot;add&quot;,1, 2); // -> 3"><pre><span>var</span> <span>result</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
+    <span>.</span><span>Execute</span><span>(</span><span>"function add(a, b) { return a + b; }"</span><span>)</span>
+    <span>.</span><span>Invoke</span><span>(</span><span>"add"</span><span>,</span><span>1</span><span>,</span> <span>2</span><span>)</span><span>;</span> <span>// -&gt; 3</span></pre></div>
+<p dir="auto">or directly by name</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine()
+   .Execute(&quot;function add(a, b) { return a + b; }&quot;);
+
+engine.Invoke(&quot;add&quot;, 1, 2); // -> 3"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span>
+   <span>.</span><span>Execute</span><span>(</span><span>"function add(a, b) { return a + b; }"</span><span>)</span><span>;</span>
+
+<span>engine</span><span>.</span><span>Invoke</span><span>(</span><span>"add"</span><span>,</span> <span>1</span><span>,</span> <span>2</span><span>)</span><span>;</span> <span>// -&gt; 3</span></pre></div>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Accessing .NET assemblies and classes</h2><a id="user-content-accessing-net-assemblies-and-classes" aria-label="Permalink: Accessing .NET assemblies and classes" href="#accessing-net-assemblies-and-classes"></a>
+<p dir="auto">You can allow an engine to access any .NET class by configuring the engine instance like this:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(cfg => cfg.AllowClr());"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>cfg <span>=&gt;</span> <span>cfg</span><span>.</span><span>AllowClr</span><span>(</span><span>)</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">Then you have access to the <code>System</code> namespace as a global value. Here is how it's used in the context on the command line utility:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="jint> var file = new System.IO.StreamWriter('log.txt');
+jint> file.WriteLine('Hello World !');
+jint> file.Dispose();"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>file</span> <span>=</span> <span>new</span> <span>System</span><span>.</span><span>IO</span><span>.</span><span>StreamWriter</span><span>(</span><span>'log.txt'</span><span>)</span><span>;</span>
+<span>jint</span><span>&gt;</span> <span>file</span><span>.</span><span>WriteLine</span><span>(</span><span>'Hello World !'</span><span>)</span><span>;</span>
+<span>jint</span><span>&gt;</span> <span>file</span><span>.</span><span>Dispose</span><span>(</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">And even create shortcuts to common .NET methods</p>
+<div dir="auto" data-snippet-clipboard-copy-content="jint> var log = System.Console.WriteLine;
+jint> log('Hello World !');
+=> &quot;Hello World !&quot;"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>log</span> <span>=</span> <span>System</span><span>.</span><span>Console</span><span>.</span><span>WriteLine</span><span>;</span>
+<span>jint</span><span>&gt;</span> <span>log</span><span>(</span><span>'Hello World !'</span><span>)</span><span>;</span>
+<span>=&gt;</span> <span>"Hello World !"</span></pre></div>
+<p dir="auto">When allowing the CLR, you can optionally pass custom assemblies to load types from.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(cfg => cfg
+    .AllowClr(typeof(Bar).Assembly)
+);"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>cfg <span>=&gt;</span> <span>cfg</span>
+    <span>.</span><span>AllowClr</span><span>(</span><span>typeof</span><span>(</span><span>Bar</span><span>)</span><span>.</span><span>Assembly</span><span>)</span>
+<span>)</span><span>;</span></pre></div>
+<p dir="auto">and then to assign local namespaces the same way <code>System</code> does it for you, use <code>importNamespace</code></p>
+<div dir="auto" data-snippet-clipboard-copy-content="jint> var Foo = importNamespace('Foo');
+jint> var bar = new Foo.Bar();
+jint> log(bar.ToString());"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>Foo</span> <span>=</span> <span>importNamespace</span><span>(</span><span>'Foo'</span><span>)</span><span>;</span>
+<span>jint</span><span>&gt;</span> <span>var</span> <span>bar</span> <span>=</span> <span>new</span> <span>Foo</span><span>.</span><span>Bar</span><span>(</span><span>)</span><span>;</span>
+<span>jint</span><span>&gt;</span> <span>log</span><span>(</span><span>bar</span><span>.</span><span>ToString</span><span>(</span><span>)</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">adding a specific CLR type reference can be done like this</p>
+<div dir="auto" data-snippet-clipboard-copy-content="engine.SetValue(&quot;TheType&quot;, TypeReference.CreateTypeReference<TheType>(engine));"><pre><span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"TheType"</span><span>,</span> <span>TypeReference</span><span>.</span><span>CreateTypeReference</span><span>&lt;</span><span>TheType</span><span>&gt;</span><span>(</span><span>engine</span><span>)</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">and used this way</p>
+<div dir="auto" data-snippet-clipboard-copy-content="jint> var o = new TheType();"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>o</span> <span>=</span> <span>new</span> <span>TheType</span><span>(</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">Generic types are also supported. Here is how to declare, instantiate and use a <code>List&lt;string&gt;</code>:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="jint> var ListOfString = System.Collections.Generic.List(System.String);
+jint> var list = new ListOfString();
+jint> list.Add('foo');
+jint> list.Add(1); // automatically converted to String
+jint> list.Count; // 2"><pre><span>jint</span><span>&gt;</span> <span>var</span> <span>ListOfString</span> <span>=</span> <span>System</span><span>.</span><span>Collections</span><span>.</span><span>Generic</span><span>.</span><span>List</span><span>(</span><span>System</span><span>.</span><span>String</span><span>)</span><span>;</span>
+<span>jint</span><span>&gt;</span> <span>var</span> <span>list</span> <span>=</span> <span>new</span> <span>ListOfString</span><span>(</span><span>)</span><span>;</span>
+<span>jint</span><span>&gt;</span> <span>list</span><span>.</span><span>Add</span><span>(</span><span>'foo'</span><span>)</span><span>;</span>
+<span>jint</span><span>&gt;</span> <span>list</span><span>.</span><span>Add</span><span>(</span><span>1</span><span>)</span><span>;</span> <span>// automatically converted to String</span>
+<span>jint</span><span>&gt;</span> <span>list</span><span>.</span><span>Count</span><span>;</span> <span>// 2</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Intercepting access to .NET objects</h3><a id="user-content-intercepting-access-to-net-objects" aria-label="Permalink: Intercepting access to .NET objects" href="#intercepting-access-to-net-objects"></a>
+<p dir="auto">ECMAScript Proxy traps can be implemented in .NET by deriving from <code>ProxyHandler</code> and creating the proxy via <code>engine.Advanced.CreateProxy</code> (or <code>CreateRevocableProxy</code>). A trap returning <code>null</code> forwards the operation to the target, exactly like an absent trap on a JavaScript handler object, and all proxy invariants are enforced on trap results. Combine with <code>SetWrapObjectHandler</code> to transparently intercept every wrapped .NET object. Note that <code>proxy.method()</code> fires the <code>Get</code> trap (then calls the returned value) — the <code>Apply</code> trap only fires when the proxy itself is invoked, so intercepting method calls means returning a wrapping function from <code>Get</code>. <code>new Proxy(target, handlerObject)</code> from script remains the JavaScript-side equivalent.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="class LoggingHandler : ProxyHandler
+{
+    public override JsValue? Get(ObjectInstance target, JsValue property, JsValue receiver)
+    {
+        Console.WriteLine($&quot;get {property}&quot;);
+        return null; // forward to the target
+    }
+
+    public override bool? Has(ObjectInstance target, JsValue property)
+    {
+        Console.WriteLine($&quot;has {property}&quot;);
+        return null;
+    }
+}
+
+var engine = new Engine(options =>
+{
+    // wrap every interop object in a logging proxy
+    options.SetWrapObjectHandler((e, obj, type) =>
+        e.Advanced.CreateProxy(ObjectWrapper.Create(e, obj, type), new LoggingHandler()));
+});"><pre><span>class</span> <span>LoggingHandler</span> <span>:</span> <span>ProxyHandler</span>
+<span>{</span>
+    <span>public</span> <span>override</span> <span>JsValue</span><span>?</span> <span>Get</span><span>(</span><span>ObjectInstance</span> <span>target</span><span>,</span> <span>JsValue</span> <span>property</span><span>,</span> <span>JsValue</span> <span>receiver</span><span>)</span>
+    <span>{</span>
+        <span>Console</span><span>.</span><span>WriteLine</span><span>(</span><span><span>$</span>"get <span>{</span><span>property</span><span>}</span>"</span><span>)</span><span>;</span>
+        <span>return</span> <span>null</span><span>;</span> <span>// forward to the target</span>
+    <span>}</span>
+
+    <span>public</span> <span>override</span> <span>bool</span><span>?</span> <span>Has</span><span>(</span><span>ObjectInstance</span> <span>target</span><span>,</span> <span>JsValue</span> <span>property</span><span>)</span>
+    <span>{</span>
+        <span>Console</span><span>.</span><span>WriteLine</span><span>(</span><span><span>$</span>"has <span>{</span><span>property</span><span>}</span>"</span><span>)</span><span>;</span>
+        <span>return</span> <span>null</span><span>;</span>
+    <span>}</span>
+<span>}</span>
+
+<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
+<span>{</span>
+    <span>// wrap every interop object in a logging proxy</span>
+    <span>options</span><span>.</span><span>SetWrapObjectHandler</span><span>(</span><span>(</span><span>e</span><span>,</span> <span>obj</span><span>,</span> <span>type</span><span>)</span> <span>=&gt;</span>
+        <span>e</span><span>.</span><span>Advanced</span><span>.</span><span>CreateProxy</span><span>(</span><span>ObjectWrapper</span><span>.</span><span>Create</span><span>(</span><span>e</span><span>,</span> <span>obj</span><span>,</span> <span>type</span><span>)</span><span>,</span> <span>new</span> <span>LoggingHandler</span><span>(</span><span>)</span><span>)</span><span>)</span><span>;</span>
+<span>}</span><span>)</span><span>;</span></pre></div>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Internationalization</h2><a id="user-content-internationalization" aria-label="Permalink: Internationalization" href="#internationalization"></a>
+<p dir="auto">You can enforce what Time Zone or Culture the engine should use when locale JavaScript methods are used if you don't want to use the computer's default values.</p>
+<p dir="auto">This example forces the Time Zone to Pacific Standard Time.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var PST = TimeZoneInfo.FindSystemTimeZoneById(&quot;Pacific Standard Time&quot;);
+var engine = new Engine(cfg => cfg.LocalTimeZone(PST));
+    
+engine.Execute(&quot;new Date().toString()&quot;); // Wed Dec 31 1969 16:00:00 GMT-08:00"><pre><span>var</span> <span>PST</span> <span>=</span> <span>TimeZoneInfo</span><span>.</span><span>FindSystemTimeZoneById</span><span>(</span><span>"Pacific Standard Time"</span><span>)</span><span>;</span>
+<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>cfg <span>=&gt;</span> <span>cfg</span><span>.</span><span>LocalTimeZone</span><span>(</span><span>PST</span><span>)</span><span>)</span><span>;</span>
+    
+<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"new Date().toString()"</span><span>)</span><span>;</span> <span>// Wed Dec 31 1969 16:00:00 GMT-08:00</span></pre></div>
+<p dir="auto">This example is using French as the default culture.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var FR = CultureInfo.GetCultureInfo(&quot;fr-FR&quot;);
+var engine = new Engine(cfg => cfg.Culture(FR));
+    
+engine.Execute(&quot;new Number(1.23).toString()&quot;); // 1.23
+engine.Execute(&quot;new Number(1.23).toLocaleString()&quot;); // 1,23"><pre><span>var</span> <span>FR</span> <span>=</span> <span>CultureInfo</span><span>.</span><span>GetCultureInfo</span><span>(</span><span>"fr-FR"</span><span>)</span><span>;</span>
+<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>cfg <span>=&gt;</span> <span>cfg</span><span>.</span><span>Culture</span><span>(</span><span>FR</span><span>)</span><span>)</span><span>;</span>
+    
+<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"new Number(1.23).toString()"</span><span>)</span><span>;</span> <span>// 1.23</span>
+<span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"new Number(1.23).toLocaleString()"</span><span>)</span><span>;</span> <span>// 1,23</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Extending Temporal and Intl with custom providers</h3><a id="user-content-extending-temporal-and-intl-with-custom-providers" aria-label="Permalink: Extending Temporal and Intl with custom providers" href="#extending-temporal-and-intl-with-custom-providers"></a>
+<p dir="auto">Jint ships English-only / ISO-only defaults to keep the binary small. Non-English CLDR
+data and full IANA timezone DST history are reachable via two pluggable providers:</p>
+<markdown-accessiblity-table><table>
+<thead>
+<tr>
+<th>Extension point</th>
+<th>Default</th>
+<th>What it covers</th>
+<th>Reusable example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Options.Temporal.TimeZoneProvider</code> (<code>ITimeZoneProvider</code>)</td>
+<td><code>DefaultTimeZoneProvider</code> (BCL <code>TimeZoneInfo</code> + Windows↔IANA mapping)</td>
+<td>UTC offsets, DST transitions, IANA canonicalization</td>
+<td><a href="https://github.com/sebastienros/jint/blob/main/Jint.Tests.Test262/NodaTimeZoneProvider.cs"><code>NodaTimeZoneProvider.cs</code></a> — uses NodaTime TZDB for full historical accuracy</td>
+</tr>
+<tr>
+<td><code>Options.Intl.CldrProvider</code> (<code>ICldrProvider</code>)</td>
+<td><code>DefaultCldrProvider</code> (English + .NET <code>CultureInfo</code>)</td>
+<td>locale names, currencies, units, plural rules, calendar month/era names</td>
+<td><a href="https://github.com/sebastienros/jint/blob/main/Jint.Tests.Test262/IcuCldrProvider.cs"><code>IcuCldrProvider.cs</code></a> — uses ICU4N for full CLDR coverage</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto">The provider files in <code>Jint.Tests.Test262/</code> are <strong>MIT-licensed copy-and-modify templates</strong>,
+not a stable API contract. They are also exactly how the test suite reaches its current
+test262 conformance numbers.</p>
+<p dir="auto">To wire them into your project, add the same NuGet packages (<code>NodaTime</code>, <code>ICU4N</code>), copy
+the provider files in, and register them on <code>Engine</code> options:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
+{
+    options.Temporal.TimeZoneProvider = new NodaTimeZoneProvider();
+    options.Intl.CldrProvider          = new IcuCldrProvider();
+});"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
+<span>{</span>
+    <span>options</span><span>.</span><span>Temporal</span><span>.</span><span>TimeZoneProvider</span> <span>=</span> <span>new</span> <span>NodaTimeZoneProvider</span><span>(</span><span>)</span><span>;</span>
+    <span>options</span><span>.</span><span>Intl</span><span>.</span><span>CldrProvider</span>          <span>=</span> <span>new</span> <span>IcuCldrProvider</span><span>(</span><span>)</span><span>;</span>
+<span>}</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">A separate <code>ICalendarProvider</code> for non-ISO calendar arithmetic (Islamic UmAlQura, Persian
+astronomical, Chinese/Dangi at extreme dates) is on the roadmap; until then non-ISO
+calendars use <code>System.Globalization.Calendar</code> subclasses, which constrains some date
+ranges (see <a href="https://github.com/sebastienros/jint/blob/main/Jint/Native/Temporal/NonIsoCalendars.cs"><code>Jint/Native/Temporal/NonIsoCalendars.cs</code></a>).</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Execution Constraints</h2><a id="user-content-execution-constraints" aria-label="Permalink: Execution Constraints" href="#execution-constraints"></a>
+<p dir="auto">Execution constraints are used during script execution to ensure that requirements around resource consumption are met, for example:</p>
+<ul dir="auto">
+<li>Scripts should not use more than X memory.</li>
+<li>Scripts should only run for a maximum amount of time.</li>
+</ul>
+<p dir="auto">You can configure them via the options:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options => {
+
+    // Limit memory allocations to 4 MB
+    options.LimitMemory(4_000_000);
+
+    // Set a timeout to 4 seconds.
+    options.TimeoutInterval(TimeSpan.FromSeconds(4));
+
+    // Set limit of 1000 executed statements.
+    options.MaxStatements(1000);
+
+    // Use a cancellation token.
+    options.CancellationToken(cancellationToken);
+}"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span> <span>{</span>
+
+    <span>// Limit memory allocations to 4 MB</span>
+    <span>options</span><span>.</span><span>LimitMemory</span><span>(</span><span>4_000_000</span><span>)</span><span>;</span>
+
+    <span>// Set a timeout to 4 seconds.</span>
+    <span>options</span><span>.</span><span>TimeoutInterval</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>4</span><span>)</span><span>)</span><span>;</span>
+
+    <span>// Set limit of 1000 executed statements.</span>
+    <span>options</span><span>.</span><span>MaxStatements</span><span>(</span><span>1000</span><span>)</span><span>;</span>
+
+    <span>// Use a cancellation token.</span>
+    <span>options</span><span>.</span><span>CancellationToken</span><span>(</span><span>cancellationToken</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto">You can also write a custom constraint by deriving from the <code>Constraint</code> base class:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="public abstract class Constraint
+{
+    /// Called before script is run and useful when you use an engine object for multiple executions.
+    public abstract void Reset();
+
+    // Called before each statement to check if your requirements are met; if not - throws an exception.
+    public abstract void Check();
+}"><pre><span>public</span> <span>abstract</span> <span>class</span> <span>Constraint</span>
+<span>{</span>
+    <span>/// Called before script is run and useful when you use an engine object for multiple executions.</span>
+    <span>public</span> <span>abstract</span> <span>void</span> <span>Reset</span><span>(</span><span>)</span><span>;</span>
+
+    <span>// Called before each statement to check if your requirements are met; if not - throws an exception.</span>
+    <span>public</span> <span>abstract</span> <span>void</span> <span>Check</span><span>(</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto">For example we can write a constraint that stops scripts when the CPU usage gets too high:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="class MyCPUConstraint : Constraint
+{
+    public override void Reset()
+    {
+    }
+
+    public override void Check()
+    {
+        var cpuUsage = GetCPUUsage();
+
+        if (cpuUsage > 0.8) // 80%
+        {
+            throw new OperationCancelledException();
+        }
+    }
+}
+
+var engine = new Engine(options =>
+{
+    options.Constraint(new MyCPUConstraint());
+});"><pre><span>class</span> <span>MyCPUConstraint</span> <span>:</span> <span>Constraint</span>
+<span>{</span>
+    <span>public</span> <span>override</span> <span>void</span> <span>Reset</span><span>(</span><span>)</span>
+    <span>{</span>
+    <span>}</span>
+
+    <span>public</span> <span>override</span> <span>void</span> <span>Check</span><span>(</span><span>)</span>
+    <span>{</span>
+        <span>var</span> <span>cpuUsage</span> <span>=</span> <span>GetCPUUsage</span><span>(</span><span>)</span><span>;</span>
+
+        <span>if</span> <span>(</span><span>cpuUsage</span> <span>&gt;</span> <span>0.8</span><span>)</span> <span>// 80%</span>
+        <span>{</span>
+            <span>throw</span> <span>new</span> <span>OperationCancelledException</span><span>(</span><span>)</span><span>;</span>
+        <span>}</span>
+    <span>}</span>
+<span>}</span>
+
+<span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
+<span>{</span>
+    <span>options</span><span>.</span><span>Constraint</span><span>(</span><span>new</span> <span>MyCPUConstraint</span><span>(</span><span>)</span><span>)</span><span>;</span>
+<span>}</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">When you reuse the engine and want to use cancellation tokens you have to reset the token before each call of <code>Execute</code>:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
+{
+    options.CancellationToken(new CancellationToken(true));
+});
+
+var constraint = engine.Constraints.Find<CancellationConstraint>();
+
+for (var i = 0; i < 10; i++) 
+{
+    using (var tcs = new CancellationTokenSource(TimeSpan.FromSeconds(10)))
+    {
+        constraint.Reset(tcs.Token);
+
+        engine.SetValue(&quot;a&quot;, 1);
+        engine.Execute(&quot;a++&quot;);
+    }
+}"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
+<span>{</span>
+    <span>options</span><span>.</span><span>CancellationToken</span><span>(</span><span>new</span> <span>CancellationToken</span><span>(</span><span>true</span><span>)</span><span>)</span><span>;</span>
+<span>}</span><span>)</span><span>;</span>
+
+<span>var</span> <span>constraint</span> <span>=</span> <span>engine</span><span>.</span><span>Constraints</span><span>.</span><span>Find</span><span>&lt;</span><span>CancellationConstraint</span><span>&gt;</span><span>(</span><span>)</span><span>;</span>
+
+<span>for</span> <span>(</span><span>var</span> <span>i</span> <span>=</span> <span>0</span><span>;</span> <span>i</span> <span>&lt;</span> <span>10</span><span>;</span> <span>i</span><span>++</span><span>)</span> 
+<span>{</span>
+    <span>using</span> <span>(</span><span>var</span> <span>tcs</span> <span>=</span> <span>new</span> <span>CancellationTokenSource</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>10</span><span>)</span><span>)</span><span>)</span>
+    <span>{</span>
+        <span>constraint</span><span>.</span><span>Reset</span><span>(</span><span>tcs</span><span>.</span><span>Token</span><span>)</span><span>;</span>
+
+        <span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"a"</span><span>,</span> <span>1</span><span>)</span><span>;</span>
+        <span>engine</span><span>.</span><span>Execute</span><span>(</span><span>"a++"</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Using Modules</h2><a id="user-content-using-modules" aria-label="Permalink: Using Modules" href="#using-modules"></a>
+<p dir="auto">You can use modules to <code>import</code> and <code>export</code> variables from multiple script files:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
+{
+    options.EnableModules(@&quot;C:\Scripts&quot;);
+});
+
+var ns = engine.Modules.Import(&quot;./my-module.js&quot;);
+
+var value = ns.Get(&quot;value&quot;).AsString();"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
+<span>{</span>
+    <span>options</span><span>.</span><span>EnableModules</span><span>(</span><span>@"C:\Scripts"</span><span>)</span><span>;</span>
+<span>}</span><span>)</span><span>;</span>
+
+<span>var</span> <span>ns</span> <span>=</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Import</span><span>(</span><span>"./my-module.js"</span><span>)</span><span>;</span>
+
+<span>var</span> <span>value</span> <span>=</span> <span>ns</span><span>.</span><span>Get</span><span>(</span><span>"value"</span><span>)</span><span>.</span><span>AsString</span><span>(</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">By default, the module resolution algorithm will be restricted to the base path specified in <code>EnableModules</code>, and there is no package support. However you can provide your own packages in two ways.</p>
+<p dir="auto">Defining modules using JavaScript source code:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="engine.Modules.Add(&quot;user&quot;, &quot;export const name = 'John';&quot;);
+
+var ns = engine.Modules.Import(&quot;user&quot;);
+
+var name = ns.Get(&quot;name&quot;).AsString();"><pre><span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Add</span><span>(</span><span>"user"</span><span>,</span> <span>"export const name = 'John';"</span><span>)</span><span>;</span>
+
+<span>var</span> <span>ns</span> <span>=</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Import</span><span>(</span><span>"user"</span><span>)</span><span>;</span>
+
+<span>var</span> <span>name</span> <span>=</span> <span>ns</span><span>.</span><span>Get</span><span>(</span><span>"name"</span><span>)</span><span>.</span><span>AsString</span><span>(</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">Defining modules using the module builder, which allows you to export CLR classes and values from .NET:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Create the module 'lib' with the class MyClass and the variable version
+engine.Modules.Add(&quot;lib&quot;, builder => builder
+    .ExportType<MyClass>()
+    .ExportValue(&quot;version&quot;, 15)
+);
+
+// Create a user-defined module and do something with 'lib'
+engine.Modules.Add(&quot;custom&quot;, @&quot;
+    import { MyClass, version } from 'lib';
+    const x = new MyClass();
+    export const result = x.doSomething();
+&quot;);
+
+// Import the user-defined module; this will execute the import chain
+var ns = engine.Modules.Import(&quot;custom&quot;);
+
+// The result contains &quot;live&quot; bindings to the module
+var id = ns.Get(&quot;result&quot;).AsInteger();"><pre><span>// Create the module 'lib' with the class MyClass and the variable version</span>
+<span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Add</span><span>(</span><span>"lib"</span><span>,</span> builder <span>=&gt;</span> <span>builder</span>
+    <span>.</span><span>ExportType</span><span>&lt;</span><span>MyClass</span><span>&gt;</span><span>(</span><span>)</span>
+    <span>.</span><span>ExportValue</span><span>(</span><span>"version"</span><span>,</span> <span>15</span><span>)</span>
+<span>)</span><span>;</span>
+
+<span>// Create a user-defined module and do something with 'lib'</span>
+<span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Add</span><span>(</span><span>"custom"</span><span>,</span> <span>@"</span>
+<span>    import { MyClass, version } from 'lib';</span>
+<span>    const x = new MyClass();</span>
+<span>    export const result = x.doSomething();</span>
+<span>"</span><span>)</span><span>;</span>
+
+<span>// Import the user-defined module; this will execute the import chain</span>
+<span>var</span> <span>ns</span> <span>=</span> <span>engine</span><span>.</span><span>Modules</span><span>.</span><span>Import</span><span>(</span><span>"custom"</span><span>)</span><span>;</span>
+
+<span>// The result contains "live" bindings to the module</span>
+<span>var</span> <span>id</span> <span>=</span> <span>ns</span><span>.</span><span>Get</span><span>(</span><span>"result"</span><span>)</span><span>.</span><span>AsInteger</span><span>(</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">Note that you don't need to <code>EnableModules</code> if you only use modules created using <code>Engine.Modules.Add</code>.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Asynchronous Execution</h2><a id="user-content-asynchronous-execution" aria-label="Permalink: Asynchronous Execution" href="#asynchronous-execution"></a>
+<p dir="auto">Jint supports non-blocking execution of JavaScript that involves <code>async</code>/<code>await</code> and Promises. This is important in ASP.NET Core and other environments where blocking a thread while waiting for I/O can cause thread-pool exhaustion.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">EvaluateAsync / ExecuteAsync / InvokeAsync</h3><a id="user-content-evaluateasync--executeasync--invokeasync" aria-label="Permalink: EvaluateAsync / ExecuteAsync / InvokeAsync" href="#evaluateasync--executeasync--invokeasync"></a>
+<p dir="auto">Use <code>EvaluateAsync</code> when you want to evaluate JavaScript code that may return a Promise (e.g., an <code>async</code> function call). The method awaits Promise settlement without blocking any thread — the calling thread is released back to the pool while I/O is in flight:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine();
+
+// Expose an async .NET method to JavaScript
+engine.SetValue(&quot;fetchData&quot;, new Func<string, Task<string>>(async url =>
+{
+    using var client = new HttpClient();
+    return await client.GetStringAsync(url);
+}));
+
+// EvaluateAsync properly awaits the Promise returned by the async IIFE
+var result = await engine.EvaluateAsync(&quot;&quot;&quot;
+    (async () => {
+        const data = await fetchData('https://example.com/api');
+        return data;
+    })()
+    &quot;&quot;&quot;);
+
+Console.WriteLine(result.AsString());"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span><span>)</span><span>;</span>
+
+<span>// Expose an async .NET method to JavaScript</span>
+<span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"fetchData"</span><span>,</span> <span>new</span> <span>Func</span><span>&lt;</span><span>string</span><span>,</span> <span>Task</span><span>&lt;</span><span>string</span><span>&gt;</span><span>&gt;</span><span>(</span><span>async</span> url <span>=&gt;</span>
+<span>{</span>
+    <span>using</span> <span>var</span> <span>client</span> <span>=</span> <span>new</span> <span>HttpClient</span><span>(</span><span>)</span><span>;</span>
+    <span>return</span> <span>await</span> <span>client</span><span>.</span><span>GetStringAsync</span><span>(</span><span>url</span><span>)</span><span>;</span>
+<span>}</span><span>)</span><span>)</span><span>;</span>
+
+<span>// EvaluateAsync properly awaits the Promise returned by the async IIFE</span>
+<span>var</span> <span>result</span> <span>=</span> <span>await</span> <span>engine</span><span>.</span><span>EvaluateAsync</span><span>(</span><span>"""</span>
+<span>    (async () =&gt; {</span>
+<span>        const data = await fetchData('https://example.com/api');</span>
+<span>        return data;</span>
+<span>    })()</span>
+<span>    """</span><span>)</span><span>;</span>
+
+<span>Console</span><span>.</span><span>WriteLine</span><span>(</span><span>result</span><span>.</span><span>AsString</span><span>(</span><span>)</span><span>)</span><span>;</span></pre></div>
+<p dir="auto"><code>ExecuteAsync</code> and <code>InvokeAsync</code> follow the same pattern:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Execute a script that may produce a Promise and await its completion
+await engine.ExecuteAsync(&quot;async function init() { ... } init()&quot;);
+
+// Invoke a named async function and await its result
+var value = await engine.InvokeAsync(&quot;myAsyncFunction&quot;, arg1, arg2);"><pre><span>// Execute a script that may produce a Promise and await its completion</span>
+<span>await</span> <span>engine</span><span>.</span><span>ExecuteAsync</span><span>(</span><span>"async function init() { ... } init()"</span><span>)</span><span>;</span>
+
+<span>// Invoke a named async function and await its result</span>
+<span>var</span> <span>value</span> <span>=</span> <span>await</span> <span>engine</span><span>.</span><span>InvokeAsync</span><span>(</span><span>"myAsyncFunction"</span><span>,</span> <span>arg1</span><span>,</span> <span>arg2</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">By default, async execution respects <code>Options.Constraints.PromiseTimeout</code>. You can also pass a <code>CancellationToken</code>:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+var result = await engine.EvaluateAsync(&quot;(async () => await fetchData(url))()&quot;, cancellationToken: cts.Token);"><pre><span>using</span> <span>var</span> <span>cts</span> <span>=</span> <span>new</span> <span>CancellationTokenSource</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>10</span><span>)</span><span>)</span><span>;</span>
+<span>var</span> <span>result</span> <span>=</span> <span>await</span> <span>engine</span><span>.</span><span>EvaluateAsync</span><span>(</span><span>"(async () =&gt; await fetchData(url))()"</span><span>,</span> <span>cancellationToken</span><span>:</span> <span>cts</span><span>.</span><span>Token</span><span>)</span><span>;</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">UnwrapIfPromiseAsync</h3><a id="user-content-unwrapifpromiseasync" aria-label="Permalink: UnwrapIfPromiseAsync" href="#unwrapifpromiseasync"></a>
+<p dir="auto">When you already hold a <code>JsValue</code> that may be a Promise — for example returned from <code>engine.Invoke(...)</code>, <code>value.Call(...)</code>, or a property access — use <code>UnwrapIfPromiseAsync</code> to await it without blocking:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Obtain a JsValue that may be a Promise
+var jsValue = engine.Invoke(&quot;computeAsync&quot;, someArg);
+
+// Await it asynchronously (non-blocking)
+var result = await jsValue.UnwrapIfPromiseAsync();
+
+// With cancellation support
+using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+var result = await jsValue.UnwrapIfPromiseAsync(cts.Token);"><pre><span>// Obtain a JsValue that may be a Promise</span>
+<span>var</span> <span>jsValue</span> <span>=</span> <span>engine</span><span>.</span><span>Invoke</span><span>(</span><span>"computeAsync"</span><span>,</span> <span>someArg</span><span>)</span><span>;</span>
+
+<span>// Await it asynchronously (non-blocking)</span>
+<span>var</span> <span>result</span> <span>=</span> <span>await</span> <span>jsValue</span><span>.</span><span>UnwrapIfPromiseAsync</span><span>(</span><span>)</span><span>;</span>
+
+<span>// With cancellation support</span>
+<span>using</span> <span>var</span> <span>cts</span> <span>=</span> <span>new</span> <span>CancellationTokenSource</span><span>(</span><span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>5</span><span>)</span><span>)</span><span>;</span>
+<span>var</span> <span>result</span> <span>=</span> <span>await</span> <span>jsValue</span><span>.</span><span>UnwrapIfPromiseAsync</span><span>(</span><span>cts</span><span>.</span><span>Token</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">If <code>jsValue</code> is not a Promise it is returned immediately. If it is a rejected Promise a <code>PromiseRejectedException</code> is thrown.</p>
+<p dir="auto">The synchronous <code>UnwrapIfPromise</code> is still available for scenarios where blocking is acceptable (e.g., CPU-bound scripts with no I/O), but <code>UnwrapIfPromiseAsync</code> should be preferred in any <code>async</code> call chain.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Task/ValueTask to Promise Interop (Experimental)</h3><a id="user-content-taskvaluetask-to-promise-interop-experimental" aria-label="Permalink: Task/ValueTask to Promise Interop (Experimental)" href="#taskvaluetask-to-promise-interop-experimental"></a>
+<p dir="auto">When the <code>TaskInterop</code> experimental feature is enabled, .NET <code>Task</code> and <code>ValueTask</code> return values are automatically converted to JavaScript Promises. This allows JavaScript code to <code>await</code> or <code>.then()</code> the results of .NET async methods without any manual wrapping:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
+{
+    options.ExperimentalFeatures = ExperimentalFeature.TaskInterop;
+});
+
+engine.SetValue(&quot;fetchData&quot;, new Func<string, Task<string>>(async url =>
+{
+    using var client = new HttpClient();
+    return await client.GetStringAsync(url);
+}));
+
+// .NET Task is automatically converted to a JavaScript Promise
+var result = engine.Evaluate(&quot;fetchData('https://example.com/api').then(data => data)&quot;);
+result = result.UnwrapIfPromise();"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
+<span>{</span>
+    <span>options</span><span>.</span><span>ExperimentalFeatures</span> <span>=</span> <span>ExperimentalFeature</span><span>.</span><span>TaskInterop</span><span>;</span>
+<span>}</span><span>)</span><span>;</span>
+
+<span>engine</span><span>.</span><span>SetValue</span><span>(</span><span>"fetchData"</span><span>,</span> <span>new</span> <span>Func</span><span>&lt;</span><span>string</span><span>,</span> <span>Task</span><span>&lt;</span><span>string</span><span>&gt;</span><span>&gt;</span><span>(</span><span>async</span> url <span>=&gt;</span>
+<span>{</span>
+    <span>using</span> <span>var</span> <span>client</span> <span>=</span> <span>new</span> <span>HttpClient</span><span>(</span><span>)</span><span>;</span>
+    <span>return</span> <span>await</span> <span>client</span><span>.</span><span>GetStringAsync</span><span>(</span><span>url</span><span>)</span><span>;</span>
+<span>}</span><span>)</span><span>)</span><span>;</span>
+
+<span>// .NET Task is automatically converted to a JavaScript Promise</span>
+<span>var</span> <span>result</span> <span>=</span> <span>engine</span><span>.</span><span>Evaluate</span><span>(</span><span>"fetchData('https://example.com/api').then(data =&gt; data)"</span><span>)</span><span>;</span>
+<span>result</span> <span>=</span> <span>result</span><span>.</span><span>UnwrapIfPromise</span><span>(</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">Without <code>TaskInterop</code>, .NET Tasks passed to JavaScript are exposed as opaque CLR objects. With it enabled, they become native Promises that support <code>await</code>, <code>.then()</code>, and <code>.catch()</code>.</p>
+<p dir="auto">You can configure the timeout for promise resolution via <code>Options.Constraints.PromiseTimeout</code>:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var engine = new Engine(options =>
+{
+    options.ExperimentalFeatures = ExperimentalFeature.TaskInterop;
+    options.Constraints.PromiseTimeout = TimeSpan.FromSeconds(10);
+});"><pre><span>var</span> <span>engine</span> <span>=</span> <span>new</span> <span>Engine</span><span>(</span>options <span>=&gt;</span>
+<span>{</span>
+    <span>options</span><span>.</span><span>ExperimentalFeatures</span> <span>=</span> <span>ExperimentalFeature</span><span>.</span><span>TaskInterop</span><span>;</span>
+    <span>options</span><span>.</span><span>Constraints</span><span>.</span><span>PromiseTimeout</span> <span>=</span> <span>TimeSpan</span><span>.</span><span>FromSeconds</span><span>(</span><span>10</span><span>)</span><span>;</span>
+<span>}</span><span>)</span><span>;</span></pre></div>
+<p dir="auto"><h2 tabindex="-1" dir="auto">.NET Interoperability</h2><a id="user-content-net-interoperability" aria-label="Permalink: .NET Interoperability" href="#net-interoperability"></a>
+<ul dir="auto">
+<li>Manipulate CLR objects from JavaScript, including:
+<ul dir="auto">
+<li>Single values</li>
+<li>Objects
+<ul dir="auto">
+<li>Properties</li>
+<li>Methods</li>
+</ul>
+</li>
+<li>Delegates</li>
+<li>Anonymous objects</li>
+</ul>
+</li>
+<li>Convert JavaScript values to CLR objects
+<ul dir="auto">
+<li>Primitive values</li>
+<li>Object -&gt; expando objects (<code>IDictionary&lt;string, object&gt;</code> and dynamic)</li>
+<li>Array -&gt; object[]</li>
+<li>Date -&gt; DateTime</li>
+<li>number -&gt; double</li>
+<li>string -&gt; string</li>
+<li>boolean -&gt; bool</li>
+<li>RegExp -&gt; Regex</li>
+<li>Function -&gt; Delegate</li>
+</ul>
+</li>
+<li>Extensions methods</li>
+</ul>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Security</h2><a id="user-content-security" aria-label="Permalink: Security" href="#security"></a>
+<p dir="auto">The following features provide you with a secure, sand-boxed environment to run user scripts.</p>
+<ul dir="auto">
+<li>Define memory limits, to prevent allocations from depleting the memory.</li>
+<li>Enable/disable usage of BCL to prevent scripts from invoking .NET code.</li>
+<li>Limit number of statements to prevent infinite loops.</li>
+<li>Limit depth of calls to prevent deep recursion calls.</li>
+<li>Define a timeout, to prevent scripts from taking too long to finish.</li>
+</ul>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Branches and releases</h2><a id="user-content-branches-and-releases" aria-label="Permalink: Branches and releases" href="#branches-and-releases"></a>
+<ul dir="auto">
+<li>The recommended branch is <strong>main</strong>, any PR should target this branch</li>
+<li>The <strong>main</strong> branch is automatically built and published on <a href="https://www.myget.org/feed/Packages/jint" rel="nofollow">MyGet</a>. Add this feed to your NuGet sources to use it: <a href="https://www.myget.org/F/jint/api/v3/index.json" rel="nofollow">https://www.myget.org/F/jint/api/v3/index.json</a></li>
+<li>The <strong>main</strong> branch is occasionally published on <a href="https://www.nuget.org/packages/jint" rel="nofollow">NuGet</a></li>
+</ul>
+</article></div></div></article></body></html>

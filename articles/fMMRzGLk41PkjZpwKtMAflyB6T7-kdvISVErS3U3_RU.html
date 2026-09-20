@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>GitHub - curiosity-ai/catalyst: &#55357;&#56960; Catalyst is a C# Natural Language Processing library built for speed. Inspired by spaCy's design, it brings pre-trained models, out-of-the box support for training word and document embeddings, and flexible entity recognition models.</title><meta name="author" content=""><meta name="description" content="🚀 Catalyst is a C# Natural Language Processing library built for speed. Inspired by spaCy's design, it brings pre-trained models, out-of-the box support for training word and document embeddings, and flexible entity recognition models. - curiosity-ai/catalyst"><meta name="dendron:source-url" content="https://github.com/curiosity-ai/catalyst"><meta name="dendron:length" content="4048"><meta name="dendron:time-to-read-minutes" content="3"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-hpc="true" containertiming="hpc"><article itemprop="text"><p dir="auto"><a href="https://www.nuget.org/packages/Catalyst/" rel="nofollow"></a> <a href="https://dev.azure.com/curiosity-ai/mosaik/_build/latest?definitionId=10&amp;branchName=master" rel="nofollow"></a></p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer nofollow" href="https://raw.githubusercontent.com/curiosity-ai/catalyst/master/Catalyst/catalyst.png?token=ACDCOAYAIML2KGJTHTJP27C5KGCEC"><img src="https://raw.githubusercontent.com/curiosity-ai/catalyst/master/Catalyst/catalyst.png?token=ACDCOAYAIML2KGJTHTJP27C5KGCEC"></a></p>
+<p dir="auto"><a href="https://curiosity.ai" rel="nofollow"><img src="https://camo.githubusercontent.com/f8f7bada75dcdcb6858a4809d676062ce6f419e546f5f1d2eb6423d36fe6aa68/68747470733a2f2f637572696f736974792e61692f6d656469612f6361742e636f6c6f722e7371756172652e737667" width="100" height="100" data-canonical-src="https://curiosity.ai/media/cat.color.square.svg"></a></p>
+<p dir="auto"><em><strong>catalyst</strong></em> is a C# Natural Language Processing library built for speed. Inspired by <a href="https://spacy.io/" rel="nofollow">spaCy's design</a>, it brings pre-trained models, out-of-the box support for training word and document embeddings, and flexible entity recognition models.</p>
+<p dir="auto"><a href="https://gitter.im/curiosityai/catalyst?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge" rel="nofollow"></a></p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">⚡ Features</h2><a id="user-content--features" aria-label="Permalink: ⚡ Features" href="#-features"></a>
+<ul dir="auto">
+<li>Fast, modern pure-C# NLP library, supporting <a href="https://docs.microsoft.com/en-us/dotnet/standard/net-standard" rel="nofollow">.NET standard 2.0</a></li>
+<li>Cross-platform, runs anywhere <a href="https://dotnet.microsoft.com/download" rel="nofollow">.NET core</a> is supported - Windows, Linux, macOS and even ARM</li>
+<li>Non-destructive <a href="https://github.com/curiosity-ai/catalyst/blob/master/Catalyst/src/Models/Base/FastTokenizer.cs">tokenization</a>, &gt;99.9% <a href="https://blog.codinghorror.com/regex-performance/" rel="nofollow">RegEx-free</a>, &gt;1M tokens/s on a modern CPU</li>
+<li>Named Entity Recognition (<a href="https://github.com/curiosity-ai/catalyst/blob/master/Catalyst/src/Models/EntityRecognition/Spotter.cs">gazeteer</a>, <a href="https://github.com/curiosity-ai/catalyst/blob/master/Catalyst/src/Models/EntityRecognition/PatternSpotter.cs">rule-based</a> &amp; <a href="https://github.com/curiosity-ai/catalyst/blob/master/Catalyst/src/Models/EntityRecognition/AveragePerceptronEntityRecognizer.cs">perceptron-based</a>)</li>
+<li>Pre-trained models based on <a href="https://universaldependencies.org/" rel="nofollow">Universal Dependencies</a> project</li>
+<li>Custom models for learning <a href="https://github.com/curiosity-ai/catalyst/blob/master/Catalyst/src/Models/Special/AbbreviationCapturer.cs">Abbreviations</a> &amp; <a href="https://github.com/curiosity-ai/catalyst/blob/master/Catalyst/src/Models/EntityRecognition/Spotter.cs#L214">Senses</a></li>
+<li>Out-of-the-box support for training <a href="https://fasttext.cc/" rel="nofollow">FastText</a> and <a href="https://github.com/facebookresearch/StarSpace">StarSpace</a> embeddings (pre-trained models coming soon)</li>
+<li>Part-of-speech tagging</li>
+<li>Language detection using <a href="https://github.com/curiosity-ai/catalyst/blob/master/Catalyst/src/Models/Special/FastTextLanguageDetector.cs">FastText</a> or <a href="https://github.com/curiosity-ai/catalyst/blob/master/Catalyst/src/Models/Special/LanguageDetector.cs">cld3</a></li>
+<li>Efficient binary serialization based on <a href="https://github.com/neuecc/MessagePack-CSharp/">MessagePack</a></li>
+<li>Pre-built models for <a href="https://www.nuget.org/packages?q=catalyst.models" rel="nofollow">language packages</a> ✨</li>
+<li>Lemmatization ✨ (using lookup tables ported from <a href="https://github.com/explosion/spacy-lookups-data">spaCy</a>)</li>
+</ul>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Language Packages ✨</h2><a id="user-content-language-packages-" aria-label="Permalink: Language Packages ✨" href="#language-packages-"></a>
+<p dir="auto">All language-specific data and models are provided as NuGet packages, you can find all packages <a href="https://www.nuget.org/packages?q=catalyst.models" rel="nofollow">here</a>.</p>
+<p dir="auto">The new models are trained on the latest release of <a href="https://universaldependencies.org/" rel="nofollow">Universal Dependencies v2.7</a>.</p>
+<p dir="auto">We've also added the option to store and load models using streams:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Creates and stores the model
+var isApattern = new PatternSpotter(Language.English, 0, tag: &quot;is-a-pattern&quot;, captureTag: &quot;IsA&quot;);
+isApattern.NewPattern(
+    &quot;Is+Noun&quot;,
+    mp => mp.Add(
+        new PatternUnit(P.Single().WithToken(&quot;is&quot;).WithPOS(PartOfSpeech.VERB)),
+        new PatternUnit(P.Multiple().WithPOS(PartOfSpeech.NOUN, PartOfSpeech.PROPN, PartOfSpeech.AUX, PartOfSpeech.DET, PartOfSpeech.ADJ))
+));
+using(var f = File.OpenWrite(&quot;my-pattern-spotter.bin&quot;))
+{
+    await isApattern.StoreAsync(f);
+}
+
+// Load the model back from disk
+var isApattern2 = new PatternSpotter(Language.English, 0, tag: &quot;is-a-pattern&quot;, captureTag: &quot;IsA&quot;);
+
+using(var f = File.OpenRead(&quot;my-pattern-spotter.bin&quot;))
+{
+    await isApattern2.LoadAsync(f);
+}"><pre><span>// Creates and stores the model</span>
+<span>var</span> <span>isApattern</span> <span>=</span> <span>new</span> <span>PatternSpotter</span><span>(</span><span>Language</span><span>.</span><span>English</span><span>,</span> <span>0</span><span>,</span> <span>tag</span><span>:</span> <span>"is-a-pattern"</span><span>,</span> <span>captureTag</span><span>:</span> <span>"IsA"</span><span>)</span><span>;</span>
+<span>isApattern</span><span>.</span><span>NewPattern</span><span>(</span>
+    <span>"Is+Noun"</span><span>,</span>
+    mp <span>=&gt;</span> <span>mp</span><span>.</span><span>Add</span><span>(</span>
+        <span>new</span> <span>PatternUnit</span><span>(</span><span>P</span><span>.</span><span>Single</span><span>(</span><span>)</span><span>.</span><span>WithToken</span><span>(</span><span>"is"</span><span>)</span><span>.</span><span>WithPOS</span><span>(</span><span>PartOfSpeech</span><span>.</span><span>VERB</span><span>)</span><span>)</span><span>,</span>
+        <span>new</span> <span>PatternUnit</span><span>(</span><span>P</span><span>.</span><span>Multiple</span><span>(</span><span>)</span><span>.</span><span>WithPOS</span><span>(</span><span>PartOfSpeech</span><span>.</span><span>NOUN</span><span>,</span> <span>PartOfSpeech</span><span>.</span><span>PROPN</span><span>,</span> <span>PartOfSpeech</span><span>.</span><span>AUX</span><span>,</span> <span>PartOfSpeech</span><span>.</span><span>DET</span><span>,</span> <span>PartOfSpeech</span><span>.</span><span>ADJ</span><span>)</span><span>)</span>
+<span>)</span><span>)</span><span>;</span>
+<span>using</span><span>(</span><span>var</span> <span>f</span> <span>=</span> <span>File</span><span>.</span><span>OpenWrite</span><span>(</span><span>"my-pattern-spotter.bin"</span><span>)</span><span>)</span>
+<span>{</span>
+    <span>await</span> <span>isApattern</span><span>.</span><span>StoreAsync</span><span>(</span><span>f</span><span>)</span><span>;</span>
+<span>}</span>
+
+<span>// Load the model back from disk</span>
+<span>var</span> <span>isApattern2</span> <span>=</span> <span>new</span> <span>PatternSpotter</span><span>(</span><span>Language</span><span>.</span><span>English</span><span>,</span> <span>0</span><span>,</span> <span>tag</span><span>:</span> <span>"is-a-pattern"</span><span>,</span> <span>captureTag</span><span>:</span> <span>"IsA"</span><span>)</span><span>;</span>
+
+<span>using</span><span>(</span><span>var</span> <span>f</span> <span>=</span> <span>File</span><span>.</span><span>OpenRead</span><span>(</span><span>"my-pattern-spotter.bin"</span><span>)</span><span>)</span>
+<span>{</span>
+    <span>await</span> <span>isApattern2</span><span>.</span><span>LoadAsync</span><span>(</span><span>f</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto"><h2 tabindex="-1" dir="auto">✨ Getting Started</h2><a id="user-content--getting-started" aria-label="Permalink: ✨ Getting Started" href="#-getting-started"></a>
+<p dir="auto">Using <em><strong>catalyst</strong></em> is as simple as installing its <a href="https://www.nuget.org/packages/Catalyst" rel="nofollow">NuGet Package</a>, and setting the storage to use our online repository. This way, models will be lazy loaded either from disk or downloaded from our online repository. <strong>Check out also some of the <a href="https://github.com/curiosity-ai/catalyst/tree/master/samples">sample projects</a></strong> for more examples on how to use <em><strong>catalyst</strong></em>.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="Catalyst.Models.English.Register(); //You need to pre-register each language (and install the respective NuGet Packages)
+
+Storage.Current = new DiskStorage(&quot;catalyst-models&quot;);
+var nlp = await Pipeline.ForAsync(Language.English);
+var doc = new Document(&quot;The quick brown fox jumps over the lazy dog&quot;, Language.English);
+nlp.ProcessSingle(doc);
+Console.WriteLine(doc.ToJson());"><pre><span>Catalyst</span><span>.</span><span>Models</span><span>.</span><span>English</span><span>.</span><span>Register</span><span>(</span><span>)</span><span>;</span> <span>//You need to pre-register each language (and install the respective NuGet Packages)</span>
+
+<span>Storage</span><span>.</span><span>Current</span> <span>=</span> <span>new</span> <span>DiskStorage</span><span>(</span><span>"catalyst-models"</span><span>)</span><span>;</span>
+<span>var</span> <span>nlp</span> <span>=</span> <span>await</span> <span>Pipeline</span><span>.</span><span>ForAsync</span><span>(</span><span>Language</span><span>.</span><span>English</span><span>)</span><span>;</span>
+<span>var</span> <span>doc</span> <span>=</span> <span>new</span> <span>Document</span><span>(</span><span>"The quick brown fox jumps over the lazy dog"</span><span>,</span> <span>Language</span><span>.</span><span>English</span><span>)</span><span>;</span>
+<span>nlp</span><span>.</span><span>ProcessSingle</span><span>(</span><span>doc</span><span>)</span><span>;</span>
+<span>Console</span><span>.</span><span>WriteLine</span><span>(</span><span>doc</span><span>.</span><span>ToJson</span><span>(</span><span>)</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">You can also take advantage of C# lazy evaluation and native multi-threading support to process a large number of documents in parallel:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var docs = GetDocuments();
+var parsed = nlp.Process(docs);
+DoSomething(parsed);
+
+IEnumerable<IDocument> GetDocuments()
+{
+    //Generates a few documents, to demonstrate multi-threading &amp; lazy evaluation
+    for(int i = 0; i < 1000; i++)
+    {
+        yield return new Document(&quot;The quick brown fox jumps over the lazy dog&quot;, Language.English);
+    }
+}
+
+void DoSomething(IEnumerable<IDocument> docs)
+{
+    foreach(var doc in docs)
+    {
+        Console.WriteLine(doc.ToJson());
+    }
+}"><pre><span>var</span> <span>docs</span> <span>=</span> <span>GetDocuments</span><span>(</span><span>)</span><span>;</span>
+<span>var</span> <span>parsed</span> <span>=</span> <span>nlp</span><span>.</span><span>Process</span><span>(</span><span>docs</span><span>)</span><span>;</span>
+<span>DoSomething</span><span>(</span><span>parsed</span><span>)</span><span>;</span>
+
+<span>IEnumerable</span><span>&lt;</span><span>IDocument</span><span>&gt;</span> <span>GetDocuments</span><span>(</span><span>)</span>
+<span>{</span>
+    <span>//Generates a few documents, to demonstrate multi-threading &amp; lazy evaluation</span>
+    <span>for</span><span>(</span><span>int</span> <span>i</span> <span>=</span> <span>0</span><span>;</span> <span>i</span> <span>&lt;</span> <span>1000</span><span>;</span> <span>i</span><span>++</span><span>)</span>
+    <span>{</span>
+        <span>yield</span> <span>return</span> <span>new</span> <span>Document</span><span>(</span><span>"The quick brown fox jumps over the lazy dog"</span><span>,</span> <span>Language</span><span>.</span><span>English</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span>
+
+<span>void</span> <span>DoSomething</span><span>(</span><span>IEnumerable</span><span>&lt;</span><span>IDocument</span><span>&gt;</span> <span>docs</span><span>)</span>
+<span>{</span>
+    <span>foreach</span><span>(</span><span>var</span> <span>doc</span> <span>in</span> <span>docs</span><span>)</span>
+    <span>{</span>
+        <span>Console</span><span>.</span><span>WriteLine</span><span>(</span><span>doc</span><span>.</span><span>ToJson</span><span>(</span><span>)</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto">Training a new <a href="https://fasttext.cc/" rel="nofollow">FastText</a> <a href="https://en.wikipedia.org/wiki/Word2vec" rel="nofollow">word2vec</a> embedding model is as simple as this:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="var nlp = await Pipeline.ForAsync(Language.English);
+var ft = new FastText(Language.English, 0, &quot;wiki-word2vec&quot;);
+ft.Data.Type = FastText.ModelType.CBow;
+ft.Data.Loss = FastText.LossType.NegativeSampling;
+ft.Train(nlp.Process(GetDocs()));
+ft.StoreAsync();"><pre><span>var</span> <span>nlp</span> <span>=</span> <span>await</span> <span>Pipeline</span><span>.</span><span>ForAsync</span><span>(</span><span>Language</span><span>.</span><span>English</span><span>)</span><span>;</span>
+<span>var</span> <span>ft</span> <span>=</span> <span>new</span> <span>FastText</span><span>(</span><span>Language</span><span>.</span><span>English</span><span>,</span> <span>0</span><span>,</span> <span>"wiki-word2vec"</span><span>)</span><span>;</span>
+<span>ft</span><span>.</span><span>Data</span><span>.</span><span>Type</span> <span>=</span> <span>FastText</span><span>.</span><span>ModelType</span><span>.</span><span>CBow</span><span>;</span>
+<span>ft</span><span>.</span><span>Data</span><span>.</span><span>Loss</span> <span>=</span> <span>FastText</span><span>.</span><span>LossType</span><span>.</span><span>NegativeSampling</span><span>;</span>
+<span>ft</span><span>.</span><span>Train</span><span>(</span><span>nlp</span><span>.</span><span>Process</span><span>(</span><span>GetDocs</span><span>(</span><span>)</span><span>)</span><span>)</span><span>;</span>
+<span>ft</span><span>.</span><span>StoreAsync</span><span>(</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">For fast embedding search, we have also released a C# version of the <a href="https://arxiv.org/abs/1603.09320" rel="nofollow">"Hierarchical Navigable Small World" (HNSW)</a> algorithm on <a href="https://www.nuget.org/packages/HNSW/" rel="nofollow">NuGet</a>, based on our fork of Microsoft's <a href="https://github.com/curiosity-ai/hnsw.net">HNSW.Net</a>. We have also released a C# version of the "Uniform Manifold Approximation and Projection" (<a href="https://umap-learn.readthedocs.io/en/latest/how_umap_works.html" rel="nofollow">UMAP</a>) algorithm for dimensionality reduction on <a href="https://github.com/curiosity-ai/umap-csharp">GitHub</a> and on <a href="https://www.nuget.org/packages/UMAP/" rel="nofollow">NuGet</a>.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">📖 Links</h2><a id="user-content--links" aria-label="Permalink: 📖 Links" href="#-links"></a>
+<markdown-accessiblity-table><table>
+<thead>
+<tr>
+<th>Documentation</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/curiosity-ai/catalyst/blob/master/CONTRIBUTING.md">Contribute</a></td>
+<td>How to contribute to <em><strong>catalyst</strong></em> codebase.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/curiosity-ai/catalyst/tree/master/samples">Samples</a></td>
+<td>Sample projects demonstrating <em><strong>catalyst</strong></em> capabilities</td>
+</tr>
+<tr>
+<td><a href="https://gitter.im/curiosityai/catalyst?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge" rel="nofollow"></a></td>
+<td>Join our gitter channel</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+</article></div></div></article></body></html>

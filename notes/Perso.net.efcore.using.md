@@ -3,8 +3,8 @@ id: Perso.net.efcore.using
 title: Perso.net.efcore.using
 desc: using EF Core
 updated: 1711623841252
-created: 0
 ---
+
 # How to configure EF Core.
 
 ## Create some entity clases

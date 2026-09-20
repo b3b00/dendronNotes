@@ -3,8 +3,8 @@ id: Perso.projects.archiViewer
 title: Perso.projects.archiViewer
 desc: Architecture viewer
 updated: 1750679505085
-created: 0
 ---
+
 # goal
 
 Modern micro service architecture can quickly become hard to grasp.

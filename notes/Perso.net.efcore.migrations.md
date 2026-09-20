@@ -3,8 +3,8 @@ id: Perso.net.efcore.migrations
 title: Perso.net.efcore.migrations
 desc: EF Core migrations
 updated: 1714740490269
-created: 0
 ---
+
 # Ef dotnet tool
 
 la génération des migrations de base EF utilise un outil dotnet 

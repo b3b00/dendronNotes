@@ -3,8 +3,8 @@ id: Perso.projects.console-interactive
 title: Perso.projects.console-interactive
 desc: Interactive Console
 updated: 1755095004023
-created: 0
 ---
+
 # What
 
 A nuget to easily create interactive console application.

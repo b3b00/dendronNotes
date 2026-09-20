@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.perfs.bench-csly-variants.json
 title: Perso.projects.CSLY.perfs.bench-csly-variants.json
 desc: JSON benchs
 updated: 1779309228459
-created: 0
 ---
+
 | Method        | Type | Mean           | Error         | StdDev        | Median         | Gen0     | Gen1     | Allocated  |
 |-------------- |----- |---------------:|--------------:|--------------:|---------------:|---------:|---------:|-----------:|
 | **TestCsly**      | **Big**  | **3,633,735.7 ns** | **131,051.04 ns** | **365,317.95 ns** | **3,503,082.2 ns** | **675.7813** | **582.0313** | **8291.02 KB** |

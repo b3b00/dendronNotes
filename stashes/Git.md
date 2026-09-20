@@ -2,10 +2,8 @@
 id: 76127ae3-29f8-41de-9ed7-a342fbb81cef
 title: Git
 desc: Git tips
-updated: 1784286630
-created: 1769795609
 ---
-
+__________
 # tags
 
 ## Delete
@@ -19,8 +17,8 @@ Remote
 ```bash
 git tag origin mytag -- delete
 ```
-______________
 
+__________
 # commits
 
 ## undo
@@ -36,8 +34,8 @@ git config --global alias.undo-commit 'reset HEAD~1'
 git config --global alias.undo-commit-hard 'reset --hard HEAD~1'
 
 ```
-______________
 
+__________
 # branches
 
 ## rename
@@ -71,8 +69,8 @@ git push $remote $new_name
 git push $remote -u $new_name
 
 ```
-______________
 
+__________
 # unlock refs
 
 ```bash

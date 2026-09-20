@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.generator.note
 title: Perso.projects.CSLY.generator.note
 desc: Expressions
 updated: 1764508232271
-created: 0
 ---
+
 # expressions parsing
 
 # parser

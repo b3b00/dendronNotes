@@ -2,9 +2,8 @@
 id: Perso.projects.data-manipulator
 title: Perso.projects.data-manipulator
 desc: Data manipulator
-updated: 0
-created: 0
 ---
+
 # Description
 
 a tool that allows data manipulation :

@@ -3,8 +3,8 @@ id: Perso.projects.CSLY.generator. wip
 title: Perso.projects.CSLY.generator. wip
 desc: Todo
 updated: 1765095403323
-created: 0
 ---
+
 ## Top Priority
 
 * [ ] errors

@@ -2,8 +2,6 @@
 id: Perso.projects.dendronlike.features.shortcuts
 title: Perso.projects.dendronlike.features.shortcuts
 desc: Shortcuts
-updated: 0
-created: 0
 ---
 
 

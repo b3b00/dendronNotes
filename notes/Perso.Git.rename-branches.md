@@ -2,9 +2,8 @@
 id: Perso.Git.rename-branches
 title: Perso.Git.rename-branches
 desc: git rename branches
-updated: 0
-created: 0
 ---
+
 # How to rename branches.
 
 ## local 

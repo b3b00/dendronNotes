@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Laurence Tratt: Which Parsing Approach?</title><meta name="author" content=""><meta name="description" content="We all know that parsing is an important part of designing and implementing
+programming languages, but it’s the equivalent of Brussels sprouts: good for
+the diet, but a taste that only a select few enjoy. Unfortunately, I’ve come to
+realise that our general distaste for parsing is problematic. While many of us
+think that we’ve absorbed the advances of the 1960s into our collective
+understanding, I fear that we have regressed, and that we are often making
+inappropriate decisions about parsing. If that sounds accusatory, I
+don’t mean it to be: I spent over 20 years assuming
+that parsing is easy and that I didn’t need to understand it properly in
+order to use it well. Alas, reality has been a cruel teacher, and in this
+post I want to share some of the lessons I’ve been forced to slowly learn and
+acknowledge."><meta name="dendron:source-url" content="https://tratt.net/laurie/blog/2020/which_parsing_approach.html"><meta name="dendron:length" content="46412"><meta name="dendron:time-to-read-minutes" content="37"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div id="article-body"><p>We all know that parsing is an important part of designing and implementing
+programming languages, but it’s the equivalent of Brussels sprouts: good for
+the diet, but a taste that only a select few enjoy. Unfortunately, I’ve come to
+realise that our general distaste for parsing is problematic. While many of us
+think that we’ve absorbed the advances of the 1960s into our collective
+understanding, I fear that we have regressed, and that we are often making
+inappropriate decisions about parsing. If that sounds accusatory, I
+don’t mean it to be: I spent over 20 years assuming
+that parsing is easy and that I didn’t need to understand it properly in
+order to use it well. Alas, reality has been a cruel teacher, and in this
+post I want to share some of the lessons I’ve been forced to slowly learn and
+acknowledge.</p><p>Let’s start with the basics. A <em>grammar</em> encodes the syntax rules for a given language.
+Parsing is the act of taking in an input (e.g.
+a source file) and determining if, and how, it corresponds to a grammar. At its
+most basic level, parsing just says “this input does/doesn’t correspond to the
+grammar”. That’s rarely useful for programming languages, so we normally
+execute <em>semantic actions</em> while parsing, allowing us to, for example,
+build a parse tree that represents the input as a tree. If I have a
+simple calculator grammar and the input <code>2-3*4</code> I might get back
+a tree that looks like the following:</p><p></p><p>For the rest of this post, I’ll represent trees as “pretty printed text”, where
+brackets allow us to succinctly express how the tree is structured. For example
+the above tree is equivalent to <code>(2-(3*4))</code>. I’m going to assume
+that “parsing” means “check correspondence to the grammar and build a parse
+tree”. I’m also going to simplify other parsing jargon and nomenclature
+whenever I can, to try and keep things somewhat comprehensible and the length
+somewhat manageable.</p><h2><a name="recursive_descent"></a>Recursive descent</h2><p>There are a bewildering number of ways that one can parse an input, so I’ll
+start with what is probably the most common: a hand-written parser.
+While that could mean just about anything, nearly everyone who writes a
+half-decent hand-written parser, whether they know it or not, is writing a
+<em>recursive descent</em> parser<span><a name="75d2500edd69use"></a>1</span>. The
+idea is relatively simple: one writes a series of functions which examine the
+input string at a given position and, if they match at that position,
+advance the parse. For example, <a href="https://tratt.net/laurie/blog/files/which_parsing_approach/recursive_descent.py">a first attempt at a recursive descent parser in Python that can parse the simple calculator language above might look as follows</a>:</p><pre><span>NUMBERS </span><span>= ["</span><span>0</span><span>", "</span><span>1</span><span>", "</span><span>2</span><span>", "</span><span>3</span><span>", "</span><span>4</span><span>", "</span><span>5</span><span>", "</span><span>6</span><span>", "</span><span>7</span><span>", "</span><span>8</span><span>", "</span><span>9</span><span>"]
+</span><span>OPERATORS </span><span>= ["</span><span>-</span><span>", "</span><span>*</span><span>"]
+</span><span>
+</span><span>class </span><span>Number</span><span>:
+</span><span>  </span><span>def </span><span>__init__</span><span>(</span><span>self</span><span>, </span><span>n</span><span>): </span><span>self</span><span>.n = n
+</span><span>  </span><span>def </span><span>__str__</span><span>(</span><span>self</span><span>): </span><span>return </span><span>str(</span><span>self</span><span>.n)
+</span><span>class </span><span>Mul</span><span>:
+</span><span>  </span><span>def </span><span>__init__</span><span>(</span><span>self</span><span>, </span><span>lhs</span><span>, </span><span>rhs</span><span>):
+</span><span>    </span><span>self</span><span>.lhs = lhs
+</span><span>    </span><span>self</span><span>.rhs = rhs
+</span><span>  </span><span>def </span><span>__str__</span><span>(</span><span>self</span><span>): </span><span>return </span><span>"</span><span>(</span><span>%s</span><span>*</span><span>%s</span><span>)</span><span>" % (str(</span><span>self</span><span>.lhs), str(</span><span>self</span><span>.rhs))
+</span><span>class </span><span>Sub</span><span>:
+</span><span>  </span><span>def </span><span>__init__</span><span>(</span><span>self</span><span>, </span><span>lhs</span><span>, </span><span>rhs</span><span>):
+</span><span>    </span><span>self</span><span>.lhs = lhs
+</span><span>    </span><span>self</span><span>.rhs = rhs
+</span><span>  </span><span>def </span><span>__str__</span><span>(</span><span>self</span><span>): </span><span>return </span><span>"</span><span>(</span><span>%s</span><span>-</span><span>%s</span><span>)</span><span>" % (str(</span><span>self</span><span>.lhs), str(</span><span>self</span><span>.rhs))
+</span><span>
+</span><span>def </span><span>parse_expr</span><span>(</span><span>s</span><span>, </span><span>i</span><span>):
+</span><span>  </span><span>if </span><span>s[i] not in </span><span>NUMBERS</span><span>:
+</span><span>    </span><span>return
+</span><span>  j = i
+</span><span>  </span><span>while </span><span>j &lt; </span><span>len</span><span>(s) and s[j] in </span><span>NUMBERS</span><span>:
+</span><span>    j += </span><span>1
+</span><span>  lhs = </span><span>Number</span><span>(s[i:j])
+</span><span>  </span><span>if </span><span>j == </span><span>len</span><span>(s) or s[j] not in </span><span>OPERATORS</span><span>:
+</span><span>    </span><span>return </span><span>(j + </span><span>1</span><span>, lhs)
+</span><span>  op = s[j]
+</span><span>  r = </span><span>parse_expr</span><span>(s, j + </span><span>1</span><span>)
+</span><span>  </span><span>if </span><span>r is </span><span>None</span><span>:
+</span><span>    </span><span>return
+</span><span>  (i, rhs) = r
+</span><span>  </span><span>if </span><span>op == "</span><span>-</span><span>":
+</span><span>    </span><span>return </span><span>(i, </span><span>Sub</span><span>(lhs, rhs))
+</span><span>  </span><span>else</span><span>:
+</span><span>    </span><span>assert </span><span>op == "</span><span>*</span><span>"
+</span><span>    </span><span>return </span><span>(i, </span><span>Mul</span><span>(lhs, rhs))
+</span><span>
+</span><span>def </span><span>parse</span><span>(</span><span>s</span><span>):
+</span><span>  r = </span><span>parse_expr</span><span>(s, </span><span>0</span><span>)
+</span><span>  </span><span>if </span><span>r is </span><span>None </span><span>or r[</span><span>0</span><span>] &lt;= </span><span>len</span><span>(s):
+</span><span>    </span><span>return </span><span>"</span><span>Syntax error</span><span>"
+</span><span>  </span><span>return </span><span>r[</span><span>1</span><span>]
+</span><span>
+</span><span>print</span><span>(</span><span>parse</span><span>("</span><span>2-3*4</span><span>"))
+</span></pre><p>The idea is relatively simple: we have a string ‘<code>s</code>’ we’re parsing,
+with the variable ‘<code>i</code>’ telling us how far we’ve parsed so far. If
+it was able to parse part of the input starting at ‘<code>i</code>’ then the
+<code>parse_expr</code> function returns a pair <code>(i, tree)</code> telling
+us how far it parsed and giving us back the tree it created; if it failed it
+returns <code>None</code>. When I parse <code>2-3*4</code> it prints:</p><pre><span>(2-(3*4))
+</span></pre><p>In other words, if we were to evaluate that tree, we’d get a result of -10 –
+success! Admittedly, that has come at a cost: the recursive descent parser has
+quite a lot of boiler-plate to ensure that it doesn’t do something silly and
+that any syntax errors encountered cause parsing to stop. For example, if you
+remove the check on lines 40 and 41, then <code>2abc</code> will parse successfully
+returning <code>Number(2)</code>, ignoring the fact that
+<code>abc</code> couldn’t be parsed! There are ways to reduce the boilerplate,
+but if you write recursive descent parsers for a living, you have to learn to
+live with it.</p><p>Unfortunately, if I try parsing <code>2*3-4</code> I get a surprising
+result:</p><pre><span>(2*(3-4))
+</span></pre><p>We’ve all been taught from a young age that the grammar of mathematics requires
+‘<code>*</code>’ to “bind harder” than ‘<code>-</code>’. Put more formally,
+‘<code>*</code>’ is said to have a <em>higher precedence</em> than
+‘<code>-</code>’. Unfortunately, my hand-written recursive descent parser has
+given both operators the same precedence. If I was to evaluate that tree, I’d
+get -2 instead of the 2 we’d have expected from the original expression.</p><p>Fortunately, there’s a fairly standard way to encode operator precedence
+which, in the style of the above parser, <a href="https://tratt.net/laurie/blog/files/which_parsing_approach/recursive_descent_precedence.py">can be written as follows</a>:</p><pre><span>def </span><span>parse_expr</span><span>(</span><span>s</span><span>, </span><span>i</span><span>):
+</span><span>  r = </span><span>parse_factor</span><span>(s, i)
+</span><span>  </span><span>if </span><span>r is </span><span>None</span><span>:
+</span><span>    </span><span>return
+</span><span>  (i, lhs) = r
+</span><span>  </span><span>if </span><span>i &lt; </span><span>len</span><span>(s) and s[i] == "</span><span>-</span><span>":
+</span><span>    r = </span><span>parse_expr</span><span>(s, i + </span><span>1</span><span>)
+</span><span>    </span><span>if </span><span>r is </span><span>None</span><span>:
+</span><span>      </span><span>return
+</span><span>    (i, rhs) = r
+</span><span>    </span><span>return </span><span>(i, </span><span>Sub</span><span>(lhs, rhs))
+</span><span>  </span><span>return </span><span>(i, lhs)
+</span><span>
+</span><span>def </span><span>parse_factor</span><span>(</span><span>s</span><span>, </span><span>i</span><span>):
+</span><span>  r = </span><span>parse_term</span><span>(s, i)
+</span><span>  </span><span>if </span><span>r is </span><span>None</span><span>:
+</span><span>    </span><span>return </span><span>None
+</span><span>  (i, lhs) = r
+</span><span>  </span><span>if </span><span>i &lt; </span><span>len</span><span>(s) and s[i] == "</span><span>*</span><span>":
+</span><span>    r = </span><span>parse_factor</span><span>(s, i + </span><span>1</span><span>)
+</span><span>    </span><span>if </span><span>r is </span><span>None</span><span>:
+</span><span>      </span><span>return
+</span><span>    (i, rhs) = r
+</span><span>    </span><span>return </span><span>(i, </span><span>Mul</span><span>(lhs, rhs))
+</span><span>  </span><span>return </span><span>(i, lhs)
+</span><span>
+</span><span>def </span><span>parse_term</span><span>(</span><span>s</span><span>, </span><span>i</span><span>):
+</span><span>  </span><span>if </span><span>s[i] not in </span><span>NUMBERS</span><span>:
+</span><span>    </span><span>return
+</span><span>  j = i
+</span><span>  </span><span>while </span><span>j &lt; </span><span>len</span><span>(s) and s[j] in </span><span>NUMBERS</span><span>:
+</span><span>    j += </span><span>1
+</span><span>  </span><span>return </span><span>(j, </span><span>Number</span><span>(s[i:j]))
+</span><span>
+</span><span>def </span><span>parse</span><span>(</span><span>s</span><span>):
+</span><span>  r = </span><span>parse_expr</span><span>(s, </span><span>0</span><span>)
+</span><span>  </span><span>if </span><span>r is </span><span>None </span><span>or r[</span><span>0</span><span>] &lt;= </span><span>len</span><span>(s):
+</span><span>    </span><span>return </span><span>"</span><span>Syntax error</span><span>"
+</span><span>  </span><span>return </span><span>r[</span><span>1</span><span>]
+</span></pre><p>If I parse these expressions:</p><pre><span>print</span><span>(</span><span>parse</span><span>("</span><span>2-3*4</span><span>"))
+</span><span>print</span><span>(</span><span>parse</span><span>("</span><span>2*3-4</span><span>"))
+</span></pre><p>I can see that I get the expected output:</p><pre><span>(2-(3*4))
+</span><span>((2*3)-4)
+</span></pre><p>Success at last! Well, not quite, because if I parse <code>2-3-4</code> I
+get another surprising result:</p><pre><span>(2-(3-4))
+</span></pre><p>Unfortunately, as this example shows, we’re incorrectly parsing operators as
+<em>right associative</em> when they should be <em>left associative</em>. In
+other words, when we see a sequence of subtractions, earlier subtractions should
+be matched before later subtractions. Fixing this
+might seem like it’s easy, but it’s not: the “obvious” way of implementing
+left associativity in a recursive descent parser causes an infinite loop.
+Fixing that is more involved than I want to get into here: <a href="https://web.archive.org/web/20191231231734/www.engr.mun.ca/~theo/Misc/exp_parsing.htm">see this page for an approachable summary of solutions to this problem.</a></p><p>It might be tempting to see these problems as the result of an idiot (me)
+writing a parser for a language they don’t sufficiently understand (mathematics). I hope
+you can see that there’s also something deeper going on. The underlying problem is that
+the grammar I wanted to write is <em>ambiguous</em>: <code>2-3*4</code> can be parsed as
+equivalent to <code>2-(3*4)</code> or <code>(2-3)*4</code>. It is often said that
+recursive descent parsers are inherently unambiguous. While true, this
+makes a virtue out of a vice: recursive descent parsers are unambiguous simply
+because they ignore ambiguities. Put another way, whenever a recursive descent parser
+encounters a point at run-time where an input can be parsed ambiguously, it arbitrarily
+chooses one of the possibilities, and charges onwards as if the other
+possibilities had never existed. Significantly, the parser author is not
+notified that this happened. Since recursive descent parsers are just normal programs,
+it’s unlikely that we’ll ever be able to make a static analysis that can
+take such a parser and reliably tell us at compile-time all the points of ambiguity.</p><p>It is therefore probably not a coincidence that recursive descent parsers
+have no real “theory”. Notably, they do not
+have any known relationship to the class of grammars we understand best
+— <a href="https://en.wikipedia.org/wiki/Context-free_grammar">Context-Free Grammars</a> (CFGs). For example, we do not know, in general, the
+language which a recursive descent parser will accept: all we can do is
+throw ever more inputs at it and observe if, and how, it parses them, never
+knowing if another input will cause a surprising parse.</p><p>Over time, I’ve come to view recursive descent as the parsing equivalent of
+assembly programming: maximum flexibility, maximum performance, and maximum
+danger. Every non-trivial recursive descent parser I’ve seen converted
+to another formalism has led to unexpected ambiguities being uncovered.
+Sometimes this leads to incorrect
+parses (as above), but it just as often leads to seemingly correct input not
+being parsed at all<span><a name="75961a403b07use"></a>2</span>. There are good reasons
+for using recursive descent parsers (I’ll get to those later), but, in my opinion,
+if another formalism can be used, it generally should be.</p><h2><a name="generalised_parsers"></a>Generalised parsers</h2><p>At the opposite end of the spectrum are what have come to be called
+<em>generalised parsers</em>. There are various generalised parsing algorithms
+(e.g. <a href="https://en.wikipedia.org/wiki/Earley_parser">Earley</a>, <a href="http://www.cs.rhul.ac.uk/research/languages/csle/GLLparsers.html">GLL</a>,
+and <a href="https://en.wikipedia.org/wiki/GLR_parser">GLR</a>) but, from the
+perspective of this post, they’re all
+equivalent. Each can parse any CFG (so they rest on a solid theory), even
+ambiguous ones (so you don’t have to worry about contorting your grammar), and
+they guarantee to tell you where all of the ambiguous points in the grammar are
+at run-time (so you don’t have to worry about things being unexpectedly
+mis-parsed).</p><p>These properties appear to make generalised parsing the solution to the
+problems noted above with recursive descent parsers. However, this comes at a cost.
+Consider the following grammar which, once again, parses the little subset of
+mathematics we’re using as an example:</p><pre><span>Expr: Expr "-" Expr
+</span><span>    | Expr "*" Expr
+</span><span>    | "INT"
+</span><span>    ;
+</span></pre><p>Given that grammar, many readers will have spotted an obvious point of
+ambiguity: <code>2-3*4</code> can be parsed as equivalent to
+<code>(2-3)*4</code> or <code>2-(3*4)</code>. Generalised parsers are
+interesting because they generate both possibilities at run-time. It is
+possible for such parsers to return a “parse forest” (i.e. showing all the
+ambiguous possibilities), but that’s not very useful for programming languages:
+we expect compilers to settle on a single meaning for the programs
+we throw at them. We thus need to <em>disambiguate</em> the ambiguous possibilities so that
+we end up with a single parse tree. An easy way of doing this is to assign
+a <em>precedence</em> to a rule’s productions so that if, at one point in the
+parse, more than one of its productions match, we can pick the one with the
+highest precedence. For example, I might rewrite my grammar to look as follows:</p><pre><span>Expr: Expr "-" Expr %precedence 10
+</span><span>    | Expr "*" Expr %precedence 20
+</span><span>    | "INT"
+</span><span>    ;
+</span></pre><p>Assuming that “higher” precedences mean “bind tighter”, this will then parse
+<code>2-3*4</code> as equivalent to <code>2-(3*4)</code>.</p><p>My experience is that fewer people (including, from bitter experience,
+me) spot a second ambiguity in the above grammar: 2-3-4 can be parsed as left
+(i.e. <code>(2-3)-4</code>) or right (i.e. <code>2-(3-4)</code>) associative
+(because of rules such as <code>Expr "-" Expr</code>). Unfortunately,
+precedences are not sufficient to disambiguate between those two possibilities:
+one either needs to rewrite the grammar or use a different disambiguation
+operator<span><a name="494f17e7223fuse"></a>3</span>.</p><p>While the good news is that a generalised parser will reliably tell us at
+run-time that it encountered an ambiguity, the bad news is that we
+generally have to wait until we encounter an input that is parsed ambiguously
+to discover that our grammar is ambiguous. There are <a href="http://navkrish.net/pubs/vasudevan_tratt__detecting_ambiguity_in_programming_language_grammars.pdf">some decent heuristics</a> that will statically find many of the points of
+ambiguity, but they are just that — heuristics.</p><p>Over time, I’ve come to view generalised parsing as equivalent to
+dynamic typing: expressive and safe, but with more errors than necessary
+being deferred to run-time. I spent years trying to write arbitrary CFGs but,
+for complex grammars, I continually struggled to squeeze out all of the ambiguities<span><a name="3233f31940a5use"></a>4</span>. I did not encounter a user
+who was happy with, or anything other than startled by, ambiguity errors:
+it is rather odd to be told that your input is valid but can’t be parsed.
+That said, I think generalised
+parsers have a part to play in language composition, where
+composing different grammars inherently leads to ambiguity. However, I no
+longer believe that generalised parsing is a good fit for “normal” parsing.</p><h2><a name="statically_unambiguous_parsing"></a>Statically unambiguous parsing</h2><p>There are several parsing approaches which statically rule out ambiguity,
+bypassing one of the fundamental problems with generalised parsing. I’ll describe
+the two best known: LL and LR. In essence, these approaches describe subsets
+of the CFGs which provably contain only unambiguous grammars.
+It’s common to describe grammars which adhere to one of these subsets as being
+“a valid LL grammar” or similar.</p><p>However, as far as we know, it is not possible to define the complete subset
+of unambiguous CFGs, so there are unambiguous grammars which do not fit into
+these subsets. I thus find it easiest to think of these approaches as being
+analogous to a static type system: they are sound (i.e. if a grammar is a valid
+LL/LR grammar, it really is unambiguous) but not complete (some unambiguous
+grammars aren’t valid LL/LR grammars).</p><h2><a name="ll_parsing"></a>LL parsing</h2><p>Although less common than in the past, LL parsing still underlies
+systems such as <a href="https://javacc.github.io/javacc/">javacc</a>. My personal
+bias is that LL parsers are largely unappealing, because the lack of left
+recursion makes expressing many standard programming language constructs as
+awkward as with recursive descent parsers. However, as hinted at by that
+commonality, LL grammars have one important feature: they naturally map to
+recursive descent parsers (but not necessarily vice versa). One can therefore
+ensure that a recursive descent parser is not accidentally steamrollering
+over ambiguities by creating an LL grammar and faithfully mapping it to a recursive
+descent parser.</p><p>To my mind, the combination of LL and recursive descent parser has a small
+but important niche: if
+you really, truly need the highest possible performance and/or you want the
+best possible error messages, this is probably the best route we know of. However, it
+comes at a significant cost. For a realistic programming language grammar, it
+will typically take many person months of effort<span><a name="90dc7659b325use"></a>5</span> to beat an automatically
+generated parser. I therefore think this
+approach only makes sense for a small number of projects (notably
+industrial-strength compilers and IDEs).</p><h2><a name="lr_parsing_prelude"></a>LR parsing: prelude</h2><p>The last of the major parsing approaches I’m going to look at is LR parsing.
+In common with many people, I spent years trying to avoid LR parsing because I
+had imbibed the common idea that LR parsing is a terrible thing.
+Instead I threw myself into other parsing approaches, notably Earley parsers<span><a name="aa98ae63182cuse"></a>6</span>.</p><p>Then, in late 2008, while bored in meetings, I started writing <a href="https://tratt.net/laurie/src/extsmail">extsmail</a>, a program mostly intended to send
+email via ssh. I thought it would be interesting to write
+this in the style of a traditional Unix daemon, something I had not attempted
+before. For the two configuration files extsmail needs, I therefore decided to use the
+traditional Unix daemon parsing tool Yacc. Not only had I not used Yacc before,
+I had neither used nor studied LR parsing — I suspected I would have
+quite a task on my hand. I was rather surprised when it turned out to be
+easy to write a grammar such as <a href="https://github.com/ltratt/extsmail/blob/master/externals_parser.y">externals_parser.y</a>.</p><p>However, I assumed that I had been lucky with these grammars, which are
+rather simple, and went back to avoiding LR parsing. Having realised that
+generalised parsing and ambiguity were causing me problems, I spent quite a while
+<a href="https://tratt.net/laurie/research/pubs/html/tratt__direct_left_recursive_parsing_expression_grammars/">dabbling with PEG parsing</a> (which is recursive descent in disguise)
+before eventually realising that was going to cause me different, but
+no less severe, problems relative to generalised parsing.</p><p>Later I stumbled across<span><a name="e24e190be585use"></a>7</span> <a href="https://web.archive.org/web/20150920220626/http://harmonia.cs.berkeley.edu/papers/twagner-thesis.pdf">Tim Wagner’s thesis on incremental parsing</a>
+which became the pillar that Lukas Diekmann <a href="https://diekmann.co.uk/diekmann_phd.pdf">built upon</a> to create <a href="https://soft-dev.org/src/eco/">Eco</a><span><a name="eae8c9b55845use"></a>8</span>. Wagner’s
+work uses LR parsing but I managed to involve myself a bit with Eco without
+actually understanding how LR parsing worked. Then, in 2015, when we were experimenting
+as a group with Rust, Lukas wrote the beginnings of an LR parser as an
+experiment, and I quickly jumped in and made a few modifications. Without
+really intending to, I started expanding the code until I realised I had
+taken on maintainership of what clearly had the potential to become a full Rust LR parser. At
+that point, I realised I actually needed to understand LR parsing.
+I found the explanations lurking on the web a bit confusing a first but the
+algorithm was simple enough that soon enough I had a full, if basic, Rust LR parser
+(which became <a href="https://softdevteam.github.io/grmtools/master/book/quickstart.html">grmtools</a>).</p><p>Why am I telling you this long, probably tedious, personal history? Because
+I want to emphasise that I went out of my way to avoid LR parsing, even though
+I didn’t really know what I was avoiding or why. Even after I had used
+LR parsing, and realised that it wasn’t the bogeyman I had expected, I still spent
+several years trying alternatives. Not only is that embarrassing
+to admit publicly, it also troubles me: how had I picked up a bias that took me
+so long to overcome? I’ve gradually alighted upon a plausible explanation
+for our community’s general dislike of LR parsing and, oddly enough, it relates
+to undergraduate compiler courses. For reasons that probably made sense in the
+1970s and 80s, many compiler courses spend significant, arguably excessive, time on
+parsing — generally LR parsing. Students come in expecting to be taught
+how to generate machine code in clever ways, but instead have to learn all sorts
+of parsing background before they even get to the main LR algorithm. By that
+point they are thoroughly sick of parsing generally and LR parsing in
+particular. This is a self-inflicted wound by our subject, as we have
+accidentally turned people away from a beautiful algorithm<span><a name="cb1fca92b15ause"></a>9</span>.</p><h2><a name="lr_parsing"></a>LR parsing</h2><p>That dealt with, let’s drill into some of the technical details of LR
+parsing. First, LR is strictly more powerful than LL<span><a name="9865c6aa576euse"></a>10</span>. In other words, every
+valid LL grammar is also a valid LR grammar (but not necessarily vice versa).
+Second, LR grammars are the
+largest practical subset of unambiguous CFGs that we currently know how to
+statically define<span><a name="8ea5d7fa3cb5use"></a>11</span>.</p><p>Let’s actually try out LR parsing<span><a name="81e0c20a5049use"></a>12</span> by feeding <a href="https://tratt.net/laurie/blog/files/which_parsing_approach/expr1.y">the following grammar</a>:</p><pre><span>%start Expr
+</span><span>%%
+</span><span>Expr: Expr "-" Expr
+</span><span>    | Expr "*" Expr
+</span><span>    | "INT"
+</span><span>    ;
+</span></pre><p>to Yacc. Doing so leads to the following being printed at compile-time:</p><pre><span>expr1.y: yacc finds 4 shift/reduce conflicts
+</span></pre><p>At this point, I know that some readers will have broken out in a cold sweat at
+the mention of “shift/reduce conflict”. Don’t panic yet! At the moment, let’s
+just think of this as the LR parser statically detecting an ambiguity (or four…)
+and telling us that we should fix it somehow<span><a name="7ff99f0b4374use"></a>13</span>.</p><p>There are various ways of drilling into more details about those
+ambiguities. In a shameless plug, I’ll use <a href="https://crates.io/crates/nimbleparse">nimbleparse</a>,
+but most Yacc implementations have a way of giving more detailed information.
+nimbleparse also needs a valid lexer, so if I feed it the
+grammar above as well as <a href="https://tratt.net/laurie/blog/files/which_parsing_approach/expr1.l">this Lex file</a><span><a name="7fb689bde080use"></a>14</span>:</p><pre><span>%%
+</span><span>- "-"
+</span><span>\* "*"
+</span><span>[0-9]+ "INT"
+</span></pre><p>I get this output:</p><pre><span>Shift/Reduce conflicts:
+</span><span>   State 5: Shift("*") / Reduce(Expr: "Expr" "-" "Expr")
+</span><span>   State 5: Shift("-") / Reduce(Expr: "Expr" "-" "Expr")
+</span><span>   State 6: Shift("*") / Reduce(Expr: "Expr" "*" "Expr")
+</span><span>   State 6: Shift("-") / Reduce(Expr: "Expr" "*" "Expr")
+</span><span>
+</span><span>Stategraph:
+</span><span>0: [^ -&gt; . Expr, {'$'}]
+</span><span>   Expr -&gt; 1
+</span><span>   'INT' -&gt; 2
+</span><span>1: [Expr -&gt; Expr . '-' Expr, {'-', '*', '$'}]
+</span><span>   [Expr -&gt; Expr . '*' Expr, {'-', '*', '$'}]
+</span><span>   [^ -&gt; Expr ., {'$'}]
+</span><span>   '-' -&gt; 3
+</span><span>   '*' -&gt; 4
+</span><span>2: [Expr -&gt; 'INT' ., {'-', '*', '$'}]
+</span><span>3: [Expr -&gt; Expr '-' . Expr, {'-', '*', '$'}]
+</span><span>   'INT' -&gt; 2
+</span><span>   Expr -&gt; 5
+</span><span>4: [Expr -&gt; Expr '*' . Expr, {'-', '*', '$'}]
+</span><span>   Expr -&gt; 6
+</span><span>   'INT' -&gt; 2
+</span><span>5: [Expr -&gt; Expr . '-' Expr, {'-', '*', '$'}]
+</span><span>   [Expr -&gt; Expr . '*' Expr, {'-', '*', '$'}]
+</span><span>   [Expr -&gt; Expr '-' Expr ., {'-', '*', '$'}]
+</span><span>   '*' -&gt; 4
+</span><span>   '-' -&gt; 3
+</span><span>6: [Expr -&gt; Expr . '-' Expr, {'-', '*', '$'}]
+</span><span>   [Expr -&gt; Expr . '*' Expr, {'-', '*', '$'}]
+</span><span>   [Expr -&gt; Expr '*' Expr ., {'-', '*', '$'}]
+</span><span>   '*' -&gt; 4
+</span><span>   '-' -&gt; 3
+</span></pre><p>What this shows us is the stategraph (i.e. a statemachine) our grammar has been
+transformed into and the states where the conflicts have occurred.</p><p>It is possible, with a little effort, to understand that stategraph and the
+conflicts that have occurred. However, I’m not going to go into more detail here,
+because most readers will probably already have guessed that it’s very
+hard to make sense of conflicts on large grammars. I’d liken it, roughly
+speaking, to resolving whole-program type inference errors<span><a name="d15c45e6e282use"></a>15</span>: the errors reported are correct, but don’t necessarily
+correspond to the points in your program/grammar that you would consider need
+fixing.</p><p>While I’m sure that it’s possible to improve the way that conflicts are
+reported<span><a name="5f3bf7c4e416use"></a>16</span>, to my surprise, I’ve developed lots of grammars without
+being troubled much by problems with conflicts. Indeed, the only time
+I’ve ever bothered to try and understand conflicts is when a large existing
+grammar needs updating to a new external specification, which is not common<span><a name="d79289ff7601use"></a>17</span>. In most cases, I’m developing a new, or tweaking an
+existing, small grammar. Then, just as with languages using type inference, I
+find it most productive to save and compile after nearly every change. If this
+does identify a conflict, I know what change caused it, and it then tends to
+be fairly obvious what a plausible fix is. Not only do I not bother
+worrying about what state in the stategraph is involved, I don’t even
+bother checking whether the conflict(s) are shift/reduce, reduce/reduce,
+or accept/reduce<span><a name="763d30510be3use"></a>18</span>.</p><p>Honestly, I’ve only encountered one realistic counter-example which is
+– wait for it – mathematical expressions. It is surprisingly
+difficult to encode this as an LR grammar, because mathematics’ syntax rules
+are complex, and nearly every naive grammar for them ambiguous. Fortunately, because
+it’s such a common example, solutions to this abound on the internet. Here’s
+<a href="https://tratt.net/laurie/blog/files/which_parsing_approach/expr2.y">the classic solution</a>:</p><pre><span>%start Expr
+</span><span>%%
+</span><span>Expr: Expr "-" Term
+</span><span>    | Term
+</span><span>    ;
+</span><span>Term: Term "*" Factor
+</span><span>    | Factor
+</span><span>    ;
+</span><span>Factor: "INT"
+</span><span>    ;
+</span></pre><p>It has no conflicts, which means that Yacc has statically proven that it is
+unambiguous! It handles precedence – <code>2-3*4</code> parses as
+<code>2-(3*4)</code> – and associativity – <code>2-3-4</code> parses as
+<code>(2-3)-4</code> – correctly.</p><p>Over time, I’ve come to view LR parsing as equivalent to static typing:
+occasionally annoyingly restrictive, but providing enough static guarantees
+to be worth the annoyance for important software. It’s important to remember that LR
+isn’t magic: while it will stop you writing an <em>ambiguous</em> grammar, it won’t stop
+you writing an <em>incorrect</em> grammar for the language you wish to parse.
+For example, although LR will prevent you making a rule both left and right
+associative, you still have to choose correctly whether it should be left or
+right associative.</p><h2><a name="performance"></a>Performance</h2><p>People often worry about parsing performance in general, and LR parsing
+performance specifically, though almost always without cause
+on modern computers. For example, if I take Java’s grammar (which is unusually
+big, and therefore slow to parse) and the LR parsing system I wrote (which has
+been only moderately optimised) I can happily parse many tens of
+thousands of lines of code per second on my 3 year old laptop. Unless you’ve got billions
+of lines of source code, or millions of users, this is surely fast
+enough.</p><p>I suspect that parsing performance worries date back to the period when
+parsing techniques were under heavy development. LR parsing <a href="https://www.sciencedirect.com/science/article/pii/S0019995865904262?via%3Dihub">was invented in 1965</a>, a time when computers were painfully slow<span><a name="4fddc9ca9224use"></a>19</span> and resource poor. LR parsing works by generating a
+<em>statetable</em> at compile-time that is then interpreted at run-time.
+Those statetables were far too big to be practical on the
+computers of the day, so two solutions were invented to solve this problem.</p><p>First,
+algorithmic subsets of LR (e.g. LALR, SLR) were invented that reduce the size
+of statetables, at the cost of reducing the number of grammars that they can accept
+(i.e. some LR grammars are not valid LALR grammars).
+In practise, these subsets are annoying to use: they cause some seemingly
+reasonable grammars to be rejected; and understanding why a grammar has been rejected
+can require a
+deep understanding of the algorithm<span><a name="7e2dd72c680euse"></a>20</span>.</p><p>Second, since 1977 we’ve known
+that you can <a href="https://link.springer.com/article/10.1007/BF00290336">substantially shrink LR statetables without restricting the grammars accepted</a><span><a name="7e3b9d40dacause"></a>21</span>. When
+combined with a couple of other techniques to squeeze the statetable’s
+memory footprint<span><a name="d36f3f4727e5use"></a>22</span>, even the most puny modern
+machine can run an arbitrary LR parser at impressive speeds.</p><h2><a name="error_recovery"></a>Error recovery</h2><p>When I’m programming, I make a truly embarrassing number of syntax errors. It
+is vital that the parser I’m using accurately reports where I’ve
+made such an error: most parsers, including LR parsers, do a decent enough
+job in this regard<span><a name="5162e4604873use"></a>23</span>. It is then nice if the parser <em>recovers</em> from
+my error, allowing it to continue parsing.</p><p>The very best recursive descent parsers<span><a name="e79ea5209fb6use"></a>24</span> do a pretty good job of error recovery. LL parsing systems also generally do
+a tolerable job for arbitrary LL grammars.</p><p>Unfortunately, it is fair to say that LR parsing systems such
+as Yacc do a poor job. Yacc itself uses <code>error</code> tokens, but
+the results are so bad that I find Yacc parsers with error recovery more
+frustrating to use than those without. However, <a href="https://soft-dev.org/pubs/html/diekmann_tratt__dont_panic/">we can do much better</a> for arbitrary LR grammars, and hopefully more LR parsers
+will give good error messages in the future.</p><h2><a name="lr_parsing_aesthetics"></a>LR parsing: aesthetics</h2><p>I’m now going to turn to a fuzzier factor: readability. Whether explicitly or
+implicitly, people need to know the syntax rules
+of the language they are using. Some programming language designers assume, or
+hope, that giving users a few code examples is equivalent to telling them the
+language’s syntax rules. This works for most cases as we can largely rely on a shared
+cultural understanding of “what a programming language looks like”<span><a name="3781610abd45use"></a>25</span>, but
+experienced programmers know the dangers of ignoring dank corners such as
+operator precedence. At a deeper level, those who implement a compiler, or
+even just an accurate syntax highlighter, need to know <em>precisely</em> what a
+language’s syntax rules are. In my opinion, the readability of a parser is
+a vital factor in enabling accurate tooling for, and use of, a programming
+language.</p><p>To my mind, of the various grammars and parsers presented in
+this post, the easiest to read is the version for generalised parsers, because
+it most closely matches the informal mathematical grammar I was taught as a
+child. However, this readability comes at a cost: because the grammar is
+potentially ambiguous I sometimes misjudge which way a given input will
+be parsed after disambiguation.</p><p>The hardest to read is, without a shadow of a doubt, the recursive
+descent parser. It’s the longest, the most detailed, and the one lacking any
+underlying theory to guide the reader.</p><p>The lack of left recursion in LL parsing makes many grammars awkward to
+read. A surprising way of seeing that is by using the fact that many (though
+not all) LR grammars can be converted to LL semi-mechanically (see e.g.
+<a href="https://www.andrews.edu/~bidwell/456/lr2llgram.html">this translation of roughly the same LR grammar as used in this post to an LL equivalent</a>): the resulting LL grammar is never easier to read
+after the conversion.</p><p>LR grammars thus fill an important hole. They’re generally close
+in readability to an arbitrary CFG; since left associativity is so common,
+they’re nearly always easier to read than LL grammars; and, if you’ll allow a
+small amount of poetic license, they’re infinitely easier to read than
+a recursive descent parser.</p><p>Of course, I’m clearly somewhat biased, so perhaps these words from <a href="https://en.wikipedia.org/wiki/Guy_L._Steele_Jr.">Guy Steele</a> might
+be more compelling:</p><blockquote>
+<p>[Be] sure that your language will parse. It seems stupid … to sit down and
+start designing constructs and not worry about how they will fit together. You
+can get a language that’s difficult if not impossible to parse, not only for a
+computer, but for a person. I use Yacc constantly as a check of all my language
+designs, but I very seldom use Yacc in the implementation. I use it as a
+tester, to be sure that it’s LR(1) … because if a language is LR(1) it’s more
+likely that a person can deal with it.</p>
+<p><a href="https://youtu.be/agw-wlHGi0E?t=4145">Dynamic Languages Wizards Series - Panel on Language Design</a></p>
+</blockquote><h2><a name="summary"></a>Summary</h2><p>Having spent years trying virtually every other possible approach to
+parsing, I now firmly believe that LR parsing is the best approach for the vast
+majority of purposes: it has the strongest practical safety guarantees,
+allows good grammar readability, and has decent performance.
+In particular, I hope future
+programming language authors take Guy Steele’s advice above, and make their
+reference grammar LR compliant<span><a name="780a1b5f4f1ause"></a>26</span>.</p><p>Personally, I’ve put my money where my mouth is: I’ve put a lot of work into <a href="https://softdevteam.github.io/grmtools/master/book/quickstart.html">grmtools</a>,
+a Yacc-compatible LR parsing system for Rust. grmtools isn’t yet perfect, or
+complete, nor is it by any means fully optimised — but it’s more than good
+enough for many purposes and I intend continuing to maintain it for some
+time to come. I hope it’s one small step towards encouraging people to
+rediscover the beauty and utility of LR parsing.</p><p><strong>Acknowledgements:</strong> Thanks to Lukas Diekmann and Naveneetha Vasudevan
+for comments on drafts of this post. Thanks to Roberto Ierusalimschy and
+Terence Parr for answering my queries. All opinions, and any errors or
+infelicities, are very much due to me!</p><div id="article-date"><p><a href="https://tratt.net/laurie/blog/2020/stick_or_twist.html">Newer</a>
+
+2020-09-15 08:00
+
+<a href="https://tratt.net/laurie/blog/2020/alternative_sources_of_advice.html">Older</a></p></div><div id="article-updates"><p>
+If you’d like updates on new blog posts: follow me on
+<a href="https://mastodon.social/@ltratt">Mastodon</a>
+or <a href="https://twitter.com/laurencetratt">Twitter</a>;
+or <a href="https://tratt.net/laurie/blog/2020/../blog.rss">subscribe to the RSS feed</a>;
+or <a href="https://tratt.net/laurie/newsletter/">subscribe to email updates</a>:
+
+</p></div><h3>Footnotes</h3><div><p><span><a name="75d2500edd69"></a><a href="#75d2500edd69use">1</a></span></p><p>Parsing Expression Grammars (PEG)s and “parser combinators” in some
+functional languages are just recursive descent parsers in disguise.</p></div><div id="pu_75d2500edd69" onclick="this.style.display='none'"><p><span>☒</span></p><p>Parsing Expression Grammars (PEG)s and “parser combinators” in some
+functional languages are just recursive descent parsers in disguise.</p></div><div><p><span><a name="75961a403b07"></a><a href="#75961a403b07use">2</a></span></p><div><p>My favourite example of this is best expressed as a Parsing Expression Grammar (PEG):</p><pre><span>r </span><span>&lt;- a / ab
+</span></pre><p>or as a hand-written recursive descent parser:</p><pre><span>def </span><span>r</span><span>(</span><span>s</span><span>, </span><span>i</span><span>):
+</span><span>    </span><span>if </span><span>i + </span><span>1 </span><span>&lt; </span><span>len</span><span>(s) and s[i] == "</span><span>a</span><span>":
+</span><span>        </span><span>return </span><span>...
+</span><span>    </span><span>elif </span><span>i + </span><span>2 </span><span>&lt; </span><span>len</span><span>(s) and s[i] == "</span><span>ab</span><span>":
+</span><span>        </span><span>return </span><span>...
+</span></pre><p>Both of these parsers successfully parse the string ‘<code>a</code>’ but fail
+to parse the string ‘<code>ab</code>’. As soon as ‘<code>a</code>’ is
+matched, the rule succeeds, which leaves ‘<code>b</code>’ unmatched; neither
+parser tries to match ‘<code>ab</code>’ directly.</p></div></div><div id="pu_75961a403b07" onclick="this.style.display='none'"><p><span>☒</span></p><p>My favourite example of this is best expressed as a Parsing Expression Grammar (PEG):</p><pre><span>r </span><span>&lt;- a / ab
+</span></pre><p>or as a hand-written recursive descent parser:</p><pre><span>def </span><span>r</span><span>(</span><span>s</span><span>, </span><span>i</span><span>):
+</span><span>    </span><span>if </span><span>i + </span><span>1 </span><span>&lt; </span><span>len</span><span>(s) and s[i] == "</span><span>a</span><span>":
+</span><span>        </span><span>return </span><span>...
+</span><span>    </span><span>elif </span><span>i + </span><span>2 </span><span>&lt; </span><span>len</span><span>(s) and s[i] == "</span><span>ab</span><span>":
+</span><span>        </span><span>return </span><span>...
+</span></pre><p>Both of these parsers successfully parse the string ‘<code>a</code>’ but fail
+to parse the string ‘<code>ab</code>’. As soon as ‘<code>a</code>’ is
+matched, the rule succeeds, which leaves ‘<code>b</code>’ unmatched; neither
+parser tries to match ‘<code>ab</code>’ directly.</p></div><div><p><span><a name="494f17e7223f"></a><a href="#494f17e7223fuse">3</a></span></p><p>I believe that it’s still an open question as to how many distinct
+disambiguation operators there need to be.</p></div><div id="pu_494f17e7223f" onclick="this.style.display='none'"><p><span>☒</span></p><p>I believe that it’s still an open question as to how many distinct
+disambiguation operators there need to be.</p></div><div><p><span><a name="3233f31940a5"></a><a href="#3233f31940a5use">4</a></span></p><p>In <a href="https://convergepl.org/">Converge</a> I ended up cheating, encoding
+some default disambiguation rules into the parser. When I did this I didn’t
+really understand the problem that I’d encountered nor did I realise that my
+“solution” was not curing, but merely delaying, the pain. The only thing
+more surprising than encountering an ambiguous parse is finding out that your
+input has been disambiguated-by-default in the wrong way.</p></div><div id="pu_3233f31940a5" onclick="this.style.display='none'"><p><span>☒</span></p><p>In <a href="https://convergepl.org/">Converge</a> I ended up cheating, encoding
+some default disambiguation rules into the parser. When I did this I didn’t
+really understand the problem that I’d encountered nor did I realise that my
+“solution” was not curing, but merely delaying, the pain. The only thing
+more surprising than encountering an ambiguous parse is finding out that your
+input has been disambiguated-by-default in the wrong way.</p></div><div><p><span><a name="aa98ae63182c"></a><a href="#aa98ae63182cuse">6</a></span></p><p>Yes, I wrote <a href="https://github.com/ltratt/converge/blob/converge-1.x/vm/Modules/C_Earley_Parser.c">more</a> <a href="https://github.com/ltratt/converge/blob/master/vm/Modules/Con_C_Earley_Parser.py">than</a>
+one. I no longer recommend it, because Earley’s original algorithm has a bug in
+it, and descriptions of a/the fix seem either to be incorrect, or to destroy
+the beauty of the algorithm.</p></div><div id="pu_aa98ae63182c" onclick="this.style.display='none'"><p><span>☒</span></p><p>Yes, I wrote <a href="https://github.com/ltratt/converge/blob/converge-1.x/vm/Modules/C_Earley_Parser.c">more</a> <a href="https://github.com/ltratt/converge/blob/master/vm/Modules/Con_C_Earley_Parser.py">than</a>
+one. I no longer recommend it, because Earley’s original algorithm has a bug in
+it, and descriptions of a/the fix seem either to be incorrect, or to destroy
+the beauty of the algorithm.</p></div><div><p><span><a name="e24e190be585"></a><a href="#e24e190be585use">7</a></span></p><p>Michael Van De Vanter first pointed Wagner’s work out to me. However,
+I didn’t appreciate it for what it was. I then forgot about it, and stumbled
+across it at “independently” at a later point, before somehow realising that it
+was what Michael had already suggested. I later learnt to listen to his advice
+more carefully, and benefited much from it!</p></div><div id="pu_e24e190be585" onclick="this.style.display='none'"><p><span>☒</span></p><p>Michael Van De Vanter first pointed Wagner’s work out to me. However,
+I didn’t appreciate it for what it was. I then forgot about it, and stumbled
+across it at “independently” at a later point, before somehow realising that it
+was what Michael had already suggested. I later learnt to listen to his advice
+more carefully, and benefited much from it!</p></div><div><p><span><a name="eae8c9b55845"></a><a href="#eae8c9b55845use">8</a></span></p><p>It’s also the basis of <a href="https://github.com/tree-sitter/tree-sitter">Tree-sitter</a>, which
+might be the best long-term argument I know of for programming languages
+having an LR grammar!</p></div><div id="pu_eae8c9b55845" onclick="this.style.display='none'"><p><span>☒</span></p><p>It’s also the basis of <a href="https://github.com/tree-sitter/tree-sitter">Tree-sitter</a>, which
+might be the best long-term argument I know of for programming languages
+having an LR grammar!</p></div><div><p><span><a name="cb1fca92b15a"></a><a href="#cb1fca92b15ause">9</a></span></p><p>Perhaps I was lucky not to study a compilers course myself (my university did
+not offer one at that point), as it meant I couldn’t develop the most
+severe of allergic reactions to LR parsing.</p></div><div id="pu_cb1fca92b15a" onclick="this.style.display='none'"><p><span>☒</span></p><p>Perhaps I was lucky not to study a compilers course myself (my university did
+not offer one at that point), as it meant I couldn’t develop the most
+severe of allergic reactions to LR parsing.</p></div><div><p><span><a name="9865c6aa576e"></a><a href="#9865c6aa576euse">10</a></span></p><div><p>From least to most expressive we thus have: regular expressions, LL, LR,
+unambiguous, CFG. In other words, regular expressions are a strict subset of
+LL, LL a strict subset of LR, and so on. The most complete description of
+the hierarchy I know can be found in p89 of <a href="https://users.math-cs.spbu.ru/~okhotin/talks/grammars_lata_talk.pdf">Alexander Okhotin’s talk</a> (where arrows mean “more expressive” and “ordinary” means “CFG”).
+Note that recursive descent doesn’t
+fit into this hierarchy at all — formally speaking, we know that it
+accepts a disjoint set of languages relative to CFGs, but, because PEGs have no
+underlying theory that we know of, we are unable to precisely define that set
+further.</p><p>Another interesting case is the <a href="http://www.antlr.org/papers/allstar-techreport.pdf">ALL(*)</a> algorithm
+which underlies <a href="https://www.antlr.org">ANTLR</a>. ALL(*) accepts a strict
+superset of LL (including many ambiguous grammars), but is disjoint with LR
+since ALL(*) doesn’t support left-recursion. However, ANTLR can remove direct
+left-recursion before invoking ALL(*), so some grammars that might seem
+impossible to parse with ALL(*) can in fact be parsed by it. Bearing in
+mind that we’re talking about infinite sets, and that I don’t think we have a
+formal proof of the following statement, I think it would be fair to say that
+the ALL(*) subset of CFGs is bigger than the LR subset.</p></div></div><div id="pu_9865c6aa576e" onclick="this.style.display='none'"><p><span>☒</span></p><p>From least to most expressive we thus have: regular expressions, LL, LR,
+unambiguous, CFG. In other words, regular expressions are a strict subset of
+LL, LL a strict subset of LR, and so on. The most complete description of
+the hierarchy I know can be found in p89 of <a href="https://users.math-cs.spbu.ru/~okhotin/talks/grammars_lata_talk.pdf">Alexander Okhotin’s talk</a> (where arrows mean “more expressive” and “ordinary” means “CFG”).
+Note that recursive descent doesn’t
+fit into this hierarchy at all — formally speaking, we know that it
+accepts a disjoint set of languages relative to CFGs, but, because PEGs have no
+underlying theory that we know of, we are unable to precisely define that set
+further.</p><p>Another interesting case is the <a href="http://www.antlr.org/papers/allstar-techreport.pdf">ALL(*)</a> algorithm
+which underlies <a href="https://www.antlr.org">ANTLR</a>. ALL(*) accepts a strict
+superset of LL (including many ambiguous grammars), but is disjoint with LR
+since ALL(*) doesn’t support left-recursion. However, ANTLR can remove direct
+left-recursion before invoking ALL(*), so some grammars that might seem
+impossible to parse with ALL(*) can in fact be parsed by it. Bearing in
+mind that we’re talking about infinite sets, and that I don’t think we have a
+formal proof of the following statement, I think it would be fair to say that
+the ALL(*) subset of CFGs is bigger than the LR subset.</p></div><div><p><span><a name="81e0c20a5049"></a><a href="#81e0c20a5049use">12</a></span></p><p>Berkeley Yacc actually implements LALR, but for this example it’s
+indistinguishable from LR. I’ll discuss LALR a little bit later in this post.</p></div><div id="pu_81e0c20a5049" onclick="this.style.display='none'"><p><span>☒</span></p><p>Berkeley Yacc actually implements LALR, but for this example it’s
+indistinguishable from LR. I’ll discuss LALR a little bit later in this post.</p></div><div><p><span><a name="7ff99f0b4374"></a><a href="#7ff99f0b4374use">13</a></span></p><p>Although I’ve presented the conflicts as errors, in Yacc they’re actually
+warnings because it has “default conflict resolution” rules (see <a href="http://dinosaur.compilertools.net/yacc/index.html">Section 5 of the Yacc manual</a>). In other words Yacc is willing to take in an ambiguous grammar and
+automatically disambiguate it to produce an unambiguous grammar. In general,
+I do not recommend making use of this feature.</p></div><div id="pu_7ff99f0b4374" onclick="this.style.display='none'"><p><span>☒</span></p><p>Although I’ve presented the conflicts as errors, in Yacc they’re actually
+warnings because it has “default conflict resolution” rules (see <a href="http://dinosaur.compilertools.net/yacc/index.html">Section 5 of the Yacc manual</a>). In other words Yacc is willing to take in an ambiguous grammar and
+automatically disambiguate it to produce an unambiguous grammar. In general,
+I do not recommend making use of this feature.</p></div><div><p><span><a name="7fb689bde080"></a><a href="#7fb689bde080use">14</a></span></p><p>Although it’s rarely remarked upon, the traditional splitting of “parsing” into
+separate lexing and parsing phases is an important part of the ambiguity story.
+Not only is it easy for the lexer to identify <code>for</code> as a keyword and
+<code>forest</code> as an identifier, but the parser then only has to distinguish
+between token <em>types</em> and not token <em>values</em>. <a href="https://en.wikipedia.org/wiki/Scannerless_parsing">Scannerless parsing</a>
+merges these two phases, which allows more grammars to be expressed, but
+introduces more scope for ambiguity — and, in some cases, enables the resulting parsing algorithm
+to accept context-sensitive grammars.</p></div><div id="pu_7fb689bde080" onclick="this.style.display='none'"><p><span>☒</span></p><p>Although it’s rarely remarked upon, the traditional splitting of “parsing” into
+separate lexing and parsing phases is an important part of the ambiguity story.
+Not only is it easy for the lexer to identify <code>for</code> as a keyword and
+<code>forest</code> as an identifier, but the parser then only has to distinguish
+between token <em>types</em> and not token <em>values</em>. <a href="https://en.wikipedia.org/wiki/Scannerless_parsing">Scannerless parsing</a>
+merges these two phases, which allows more grammars to be expressed, but
+introduces more scope for ambiguity — and, in some cases, enables the resulting parsing algorithm
+to accept context-sensitive grammars.</p></div><div><p><span><a name="d15c45e6e282"></a><a href="#d15c45e6e282use">15</a></span></p><p>Imagine a Haskell or RPython program where none of the functions have explicit types.
+The challenge when programming in such systems is that errors are often
+reported far away from where they were caused. In other words,
+I might make a
+static type error in one function, but the type inferencer will detect the
+resulting error in another function. While type error messages have become much better
+over time, they can never match human expectations in all cases.</p></div><div id="pu_d15c45e6e282" onclick="this.style.display='none'"><p><span>☒</span></p><p>Imagine a Haskell or RPython program where none of the functions have explicit types.
+The challenge when programming in such systems is that errors are often
+reported far away from where they were caused. In other words,
+I might make a
+static type error in one function, but the type inferencer will detect the
+resulting error in another function. While type error messages have become much better
+over time, they can never match human expectations in all cases.</p></div><div><p><span><a name="5f3bf7c4e416"></a><a href="#5f3bf7c4e416use">16</a></span></p><p>The best conflict reports I’ve seen come from <a href="https://github.com/lalrpop/lalrpop">LALRPOP</a>.</p></div><div id="pu_5f3bf7c4e416" onclick="this.style.display='none'"><p><span>☒</span></p><p>The best conflict reports I’ve seen come from <a href="https://github.com/lalrpop/lalrpop">LALRPOP</a>.</p></div><div><p><span><a name="d79289ff7601"></a><a href="#d79289ff7601use">17</a></span></p><div><p>Off-hand, I can only think of a single example: when Lukas tried
+to evolve <a href="https://github.com/softdevteam/grammars/tree/master/java7">this Java 7 grammar</a> to Java 8. Until that point, grmtools didn’t have a way
+of reporting details about conflicts because I hadn’t needed such a feature!</p><p>The Java specification used to pride itself on
+presenting a simple, machine-proven, unambiguous grammar in an appendix. Unfortunately, at
+some point, this grammar seems to have been dropped from the specification, and I
+suspect that the new syntax introduced has not been checked for possible
+ambiguities. We quickly realised that a Java 8 grammar wasn’t important enough
+to our work for us to invest the time in this, so I don’t know if it is
+ambiguous or not.</p></div></div><div id="pu_d79289ff7601" onclick="this.style.display='none'"><p><span>☒</span></p><p>Off-hand, I can only think of a single example: when Lukas tried
+to evolve <a href="https://github.com/softdevteam/grammars/tree/master/java7">this Java 7 grammar</a> to Java 8. Until that point, grmtools didn’t have a way
+of reporting details about conflicts because I hadn’t needed such a feature!</p><p>The Java specification used to pride itself on
+presenting a simple, machine-proven, unambiguous grammar in an appendix. Unfortunately, at
+some point, this grammar seems to have been dropped from the specification, and I
+suspect that the new syntax introduced has not been checked for possible
+ambiguities. We quickly realised that a Java 8 grammar wasn’t important enough
+to our work for us to invest the time in this, so I don’t know if it is
+ambiguous or not.</p></div><div><p><span><a name="763d30510be3"></a><a href="#763d30510be3use">18</a></span></p><div><p>For the insatiably curious, the conflict types mean roughly:</p><ul>
+<li>shift/reduce: The LR parser can’t be sure whether it should advance the
+input by one token, or whether a parsing rule will have completed.</li>
+<li>reduce/reduce: The LR parser can’t be sure which of two rules will have completed.</li>
+<li>accept/reduce: The LR parser can’t be sure if the entire parse has
+completed or merely one rule has completed.</li>
+</ul><p>That last possibility is so rare that I’d forgotten it even exists before I
+thought to fact-check this footnote!</p></div></div><div id="pu_763d30510be3" onclick="this.style.display='none'"><p><span>☒</span></p><p>For the insatiably curious, the conflict types mean roughly:</p><ul>
+<li>shift/reduce: The LR parser can’t be sure whether it should advance the
+input by one token, or whether a parsing rule will have completed.</li>
+<li>reduce/reduce: The LR parser can’t be sure which of two rules will have completed.</li>
+<li>accept/reduce: The LR parser can’t be sure if the entire parse has
+completed or merely one rule has completed.</li>
+</ul><p>That last possibility is so rare that I’d forgotten it even exists before I
+thought to fact-check this footnote!</p></div><div><p><span><a name="7e2dd72c680e"></a><a href="#7e2dd72c680euse">20</a></span></p><p>SLR is particularly restrictive. However, I’m not sure I’ve ever seen SLR used
+in practise (though I know it was in the past), but LALR is still found in
+Berkeley Yacc. Even though LALR is less restrictive than SLR, it can still
+require real programming language grammars to be unpleasantly contorted in
+places.</p></div><div id="pu_7e2dd72c680e" onclick="this.style.display='none'"><p><span>☒</span></p><p>SLR is particularly restrictive. However, I’m not sure I’ve ever seen SLR used
+in practise (though I know it was in the past), but LALR is still found in
+Berkeley Yacc. Even though LALR is less restrictive than SLR, it can still
+require real programming language grammars to be unpleasantly contorted in
+places.</p></div><div><p><span><a name="7e3b9d40daca"></a><a href="#7e3b9d40dacause">21</a></span></p><p>Pager’s description is slightly incomplete; it’s best paired with <a href="http://cssauh.com/xc/pub/chenx_dissertation.pdf">Xin Chen’s thesis</a>. From memory, neither mentions that the algorithm is
+non-deterministic and can sometimes create unreachable states that can be
+garbage collected to save a little bit more memory.
+<a href="https://github.com/softdevteam/grmtools/blob/master/lrtable/src/lib/pager.rs">grmtool’s implementation of this algorithm</a> goes into more detail on such matters and
+also has the bonus of being runnable. However, Pager’s algorithm doesn’t quite
+work properly if you use Yacc’s conflict resolution feature. One day I should
+implement the
+<a href="https://www.sciencedirect.com/science/article/pii/S0167642309001191">IELR algorithm</a>
+to solve this problem.</p></div><div id="pu_7e3b9d40daca" onclick="this.style.display='none'"><p><span>☒</span></p><p>Pager’s description is slightly incomplete; it’s best paired with <a href="http://cssauh.com/xc/pub/chenx_dissertation.pdf">Xin Chen’s thesis</a>. From memory, neither mentions that the algorithm is
+non-deterministic and can sometimes create unreachable states that can be
+garbage collected to save a little bit more memory.
+<a href="https://github.com/softdevteam/grmtools/blob/master/lrtable/src/lib/pager.rs">grmtool’s implementation of this algorithm</a> goes into more detail on such matters and
+also has the bonus of being runnable. However, Pager’s algorithm doesn’t quite
+work properly if you use Yacc’s conflict resolution feature. One day I should
+implement the
+<a href="https://www.sciencedirect.com/science/article/pii/S0167642309001191">IELR algorithm</a>
+to solve this problem.</p></div><div><p><span><a name="d36f3f4727e5"></a><a href="#d36f3f4727e5use">22</a></span></p><p>For example, encoding sparse tables (e.g. in Rust with the <a href="https://crates.io/crates/sparsevec">sparsevec crate</a>), and packing
+vectors of small integers (e.g. with the <a href="https://crates.io/crates/packedvec">packedvec crate</a>). It’s a
+long time since I’ve thought about these aspects: from memory,
+one can do even better than these techniques, but they’re already
+effective enough that we didn’t feel the need to look further at that point.</p></div><div id="pu_d36f3f4727e5" onclick="this.style.display='none'"><p><span>☒</span></p><p>For example, encoding sparse tables (e.g. in Rust with the <a href="https://crates.io/crates/sparsevec">sparsevec crate</a>), and packing
+vectors of small integers (e.g. with the <a href="https://crates.io/crates/packedvec">packedvec crate</a>). It’s a
+long time since I’ve thought about these aspects: from memory,
+one can do even better than these techniques, but they’re already
+effective enough that we didn’t feel the need to look further at that point.</p></div><div><p><span><a name="5162e4604873"></a><a href="#5162e4604873use">23</a></span></p><p>There is one major exception in C-ish syntaxes: missing curly brackets. The
+resulting errors are typically reported many lines after the point that
+a human would consider as the cause of the problem.</p></div><div id="pu_5162e4604873" onclick="this.style.display='none'"><p><span>☒</span></p><p>There is one major exception in C-ish syntaxes: missing curly brackets. The
+resulting errors are typically reported many lines after the point that
+a human would consider as the cause of the problem.</p></div><div><p><span><a name="e79ea5209fb6"></a><a href="#e79ea5209fb6use">24</a></span></p><p>rustc gives the best syntax error messages of any compiler / parser I’ve ever
+used.</p></div><div id="pu_e79ea5209fb6" onclick="this.style.display='none'"><p><span>☒</span></p><p>rustc gives the best syntax error messages of any compiler / parser I’ve ever
+used.</p></div><div><p><span><a name="3781610abd45"></a><a href="#3781610abd45use">25</a></span></p><p>Recent years have reinforced a long-standing trend: programmers don’t like to
+learn languages with unfamiliar syntaxes. For better or worse, C-ish syntax is
+likely to be the dominant cultural force in programming languages for decades
+to come.</p></div><div id="pu_3781610abd45" onclick="this.style.display='none'"><p><span>☒</span></p><p>Recent years have reinforced a long-standing trend: programmers don’t like to
+learn languages with unfamiliar syntaxes. For better or worse, C-ish syntax is
+likely to be the dominant cultural force in programming languages for decades
+to come.</p></div><div><p><span><a name="780a1b5f4f1a"></a><a href="#780a1b5f4f1ause">26</a></span></p><div><p>That doesn’t mean that the eventual compiler <em>has</em> to contain an LR
+parser (though I’d start with an LR parser and only consider moving to
+something else if I had millions of users), but the parser it does contain
+should be entirely compliant with the reference LR grammar.</p><p>Unfortunately, for the foreseeable future, we are going to be stuck with
+programming languages who have used other parsing formalisms: pity the poor
+IDE author who has to deal with yet another language with only a recursive
+descent parser instead of an LR grammar!</p></div></div><div id="pu_780a1b5f4f1a" onclick="this.style.display='none'"><p><span>☒</span></p><p>That doesn’t mean that the eventual compiler <em>has</em> to contain an LR
+parser (though I’d start with an LR parser and only consider moving to
+something else if I had millions of users), but the parser it does contain
+should be entirely compliant with the reference LR grammar.</p><p>Unfortunately, for the foreseeable future, we are going to be stuck with
+programming languages who have used other parsing formalisms: pity the poor
+IDE author who has to deal with yet another language with only a recursive
+descent parser instead of an LR grammar!</p></div><h3>Comments</h3></div></div></article></body></html>

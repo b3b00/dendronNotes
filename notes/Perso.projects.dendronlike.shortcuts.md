@@ -3,8 +3,8 @@ id: Perso.projects.dendronlike.shortcuts
 title: Perso.projects.dendronlike.shortcuts
 desc: keyboard shortcuts
 updated: 1775540169629
-created: 0
 ---
+
 # DendrOnline Keyboard Shortcuts & Commands
 
 This document lists the keyboard shortcuts and command palette commands available across the different views.

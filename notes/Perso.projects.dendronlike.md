@@ -4,8 +4,6 @@ title: Online Dendron
 desc: Online Dendron
 updated: 1659618592279
 created: 1658997866134
-traitIds:
-  - Perso
 ---
 
 # Description

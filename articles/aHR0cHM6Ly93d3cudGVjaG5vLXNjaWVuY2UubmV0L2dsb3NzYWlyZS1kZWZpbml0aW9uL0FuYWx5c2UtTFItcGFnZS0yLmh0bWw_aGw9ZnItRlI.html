@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Analyse LR</title><meta name="author" content="Publication"><meta name="description" content="En informatique, un analyseur LR (pour Left to right, Rightmost derivation) est un analyseur pour les grammaires non contextuelles qui lit l'entrée de gauche à droite et produit une dérivation droite. On parle aussi d'analyseur LR(*k*) où k représente le…"><meta name="dendron:source-url" content="https://www.techno-science.net/glossaire-definition/Analyse-LR-page-2.html?hl=fr-FR"><meta name="dendron:length" content="20086"><meta name="dendron:time-to-read-minutes" content="15"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div><section id="page1">Restez toujours informé : <a href="https://news.google.com/publications/CAAqLggKIihDQklTR0FnTWFoUUtFblJsWTJodWJ5MXpZMmxsYm1ObExtNWxkQ2dBUAE" target="_blank" rel="noopener noreferrer"><strong>suivez-nous sur Google (☆)</strong></a></section><div><h2 id="page1">Introduction</h2><section id="page1"><p>En <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/informatique">informatique</a>, un <strong>analyseur LR</strong> (pour <em>Left to right, Rightmost derivation</em>) est un analyseur pour les grammaires non contextuelles qui lit l'entrée de gauche à droite et produit une dérivation droite. On parle aussi d'<strong>analyseur LR(<em>k</em>)</strong> où <em>k</em> représente le <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/nombre">nombre</a> de symboles "anticipés" et non consommés qui sont utilisés pour prendre des décisions d'<a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/analyse-syntaxique">analyse syntaxique</a>. D'habitude, <em>k</em> vaut 1 et est souvent <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/omis">omis</a>. Une grammaire non contextuelle est appelée LR(<em>k</em>) s'il existe un analyseur syntaxique LR(<em>k</em>) pour elle.</p>
+<p>On dit qu'un analyseur syntaxique LR réalise une analyse ascendante car il essaye de déduire les productions du niveau du haut de la grammaire en les construisant à partir des <strong>feuilles</strong>.</p>
+<p>De nombreux langages de programmation sont décrits par des grammaires LR(1), ou du même genre, et, pour cette raison, les analyseurs syntaxiques LR sont souvent utilisés par les compilateurs pour faire l'analyse syntaxique de <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/code-source">code source</a>.</p>
+<p>Typiquement, quand on se réfère à un analyseur syntaxique LR, on parle d'un analyseur syntaxique capable de reconnaître un langage particulier spécifié par une grammaire non contextuelle. Cependant, dans l'<a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/usage">usage</a> courant, on utilise le terme pour parler d'un programme pilote qui peut être appelé avec une certaine table et qui produit un large éventail d'analyseurs syntaxiques LR différents. On devrait plutôt appeler ces programmes <em>générateurs d'analyseurs syntaxiques</em>.</p>
+<p>L'analyse syntaxique LR a plusieurs avantages&nbsp;:</p>
+<ul>
+<li>De nombreux langages de programmation peuvent être analysés en utilisant une variante d'analyseur syntaxique LR. Une exception notable est C++.</li>
+<li>Les analyseurs syntaxiques LR peuvent être implémentés très efficacement.</li>
+<li>De tous les analyseurs syntaxiques qui parcourent leur entrée de gauche à droite, les parseurs LR détectent les erreurs de syntaxe (c'est-à-dire quand les entrées ne sont pas conformes à la grammaire) le plus tôt possible.</li>
+</ul>
+<p>Les analyseurs syntaxiques LR sont difficiles à produire à la <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/main">main</a>&nbsp;; ils sont généralement construits par des générateurs d'analyse syntaxique ou des compilateurs de compilateurs. Suivant la manière dont la table d'analyse syntaxique est générée, ces analyseurs syntaxiques sont appelés analyseurs syntaxiques LR simples (SLR pour "Simple LR parser"), analyseurs syntaxiques LR avec <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/anticipation">anticipation</a> (LALR pour "Look-Ahead LR parser"), et analyseurs syntaxiques canoniques. Ces types d'analyseurs syntaxiques peuvent traiter des ensembles de grammaires de plus en plus grands&nbsp;; les analyseurs syntaxiques LALR peuvent traiter plus de grammaires que les SLR. Les analyseurs syntaxiques canoniques fonctionnent sur davantage de grammaires que les analyseurs syntaxiques LALR. Le très connu Yacc produit des analyseurs syntaxiques LALR.</p></section></div><div><h2 id="page2">Architecture des analyseurs syntaxiques LR</h2><section id="page2"><figure><picture data-markdown-block-media="true"><source srcset="https://static.techno-science.net/illustrations-webp/definitions/325px/l/lr-parser_723770700b40bdaefdf7d8ca4213c0ef.webp" type="image/webp"></picture><figcaption><p>Figure 1. Architecture d'un analyseur syntaxique ascendant basé sur une table ("input" = "entrée", "stack" = "pile", "parser" = "analyseur syntaxique", "output" = "sortie", "action table" = "table des actions", "goto table" = "table des branchements").</p></figcaption></figure>
+<p>Conceptuellement, un analyseur syntaxique LR est un programme récursif qui peut être prouvé correct par calcul direct, et qui peut être implémenté efficacement par un analyseur syntaxique ascendant, lequel est un <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/ensemble">ensemble</a> de fonctions mutuellement récursives, de la même manière qu'un analyseur syntaxique descendant. Cependant, par convention, les analyseurs syntaxiques LR sont présentés et implémentés par des machines à pile basées sur des tables, dans lesquelles la pile d'appels du programme récursif sous-jacent est manipulée explicitement.</p>
+<p>Un analyseur syntaxique ascendant basé sur une table d'<a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/analyse-syntaxique">analyse syntaxique</a> peut être représenté schématiquement par la figure 1. La suite montre une dérivation droite obtenue par cet analyseur syntaxique.</p></section><section id="page2-cas-general"><h3 id="page2-cas-general">Cas général</h3>
+<p>L'analyseur syntaxique est une machine à états. Elle consiste en&nbsp;:</p>
+<ul>
+<li>un <em>tampon d'entrée</em></li>
+<li>une <em>pile</em> dans laquelle est stockée la liste des états où elle est passée</li>
+<li>une <em>table des branchements</em> qui indique vers quel état elle doit aller</li>
+<li>une <em>table des actions</em> qui donne la règle de grammaire à appliquer en fonction de l'état courant et du terminal courant du flot d'entrée</li>
+</ul>
+<h4 id="page2-lalgorithme-danalyse-syntaxique">L'algorithme d'analyse syntaxique</h4>
+<p>L'algorithme d'analyse syntaxique LR fonctionne comme suit&nbsp;:</p>
+<ol>
+<li>La pile est initialisée avec [<strong>0</strong>]. L'état courant sera toujours l'état qui se trouve en haut de la pile.</li>
+<li>En fonction de l'état courant et du terminal courant du flot d'entrée, une action est cherchée dans la table des actions. Quatre cas se présentent&nbsp;:</li>
+</ol>
+<ul>
+<li>un décalage (<em>shift</em>) s<em>n</em>&nbsp;:</li>
+<li><a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/le-terminal">le terminal</a> courant est retiré du flot d'entrée</li>
+<li>l'état <em>n</em> est mis sur la pile et devient l'état courant</li>
+<li>une réduction (<em>reduce</em>) r<em>m</em>&nbsp;:</li>
+<li>le <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/nombre">nombre</a> <em>m</em> est écrit dans le flot de sortie</li>
+<li>pour chaque symbole de la partie droite de la règle numéro <em>m</em>, un état est retiré de la pile</li>
+<li>en fonction de l'état qui est maintenant en haut de la pile et de la partie gauche de la règle <em>m</em>, un nouvel état est recherché dans la table des branchements, lequel est mis sur la pile et devient donc l'état courant</li>
+<li>une acceptation&nbsp;: la <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/chaine">chaîne</a> d'entrée est acceptée</li>
+<li><a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/pas">pas</a> d'action&nbsp;: une erreur de syntaxe est rapportée</li>
+</ul>
+<ol>
+<li>L'étape 2 est répétée jusqu'à ce que la chaîne soit acceptée ou qu'une erreur de syntaxe soit rapportée.</li>
+</ol></section><section id="page2-exemple-concret"><h3 id="page2-exemple-concret">Exemple concret</h3>
+<p>Pour expliquer son fonctionnement, nous utiliserons la petite grammaire suivante dont le symbole de départ est E&nbsp;:</p>
+<p>(1) E → E * B</p>
+<p>(2) E → E + B</p>
+<p>(3) E → B</p>
+<p>(4) B → 0</p>
+<p>(5) B → 1</p>
+<p>et nous analyserons l'entrée suivante&nbsp;:</p>
+<p><strong>1 + 1</strong></p>
+<h4 id="page2-les-tables-des-actions-et-des-branchements">Les tables des actions et des branchements</h4>
+<p>Les deux tables d'analyse syntaxique LR(0) de cette grammaire se présentent comme suit&nbsp;:</p>
+<div><table><tbody><tr><td><em>état</em></td><td colspan="5"><em>action</em></td><td></td><td colspan="2"><em>branchement</em></td></tr><tr><td></td><td><strong>*</strong></td><td><strong>+</strong></td><td><strong>0</strong></td><td><strong>1</strong></td><td><strong>$</strong></td><td></td><td><strong>E</strong></td><td><strong>B</strong></td></tr><tr><td><strong>0</strong></td><td></td><td></td><td>s1</td><td>s2</td><td></td><td></td><td>3</td><td>4</td></tr><tr><td><strong>1</strong></td><td>r4</td><td>r4</td><td>r4</td><td>r4</td><td>r4</td><td></td><td></td><td></td></tr><tr><td><strong>2</strong></td><td>r5</td><td>r5</td><td>r5</td><td>r5</td><td>r5</td><td></td><td></td><td></td></tr><tr><td><strong>3</strong></td><td>s5</td><td>s6</td><td></td><td></td><td>acc</td><td></td><td></td><td></td></tr><tr><td><strong>4</strong></td><td>r3</td><td>r3</td><td>r3</td><td>r3</td><td>r3</td><td></td><td></td><td></td></tr><tr><td><strong>5</strong></td><td></td><td></td><td>s1</td><td>s2</td><td></td><td></td><td></td><td>7</td></tr><tr><td><strong>6</strong></td><td></td><td></td><td>s1</td><td>s2</td><td></td><td></td><td></td><td>8</td></tr><tr><td><strong>7</strong></td><td>r1</td><td>r1</td><td>r1</td><td>r1</td><td>r1</td><td></td><td></td><td></td></tr><tr><td><strong>8</strong></td><td>r2</td><td>r2</td><td>r2</td><td>r2</td><td>r2</td><td></td><td></td><td></td></tr></tbody></table></div>
+<p>La <strong>table des actions</strong> est indexée par l'état de l'analyseur syntaxique et par un terminal (dont le terminal spécial $ qui indique la fin du flot d'entrée). Elle contient trois types d'actions&nbsp;:</p>
+<ul>
+<li><em>décalage</em> (shift), qui est écrite 's<em>n'</em> et qui indique que l'état suivant est <em>n</em></li>
+<li><em>reduction</em> (reduce), qui est écrite 'r<em>m'</em> et qui indique qu'il faut faire une réduction par la règle de grammaire numéro <em>m</em></li>
+<li><em>acceptation</em>, qui est écrite 'acc' et qui indique que l'analyseur syntaxique accepte la chaîne du flot d'entrée.</li>
+</ul>
+<p>La <strong>table des branchements</strong> est indexée par l'état de l'analyseur syntaxique et par un non-terminal. Elle indique quel est l'état suivant de l'analyseur syntaxique s'il a effectivement reconnu ce non-terminal.</p>
+<h4 id="page2-procedure-danalyse-syntaxique">Procédure d'analyse syntaxique</h4>
+<p>La table ci-dessous illustre chaque étape du processus. Dans cette table, l'état représente l'élément en haut de la pile (l'élément le plus à droite), et l'action suivante est déterminée en se référant à la table des actions ci-dessus. Un $ est ajouté au bout de la chaîne d'entrée pour indiquer la fin du flot.</p>
+<div><table><tbody><tr><th>État</th><th>Flot d'entrée</th><th>Flot de sortie</th><th>Pile</th><th>Action suivante</th></tr><tr><td>0</td><td>1+1$</td><td></td><td>[0]</td><td>Décalage 2</td></tr><tr><td>2</td><td>+1$</td><td></td><td>[0,2]</td><td>Réduction 5</td></tr><tr><td>4</td><td>+1$</td><td>5</td><td>[0,4]</td><td>Réduction 3</td></tr><tr><td>3</td><td>+1$</td><td>5,3</td><td>[0,3]</td><td>Décalage 6</td></tr><tr><td>6</td><td>1$</td><td>5,3</td><td>[0,3,6]</td><td>Décalage 2</td></tr><tr><td>2</td><td>$</td><td>5,3</td><td>[0,3,6,2]</td><td>Réduction 5</td></tr><tr><td>8</td><td>$</td><td>5,3,5</td><td>[0,3,6,8]</td><td>Réduction 2</td></tr><tr><td>3</td><td>$</td><td>5,3,5,2</td><td>[0,3]</td><td>Acceptation</td></tr></tbody></table></div>
+<h4 id="page2-description">Description</h4>
+<p>Quand l'analyseur syntaxique démarre, il part toujours avec l'état 0 dans la pile&nbsp;:</p>
+<p>[<strong>0</strong>]</p>
+<p>Le premier terminal que l'analyseur syntaxique voit est le '1'. D'après la table des actions, il doit aller à l'état 2. Ce qui donne pour la pile&nbsp;:</p>
+<p>[<strong>0</strong> '1' <strong>2</strong>]</p>
+<p>Le haut de la pile se trouve sur la partie droite. (pour une meilleure compréhension, nous montrons également le symbole (par exemple '1', ou B) qui est à l'origine de la transition vers le nouvel état bien que, strictement parlant, il ne fait pas partie de la pile.)</p>
+<p>Dans l'état 2, la table des actions dit que quel que soit le terminal suivant, dans le flot d'entrée, il faut faire une réduction par la règle de grammaire numéro 5. Si la table est correcte, cela signifie que l'analyseur syntaxique vient juste de reconnaître la partie droite de la règle numéro 5, ce qui est effectivement le cas.</p>
+<p>Donc dans ce cas, nous écrivons 5 dans le flot de sortie, retirons un état de la pile, et y ajoutons à la place l'état correspondant à la table des branchements pour l'état 0 et le non-terminal B, c'est-à-dire l'état 4. La pile résultante est&nbsp;:</p>
+<p>[<strong>0</strong> B <strong>4</strong>]</p>
+<p>Cependant, dans l'état 4, la table des actions dit que nous devons maintenant faire une réduction par la règle 3. Donc, nous écrivons 3 sur le flot de sortie, enlevons un état de la pile, et trouvons le nouvel état dans la pile des branchements pour l'état 0 et le non-terminal E, ce qui donne l'état 3. La pile est maintenant&nbsp;:</p>
+<p>[<strong>0</strong> E <strong>3</strong>]</p>
+<p>Le terminal suivant que l'analyseur syntaxique voit dans le flot d'entrée est un '+'. D'après la table des actions, il doit aller vers l'état 6&nbsp;:</p>
+<p>[<strong>0</strong> E <strong>3</strong> '+' <strong>6</strong>]</p>
+<p>La pile résultante peut être interprétée comme l'historique d'un <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/automate">automate</a> fini qui vient juste de lire un non-terminal E suivi par un terminal '+'. La table de transition de cet automate est définie par les actions de décalages dans la table des actions ainsi que par les actions de branchements dans la table des branchements.</p>
+<p>Le terminal suivant est maintenant '1'. Cela signifie que nous faisons un décalage et allons à l'état 2&nbsp;:</p>
+<p>[<strong>0</strong> E <strong>3</strong> '+' <strong>6</strong> '1' <strong>2</strong>]</p>
+<p><a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/tout">Tout</a> comme le '1' précédent, celui-ci est réduit vers B, ce qui donne la pile suivante&nbsp;:</p>
+<p>[<strong>0</strong> E <strong>3</strong> '+' <strong>6</strong> B <strong>8</strong>]</p>
+<p>La pile correspond à une liste d'états d'un automate fini qui a lu un non-terminal E suivi d'un '+' et d'un non-terminal B. Dans l'état 8, nous faisons toujours une réduction par la règle 2. Les trois états du haut de la pile correspondent avec les trois symboles de la partie droite de la règle 2.</p>
+<p>Au bout du compte, nous lisons un '$' sur le flot d'entrée qui signifie, d'après la table des actions (l'état courant étant 3), que l'analyseur syntaxique accepte la chaîne d'entrée.</p>
+<p>Les numéros des règles qui ont <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/ete">été</a> écrites sur le flot de sortie sont [5, 3, 5, 2] ce qui est effectivement une dérivation droite de la chaîne "1 + 1" à l'envers.</p>
+<p>[<strong>0</strong> E <strong>3</strong>]</p></section></div><div><h2 id="page3">Construire des tables d'analyse syntaxique LR(0)</h2><section id="page3-items"><h3 id="page3-items">Items</h3>
+<p>La construction de ces tables d'<a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/analyse-syntaxique">analyse syntaxique</a> est basée sur la notion d'<em>items LR(0)</em> (simplement appelés <em>items</em> ici) qui sont des règles de grammaire avec un <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/point">point</a> spécial ajouté quelque part dans la partie droite. Par exemple, la règle E → E + B a quatre items correspondants&nbsp;:</p>
+<p>E → • E + B</p>
+<p>E → E • + B</p>
+<p>E → E + • B</p>
+<p>E → E + B •</p>
+<p>Les règles de la forme <em>A</em> → ε ont un seul item <em>A</em> → •. Ces règles seront utilisées pour indiquer l'état de l'analyseur syntaxique. L'item E → E • + B, par exemple, indique que l'analyseur syntaxique a reconnu une <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/chaine">chaîne</a> correspondant à E sur le flot d'entrée, et qu'il attend un '+' suivi d'une autre chaîne correspondant à B.</p></section><section id="page3-ensemble-ditems"><h3 id="page3-ensemble-ditems">Ensemble d'items</h3>
+<p>Il n'est <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/pas">pas</a> toujours possible de caractériser l'état de l'analyseur syntaxique avec un seul item. En effet, il peut arriver qu'on ne sache pas d'avance quelle règle va être utilisée pour la réduction. Dans notre exemple, après la lecture d'une chaîne correspondant à un E, il y a deux items candidats à la réduction&nbsp;: E → E • * B et E → E • + B. Par conséquent, on caractérisera l'état par un <em><a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/ensemble">ensemble</a></em> d'items, c'est-à-dire { E → E • + B, E → E • * B } dans ce cas.</p></section><section id="page3-fermeture-des-ensembles-ditems"><h3 id="page3-fermeture-des-ensembles-ditems">Fermeture des ensembles d'items</h3>
+<p>Un item avec un point devant un non-terminal, tel que E → E + • B, indique que l'analyseur syntaxique s'attend à trouver ce non-terminal (en l'occurrence B, dans cet exemple). Pour s'assurer que l'ensemble d'items contient toutes les règles possibles, l'analyseur syntaxique doit inclure tous les items décrivant comment ce non-terminal B sera analysé. Cela signifie que s'il y a des règles telles que B → 0 et B → 1, l'ensemble d'items doit aussi inclure B → • 0 et B → • 1. De manière générale, cela peut être formulé ainsi&nbsp;:</p>
+<p>S'il y a un item de la forme <em>A</em> → <em>v</em>•<em>Bw</em> dans l'ensemble d'items, et s'il y a une règle de la forme <em>B</em> → <em>w'</em> alors l'item <em>B</em> → • <em>w'</em> doit également se trouver dans l'ensemble d'items.</p>
+<p>Tous les ensembles d'items peuvent être étendus jusqu'à ce qu'ils satisfassent cette règle&nbsp;: continuer simplement d'ajouter les items appropriés jusqu'à ce que tous les non-terminaux précédés par des points soient pris en compte. L'extension minimale est appelée la <em><a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/fermeture">fermeture</a></em> d'un ensemble d'items et on l'écrira <strong>ferm</strong>(<em>I</em>) où <em>I</em> est un ensemble d'items. Ce sont ces ensembles d'items fermés qui seront considérés dans les états de l'analyseur syntaxique, bien que seuls ceux qui sont réellement accessibles à partir de l'état initial seront inclus dans les tables.</p></section><section id="page3-la-grammaire-augmentee"><h3 id="page3-la-grammaire-augmentee">La grammaire augmentée</h3>
+<p>Avant de commencer à déterminer les transitions entre les différents états, la grammaire est augmentée de la règle suivante&nbsp;:</p>
+<p>(0) S → E</p>
+<p>où S est le nouveau symbole de départ et E l'ancien. L'analyseur syntaxique utilisera cette règle pour la réduction exactement quand il aura accepté la chaîne d'entrée.</p>
+<p>Pour notre exemple, nous prendrons la même grammaire avec cette augmentation. Soit&nbsp;:</p>
+<p>(0) S → E</p>
+<p>(1) E → E * B</p>
+<p>(2) E → E + B</p>
+<p>(3) E → B</p>
+<p>(4) B → 0</p>
+<p>(5) B → 1</p>
+<p>C'est avec cette grammaire augmentée que nous déterminerons les ensembles d'items et les transitions entre eux.</p></section><section id="page3-trouver-les-ensembles-ditems-accessibles-et-les-transitions-entre-elles"><h3 id="page3-trouver-les-ensembles-ditems-accessibles-et-les-transitions-entre-elles">Trouver les ensembles d'items accessibles et les transitions entre elles</h3>
+<p>La première étape de la construction des tables consiste à déterminer la transition entre les ensembles d'items fermés. Ces transitions seront déterminées comme si on considérait un <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/automate">automate</a> fini qui pourrait lire des terminaux et des non-terminaux. L'état initial de cet automate est la fermeture du premier item de la règle ajoutée&nbsp;: S → • E&nbsp;:</p>
+<p><strong>Ensemble d'items 0</strong></p>
+<p>S → • E</p>
+<p>+ E → • E * B</p>
+<p>+ E → • E + B</p>
+<p>+ E → • B</p>
+<p>+ B → • 0</p>
+<p>+ B → • 1</p>
+<p>Le '+' devant les items indique ceux qui ont <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/ete">été</a> ajoutés pour la fermeture. Les items originaux sans '+' sont appelés le <em>noyau</em> de l'ensemble d'items.</p>
+<p>En partant de l'état initial (S0), on déterminera tous les états qui peuvent être atteints en une étape. Les transitions possibles pour un ensemble d'items peuvent être trouvés en regardant les symboles (terminaux et non-terminaux) qui se trouvent juste après le point. Dans le cas de l'ensemble d'items 0, ce sont les terminaux '0' et '1' et les non-terminaux E et B. Pour trouver l'ensemble d'items auxquels conduit un symbole <em>x</em>, on suit la procédure suivante&nbsp;:</p>
+<ol>
+<li>Prendre l'ensemble <em>S</em> de tous les items où il y a un point en face de ce symbole <em>x</em>.</li>
+<li>Pour chaque item dans <em>S</em>, déplacer le point à la droite de <em>x</em>.</li>
+<li>Compléter par fermeture l'ensemble des items.</li>
+</ol>
+<p>Pour <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/le-terminal">le terminal</a> '0', le résultat est&nbsp;:</p>
+<p><strong>Ensemble d'items 1</strong></p>
+<p>B → 0 •</p>
+<p>et pour le terminal '1'&nbsp;:</p>
+<p><strong>Ensemble d'items 2</strong></p>
+<p>B → 1 •</p>
+<p>Pour le non-terminal E&nbsp;:</p>
+<p><strong>Ensemble d'items 3</strong></p>
+<p>S → E •</p>
+<p>E → E • * B</p>
+<p>E → E • + B</p>
+<p>et pour le non-terminal B&nbsp;:</p>
+<p><strong>Ensemble d'items 4</strong></p>
+<p>E → B •</p>
+<p>La fermeture n'ajoute pas de nouveaux items dans tous les cas. On continue la procédure jusqu'à ce qu'aucun autre ensemble d'items peut être trouvé. Pour les ensembles d'items 1, 2 et 4, il n'y aura pas de transition puisqu'aucun point ne se trouve devant un symbole. Pour l'ensemble d'items 3, on voit que le point se trouve devant les terminaux '*' et '+'. Pour '*', la transition donne&nbsp;:</p>
+<p><strong>Ensemble d'items 5</strong></p>
+<p>E → E * • B</p>
+<p>+ B → • 0</p>
+<p>+ B → • 1</p>
+<p>et pour '+' elle donne&nbsp;:</p>
+<p><strong>Ensemble d'items 6</strong></p>
+<p>E → E + • B</p>
+<p>+ B → • 0</p>
+<p>+ B → • 1</p>
+<p>Pour l'ensemble d'items 5, on doit considérer les terminaux '0' et '1' et le non-terminal B. Pour les terminaux, on voit que les ensembles d'items fermés sont égaux respectivement aux ensembles d'items 1 et 2 déjà construits. Pour le non-terminal B, la transition donne&nbsp;:</p>
+<p><strong>Ensemble d'items 7</strong></p>
+<p>E → E * B •</p>
+<p>Pour l'ensemble d'items 6, il faut également considérer les terminaux '0' et '1' et le non-terminal B. Comme précédemment, les ensembles d'items résultats pour les terminaux sont égaux aux ensembles d'items 1 et 2 déjà construits. Pour le non-terminal B, la transition conduit à&nbsp;:</p>
+<p><strong>Ensemble d'items 8</strong></p>
+<p>E → E + B •</p>
+<p>Ces ensembles d'items 7 et 8 n'ont pas de symboles derrière leurs points et, donc, c'est fini. La table de transitions pour l'automate ressemble maintenant à&nbsp;:</p>
+<div><table><tbody><tr><th>Ensemble d'items</th><th>*</th><th><ul>
+<li></li>
+</ul></th><th>0</th><th>1</th><th>E</th><th>B</th></tr><tr><th>0</th><td></td><td></td><td>1</td><td>2</td><td>3</td><td>4</td></tr><tr><th>1</th><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th>2</th><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th>3</th><td>5</td><td>6</td><td></td><td></td><td></td><td></td></tr><tr><th>4</th><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th>5</th><td></td><td></td><td>1</td><td>2</td><td></td><td>7</td></tr><tr><th>6</th><td></td><td></td><td>1</td><td>2</td><td></td><td>8</td></tr><tr><th>7</th><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><th>8</th><td></td><td></td><td></td><td></td><td></td><td></td></tr></tbody></table></div></section><section id="page3-construire-la-table-des-actions-et-la-table-des-branchements"><h3 id="page3-construire-la-table-des-actions-et-la-table-des-branchements">Construire la table des actions et la table des branchements</h3>
+<p>À partir de cette table et de ces ensembles d'items, on construit la table des actions et la table des branchements de la manière suivante&nbsp;:</p>
+<ol>
+<li>les colonnes des non-terminaux sont copiées dans la table des branchements</li>
+<li>les colonnes des terminaux sont copiées dans la table des actions en tant qu'actions de décalage</li>
+<li>une colonne supplémentaire est ajoutée pour '$' (fin de l'entrée) dans la table des actions, et chaque ensemble d'items qui contient S → E •, on y met un 'acc'.</li>
+<li>si un ensemble d'items <em>i</em> contient un item de la forme <em>A</em> → <em>w</em> • où <em>A</em> → <em>w</em> est la règle numéro <em>m</em> avec <em>m</em> &gt; 0, alors la ligne de l'état <em>i</em> dans la table des actions est remplie <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/completement">complètement</a> avec la réduction r<em>m</em>.</li>
+</ol>
+<p>Le lecteur peut vérifier que cela donne effectivement la table des actions et la table des branchements qu'on a vues plus tôt.</p>
+<h4 id="page3-note-au-sujet-de-lr0-par-rapport-a-slr-et-lalr">Note au sujet de LR(0) par rapport à SLR et LALR</h4>
+<p>Seule l'étape 4 dans la procédure ci-dessus produit des actions de réduction, et donc toutes les actions de réductions occupent des lignes entières de la table, ce qui fait que les réductions arrivent indépendamment du symbole suivant du flot d'entrée. C'est la raison pour laquelle ce sont les tables d'analyse syntaxique LR(0)&nbsp;: elles ne font aucune <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/anticipation">anticipation</a> (c'est-à-dire qu'elles ne regardent aucun symbole d'avance) pour décider quelle réduction faire.</p>
+<p>Une grammaire qui a <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/besoin">besoin</a> d'anticipation pour désambiguïser les réductions aurait besoin de lignes de la table d'analyse syntaxique contenant différentes actions de réductions dans les différentes colonnes, et la procédure ci-dessus n'est pas capable de créer de telles lignes.</p>
+<p>Des raffinements de la procédure de construction de la table <strong>LR</strong>(0) (tels que SLR et LALR) peuvent construire des actions de réductions qui n'occupent pas des lignes entières. Ils peuvent donc analyser plus de grammaires que les analyseurs syntaxiques LR(0).</p></section><section id="page3-conflits-dans-les-tables-construites"><h3 id="page3-conflits-dans-les-tables-construites">Conflits dans les tables construites</h3>
+<p>L'automate est construit d'une manière telle qu'il n'est pas garanti d'être déterministe. Cependant, quand les actions de réductions sont ajoutées dans la table des actions, il peut arriver qu'une cellule contienne déjà une action de décalage (conflit <em>décalage-réduction</em>) ou une action de réduction (conflit <em>réduction-réduction</em>). Cependant, on peut prouver que cela n'arrive que dans les grammaires qui ne sont pas LR(0).</p>
+<h4 id="page3-conflit-decalagereduction">Conflit décalage/réduction</h4>
+<p>Un petit exemple d'une grammaire non-LR(0) avec un conflit décalage-réduction est&nbsp;:</p>
+<p>(1) E → 1 E</p>
+<p>(2) E → 1</p>
+<p>Parmi les ensembles d'items, on trouve celui-ci&nbsp;:</p>
+<p><strong>Ensemble d'items 1</strong></p>
+<p>E → 1 • E</p>
+<p>E → 1 •</p>
+<p>+ E → • 1 E</p>
+<p>+ E → • 1</p>
+<p>Il y a un conflit décalage-réduction dans cet ensemble d'items parce que dans la cellule de la table des actions correspondant à cet ensemble d'items et au terminal '1', il y aura en même <a data-link-type="embedded-definition" href="https://www.techno-science.net/fr/definitions/temps">temps</a> une action de décalage vers l'état 1 et une action de réduction par la règle 2.</p>
+<h4 id="page3-conflit-reductionreduction">Conflit réduction/réduction</h4>
+<p>Un petit exemple d'une grammaire non-LR(0) avec un conflit réduction-réduction est&nbsp;:</p>
+<p>(1) E → A 1</p>
+<p>(2) E → B 2</p>
+<p>(3) A → 1</p>
+<p>(4) B → 1</p>
+<p>Dans ce cas, on obtient l'ensemble d'items suivant&nbsp;:</p>
+<p><strong>Ensemble d'items 1</strong></p>
+<p>A → 1 •</p>
+<p>B → 1 •</p>
+<p>Il y a un conflit réduction-réduction pour cet ensemble d'items parce que dans les cellules de la table des actions pour cet ensemble d'items, il y aurait en même temps une réduction par la règle 3 et une autre par la règle 4.</p>
+<h4 id="page3-resolution">Résolution</h4>
+<p>Les deux exemples ci-dessus peuvent être résolus en permettant à l'analyseur syntaxique d'utiliser un <em>ensemble de suites</em> (voir l'analyse LL) d'un non-terminal <em>A</em> pour décider s'il va utiliser une des règles de <em>A</em> pour une réduction&nbsp;; il n'utilisera la règle <em>A</em> → <em>w</em> pour une réduction que si le symbole qui suit dans le flot d'entrée est dans l'ensemble des suites de <em>A</em>. Cette solution conduit à ce qu'on appelle l'analyse LR simple (SLR).</p></section></div></div></div></article></body></html>

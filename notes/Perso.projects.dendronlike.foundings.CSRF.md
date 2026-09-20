@@ -5,6 +5,7 @@ desc: Razor/Htmx CSRF configuration
 updated: 1710920186396
 created: 1696788604478
 ---
+
 # CSRF
 
 Les POST aboutissent à des ``400`` si on ne configure pas correctement l'antiforgery.

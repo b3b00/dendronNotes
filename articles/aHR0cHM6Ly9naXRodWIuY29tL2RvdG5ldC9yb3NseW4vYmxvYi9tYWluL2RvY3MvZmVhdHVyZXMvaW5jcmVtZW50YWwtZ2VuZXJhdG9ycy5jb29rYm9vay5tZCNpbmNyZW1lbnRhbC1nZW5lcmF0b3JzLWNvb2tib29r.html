@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>roslyn/docs/features/incremental-generators.cookbook.md at main &middot; dotnet/roslyn</title><meta name="author" content=""><meta name="description" content="The Roslyn .NET compiler provides C# and Visual Basic languages with rich code analysis APIs. - roslyn/docs/features/incremental-generators.cookbook.md at main · dotnet/roslyn"><meta name="dendron:source-url" content="https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.cookbook.md#incremental-generators-cookbook"><meta name="dendron:length" content="42522"><meta name="dendron:time-to-read-minutes" content="35"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-hpc="true" containertiming="hpc" aria-labelledby="file-name-id-wide file-name-id-mobile"><article itemprop="text">
+<p dir="auto"><h2 tabindex="-1" dir="auto">Summary</h2><a id="user-content-summary" aria-label="Permalink: Summary" href="#summary"></a>
+<p dir="auto">This document aims to be a guide to help the creation of source generators by providing a series of guidelines for common patterns.
+It also aims to set out what types of generators are possible under the current design, and what is expected to be explicitly out
+of scope in the final design of the shipping feature.</p>
+<p dir="auto"><strong>This document expands on the details in the <a href="https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.md">full design document</a>, please ensure you have read that first.</strong></p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Table of contents</h2><a id="user-content-table-of-contents" aria-label="Permalink: Table of contents" href="#table-of-contents"></a>
+<ul dir="auto">
+<li><a href="#incremental-generators-cookbook">Incremental Generators Cookbook</a>
+<ul dir="auto">
+<li><a href="#summary">Summary</a></li>
+<li><a href="#table-of-contents">Table of contents</a></li>
+<li><a href="#proposal">Proposal</a></li>
+<li><a href="#out-of-scope-designs">Out of scope designs</a>
+<ul dir="auto">
+<li><a href="#language-features">Language features</a></li>
+<li><a href="#code-rewriting">Code rewriting</a></li>
+</ul>
+</li>
+<li><a href="#conventions">Conventions</a>
+<ul dir="auto">
+<li><a href="#pipeline-model-design">Pipeline model design</a></li>
+<li><a href="#use-forattributewithmetadataname">Use <code>ForAttributeWithMetadataName</code></a></li>
+<li><a href="#use-an-indented-text-writer-not-syntaxnodes-for-generation">Use an indented text writer, not <code>SyntaxNode</code>s, for generation</a></li>
+<li><a href="#put-microsoftcodeanalysisembeddedattribute-on-generated-marker-types">Put <code>Microsoft.CodeAnalysis.EmbeddedAttribute</code> on generated marker types</a></li>
+<li><a href="#do-not-scan-for-types-that-indirectly-implement-interfaces-indirectly-inherit-from-types-or-are-indirectly-marked-by-an-attribute-from-an-interface-or-base-type">Do not scan for types that indirectly implement interfaces, indirectly inherit from types, or are indirectly marked by an attribute from an interface or base type</a></li>
+</ul>
+</li>
+<li><a href="#designs">Designs</a>
+<ul dir="auto">
+<li><a href="#generated-class">Generated class</a></li>
+<li><a href="#additional-file-transformation">Additional file transformation</a></li>
+<li><a href="#augment-user-code">Augment user code</a></li>
+<li><a href="#issue-diagnostics">Issue Diagnostics</a></li>
+<li><a href="#inotifypropertychanged">INotifyPropertyChanged</a></li>
+<li><a href="#package-a-generator-as-a-nuget-package">Package a generator as a NuGet package</a></li>
+<li><a href="#use-functionality-from-nuget-packages">Use functionality from NuGet packages</a></li>
+<li><a href="#access-analyzer-config-properties">Access Analyzer Config properties</a></li>
+<li><a href="#consume-msbuild-properties-and-metadata">Consume MSBuild properties and metadata</a></li>
+<li><a href="#unit-testing-of-generators">Unit Testing of Generators</a></li>
+<li><a href="#auto-interface-implementation">Auto interface implementation</a></li>
+</ul>
+</li>
+<li><a href="#breaking-changes">Breaking Changes:</a></li>
+<li><a href="#open-issues">Open Issues</a></li>
+</ul>
+</li>
+</ul>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Proposal</h2><a id="user-content-proposal" aria-label="Permalink: Proposal" href="#proposal"></a>
+<p dir="auto">As a reminder, the high level design goals of source generators are:</p>
+<ul dir="auto">
+<li>Generators produce one or more strings that represent C# source code to be added to the compilation.</li>
+<li>Explicitly <em>additive</em> only. Generators can add new source code to a compilation but may <strong>not</strong> modify existing user code.</li>
+<li>May access <em>additional files</em>, that is, non-C# source texts.</li>
+<li>Run <em>un-ordered</em>, each generator will see the same input compilation, with no access to files created by other source generators.</li>
+<li>A user specifies the generators to run via list of assemblies, much like analyzers.</li>
+<li>Generators create a pipeline, starting from base input sources and mapping them to the output they wish to produce. The more exposed,
+properly equatable states exist, the earlier the compiler will be able to cut off changes and reuse the same output.</li>
+</ul>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Out of scope designs</h2><a id="user-content-out-of-scope-designs" aria-label="Permalink: Out of scope designs" href="#out-of-scope-designs"></a>
+<p dir="auto">We will briefly look at the non-solvable problems as examples of the kind of problems source generators are <em>not</em> designed to solve:</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Language features</h3><a id="user-content-language-features" aria-label="Permalink: Language features" href="#language-features"></a>
+<p dir="auto">Source generators are not designed to replace new language features: for instance one could imagine <a href="https://github.com/dotnet/roslyn/blob/main/docs/features/records.md">records</a> being implemented as a source generator
+that converts the specified syntax to a compilable C# representation.</p>
+<p dir="auto">We explicitly consider this to be an anti-pattern; the language will continue to evolve and add new features, and we don't expect source generators to be
+a way to enable this. Doing so would create new 'dialects' of C# that are incompatible with the compiler without generators. Further, because generators,
+by design, cannot interact with each other, language features implemented in this way would quickly become incompatible with other additions to the language.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Code rewriting</h3><a id="user-content-code-rewriting" aria-label="Permalink: Code rewriting" href="#code-rewriting"></a>
+<p dir="auto">There are many post-processing tasks that users perform on their assemblies today, which here we define broadly as 'code rewriting'. These include, but
+are not limited to:</p>
+<ul dir="auto">
+<li>Optimization</li>
+<li>Logging injection</li>
+<li>IL Weaving</li>
+<li>Call site re-writing</li>
+</ul>
+<p dir="auto">While these techniques have many valuable use cases, they do not fit into the idea of <em>source generation</em>. They are, by definition, code altering operations
+which are explicitly ruled out by the source generators proposal.</p>
+<p dir="auto">There are already well supported tools and techniques for achieving these kinds of operations, and the source generators proposal is not aimed at replacing them.
+We are exploring approaches for call site rewriting (see <a href="https://github.com/dotnet/roslyn/blob/main/docs/features/interceptors.md">interceptors.md</a>), but those features are experimental and may change significantly
+or even be removed.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Conventions</h2><a id="user-content-conventions" aria-label="Permalink: Conventions" href="#conventions"></a>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Pipeline model design</h3><a id="user-content-pipeline-model-design" aria-label="Permalink: Pipeline model design" href="#pipeline-model-design"></a>
+<p dir="auto">As a general guideline, source generator pipelines need to pass along models that are <em>value equatable</em>. This is critical to the incrementality of an
+<code>IIncrementalGenerator</code>; as soon as a pipeline step returns the same information that it returned in the previous run, the generator driver can stop running
+the generator and reuse the same cached data that the generator produced in the previous run. Most times a generator is triggered (particularly generators that
+need to look at type or method definitions, using <code>ForAttributeWithMetadataName</code>) the edit that triggered the generator will not actually have affected the
+things that your generator is looking at. However, because semantics can change on basically any edit, the generator driver <em>must</em> rerun your generator again
+to ensure that this is the case. If your generator then produces a model with the same values as it did previously, this short-circuits the pipeline and allows
+us to avoid a lot of work. Here are some general guidelines around designing your models to ensure that you maintain this equality:</p>
+<ul dir="auto">
+<li>Use <code>record</code>s, rather than <code>class</code>es, so that value equality is generated for you.</li>
+<li>Symbols (<code>ISymbol</code> and anything that inherits from that interface) are never equatable, and including them in your model can potentially root old compilations
+and force Roslyn to hold onto lots of memory that it could otherwise free. Never put these in your model types. Instead, extract the information you need from
+the symbols you inspect to an equatable representation: <code>string</code>s often work quite well here.</li>
+<li><code>SyntaxNode</code>s are also usually not equatable between runs. They're not as strongly discouraged from the initial stages of a pipeline as symbols, and an example
+<a href="#access-analyzer-config-properties">later down</a> shows a case where you will need to include a <code>SyntaxNode</code> in model. They also don't potentially root as much
+memory as symbols will. However, any edit in a file will ensure that all <code>SyntaxNode</code>s from that file are no longer equatable, so they should be removed from
+your models as soon as possible.</li>
+<li>The previous bullet applies to <code>Location</code>s as well.</li>
+<li>Be careful of collection types in your models. Most built-in collection types in .NET do not do value equality by default. Arrays, <code>ImmutableArray&lt;T&gt;</code> and
+<code>List&lt;T&gt;</code>, for example, use reference equality, not value equality. We suggest that most generator authors use a wrapper type around arrays to augment them
+with value-based equality.</li>
+</ul>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Use <code>ForAttributeWithMetadataName</code></h3><a id="user-content-use-forattributewithmetadataname" aria-label="Permalink: Use ForAttributeWithMetadataName" href="#use-forattributewithmetadataname"></a>
+<p dir="auto">We highly recommend that all generator authors that need to inspect syntax do so by using a marker attribute to indicate the types or members that need to be
+inspected. This has multiple benefits, both for you as an author, and also for your users:</p>
+<ul dir="auto">
+<li>As an author, you can use <code>SyntaxProvider.ForAttributeWithMetadataName</code>. This utility method is at least 99x more efficient than <code>SyntaxProvider.CreateSyntaxProvider</code>,
+and in many cases even more efficient. This will help you avoid causing performance issues for your users in editors.</li>
+<li>Your users can clearly indicate that they <em>intend</em> to use your source generator. This intention is extremely helpful for designing a good user experience; it
+means that you can author Roslyn analyzers to help your users when they intended to use your generator but violated your rules in some fashion. For example, if
+you are generating some method body, and your generator requires that the user return a specific type, the presence of a <code>GenerateMe</code> attribute means you can
+write an analyzer to tell the user if their method declaration returns something that it shouldn't.</li>
+</ul>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Use an indented text writer, not <code>SyntaxNode</code>s, for generation</h3><a id="user-content-use-an-indented-text-writer-not-syntaxnodes-for-generation" aria-label="Permalink: Use an indented text writer, not SyntaxNodes, for generation" href="#use-an-indented-text-writer-not-syntaxnodes-for-generation"></a>
+<p dir="auto">We do not recommend generating <code>SyntaxNode</code>s when generating syntax for <code>AddSource</code>. Doing so can be complex, and it can be difficult to format it well; calling
+<code>NormalizeWhitespace</code> is often quite expensive, and the API is not really designed for this use-case. Additionally, to ensure immutability guarantees, <code>AddSource</code> does
+not accept <code>SyntaxNode</code>s. It instead requires getting the <code>string</code> representation and putting that into a <code>SourceText</code>. Instead of <code>SyntaxNode</code>, we recommend using a
+wrapper around <code>StringBuilder</code> that will keep track of indent level and prepend the right amount of indentation when <code>AppendLine</code> is called. See
+<a href="https://github.com/dotnet/roslyn/issues/52914#issuecomment-1732680995" data-hovercard-type="issue" data-hovercard-url="/dotnet/roslyn/issues/52914/hovercard">this</a> conversation on the performance of <code>NormalizeWhitespace</code> for more examples, performance
+measurements, and discussion on why we don't believe that <code>SyntaxNode</code>s are a good abstraction for this use case.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Put <code>Microsoft.CodeAnalysis.EmbeddedAttribute</code> on generated marker types</h3><a id="user-content-put-microsoftcodeanalysisembeddedattribute-on-generated-marker-types" aria-label="Permalink: Put Microsoft.CodeAnalysis.EmbeddedAttribute on generated marker types" href="#put-microsoftcodeanalysisembeddedattribute-on-generated-marker-types"></a>
+<p dir="auto">Users might depend on your generator in multiple projects in the same solution, and these projects will often have <code>InternalsVisibleTo</code> applied. This means that your
+<code>internal</code> marker attributes may be defined in multiple projects, and the compiler will warn about this. While this doesn't block compilation, it can be irritating to
+users. To avoid this, mark such attributes with <code>Microsoft.CodeAnalysis.EmbeddedAttribute</code>; when the compiler sees this attribute on a type from separate assembly or
+project, it will not include that type in lookup results. To ensure that <code>Microsoft.CodeAnalysis.EmbeddedAttribute</code> is available in the compilation, call the
+<code>AddEmbeddedAttributeDefinition</code> helper method in your <code>RegisterPostInitializationOutput</code> callback.</p>
+<p dir="auto">Another option is to provide an assembly in your nuget package that defines your marker attributes, but this can be more difficult to author. We recommend the
+<code>EmbeddedAttribute</code> approach, unless you need to support versions of Roslyn lower than 4.14.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Do not scan for types that indirectly implement interfaces, indirectly inherit from types, or are indirectly marked by an attribute from an interface or base type</h3><a id="user-content-do-not-scan-for-types-that-indirectly-implement-interfaces-indirectly-inherit-from-types-or-are-indirectly-marked-by-an-attribute-from-an-interface-or-base-type" aria-label="Permalink: Do not scan for types that indirectly implement interfaces, indirectly inherit from types, or are indirectly marked by an attribute from an interface or base type" href="#do-not-scan-for-types-that-indirectly-implement-interfaces-indirectly-inherit-from-types-or-are-indirectly-marked-by-an-attribute-from-an-interface-or-base-type"></a>
+<p dir="auto">Using an interface/base type marker can be a very tempting and natural fit for generators. However, scanning for these types of markers is <em>very</em> expensive, and cannot
+be done incrementally. Doing so can have an outsized impact on IDE and command-line performance, even for fairly small consuming users. These scenarios are:</p>
+<ul dir="auto">
+<li>A user implements an interface on <code>BaseModelType</code>, and then the generator looks all derived types from <code>BaseModelType</code>. Because the generator cannot know ahead of time
+what <code>BaseModelType</code> actually is, it means that the generator has to fetch <code>AllInterfaces</code> on every single type in the compilation so it can scan for the marker
+interface. This will end up occurring either on every keystroke or every file save, depending on what mode the user is running generators in; either one is disastrous
+for IDE performance, even when trying to optimize by scoping down the scanning to only types with a base list.</li>
+<li>A user inherits from a generator-defined <code>BaseSerializerType</code>, and the generator looks for anything that inherits from that type, either directly or indirectly. Similar
+to the above scenario, the generator will need to scan all types with a base type in the entire compilation for the inherited <code>BaseSerializerType</code>, which will heavily
+impact IDE performance.</li>
+<li>A generator looks among all base types/implemented interfaces for a type that is attributed with a generator's marker attribute. This is effectively either scenario 1
+or 2, just with a different search criteria.</li>
+<li>A generator leaves its marker attribute unsealed, and expects users to be able to derive their own attributes from that marker, as a source of parameter customization.
+This has a couple of problems: first, every attributed type needs to be checked to see if the attribute inherits from the marker attribute. While not as performance
+impacting as the first three scenarios, this isn't great for performance. Second, and more importantly, there is no good way to retrieve any customizations from the
+inherited attribute. These attributes are not instantiated by the source generator, so any parameters passed to the <code>base()</code> constructor call or values that are assigned
+to any properties of the base attribute are not visible to the generator. Prefer using FAWMN-driven development here, and using an analyzer to inform the user if they
+need to inherit from some base class for your generator to work correctly.</li>
+</ul>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Designs</h2><a id="user-content-designs" aria-label="Permalink: Designs" href="#designs"></a>
+<p dir="auto">This section is broken down by user scenarios, with general solutions listed first, and more specific examples later on.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Generated class</h3><a id="user-content-generated-class" aria-label="Permalink: Generated class" href="#generated-class"></a>
+<p dir="auto"><strong>User scenario:</strong> As a generator author I want to be able to add a type to the compilation, that can be referenced by the user's code. Common use cases include
+creating an attribute that will be used to drive other source generator steps.</p>
+<p dir="auto"><strong>Solution:</strong> Have the user write the code as if the type was already present. Generate the missing type based on information available in the compilation using
+the <code>RegisterPostInitializationOutput</code> step.</p>
+<p dir="auto"><strong>Example:</strong></p>
+<p dir="auto">Given the following user code:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="public partial class UserClass
+{
+    [GeneratedNamespace.GeneratedAttribute]
+    public partial void UserMethod();
+}"><pre><span>public</span> <span>partial</span> <span>class</span> <span>UserClass</span>
+<span>{</span>
+    <span>[</span><span>GeneratedNamespace</span><span>.</span><span>GeneratedAttribute</span><span>]</span>
+    <span>public</span> <span>partial</span> <span>void</span> <span>UserMethod</span><span>(</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto">Create a generator that will create the missing type when run:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="[Generator]
+public class CustomGenerator : IIncrementalGenerator
+{
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        context.RegisterPostInitializationOutput(static postInitializationContext => {
+            postInitializationContext.AddEmbeddedAttributeDefinition();
+            postInitializationContext.AddSource(&quot;myGeneratedFile.cs&quot;, SourceText.From(&quot;&quot;&quot;
+                using System;
+                using Microsoft.CodeAnalysis;
+
+                namespace GeneratedNamespace
+                {
+                    [Embedded]
+                    internal sealed class GeneratedAttribute : Attribute
+                    {
+                    }
+                }
+                &quot;&quot;&quot;, Encoding.UTF8));
+        });
+    }
+}"><pre><span>[</span><span>Generator</span><span>]</span>
+<span>public</span> <span>class</span> <span>CustomGenerator</span> <span>:</span> <span>IIncrementalGenerator</span>
+<span>{</span>
+    <span>public</span> <span>void</span> <span>Initialize</span><span>(</span><span>IncrementalGeneratorInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+        <span>context</span><span>.</span><span>RegisterPostInitializationOutput</span><span>(</span><span>static</span> postInitializationContext <span>=&gt;</span> <span>{</span>
+            <span>postInitializationContext</span><span>.</span><span>AddEmbeddedAttributeDefinition</span><span>(</span><span>)</span><span>;</span>
+            <span>postInitializationContext</span><span>.</span><span>AddSource</span><span>(</span><span>"myGeneratedFile.cs"</span><span>,</span> <span>SourceText</span><span>.</span><span>From</span><span>(</span><span>"""</span>
+<span>                using System;</span>
+<span>                using Microsoft.CodeAnalysis;</span>
+<span></span>
+<span>                namespace GeneratedNamespace</span>
+<span>                {</span>
+<span>                    [Embedded]</span>
+<span>                    internal sealed class GeneratedAttribute : Attribute</span>
+<span>                    {</span>
+<span>                    }</span>
+<span>                }</span>
+<span>                """</span><span>,</span> <span>Encoding</span><span>.</span><span>UTF8</span><span>)</span><span>)</span><span>;</span>
+        <span>}</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"><strong>Alternative Solution</strong>: If you are also providing a library to your users, in addition to a source generator, simply have that library include the
+attribute definition.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Additional file transformation</h3><a id="user-content-additional-file-transformation" aria-label="Permalink: Additional file transformation" href="#additional-file-transformation"></a>
+<p dir="auto"><strong>User scenario:</strong> As a generator author I want to be able to transform an external non-C# file into an equivalent C# representation.</p>
+<p dir="auto"><strong>Solution:</strong> Use the <code>AdditionalTextsProvider</code> to filter for and retrieve your files. Transform them into the code you care about, then
+register that code with the solution.</p>
+<p dir="auto"><strong>Example:</strong></p>
+<div dir="auto" data-snippet-clipboard-copy-content="[Generator]
+public class FileTransformGenerator : IIncrementalGenerator
+{
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        var pipeline = context.AdditionalTextsProvider
+            .Where(static (text) => text.Path.EndsWith(&quot;.xml&quot;))
+            .Select(static (text, cancellationToken) =>
+            {
+                var name = Path.GetFileName(text.Path);
+                var code = MyXmlToCSharpCompiler.Compile(text.GetText(cancellationToken));
+                return (name, code);
+            });
+
+        context.RegisterSourceOutput(pipeline,
+            static (context, pair) => 
+                // Note: this AddSource is simplified. You will likely want to include the path in the name of the file to avoid
+                // issues with duplicate file names in different paths in the same project.
+                context.AddSource($&quot;{pair.name}generated.cs&quot;, SourceText.From(pair.code, Encoding.UTF8)));
+    }
+}"><pre><span>[</span><span>Generator</span><span>]</span>
+<span>public</span> <span>class</span> <span>FileTransformGenerator</span> <span>:</span> <span>IIncrementalGenerator</span>
+<span>{</span>
+    <span>public</span> <span>void</span> <span>Initialize</span><span>(</span><span>IncrementalGeneratorInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+        <span>var</span> <span>pipeline</span> <span>=</span> <span>context</span><span>.</span><span>AdditionalTextsProvider</span>
+            <span>.</span><span>Where</span><span>(</span><span>static</span> <span>(</span><span>text</span><span>)</span> <span>=&gt;</span> <span>text</span><span>.</span><span>Path</span><span>.</span><span>EndsWith</span><span>(</span><span>".xml"</span><span>)</span><span>)</span>
+            <span>.</span><span>Select</span><span>(</span><span>static</span> <span>(</span><span>text</span><span>,</span> <span>cancellationToken</span><span>)</span> <span>=&gt;</span>
+            <span>{</span>
+                <span>var</span> <span>name</span> <span>=</span> <span>Path</span><span>.</span><span>GetFileName</span><span>(</span><span>text</span><span>.</span><span>Path</span><span>)</span><span>;</span>
+                <span>var</span> <span>code</span> <span>=</span> <span>MyXmlToCSharpCompiler</span><span>.</span><span>Compile</span><span>(</span><span>text</span><span>.</span><span>GetText</span><span>(</span><span>cancellationToken</span><span>)</span><span>)</span><span>;</span>
+                <span>return</span> <span>(</span><span>name</span><span>,</span> <span>code</span><span>)</span><span>;</span>
+            <span>}</span><span>)</span><span>;</span>
+
+        <span>context</span><span>.</span><span>RegisterSourceOutput</span><span>(</span><span>pipeline</span><span>,</span>
+            <span>static</span> <span>(</span><span>context</span><span>,</span> <span>pair</span><span>)</span> <span>=&gt;</span> 
+                <span>// Note: this AddSource is simplified. You will likely want to include the path in the name of the file to avoid</span>
+                <span>// issues with duplicate file names in different paths in the same project.</span>
+                <span>context</span><span>.</span><span>AddSource</span><span>(</span><span><span>$</span>"<span>{</span><span>pair</span><span>.</span><span>name</span><span>}</span>generated.cs"</span><span>,</span> <span>SourceText</span><span>.</span><span>From</span><span>(</span><span>pair</span><span>.</span><span>code</span><span>,</span> <span>Encoding</span><span>.</span><span>UTF8</span><span>)</span><span>)</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto">Items need to be included in your csproj files by using the <code>AdditionalFiles</code> ItemGroup:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<ItemGroup>
+    <AdditionalFiles Include=&quot;file1.xml&quot; />
+    <AdditionalFiles Include=&quot;file2.xml&quot; />
+<ItemGroup>"><pre>&lt;<span>ItemGroup</span>&gt;
+    &lt;<span>AdditionalFiles</span> <span>Include</span>=<span><span>"</span>file1.xml<span>"</span></span> /&gt;
+    &lt;<span>AdditionalFiles</span> <span>Include</span>=<span><span>"</span>file2.xml<span>"</span></span> /&gt;
+&lt;<span>ItemGroup</span>&gt;</pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Pre-compilation source generation</h3><a id="user-content-pre-compilation-source-generation" aria-label="Permalink: Pre-compilation source generation" href="#pre-compilation-source-generation"></a>
+<blockquote>
+<p dir="auto">Note: this is an experimental API and requires suppressing diagnostic <code>RSEXPERIMENTAL007</code> to use.</p>
+</blockquote>
+<p dir="auto"><strong>User scenario:</strong> As a generator author I want to produce source from non-compilation inputs (e.g. additional files, parse options) and have that source be visible to compilation-dependent code in the same generator (or in other generators), so that downstream code can call <code>compilation.GetTypeByMetadataName(...)</code> and find the types I just emitted.</p>
+<p dir="auto"><strong>Solution:</strong> Use <code>RegisterPreCompilationSourceOutput</code>. It runs in a new phase that executes <em>before</em> the standard <code>RegisterSourceOutput</code> phase, and its emitted source is added to the compilation that the standard phase observes. Because the phase runs before the compilation is fully built, the callback can only consume non-compilation providers (additional files, parse options, analyzer config options); attempting to reach <code>CompilationProvider</code> or <code>SyntaxProvider</code> from a pre-compilation pipeline throws at runtime.</p>
+<p dir="auto"><strong>Example:</strong></p>
+<div dir="auto" data-snippet-clipboard-copy-content="[Generator]
+public class ProtoGenerator : IIncrementalGenerator
+{
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        // Pre-compilation phase: read .proto files and emit C# types.
+        // The emitted source becomes part of the compilation that the standard
+        // phase below sees, so compilation.GetTypeByMetadataName(&quot;MyProto.Message&quot;)
+        // will find the generated type.
+        var protoFiles = context.AdditionalTextsProvider
+            .Where(static (f) => f.Path.EndsWith(&quot;.proto&quot;));
+
+        context.RegisterPreCompilationSourceOutput(protoFiles, static (ctx, file) =>
+        {
+            var types = ParseProtoFile(file.GetText()!.ToString());
+            ctx.AddSource($&quot;{Path.GetFileName(file.Path)}.g.cs&quot;, GenerateTypes(types));
+        });
+
+        // Standard phase: the compilation now contains the generated proto types,
+        // so we can look them up symbolically and emit code that depends on them.
+        context.RegisterSourceOutput(context.CompilationProvider, static (ctx, compilation) =>
+        {
+            var messageType = compilation.GetTypeByMetadataName(&quot;MyProto.Message&quot;);
+            if (messageType is not null)
+            {
+                ctx.AddSource(&quot;Serializers.g.cs&quot;, GenerateSerializer(messageType));
+            }
+        });
+    }
+}"><pre><span>[</span><span>Generator</span><span>]</span>
+<span>public</span> <span>class</span> <span>ProtoGenerator</span> <span>:</span> <span>IIncrementalGenerator</span>
+<span>{</span>
+    <span>public</span> <span>void</span> <span>Initialize</span><span>(</span><span>IncrementalGeneratorInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+        <span>// Pre-compilation phase: read .proto files and emit C# types.</span>
+        <span>// The emitted source becomes part of the compilation that the standard</span>
+        <span>// phase below sees, so compilation.GetTypeByMetadataName("MyProto.Message")</span>
+        <span>// will find the generated type.</span>
+        <span>var</span> <span>protoFiles</span> <span>=</span> <span>context</span><span>.</span><span>AdditionalTextsProvider</span>
+            <span>.</span><span>Where</span><span>(</span><span>static</span> <span>(</span><span>f</span><span>)</span> <span>=&gt;</span> <span>f</span><span>.</span><span>Path</span><span>.</span><span>EndsWith</span><span>(</span><span>".proto"</span><span>)</span><span>)</span><span>;</span>
+
+        <span>context</span><span>.</span><span>RegisterPreCompilationSourceOutput</span><span>(</span><span>protoFiles</span><span>,</span> <span>static</span> <span>(</span><span>ctx</span><span>,</span> <span>file</span><span>)</span> <span>=&gt;</span>
+        <span>{</span>
+            <span>var</span> <span>types</span> <span>=</span> <span>ParseProtoFile</span><span>(</span><span>file</span><span>.</span><span>GetText</span><span>(</span><span>)</span><span>!</span><span>.</span><span>ToString</span><span>(</span><span>)</span><span>)</span><span>;</span>
+            <span>ctx</span><span>.</span><span>AddSource</span><span>(</span><span><span>$</span>"<span>{</span><span>Path</span><span>.</span><span>GetFileName</span><span>(</span><span>file</span><span>.</span><span>Path</span><span>)</span><span>}</span>.g.cs"</span><span>,</span> <span>GenerateTypes</span><span>(</span><span>types</span><span>)</span><span>)</span><span>;</span>
+        <span>}</span><span>)</span><span>;</span>
+
+        <span>// Standard phase: the compilation now contains the generated proto types,</span>
+        <span>// so we can look them up symbolically and emit code that depends on them.</span>
+        <span>context</span><span>.</span><span>RegisterSourceOutput</span><span>(</span><span>context</span><span>.</span><span>CompilationProvider</span><span>,</span> <span>static</span> <span>(</span><span>ctx</span><span>,</span> <span>compilation</span><span>)</span> <span>=&gt;</span>
+        <span>{</span>
+            <span>var</span> <span>messageType</span> <span>=</span> <span>compilation</span><span>.</span><span>GetTypeByMetadataName</span><span>(</span><span>"MyProto.Message"</span><span>)</span><span>;</span>
+            <span>if</span> <span>(</span><span>messageType</span> <span>is</span> not <span>null</span><span>)</span>
+            <span>{</span>
+                <span>ctx</span><span>.</span><span>AddSource</span><span>(</span><span>"Serializers.g.cs"</span><span>,</span> <span>GenerateSerializer</span><span>(</span><span>messageType</span><span>)</span><span>)</span><span>;</span>
+            <span>}</span>
+        <span>}</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"><strong>When to use this over <code>RegisterPostInitializationOutput</code>:</strong> post-init runs even earlier, but takes no inputs at all; it is for emitting fixed source like marker attributes. If your generator needs to react to additional files, parse options, or analyzer config and have the result visible to downstream compilation-dependent code, pre-compilation is the right fit.</p>
+<p dir="auto"><strong>When to use this over <code>RegisterSourceOutput</code>:</strong> standard <code>RegisterSourceOutput</code> always runs <em>after</em> the compilation is built and cannot contribute source back into the compilation seen by other generators. Use pre-compilation when you specifically need that cross-generator visibility, e.g. one generator emits domain types from additional files and another generator (or a later pipeline in the same generator) needs to consume those types via <code>CompilationProvider</code>.</p>
+<p dir="auto"><strong>Diagnostics:</strong> <code>PreCompilationSourceProductionContext</code> intentionally does <strong>not</strong> include <code>ReportDiagnostic</code>. Pre-compilation is an early phase focused purely on producing source; diagnostic reporting should be done in a separate analyzer (see <em>Issue Diagnostics</em> below).</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Augment user code</h3><a id="user-content-augment-user-code" aria-label="Permalink: Augment user code" href="#augment-user-code"></a>
+<p dir="auto"><strong>User scenario:</strong> As a generator author I want to be able to inspect and augment a user's code with new functionality.</p>
+<p dir="auto"><strong>Solution:</strong> Require the user to make the class you want to augment be a <code>partial class</code>, and mark it with a unique attribute.
+Provide that attribute in a <code>RegisterPostInitializationOutput</code> step. Register for callbacks on that attribute with
+<code>ForAttributeWithMetadataName</code> to collect the information needed to generate code, and use tuples (or create an equatable model)
+to pass along that information. That information should be extracted from syntax and symbols; <strong>do not put syntax or symbols into
+your models</strong>.</p>
+<p dir="auto"><strong>Example:</strong></p>
+<div dir="auto" data-snippet-clipboard-copy-content="public partial class UserClass
+{
+    [GeneratedNamespace.Generated]
+    public partial void UserMethod();
+}"><pre><span>public</span> <span>partial</span> <span>class</span> <span>UserClass</span>
+<span>{</span>
+    <span>[</span><span>GeneratedNamespace</span><span>.</span><span>Generated</span><span>]</span>
+    <span>public</span> <span>partial</span> <span>void</span> <span>UserMethod</span><span>(</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<div dir="auto" data-snippet-clipboard-copy-content="[Generator]
+public class AugmentingGenerator : IIncrementalGenerator
+{
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        context.RegisterPostInitializationOutput(static postInitializationContext =>
+            postInitializationContext.AddEmbeddedAttributeDefinition();
+            postInitializationContext.AddSource(&quot;myGeneratedFile.cs&quot;, SourceText.From(&quot;&quot;&quot;
+                using System;
+                using Microsoft.CodeAnalysis;
+                namespace GeneratedNamespace
+                {
+                    [AttributeUsage(AttributeTargets.Method), Embedded]
+                    internal sealed class GeneratedAttribute : Attribute
+                    {
+                    }
+                }
+                &quot;&quot;&quot;, Encoding.UTF8)));
+
+        var pipeline = context.SyntaxProvider.ForAttributeWithMetadataName(
+            fullyQualifiedMetadataName: &quot;GeneratedNamespace.GeneratedAttribute&quot;,
+            predicate: static (syntaxNode, cancellationToken) => syntaxNode is BaseMethodDeclarationSyntax,
+            transform: static (context, cancellationToken) =>
+            {
+                var containingClass = context.TargetSymbol.ContainingType;
+                return new Model(
+                    // Note: this is a simplified example. You will also need to handle the case where the type is in a global namespace, nested, etc.
+                    Namespace: containingClass.ContainingNamespace?.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat.WithGlobalNamespaceStyle(SymbolDisplayGlobalNamespaceStyle.Omitted)),
+                    ClassName: containingClass.Name,
+                    MethodName: context.TargetSymbol.Name);
+            }
+        );
+
+        context.RegisterSourceOutput(pipeline, static (context, model) =>
+        {
+            var sourceText = SourceText.From($$&quot;&quot;&quot;
+                namespace {{model.Namespace}};
+                partial class {{model.ClassName}}
+                {
+                    partial void {{model.MethodName}}()
+                    {
+                        // generated code
+                    }
+                }
+                &quot;&quot;&quot;, Encoding.UTF8);
+
+            context.AddSource($&quot;{model.ClassName}_{model.MethodName}.g.cs&quot;, sourceText);
+        });
+    }
+
+    private record Model(string Namespace, string ClassName, string MethodName);
+}"><pre><span>[</span><span>Generator</span><span>]</span>
+<span>public</span> <span>class</span> <span>AugmentingGenerator</span> <span>:</span> <span>IIncrementalGenerator</span>
+<span>{</span>
+    <span>public</span> <span>void</span> <span>Initialize</span><span>(</span><span>IncrementalGeneratorInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+        <span>context</span><span>.</span><span>RegisterPostInitializationOutput</span><span>(</span><span>static</span> postInitializationContext <span>=&gt;</span>
+            <span>postInitializationContext</span><span>.</span><span>AddEmbeddedAttributeDefinition</span><span>(</span><span>)</span><span></span><span>;</span>
+            <span>postInitializationContext</span><span>.</span><span>AddSource</span><span>(</span><span>"myGeneratedFile.cs"</span><span>,</span> <span>SourceText</span><span>.</span><span>From</span><span>(</span><span>"""</span>
+<span>                using System;</span>
+<span>                using Microsoft.CodeAnalysis;</span>
+<span>                namespace GeneratedNamespace</span>
+<span>                {</span>
+<span>                    [AttributeUsage(AttributeTargets.Method), Embedded]</span>
+<span>                    internal sealed class GeneratedAttribute : Attribute</span>
+<span>                    {</span>
+<span>                    }</span>
+<span>                }</span>
+<span>                """</span><span>,</span> <span>Encoding</span><span>.</span><span>UTF8</span><span>)</span><span>)</span><span>)</span><span>;</span>
+
+        <span>var</span> <span>pipeline</span> <span>=</span> <span>context</span><span>.</span><span>SyntaxProvider</span><span>.</span><span>ForAttributeWithMetadataName</span><span>(</span>
+            <span>fullyQualifiedMetadataName</span><span>:</span> <span>"GeneratedNamespace.GeneratedAttribute"</span><span>,</span>
+            <span>predicate</span><span>:</span> <span>static</span> <span>(</span><span>syntaxNode</span><span>,</span> <span>cancellationToken</span><span>)</span> <span>=&gt;</span> <span>syntaxNode</span> <span>is</span> <span>BaseMethodDeclarationSyntax</span><span>,</span>
+            <span>transform</span><span>:</span> <span>static</span> <span>(</span><span>context</span><span>,</span> <span>cancellationToken</span><span>)</span> <span>=&gt;</span>
+            <span>{</span>
+                <span>var</span> <span>containingClass</span> <span>=</span> <span>context</span><span>.</span><span>TargetSymbol</span><span>.</span><span>ContainingType</span><span>;</span>
+                <span>return</span> <span>new</span> <span>Model</span><span>(</span>
+                    <span>// Note: this is a simplified example. You will also need to handle the case where the type is in a global namespace, nested, etc.</span>
+                    <span>Namespace</span><span>:</span> <span>containingClass</span><span>.</span><span>ContainingNamespace</span><span>?</span><span>.</span><span>ToDisplayString</span><span>(</span><span>SymbolDisplayFormat</span><span>.</span><span>FullyQualifiedFormat</span><span>.</span><span>WithGlobalNamespaceStyle</span><span>(</span><span>SymbolDisplayGlobalNamespaceStyle</span><span>.</span><span>Omitted</span><span>)</span><span>)</span><span>,</span>
+                    <span>ClassName</span><span>:</span> <span>containingClass</span><span>.</span><span>Name</span><span>,</span>
+                    <span>MethodName</span><span>:</span> <span>context</span><span>.</span><span>TargetSymbol</span><span>.</span><span>Name</span><span>)</span><span>;</span>
+            <span>}</span>
+        <span>)</span><span>;</span>
+
+        <span>context</span><span>.</span><span>RegisterSourceOutput</span><span>(</span><span>pipeline</span><span>,</span> <span>static</span> <span>(</span><span>context</span><span>,</span> <span>model</span><span>)</span> <span>=&gt;</span>
+        <span>{</span>
+            <span>var</span> <span>sourceText</span> <span>=</span> <span>SourceText</span><span>.</span><span>From</span><span>(</span><span><span>$$</span><span>"""</span></span>
+<span>                namespace <span>{{</span><span>model</span><span>.</span><span>Namespace</span><span>}}</span>;</span>
+<span>                partial class <span>{{</span><span>model</span><span>.</span><span>ClassName</span><span>}}</span></span>
+<span>                {</span>
+<span>                    partial void <span>{{</span><span>model</span><span>.</span><span>MethodName</span><span>}}</span>()</span>
+<span>                    {</span>
+<span>                        // generated code</span>
+<span>                    }</span>
+<span>                }</span>
+<span>                <span>"""</span></span><span>,</span> <span>Encoding</span><span>.</span><span>UTF8</span><span>)</span><span>;</span>
+
+            <span>context</span><span>.</span><span>AddSource</span><span>(</span><span><span>$</span>"<span>{</span><span>model</span><span>.</span><span>ClassName</span><span>}</span>_<span>{</span><span>model</span><span>.</span><span>MethodName</span><span>}</span>.g.cs"</span><span>,</span> <span>sourceText</span><span>)</span><span>;</span>
+        <span>}</span><span>)</span><span>;</span>
+    <span>}</span>
+
+    <span>private</span> <span>record</span> <span>Model</span><span>(</span><span>string</span> <span>Namespace</span><span>,</span> <span>string</span> <span>ClassName</span><span>,</span> <span>string</span> <span>MethodName</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Issue Diagnostics</h3><a id="user-content-issue-diagnostics" aria-label="Permalink: Issue Diagnostics" href="#issue-diagnostics"></a>
+<p dir="auto"><strong>User Scenario:</strong> As a generator author I want to be able to add diagnostics to the user's compilation.</p>
+<p dir="auto"><strong>Solution:</strong> We do not recommend issuing diagnostics within generators. It is possible, but doing so without breaking incrementality is advanced topic
+beyond the scope of this cookbook. Instead, we suggest writing a separate analyzer for reporting diagnostics.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">INotifyPropertyChanged</h3><a id="user-content-inotifypropertychanged" aria-label="Permalink: INotifyPropertyChanged" href="#inotifypropertychanged"></a>
+<p dir="auto"><strong>User scenario:</strong> As a generator author I want to be able to implement the <code>INotifyPropertyChanged</code> pattern automatically for a user.</p>
+<p dir="auto"><strong>Solution:</strong> The design tenant 'Explicitly additive only' seems to be at direct odds with the ability to implement this, and appears to call for user code modification.
+However we can instead take advantage of explicit fields and instead of <em>editing</em> the users properties, directly provide them for listed fields.</p>
+<p dir="auto"><strong>Example:</strong></p>
+<p dir="auto">Given a user class such as:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="using AutoNotify;
+
+public partial class UserClass
+{
+    [AutoNotify]
+    private bool _boolProp;
+
+    [AutoNotify(PropertyName = &quot;Count&quot;)]
+    private int _intProp;
+}"><pre><span>using</span> <span>AutoNotify</span><span>;</span>
+
+<span>public</span> <span>partial</span> <span>class</span> <span>UserClass</span>
+<span>{</span>
+    <span>[</span><span>AutoNotify</span><span>]</span>
+    <span>private</span> <span>bool</span> <span>_boolProp</span><span>;</span>
+
+    <span>[</span><span>AutoNotify</span><span>(</span><span>PropertyName</span> <span>=</span> <span>"Count"</span><span>)</span><span>]</span>
+    <span>private</span> <span>int</span> <span>_intProp</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto">A generator could produce the following:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="using System;
+using System.ComponentModel;
+
+namespace AutoNotify
+{
+    [AttributeUsage(AttributeTargets.Field, Inherited = false, AllowMultiple = false)]
+    sealed class AutoNotifyAttribute : Attribute
+    {
+        public AutoNotifyAttribute()
+        {
+        }
+        public string PropertyName { get; set; }
+    }
+}
+
+
+public partial class UserClass : INotifyPropertyChanged
+{
+    public bool BoolProp
+    {
+        get => _boolProp;
+        set
+        {
+            _boolProp = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(&quot;UserBool&quot;));
+        }
+    }
+
+    public int Count
+    {
+        get => _intProp;
+        set
+        {
+            _intProp = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(&quot;Count&quot;));
+        }
+    }
+
+    public event PropertyChangedEventHandler PropertyChanged;
+}"><pre><span>using</span> <span>System</span><span>;</span>
+<span>using</span> <span>System</span><span>.</span><span>ComponentModel</span><span>;</span>
+
+<span>namespace</span> <span>AutoNotify</span>
+<span>{</span>
+    <span>[</span><span>AttributeUsage</span><span>(</span><span>AttributeTargets</span><span>.</span><span>Field</span><span>,</span> <span>Inherited</span> <span>=</span> <span>false</span><span>,</span> <span>AllowMultiple</span> <span>=</span> <span>false</span><span>)</span><span>]</span>
+    <span>sealed</span> <span>class</span> <span>AutoNotifyAttribute</span> <span>:</span> <span>Attribute</span>
+    <span>{</span>
+        <span>public</span> <span>AutoNotifyAttribute</span><span>(</span><span>)</span>
+        <span>{</span>
+        <span>}</span>
+        <span>public</span> <span>string</span> <span>PropertyName</span> <span>{</span> <span>get</span><span>;</span> <span>set</span><span>;</span> <span>}</span>
+    <span>}</span>
+<span>}</span>
+
+
+<span>public</span> <span>partial</span> <span>class</span> <span>UserClass</span> <span>:</span> <span>INotifyPropertyChanged</span>
+<span>{</span>
+    <span>public</span> <span>bool</span> <span>BoolProp</span>
+    <span>{</span>
+        <span>get</span> <span>=&gt;</span> <span>_boolProp</span><span>;</span>
+        <span>set</span>
+        <span>{</span>
+            <span>_boolProp</span> <span>=</span> <span>value</span><span>;</span>
+            <span>PropertyChanged</span><span>?</span><span>.</span><span>Invoke</span><span>(</span><span>this</span><span>,</span> <span>new</span> <span>PropertyChangedEventArgs</span><span>(</span><span>"UserBool"</span><span>)</span><span>)</span><span>;</span>
+        <span>}</span>
+    <span>}</span>
+
+    <span>public</span> <span>int</span> <span>Count</span>
+    <span>{</span>
+        <span>get</span> <span>=&gt;</span> <span>_intProp</span><span>;</span>
+        <span>set</span>
+        <span>{</span>
+            <span>_intProp</span> <span>=</span> <span>value</span><span>;</span>
+            <span>PropertyChanged</span><span>?</span><span>.</span><span>Invoke</span><span>(</span><span>this</span><span>,</span> <span>new</span> <span>PropertyChangedEventArgs</span><span>(</span><span>"Count"</span><span>)</span><span>)</span><span>;</span>
+        <span>}</span>
+    <span>}</span>
+
+    <span>public</span> <span>event</span> <span>PropertyChangedEventHandler</span> <span>PropertyChanged</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Package a generator as a NuGet package</h3><a id="user-content-package-a-generator-as-a-nuget-package" aria-label="Permalink: Package a generator as a NuGet package" href="#package-a-generator-as-a-nuget-package"></a>
+<p dir="auto"><strong>User scenario</strong>: As a generator author I want to package my generator as a NuGet package for consumption.</p>
+<p dir="auto"><strong>Solution:</strong> Generators can be packaged using the same method as an Analyzer would.
+Ensure the generator is placed in the <code>analyzers\dotnet\cs</code> folder of the package for it to be automatically added to the users project on install.</p>
+<p dir="auto">For example, to turn your generator project into a NuGet package at build, add the following to your project file:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- Generates a package at build -->
+    <IncludeBuildOutput>false</IncludeBuildOutput> <!-- Do not include the generator as a lib dependency -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Package the generator in the analyzer directory of the nuget package -->
+    <None Include=&quot;$(OutputPath)\$(AssemblyName).dll&quot; Pack=&quot;true&quot; PackagePath=&quot;analyzers/dotnet/cs&quot; Visible=&quot;false&quot; />
+  </ItemGroup>"><pre>  &lt;<span>PropertyGroup</span>&gt;
+    &lt;<span>GeneratePackageOnBuild</span>&gt;true&lt;/<span>GeneratePackageOnBuild</span>&gt; <span><span>&lt;!--</span> Generates a package at build <span>--&gt;</span></span>
+    &lt;<span>IncludeBuildOutput</span>&gt;false&lt;/<span>IncludeBuildOutput</span>&gt; <span><span>&lt;!--</span> Do not include the generator as a lib dependency <span>--&gt;</span></span>
+  &lt;/<span>PropertyGroup</span>&gt;
+
+  &lt;<span>ItemGroup</span>&gt;
+    <span><span>&lt;!--</span> Package the generator in the analyzer directory of the nuget package <span>--&gt;</span></span>
+    &lt;<span>None</span> <span>Include</span>=<span><span>"</span>$(OutputPath)\$(AssemblyName).dll<span>"</span></span> <span>Pack</span>=<span><span>"</span>true<span>"</span></span> <span>PackagePath</span>=<span><span>"</span>analyzers/dotnet/cs<span>"</span></span> <span>Visible</span>=<span><span>"</span>false<span>"</span></span> /&gt;
+  &lt;/<span>ItemGroup</span>&gt;</pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Use functionality from NuGet packages</h3><a id="user-content-use-functionality-from-nuget-packages" aria-label="Permalink: Use functionality from NuGet packages" href="#use-functionality-from-nuget-packages"></a>
+<p dir="auto"><strong>User Scenario:</strong> As a generator author I want to rely on functionality provided in NuGet packages inside my generator.</p>
+<p dir="auto"><strong>Solution:</strong> It is possible to depend on NuGet packages inside of a generator, but special consideration has to be taken for distribution.</p>
+<p dir="auto">Any <em>runtime</em> dependencies, that is, code that the end users program will need to rely on, can simply be added as a dependency of the generator NuGet package via the usual referencing mechanism.</p>
+<p dir="auto">For example, consider a generator that creates code that relies on <code>Newtonsoft.Json</code>. The generator does not directly use the dependency, it just emits code that relies on the library being referenced in the users compilation. The author would add a reference to <code>Newtonsoft.Json</code> as a public dependency, and when the user adds the generator package it will be referenced automatically.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<Project>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- Generates a package at build -->
+    <IncludeBuildOutput>false</IncludeBuildOutput> <!-- Do not include the generator as a lib dependency -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Take a public dependency on Json.Net. Consumers of this generator will get a reference to this package -->
+    <PackageReference Include=&quot;Newtonsoft.Json&quot; Version=&quot;12.0.1&quot; />
+
+    <!-- Package the generator in the analyzer directory of the nuget package -->
+    <None Include=&quot;$(OutputPath)\$(AssemblyName).dll&quot; Pack=&quot;true&quot; PackagePath=&quot;analyzers/dotnet/cs&quot; Visible=&quot;false&quot; />
+  </ItemGroup>
+</Project>"><pre>&lt;<span>Project</span>&gt;
+  &lt;<span>PropertyGroup</span>&gt;
+    &lt;<span>GeneratePackageOnBuild</span>&gt;true&lt;/<span>GeneratePackageOnBuild</span>&gt; <span><span>&lt;!--</span> Generates a package at build <span>--&gt;</span></span>
+    &lt;<span>IncludeBuildOutput</span>&gt;false&lt;/<span>IncludeBuildOutput</span>&gt; <span><span>&lt;!--</span> Do not include the generator as a lib dependency <span>--&gt;</span></span>
+  &lt;/<span>PropertyGroup</span>&gt;
+
+  &lt;<span>ItemGroup</span>&gt;
+    <span><span>&lt;!--</span> Take a public dependency on Json.Net. Consumers of this generator will get a reference to this package <span>--&gt;</span></span>
+    &lt;<span>PackageReference</span> <span>Include</span>=<span><span>"</span>Newtonsoft.Json<span>"</span></span> <span>Version</span>=<span><span>"</span>12.0.1<span>"</span></span> /&gt;
+
+    <span><span>&lt;!--</span> Package the generator in the analyzer directory of the nuget package <span>--&gt;</span></span>
+    &lt;<span>None</span> <span>Include</span>=<span><span>"</span>$(OutputPath)\$(AssemblyName).dll<span>"</span></span> <span>Pack</span>=<span><span>"</span>true<span>"</span></span> <span>PackagePath</span>=<span><span>"</span>analyzers/dotnet/cs<span>"</span></span> <span>Visible</span>=<span><span>"</span>false<span>"</span></span> /&gt;
+  &lt;/<span>ItemGroup</span>&gt;
+&lt;/<span>Project</span>&gt;</pre></div>
+<p dir="auto">However, any <em>generation-time</em> dependencies, that is, used by the generator while it is is running and generating code, must be packaged directly alongside the generator assembly inside the generator NuGet package. There are no automatic facilities for this, and you will need to manually specify the dependencies to include.</p>
+<p dir="auto">Consider a generator that uses <code>Newtonsoft.Json</code> to encode something to json during the generation pass, but does not emit any code the relies on it being present at runtime. The author would add a reference to <code>Newtonsoft.Json</code> but make all of its assets <em>private</em>; this ensures the consumer of the generator does not inherit a dependency on the library.</p>
+<p dir="auto">The author would then have to package the <code>Newtonsoft.Json</code> library alongside the generator inside of the NuGet package. This can be achieved in the following way: set the dependency to generate a path property by adding <code>GeneratePathProperty="true"</code>. This will create a new MSBuild property of the format <code>PKG&lt;PackageName&gt;</code> where <code>&lt;PackageName&gt;</code> is the package name with <code>.</code> replaced by <code>_</code>. In our example there would be an MSBuild property called <code>PKGNewtonsoft_Json</code> with a value that points to the path on disk of the binary contents of the NuGet files. We can then use that to add the binaries to the resulting NuGet package as we do with the generator itself:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<Project>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- Generates a package at build -->
+    <IncludeBuildOutput>false</IncludeBuildOutput> <!-- Do not include the generator as a lib dependency -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Take a private dependency on Newtonsoft.Json (PrivateAssets=all) Consumers of this generator will not reference it.
+         Set GeneratePathProperty=true so we can reference the binaries via the PKGNewtonsoft_Json property -->
+    <PackageReference Include=&quot;Newtonsoft.Json&quot; Version=&quot;12.0.1&quot; PrivateAssets=&quot;all&quot; GeneratePathProperty=&quot;true&quot; />
+
+    <!-- Package the generator in the analyzer directory of the nuget package -->
+    <None Include=&quot;$(OutputPath)\$(AssemblyName).dll&quot; Pack=&quot;true&quot; PackagePath=&quot;analyzers/dotnet/cs&quot; Visible=&quot;false&quot; />
+
+    <!-- Package the Newtonsoft.Json dependency alongside the generator assembly -->
+    <None Include=&quot;$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll&quot; Pack=&quot;true&quot; PackagePath=&quot;analyzers/dotnet/cs&quot; Visible=&quot;false&quot; />
+  </ItemGroup>
+</Project>"><pre>&lt;<span>Project</span>&gt;
+  &lt;<span>PropertyGroup</span>&gt;
+    &lt;<span>GeneratePackageOnBuild</span>&gt;true&lt;/<span>GeneratePackageOnBuild</span>&gt; <span><span>&lt;!--</span> Generates a package at build <span>--&gt;</span></span>
+    &lt;<span>IncludeBuildOutput</span>&gt;false&lt;/<span>IncludeBuildOutput</span>&gt; <span><span>&lt;!--</span> Do not include the generator as a lib dependency <span>--&gt;</span></span>
+  &lt;/<span>PropertyGroup</span>&gt;
+
+  &lt;<span>ItemGroup</span>&gt;
+    <span><span>&lt;!--</span> Take a private dependency on Newtonsoft.Json (PrivateAssets=all) Consumers of this generator will not reference it.</span>
+<span>         Set GeneratePathProperty=true so we can reference the binaries via the PKGNewtonsoft_Json property <span>--&gt;</span></span>
+    &lt;<span>PackageReference</span> <span>Include</span>=<span><span>"</span>Newtonsoft.Json<span>"</span></span> <span>Version</span>=<span><span>"</span>12.0.1<span>"</span></span> <span>PrivateAssets</span>=<span><span>"</span>all<span>"</span></span> <span>GeneratePathProperty</span>=<span><span>"</span>true<span>"</span></span> /&gt;
+
+    <span><span>&lt;!--</span> Package the generator in the analyzer directory of the nuget package <span>--&gt;</span></span>
+    &lt;<span>None</span> <span>Include</span>=<span><span>"</span>$(OutputPath)\$(AssemblyName).dll<span>"</span></span> <span>Pack</span>=<span><span>"</span>true<span>"</span></span> <span>PackagePath</span>=<span><span>"</span>analyzers/dotnet/cs<span>"</span></span> <span>Visible</span>=<span><span>"</span>false<span>"</span></span> /&gt;
+
+    <span><span>&lt;!--</span> Package the Newtonsoft.Json dependency alongside the generator assembly <span>--&gt;</span></span>
+    &lt;<span>None</span> <span>Include</span>=<span><span>"</span>$(PkgNewtonsoft_Json)\lib\netstandard2.0\*.dll<span>"</span></span> <span>Pack</span>=<span><span>"</span>true<span>"</span></span> <span>PackagePath</span>=<span><span>"</span>analyzers/dotnet/cs<span>"</span></span> <span>Visible</span>=<span><span>"</span>false<span>"</span></span> /&gt;
+  &lt;/<span>ItemGroup</span>&gt;
+&lt;/<span>Project</span>&gt;</pre></div>
+<div dir="auto" data-snippet-clipboard-copy-content="[Generator]
+public class JsonUsingGenerator : IIncrementalGenerator
+{
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        var pipeline = context.AdditionalTextsProvider.Select(static (text, cancellationToken) =>
+        {
+            if (!text.Path.EndsWith(&quot;*.json&quot;))
+            {
+                return default;
+            }
+
+            return (Name: Path.GetFileName(text.Path), Value: Newtonsoft.Json.JsonConvert.DeserializeObject<MyObject>(text.GetText(cancellationToken).ToString()));
+        })
+        .Where((pair) => pair is not ((_, null) or (null, _)));
+
+        context.RegisterSourceOutput(pipeline, static (context, pair) =>
+        {
+            var sourceText = SourceText.From($$&quot;&quot;&quot;
+                namespace GeneratedNamespace
+                {
+                    internal sealed class GeneratedClass
+                    {
+                        public static const (int A, int B) SerializedContent = ({{pair.A}}, {{pair.B}});
+                    }
+                }
+                &quot;&quot;&quot;, Encoding.UTF8);
+
+            context.AddSource($&quot;{pair.Name}generated.cs&quot;, sourceText)
+        });
+    }
+
+    record MyObject(int A, int B);
+}"><pre><span>[</span><span>Generator</span><span>]</span>
+<span>public</span> <span>class</span> <span>JsonUsingGenerator</span> <span>:</span> <span>IIncrementalGenerator</span>
+<span>{</span>
+    <span>public</span> <span>void</span> <span>Initialize</span><span>(</span><span>IncrementalGeneratorInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+        <span>var</span> <span>pipeline</span> <span>=</span> <span>context</span><span>.</span><span>AdditionalTextsProvider</span><span>.</span><span>Select</span><span>(</span><span>static</span> <span>(</span><span>text</span><span>,</span> <span>cancellationToken</span><span>)</span> <span>=&gt;</span>
+        <span>{</span>
+            <span>if</span> <span>(</span><span>!</span><span>text</span><span>.</span><span>Path</span><span>.</span><span>EndsWith</span><span>(</span><span>"*.json"</span><span>)</span><span>)</span>
+            <span>{</span>
+                <span>return</span> <span>default</span><span>;</span>
+            <span>}</span>
+
+            <span>return</span> <span>(</span><span>Name</span><span>:</span> <span>Path</span><span>.</span><span>GetFileName</span><span>(</span><span>text</span><span>.</span><span>Path</span><span>)</span><span>,</span> <span>Value</span><span>:</span> <span>Newtonsoft</span><span>.</span><span>Json</span><span>.</span><span>JsonConvert</span><span>.</span><span>DeserializeObject</span><span>&lt;</span><span>MyObject</span><span>&gt;</span><span>(</span><span>text</span><span>.</span><span>GetText</span><span>(</span><span>cancellationToken</span><span>)</span><span>.</span><span>ToString</span><span>(</span><span>)</span><span>)</span><span>)</span><span>;</span>
+        <span>}</span><span>)</span>
+        <span>.</span><span>Where</span><span>(</span><span>(</span><span>pair</span><span>)</span> <span>=&gt;</span> <span>pair</span> <span>is</span> not <span>(</span><span>(</span>_<span>,</span> <span>null</span><span>)</span> or <span>(</span><span>null</span><span>,</span> <span>_</span><span>)</span><span>)</span><span>)</span><span>;</span>
+
+        <span>context</span><span>.</span><span>RegisterSourceOutput</span><span>(</span><span>pipeline</span><span>,</span> <span>static</span> <span>(</span><span>context</span><span>,</span> <span>pair</span><span>)</span> <span>=&gt;</span>
+        <span>{</span>
+            <span>var</span> <span>sourceText</span> <span>=</span> <span>SourceText</span><span>.</span><span>From</span><span>(</span><span><span>$$</span><span>"""</span></span>
+<span>                namespace GeneratedNamespace</span>
+<span>                {</span>
+<span>                    internal sealed class GeneratedClass</span>
+<span>                    {</span>
+<span>                        public static const (int A, int B) SerializedContent = (<span>{{</span><span>pair</span><span>.</span><span>A</span><span>}}</span>, <span>{{</span><span>pair</span><span>.</span><span>B</span><span>}}</span>);</span>
+<span>                    }</span>
+<span>                }</span>
+<span>                <span>"""</span></span><span>,</span> <span>Encoding</span><span>.</span><span>UTF8</span><span>)</span><span>;</span>
+
+            <span>context</span><span>.</span><span>AddSource</span><span>(</span><span><span>$</span>"<span>{</span><span>pair</span><span>.</span><span>Name</span><span>}</span>generated.cs"</span><span>,</span> <span>sourceText</span><span>)</span>
+        <span>}</span><span>)</span><span>;</span>
+    <span>}</span>
+
+    <span>record</span> <span>MyObject</span><span>(</span><span>int</span> <span>A</span><span>,</span> <span>int</span> <span>B</span><span>)</span><span>;</span>
+<span>}</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Access Analyzer Config properties</h3><a id="user-content-access-analyzer-config-properties" aria-label="Permalink: Access Analyzer Config properties" href="#access-analyzer-config-properties"></a>
+<p dir="auto"><strong>User Scenarios:</strong></p>
+<ul dir="auto">
+<li>As a generator author I want to access the analyzer config properties for a syntax tree or additional file.</li>
+<li>As a generator author I want to access key-value pairs that customize the generator output.</li>
+<li>As a user of a generator I want to be able to customize the generated code and override defaults.</li>
+</ul>
+<p dir="auto"><strong>Solution</strong>: Generators can access analyzer config values via the <code>AnalyzerConfigOptionsProvider</code>. Analyzer config values can either be accessed in the context of a <code>SyntaxTree</code>, <code>AdditionalFile</code> or globally via <code>GlobalOptions</code>. Global options are 'ambient' in that they don't apply to any specific context, but will be included when requesting option within a specific context.</p>
+<p dir="auto">Note that this is one of the few cases that it is necessary to put a <code>SyntaxNode</code> into a pipeline, as you need the tree in order to get the generator option.
+Try to get the <code>SyntaxNode</code> out of the pipeline as fast as possible to avoid making the model not correctly equatable.</p>
+<p dir="auto">A generator is free to use a global option to customize its output. For example, consider a generator that can optionally emit logging. The author may choose to check the value of a global analyzer config value in order to control whether or not to emit the logging code. A user can then choose to enable the setting per project via an <code>.globalconfig</code> file:</p>
+<div data-snippet-clipboard-copy-content="mygenerator_emit_logging = true"><pre lang=".globalconfig"><code>mygenerator_emit_logging = true
+</code></pre></div>
+<div dir="auto" data-snippet-clipboard-copy-content="[Generator]
+public class MyGenerator : IIncrementalGenerator
+{
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+
+        var userCodePipeline = context.SyntaxProvider.ForAttributeWithMetadataName(... /* collect user code info */);
+        var emitLoggingPipeline = context.AnalyzerConfigOptionsProvider.Select(static (options, cancellationToken) =>
+            options.GlobalOptions.TryGetValue(&quot;mygenerator_emit_logging&quot;, out var emitLoggingSwitch)
+                ? emitLoggingSwitch.Equals(&quot;true&quot;, StringComparison.InvariantCultureIgnoreCase)
+                : false); // Default
+
+        context.RegisterSourceOutput(userCodePipeline.Combine(emitLoggingPipeline), (context, pair) => /* emit code */);
+    }
+}"><pre><span>[</span><span>Generator</span><span>]</span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IIncrementalGenerator</span>
+<span>{</span>
+    <span>public</span> <span>void</span> <span>Initialize</span><span>(</span><span>IncrementalGeneratorInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+
+        <span>var</span> <span>userCodePipeline</span> <span>=</span> <span>context</span><span>.</span><span>SyntaxProvider</span><span>.</span><span>ForAttributeWithMetadataName</span><span>(</span>..<span>.</span> <span>/* collect user code info */</span><span>)</span><span>;</span>
+        <span>var</span> <span>emitLoggingPipeline</span> <span>=</span> <span>context</span><span>.</span><span>AnalyzerConfigOptionsProvider</span><span>.</span><span>Select</span><span>(</span><span>static</span> <span>(</span><span>options</span><span>,</span> <span>cancellationToken</span><span>)</span> <span>=&gt;</span>
+            <span>options</span><span>.</span><span>GlobalOptions</span><span>.</span><span>TryGetValue</span><span>(</span><span>"mygenerator_emit_logging"</span><span>,</span> <span>out</span> <span>var</span> <span>emitLoggingSwitch</span><span>)</span>
+                <span>?</span> <span>emitLoggingSwitch</span><span>.</span><span>Equals</span><span>(</span><span>"true"</span><span>,</span> <span>StringComparison</span><span>.</span><span>InvariantCultureIgnoreCase</span><span>)</span>
+                <span>:</span> <span>false</span><span>)</span><span>;</span> <span>// Default</span>
+
+        <span>context</span><span>.</span><span>RegisterSourceOutput</span><span>(</span><span>userCodePipeline</span><span>.</span><span>Combine</span><span>(</span><span>emitLoggingPipeline</span><span>)</span><span>,</span> <span>(</span><span>context</span><span>,</span> <span>pair</span><span>)</span> <span>=&gt;</span> <span>/* emit code */</span><span></span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Consume MSBuild properties and metadata</h3><a id="user-content-consume-msbuild-properties-and-metadata" aria-label="Permalink: Consume MSBuild properties and metadata" href="#consume-msbuild-properties-and-metadata"></a>
+<p dir="auto"><strong>User Scenarios:</strong></p>
+<ul dir="auto">
+<li>As a generator author I want to make decisions based on the values contained in the project file</li>
+<li>As a user of a generator I want to be able to customize the generated code and override defaults.</li>
+</ul>
+<p dir="auto"><strong>Solution:</strong> MSBuild will automatically translate specified properties and metadata into a global analyzer config that can be read by a generator. A generator author specifies the properties and metadata they want to make available by adding items to the <code>CompilerVisibleProperty</code> and <code>CompilerVisibleItemMetadata</code> item groups. These can be added via a props or targets file when packaging the generator as a NuGet package.</p>
+<p dir="auto">For example, consider a generator that creates source based on additional files, and wants to allow a user to enable or disable logging via the project file. The author would specify in their props file that they want to make the specified MSBuild property visible to the compiler:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<ItemGroup>
+    <CompilerVisibleProperty Include=&quot;MyGenerator_EnableLogging&quot; />
+</ItemGroup>"><pre>&lt;<span>ItemGroup</span>&gt;
+    &lt;<span>CompilerVisibleProperty</span> <span>Include</span>=<span><span>"</span>MyGenerator_EnableLogging<span>"</span></span> /&gt;
+&lt;/<span>ItemGroup</span>&gt;</pre></div>
+<p dir="auto">The value of <code>MyGenerator_EnableLogging</code> property will then be emitted to a generated analyzer config file before build, with a name of <code>build_property.MyGenerator_EnableLogging</code>. The generator is then able read this property from via the <code>GlobalOptions</code> property of the <code>AnalyzerConfigOptionsProvider</code> pipeline:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="context.AnalyzerConfigOptionsProvider.Select((provider, ct) =>
+    provider.GlobalOptions.TryGetValue(&quot;build_property.MyGenerator_EnableLogging&quot;, out var emitLoggingSwitch)
+        ? emitLoggingSwitch.Equals(&quot;true&quot;, StringComparison.InvariantCultureIgnoreCase) : false);"><pre><span>context</span><span>.</span><span>AnalyzerConfigOptionsProvider</span><span>.</span><span>Select</span><span>(</span><span>(</span><span>provider</span><span>,</span> <span>ct</span><span>)</span> <span>=&gt;</span>
+    <span>provider</span><span>.</span><span>GlobalOptions</span><span>.</span><span>TryGetValue</span><span>(</span><span>"build_property.MyGenerator_EnableLogging"</span><span>,</span> <span>out</span> <span>var</span> <span>emitLoggingSwitch</span><span>)</span>
+        <span>?</span> <span>emitLoggingSwitch</span><span>.</span><span>Equals</span><span>(</span><span>"true"</span><span>,</span> <span>StringComparison</span><span>.</span><span>InvariantCultureIgnoreCase</span><span>)</span> <span>:</span> <span>false</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">A user can thus enable, or disable logging, by setting a property in their project file.</p>
+<p dir="auto">Now, consider that the generator author wants to optionally allow opting in/out of logging on a per-additional file basis. The author can request that MSBuild emit the value of metadata for the specified file, by adding to the <code>CompilerVisibleItemMetadata</code> item group. The author specifies both the MSBuild itemType they want to read the metadata from, in this case <code>AdditionalFiles</code>, and the name of the metadata that they want to retrieve for them.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<ItemGroup>
+    <CompilerVisibleItemMetadata Include=&quot;AdditionalFiles&quot; MetadataName=&quot;MyGenerator_EnableLogging&quot; />
+</ItemGroup>"><pre>&lt;<span>ItemGroup</span>&gt;
+    &lt;<span>CompilerVisibleItemMetadata</span> <span>Include</span>=<span><span>"</span>AdditionalFiles<span>"</span></span> <span>MetadataName</span>=<span><span>"</span>MyGenerator_EnableLogging<span>"</span></span> /&gt;
+&lt;/<span>ItemGroup</span>&gt;</pre></div>
+<p dir="auto">This value of <code>MyGenerator_EnableLogging</code> will be emitted to a generated analyzer config file, for each of the additional files in the compilation, with an item name of <code>build_metadata.AdditionalFiles.MyGenerator_EnableLogging</code>. The generator can read this value in the context of each additional file:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="context.AdditionalTextsProvider
+       .Combine(context.AnalyzerConfigOptionsProvider)
+       .Select((pair, ctx) =>
+           pair.Right.GetOptions(pair.Left).TryGetValue(&quot;build_metadata.AdditionalFiles.MyGenerator_EnableLogging&quot;, out var perFileLoggingSwitch)
+               ? perFileLoggingSwitch : false);"><pre><span>context</span><span>.</span><span>AdditionalTextsProvider</span>
+       <span>.</span><span>Combine</span><span>(</span><span>context</span><span>.</span><span>AnalyzerConfigOptionsProvider</span><span>)</span>
+       <span>.</span><span>Select</span><span>(</span><span>(</span><span>pair</span><span>,</span> <span>ctx</span><span>)</span> <span>=&gt;</span>
+           <span>pair</span><span>.</span><span>Right</span><span>.</span><span>GetOptions</span><span>(</span><span>pair</span><span>.</span><span>Left</span><span>)</span><span>.</span><span>TryGetValue</span><span>(</span><span>"build_metadata.AdditionalFiles.MyGenerator_EnableLogging"</span><span>,</span> <span>out</span> <span>var</span> <span>perFileLoggingSwitch</span><span>)</span>
+               <span>?</span> <span>perFileLoggingSwitch</span> <span>:</span> <span>false</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">In the users project file, the user can now annotate the individual additional files to say whether or not they want to enable logging:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<ItemGroup>
+    <AdditionalFiles Include=&quot;file1.txt&quot; />  <!-- logging will be controlled by default, or global value -->
+    <AdditionalFiles Include=&quot;file2.txt&quot; MyGenerator_EnableLogging=&quot;true&quot; />  <!-- always enable logging for this file -->
+    <AdditionalFiles Include=&quot;file3.txt&quot; MyGenerator_EnableLogging=&quot;false&quot; /> <!-- never enable logging for this file -->
+</ItemGroup>"><pre>&lt;<span>ItemGroup</span>&gt;
+    &lt;<span>AdditionalFiles</span> <span>Include</span>=<span><span>"</span>file1.txt<span>"</span></span> /&gt;  <span><span>&lt;!--</span> logging will be controlled by default, or global value <span>--&gt;</span></span>
+    &lt;<span>AdditionalFiles</span> <span>Include</span>=<span><span>"</span>file2.txt<span>"</span></span> <span>MyGenerator_EnableLogging</span>=<span><span>"</span>true<span>"</span></span> /&gt;  <span><span>&lt;!--</span> always enable logging for this file <span>--&gt;</span></span>
+    &lt;<span>AdditionalFiles</span> <span>Include</span>=<span><span>"</span>file3.txt<span>"</span></span> <span>MyGenerator_EnableLogging</span>=<span><span>"</span>false<span>"</span></span> /&gt; <span><span>&lt;!--</span> never enable logging for this file <span>--&gt;</span></span>
+&lt;/<span>ItemGroup</span>&gt;</pre></div>
+<p dir="auto">Note that MSBuild properties passed to source generators via <code>CompilerVisibleProperty</code> are written into and read from an editorconfig file, <a href="https://github.com/dotnet/roslyn/issues/51692" data-hovercard-type="issue" data-hovercard-url="/dotnet/roslyn/issues/51692/hovercard">resulting in data loss for non-trivial property values</a>. One possible workaround is to use a build task to apply a transport encoding preventing the data loss; as an example a semicolon separated list can be converted to a space separated list (<code>;</code> is the editorconfig comment character):</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<Project>
+    <ItemGroup>
+        <CompilerVisibleProperty Include=&quot;_MyInterpolatorsNamespaces&quot; />
+    </ItemGroup>
+    <Task Name=&quot;_MyInterpolatorsNamespaces&quot; BeforeTargets=&quot;BeforeBuild&quot;>
+        <PropertyGroup>
+            <_MyInterpolatorsNamespaces>$([System.String]::Copy('$(InterpolatorsNamespaces)').Replace(';', ' '))</_MyInterpolatorsNamespaces>
+        </PropertyGroup>
+    </Task>
+</Project>"><pre>&lt;<span>Project</span>&gt;
+    &lt;<span>ItemGroup</span>&gt;
+        &lt;<span>CompilerVisibleProperty</span> <span>Include</span>=<span><span>"</span>_MyInterpolatorsNamespaces<span>"</span></span> /&gt;
+    &lt;/<span>ItemGroup</span>&gt;
+    &lt;<span>Task</span> <span>Name</span>=<span><span>"</span>_MyInterpolatorsNamespaces<span>"</span></span> <span>BeforeTargets</span>=<span><span>"</span>BeforeBuild<span>"</span></span>&gt;
+        &lt;<span>PropertyGroup</span>&gt;
+            &lt;<span>_MyInterpolatorsNamespaces</span>&gt;$([System.String]::Copy('$(InterpolatorsNamespaces)').Replace(';', ' '))&lt;/<span>_MyInterpolatorsNamespaces</span>&gt;
+        &lt;/<span>PropertyGroup</span>&gt;
+    &lt;/<span>Task</span>&gt;
+&lt;/<span>Project</span>&gt;</pre></div>
+<p dir="auto"><strong>Full Example:</strong></p>
+<p dir="auto">MyGenerator.props:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<Project>
+    <ItemGroup>
+        <CompilerVisibleProperty Include=&quot;MyGenerator_EnableLogging&quot; />
+        <CompilerVisibleItemMetadata Include=&quot;AdditionalFiles&quot; MetadataName=&quot;MyGenerator_EnableLogging&quot; />
+    </ItemGroup>
+</Project>"><pre>&lt;<span>Project</span>&gt;
+    &lt;<span>ItemGroup</span>&gt;
+        &lt;<span>CompilerVisibleProperty</span> <span>Include</span>=<span><span>"</span>MyGenerator_EnableLogging<span>"</span></span> /&gt;
+        &lt;<span>CompilerVisibleItemMetadata</span> <span>Include</span>=<span><span>"</span>AdditionalFiles<span>"</span></span> <span>MetadataName</span>=<span><span>"</span>MyGenerator_EnableLogging<span>"</span></span> /&gt;
+    &lt;/<span>ItemGroup</span>&gt;
+&lt;/<span>Project</span>&gt;</pre></div>
+<p dir="auto">MyGenerator.csproj:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<Project>
+  <PropertyGroup>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild> <!-- Generates a package at build -->
+    <IncludeBuildOutput>false</IncludeBuildOutput> <!-- Do not include the generator as a lib dependency -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Package the generator in the analyzer directory of the nuget package -->
+    <None Include=&quot;$(OutputPath)\$(AssemblyName).dll&quot; Pack=&quot;true&quot; PackagePath=&quot;analyzers/dotnet/cs&quot; Visible=&quot;false&quot; />
+
+    <!-- Package the props file -->
+    <None Include=&quot;MyGenerator.props&quot; Pack=&quot;true&quot; PackagePath=&quot;build&quot; Visible=&quot;false&quot; />
+  </ItemGroup>
+</Project>"><pre>&lt;<span>Project</span>&gt;
+  &lt;<span>PropertyGroup</span>&gt;
+    &lt;<span>GeneratePackageOnBuild</span>&gt;true&lt;/<span>GeneratePackageOnBuild</span>&gt; <span><span>&lt;!--</span> Generates a package at build <span>--&gt;</span></span>
+    &lt;<span>IncludeBuildOutput</span>&gt;false&lt;/<span>IncludeBuildOutput</span>&gt; <span><span>&lt;!--</span> Do not include the generator as a lib dependency <span>--&gt;</span></span>
+  &lt;/<span>PropertyGroup</span>&gt;
+
+  &lt;<span>ItemGroup</span>&gt;
+    <span><span>&lt;!--</span> Package the generator in the analyzer directory of the nuget package <span>--&gt;</span></span>
+    &lt;<span>None</span> <span>Include</span>=<span><span>"</span>$(OutputPath)\$(AssemblyName).dll<span>"</span></span> <span>Pack</span>=<span><span>"</span>true<span>"</span></span> <span>PackagePath</span>=<span><span>"</span>analyzers/dotnet/cs<span>"</span></span> <span>Visible</span>=<span><span>"</span>false<span>"</span></span> /&gt;
+
+    <span><span>&lt;!--</span> Package the props file <span>--&gt;</span></span>
+    &lt;<span>None</span> <span>Include</span>=<span><span>"</span>MyGenerator.props<span>"</span></span> <span>Pack</span>=<span><span>"</span>true<span>"</span></span> <span>PackagePath</span>=<span><span>"</span>build<span>"</span></span> <span>Visible</span>=<span><span>"</span>false<span>"</span></span> /&gt;
+  &lt;/<span>ItemGroup</span>&gt;
+&lt;/<span>Project</span>&gt;</pre></div>
+<p dir="auto">MyGenerator.cs:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="[Generator]
+public class MyGenerator : IIncrementalGenerator
+{
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        var emitLoggingPipeline = context.AdditionalTextsProvider
+            .Combine(context.AnalyzerConfigOptionsProvider)
+            .Select((pair, ctx) =>
+                pair.Right.GetOptions(pair.Left).TryGetValue(&quot;build_metadata.AdditionalFiles.MyGenerator_EnableLogging&quot;, out var perFileLoggingSwitch)
+                ? perFileLoggingSwitch.Equals(&quot;true&quot;, StringComparison.OrdinalIgnoreCase)
+                : pair.Right.GlobalOptions.TryGetValue(&quot;build_property.MyGenerator_EnableLogging&quot;, out var emitLoggingSwitch)
+                  ? emitLoggingSwitch.Equals(&quot;true&quot;, StringComparison.OrdinalIgnoreCase)
+                  : false);
+
+        var sourcePipeline = context.AdditionalTextsProvider.Select((file, ctx) => /* Gather build info */);
+
+        context.RegisterSourceOutput(sourcePipeline.Combine(emitLoggingPipeline), (context, pair) => /* Add source */);
+    }
+}"><pre><span>[</span><span>Generator</span><span>]</span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IIncrementalGenerator</span>
+<span>{</span>
+    <span>public</span> <span>void</span> <span>Initialize</span><span>(</span><span>IncrementalGeneratorInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+        <span>var</span> <span>emitLoggingPipeline</span> <span>=</span> <span>context</span><span>.</span><span>AdditionalTextsProvider</span>
+            <span>.</span><span>Combine</span><span>(</span><span>context</span><span>.</span><span>AnalyzerConfigOptionsProvider</span><span>)</span>
+            <span>.</span><span>Select</span><span>(</span><span>(</span><span>pair</span><span>,</span> <span>ctx</span><span>)</span> <span>=&gt;</span>
+                <span>pair</span><span>.</span><span>Right</span><span>.</span><span>GetOptions</span><span>(</span><span>pair</span><span>.</span><span>Left</span><span>)</span><span>.</span><span>TryGetValue</span><span>(</span><span>"build_metadata.AdditionalFiles.MyGenerator_EnableLogging"</span><span>,</span> <span>out</span> <span>var</span> <span>perFileLoggingSwitch</span><span>)</span>
+                <span>?</span> <span>perFileLoggingSwitch</span><span>.</span><span>Equals</span><span>(</span><span>"true"</span><span>,</span> <span>StringComparison</span><span>.</span><span>OrdinalIgnoreCase</span><span>)</span>
+                <span>:</span> <span>pair</span><span>.</span><span>Right</span><span>.</span><span>GlobalOptions</span><span>.</span><span>TryGetValue</span><span>(</span><span>"build_property.MyGenerator_EnableLogging"</span><span>,</span> <span>out</span> <span>var</span> <span>emitLoggingSwitch</span><span>)</span>
+                  <span>?</span> <span>emitLoggingSwitch</span><span>.</span><span>Equals</span><span>(</span><span>"true"</span><span>,</span> <span>StringComparison</span><span>.</span><span>OrdinalIgnoreCase</span><span>)</span>
+                  <span>:</span> <span>false</span><span>)</span><span>;</span>
+
+        <span>var</span> <span>sourcePipeline</span> <span>=</span> <span>context</span><span>.</span><span>AdditionalTextsProvider</span><span>.</span><span>Select</span><span>(</span><span>(</span><span>file</span><span>,</span> <span>ctx</span><span>)</span> <span>=&gt;</span> <span>/* Gather build info */</span><span></span><span>)</span><span>;</span>
+
+        <span>context</span><span>.</span><span>RegisterSourceOutput</span><span>(</span><span>sourcePipeline</span><span>.</span><span>Combine</span><span>(</span><span>emitLoggingPipeline</span><span>)</span><span>,</span> <span>(</span><span>context</span><span>,</span> <span>pair</span><span>)</span> <span>=&gt;</span> <span>/* Add source */</span><span></span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Unit Testing of Generators</h3><a id="user-content-unit-testing-of-generators" aria-label="Permalink: Unit Testing of Generators" href="#unit-testing-of-generators"></a>
+<p dir="auto"><strong>User scenario</strong>: As a generator author, I want to be able to unit test my generators to make development easier and ensure correctness.</p>
+<p dir="auto"><strong>Solution A</strong>:</p>
+<p dir="auto">The recommended approach is to use <a href="https://github.com/dotnet/roslyn-sdk/tree/main/src/Microsoft.CodeAnalysis.Testing#microsoftcodeanalysistesting">Microsoft.CodeAnalysis.Testing</a> packages:</p>
+<ul dir="auto">
+<li><code>Microsoft.CodeAnalysis.CSharp.SourceGenerators.Testing</code></li>
+<li><code>Microsoft.CodeAnalysis.VisualBasic.SourceGenerators.Testing</code></li>
+</ul>
+<p dir="auto">TODO: <a data-error-text="Failed to load title" data-id="2139186030" data-permission-text="Title is private" data-url="https://github.com/dotnet/roslyn/issues/72149" data-hovercard-type="issue" data-hovercard-url="/dotnet/roslyn/issues/72149/hovercard" href="https://github.com/dotnet/roslyn/issues/72149">#72149</a></p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Auto interface implementation</h3><a id="user-content-auto-interface-implementation" aria-label="Permalink: Auto interface implementation" href="#auto-interface-implementation"></a>
+<p dir="auto"><strong>User scenario:</strong> As a generator author I want to be able to implement the properties of interfaces passed as arguments to a decorator of a class automatically for a user</p>
+<p dir="auto"><strong>Solution:</strong> Require the user to decorate the class with the <code>[AutoImplement]</code> Attribute and pass as arguments the types of the interfaces they want to self-implement themselves; The classes that implement the attribute have to be <code>partial class</code>.
+Provide that attribute in a <code>RegisterPostInitializationOutput</code> step. Register for callbacks on the classes with
+<code>ForAttributeWithMetadataName</code> using the fullyQualifiedMetadataName <code>FullyQualifiedAttributeName</code>, and use tuples (or create an equatable model) to pass along that information.
+The attribute could work for structs too, the example was kept simple on purpose for the workbook sample.</p>
+<p dir="auto"><strong>Example:</strong></p>
+<div dir="auto" data-snippet-clipboard-copy-content="public interface IUserInterface
+{
+    int InterfaceProperty { get; set; }
+}
+
+public interface IUserInterface2
+{
+    float InterfacePropertyOnlyGetter { get; }
+}
+
+[AutoImplementProperties(typeof(IUserInterface), typeof(IUserInterface2))]
+public partial class UserClass
+{
+    public string UserProp { get; set; }
+}"><pre><span>public</span> <span>interface</span> <span>IUserInterface</span>
+<span>{</span>
+    <span>int</span> <span>InterfaceProperty</span> <span>{</span> <span>get</span><span>;</span> <span>set</span><span>;</span> <span>}</span>
+<span>}</span>
+
+<span>public</span> <span>interface</span> <span>IUserInterface2</span>
+<span>{</span>
+    <span>float</span> <span>InterfacePropertyOnlyGetter</span> <span>{</span> <span>get</span><span>;</span> <span>}</span>
+<span>}</span>
+
+<span>[</span><span>AutoImplementProperties</span><span>(</span><span>typeof</span><span>(</span><span>IUserInterface</span><span>)</span><span>,</span> <span>typeof</span><span>(</span><span>IUserInterface2</span><span>)</span><span>)</span><span>]</span>
+<span>public</span> <span>partial</span> <span>class</span> <span>UserClass</span>
+<span>{</span>
+    <span>public</span> <span>string</span> <span>UserProp</span> <span>{</span> <span>get</span><span>;</span> <span>set</span><span>;</span> <span>}</span>
+<span>}</span></pre></div>
+<div dir="auto" data-snippet-clipboard-copy-content="#nullable enable
+[Generator]
+public class AutoImplementGenerator : IIncrementalGenerator
+{
+    private const string AttributeNameSpace = &quot;AttributeGenerator&quot;;
+    private const string AttributeName = &quot;AutoImplementProperties&quot;;
+    private const string AttributeClassName = $&quot;{AttributeName}Attribute&quot;;
+    private const string FullyQualifiedAttributeName = $&quot;{AttributeNameSpace}.{AttributeClassName}&quot;;
+
+    public void Initialize(IncrementalGeneratorInitializationContext context)
+    {
+        context.RegisterPostInitializationOutput(ctx =>
+        {
+            ctx.AddEmbeddedAttributeDefinition();
+            //Generate the AutoImplementProperties Attribute
+            const string autoImplementAttributeDeclarationCode = $$&quot;&quot;&quot;
+// <auto-generated/>
+using System;
+using Microsoft.CodeAnalysis;
+namespace {{AttributeNameSpace}};
+
+[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false), Embedded]
+internal sealed class {{AttributeClassName}} : Attribute
+{
+    public Type[] InterfacesTypes { get; }
+    public {{AttributeClassName}}(params Type[] interfacesTypes)
+    {
+        InterfacesTypes = interfacesTypes;
+    }
+}
+&quot;&quot;&quot;;
+            ctx.AddSource($&quot;{AttributeClassName}.g.cs&quot;, autoImplementAttributeDeclarationCode);
+        });
+
+        IncrementalValuesProvider<ClassModel> provider = context.SyntaxProvider.ForAttributeWithMetadataName(
+            fullyQualifiedMetadataName: FullyQualifiedAttributeName,
+            predicate: static (node, cancellationToken_) => node is ClassDeclarationSyntax,
+            transform: static (ctx, cancellationToken) =>
+            {
+                ISymbol classSymbol = ctx.TargetSymbol;
+
+                return new ClassModel(
+                    classSymbol.Name,
+                    classSymbol.ContainingNamespace.ToDisplayString(),
+                    GetInterfaceModels(ctx.Attributes[0])
+                    );
+            });
+
+        context.RegisterSourceOutput(provider, static (context, classModel) =>
+        {
+            foreach (InterfaceModel interfaceModel in classModel.Interfaces)
+            {
+                StringBuilder sourceBuilder = new($$&quot;&quot;&quot;
+                    // <auto-generated/>
+                    namespace {{classModel.NameSpace}};
+
+                    public partial class {{classModel.Name}} : {{interfaceModel.FullyQualifiedName}}
+                    {
+
+                    &quot;&quot;&quot;);
+
+                foreach (string property in interfaceModel.Properties)
+                {
+                    sourceBuilder.AppendLine(property);
+                }
+
+                sourceBuilder.AppendLine(&quot;&quot;&quot;
+                    }
+                    &quot;&quot;&quot;);
+
+                //Concat class name and interface name to have unique file name if a class implements two interfaces with AutoImplement Attribute
+                string generatedFileName = $&quot;{classModel.Name}_{interfaceModel.FullyQualifiedName}.g.cs&quot;;
+                context.AddSource(generatedFileName, sourceBuilder.ToString());
+            }
+        });
+    }
+
+    private static EquatableList<InterfaceModel> GetInterfaceModels(AttributeData attribute)
+    {
+        EquatableList<InterfaceModel> ret = [];
+
+        if (attribute.ConstructorArguments.Length == 0)
+            return ret;
+
+        foreach(TypedConstant constructorArgumentValue in attribute.ConstructorArguments[0].Values)
+        {
+            if (constructorArgumentValue.Value is INamedTypeSymbol { TypeKind: TypeKind.Interface } interfaceSymbol)
+            {
+                EquatableList<string> properties = new();
+
+                foreach (IPropertySymbol interfaceProperty in interfaceSymbol
+                    .GetMembers()
+                    .OfType<IPropertySymbol>())
+                {
+                    string type = interfaceProperty.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat);
+
+                    //Check if property has a setter
+                    string setter = interfaceProperty.SetMethod is not null
+                        ? &quot;set; &quot;
+                        : string.Empty;
+
+                    properties.Add($$&quot;&quot;&quot;
+                            public {{type}} {{interfaceProperty.Name}} { get; {{setter}}}
+                        &quot;&quot;&quot;);
+                }
+
+                ret.Add(new InterfaceModel(interfaceSymbol.ToDisplayString(), properties));
+            }
+        }
+
+        return ret;
+    }
+
+    private record ClassModel(string Name, string NameSpace, EquatableList<InterfaceModel> Interfaces);
+    private record InterfaceModel(string FullyQualifiedName, EquatableList<string> Properties);
+
+    private class EquatableList<T> : List<T>, IEquatable<EquatableList<T>>
+    {
+        public bool Equals(EquatableList<T>? other)
+        {
+            // If the other list is null or a different size, they're not equal
+            if (other is null || Count != other.Count)
+            {
+                return false;
+            }
+
+            // Compare each pair of elements for equality
+            for (int i = 0; i < Count; i++)
+            {
+                if (!EqualityComparer<T>.Default.Equals(this[i], other[i]))
+                {
+                    return false;
+                }
+            }
+
+            // If we got this far, the lists are equal
+            return true;
+        }
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as EquatableList<T>);
+        }
+        public override int GetHashCode()
+        {
+            return this.Select(item => item?.GetHashCode() ?? 0).Aggregate((x, y) => x ^ y);
+        }
+        public static bool operator ==(EquatableList<T> list1, EquatableList<T> list2)
+        {
+            return ReferenceEquals(list1, list2)
+                || list1 is not null &amp;&amp; list2 is not null &amp;&amp; list1.Equals(list2);
+        }
+        public static bool operator !=(EquatableList<T> list1, EquatableList<T> list2)
+        {
+            return !(list1 == list2);
+        }
+    }
+}"><pre>#nullable enable
+<span>[</span><span>Generator</span><span>]</span>
+<span>public</span> <span>class</span> <span>AutoImplementGenerator</span> <span>:</span> <span>IIncrementalGenerator</span>
+<span>{</span>
+    <span>private</span> <span>const</span> <span>string</span> <span>AttributeNameSpace</span> <span>=</span> <span>"AttributeGenerator"</span><span>;</span>
+    <span>private</span> <span>const</span> <span>string</span> <span>AttributeName</span> <span>=</span> <span>"AutoImplementProperties"</span><span>;</span>
+    <span>private</span> <span>const</span> <span>string</span> <span>AttributeClassName</span> <span>=</span> <span><span>$</span>"<span>{</span><span>AttributeName</span><span>}</span>Attribute"</span><span>;</span>
+    <span>private</span> <span>const</span> <span>string</span> <span>FullyQualifiedAttributeName</span> <span>=</span> <span><span>$</span>"<span>{</span><span>AttributeNameSpace</span><span>}</span>.<span>{</span><span>AttributeClassName</span><span>}</span>"</span><span>;</span>
+
+    <span>public</span> <span>void</span> <span>Initialize</span><span>(</span><span>IncrementalGeneratorInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+        <span>context</span><span>.</span><span>RegisterPostInitializationOutput</span><span>(</span>ctx <span>=&gt;</span>
+        <span>{</span>
+            <span>ctx</span><span>.</span><span>AddEmbeddedAttributeDefinition</span><span>(</span><span>)</span><span>;</span>
+            <span>//Generate the AutoImplementProperties Attribute</span>
+            <span>const</span> <span>string</span> <span>autoImplementAttributeDeclarationCode</span> <span>=</span> <span><span>$$</span><span>"""</span></span>
+<span>// &lt;auto-generated/&gt;</span>
+<span>using System;</span>
+<span>using Microsoft.CodeAnalysis;</span>
+<span>namespace <span>{{</span><span>AttributeNameSpace</span><span>}}</span>;</span>
+<span></span>
+<span>[AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false), Embedded]</span>
+<span>internal sealed class <span>{{</span><span>AttributeClassName</span><span>}}</span> : Attribute</span>
+<span>{</span>
+<span>    public Type[] InterfacesTypes { get; }</span>
+<span>    public <span>{{</span><span>AttributeClassName</span><span>}}</span>(params Type[] interfacesTypes)</span>
+<span>    {</span>
+<span>        InterfacesTypes = interfacesTypes;</span>
+<span>    }</span>
+<span>}</span>
+<span><span>"""</span></span><span>;</span>
+            <span>ctx</span><span>.</span><span>AddSource</span><span>(</span><span><span>$</span>"<span>{</span><span>AttributeClassName</span><span>}</span>.g.cs"</span><span>,</span> <span>autoImplementAttributeDeclarationCode</span><span>)</span><span>;</span>
+        <span>}</span><span>)</span><span>;</span>
+
+        <span>IncrementalValuesProvider</span><span>&lt;</span><span>ClassModel</span><span>&gt;</span> <span>provider</span> <span>=</span> <span>context</span><span>.</span><span>SyntaxProvider</span><span>.</span><span>ForAttributeWithMetadataName</span><span>(</span>
+            <span>fullyQualifiedMetadataName</span><span>:</span> <span>FullyQualifiedAttributeName</span><span>,</span>
+            <span>predicate</span><span>:</span> <span>static</span> <span>(</span><span>node</span><span>,</span> <span>cancellationToken_</span><span>)</span> <span>=&gt;</span> <span>node</span> <span>is</span> <span>ClassDeclarationSyntax</span><span>,</span>
+            <span>transform</span><span>:</span> <span>static</span> <span>(</span><span>ctx</span><span>,</span> <span>cancellationToken</span><span>)</span> <span>=&gt;</span>
+            <span>{</span>
+                <span>ISymbol</span> <span>classSymbol</span> <span>=</span> <span>ctx</span><span>.</span><span>TargetSymbol</span><span>;</span>
+
+                <span>return</span> <span>new</span> <span>ClassModel</span><span>(</span>
+                    <span>classSymbol</span><span>.</span><span>Name</span><span>,</span>
+                    <span>classSymbol</span><span>.</span><span>ContainingNamespace</span><span>.</span><span>ToDisplayString</span><span>(</span><span>)</span><span>,</span>
+                    <span>GetInterfaceModels</span><span>(</span><span>ctx</span><span>.</span><span>Attributes</span><span>[</span><span>0</span><span>]</span><span>)</span>
+                    <span>)</span><span>;</span>
+            <span>}</span><span>)</span><span>;</span>
+
+        <span>context</span><span>.</span><span>RegisterSourceOutput</span><span>(</span><span>provider</span><span>,</span> <span>static</span> <span>(</span><span>context</span><span>,</span> <span>classModel</span><span>)</span> <span>=&gt;</span>
+        <span>{</span>
+            <span>foreach</span> <span>(</span><span>InterfaceModel</span> <span>interfaceModel</span> <span>in</span> <span>classModel</span><span>.</span><span>Interfaces</span><span>)</span>
+            <span>{</span>
+                <span>StringBuilder</span> <span>sourceBuilder</span> <span>=</span> <span>new</span><span>(</span><span><span>$$</span><span>"""</span></span>
+<span>                    // &lt;auto-generated/&gt;</span>
+<span>                    namespace <span>{{</span><span>classModel</span><span>.</span><span>NameSpace</span><span>}}</span>;</span>
+<span></span>
+<span>                    public partial class <span>{{</span><span>classModel</span><span>.</span><span>Name</span><span>}}</span> : <span>{{</span><span>interfaceModel</span><span>.</span><span>FullyQualifiedName</span><span>}}</span></span>
+<span>                    {</span>
+<span></span>
+<span>                    <span>"""</span></span><span>)</span><span>;</span>
+
+                <span>foreach</span> <span>(</span><span>string</span> <span>property</span> <span>in</span> <span>interfaceModel</span><span>.</span><span>Properties</span><span>)</span>
+                <span>{</span>
+                    <span>sourceBuilder</span><span>.</span><span>AppendLine</span><span>(</span><span>property</span><span>)</span><span>;</span>
+                <span>}</span>
+
+                <span>sourceBuilder</span><span>.</span><span>AppendLine</span><span>(</span><span>"""</span>
+<span>                    }</span>
+<span>                    """</span><span>)</span><span>;</span>
+
+                <span>//Concat class name and interface name to have unique file name if a class implements two interfaces with AutoImplement Attribute</span>
+                <span>string</span> <span>generatedFileName</span> <span>=</span> <span><span>$</span>"<span>{</span><span>classModel</span><span>.</span><span>Name</span><span>}</span>_<span>{</span><span>interfaceModel</span><span>.</span><span>FullyQualifiedName</span><span>}</span>.g.cs"</span><span>;</span>
+                <span>context</span><span>.</span><span>AddSource</span><span>(</span><span>generatedFileName</span><span>,</span> <span>sourceBuilder</span><span>.</span><span>ToString</span><span>(</span><span>)</span><span>)</span><span>;</span>
+            <span>}</span>
+        <span>}</span><span>)</span><span>;</span>
+    <span>}</span>
+
+    <span>private</span> <span><span>static</span></span> <span>EquatableList</span><span>&lt;</span><span>InterfaceModel</span><span>&gt;</span> <span>GetInterfaceModels</span><span>(</span><span>AttributeData</span> <span>attribute</span><span>)</span>
+    <span>{</span>
+        <span>EquatableList</span><span>&lt;</span><span>InterfaceModel</span><span>&gt;</span> <span>ret</span> <span>=</span> <span>[</span><span></span><span>]</span><span>;</span>
+
+        <span>if</span> <span>(</span><span>attribute</span><span>.</span><span>ConstructorArguments</span><span>.</span><span>Length</span> <span>==</span> <span>0</span><span>)</span>
+            <span>return</span> <span>ret</span><span>;</span>
+
+        <span>foreach</span><span>(</span><span>TypedConstant</span> <span>constructorArgumentValue</span> <span>in</span> <span>attribute</span><span>.</span><span>ConstructorArguments</span><span>[</span><span>0</span><span>]</span><span>.</span><span>Values</span><span>)</span>
+        <span>{</span>
+            <span>if</span> <span>(</span><span>constructorArgumentValue</span><span>.</span><span>Value</span> <span>is</span> <span>INamedTypeSymbol</span> <span>{</span> <span>TypeKind</span><span>:</span> <span>TypeKind</span><span>.</span><span>Interface</span> <span>}</span> <span>interfaceSymbol</span><span>)</span>
+            <span>{</span>
+                <span>EquatableList</span><span>&lt;</span><span>string</span><span>&gt;</span> <span>properties</span> <span>=</span> <span>new</span><span>(</span><span>)</span><span>;</span>
+
+                <span>foreach</span> <span>(</span><span>IPropertySymbol</span> <span>interfaceProperty</span> <span>in</span> <span>interfaceSymbol</span>
+                    <span>.</span><span>GetMembers</span><span>(</span><span>)</span>
+                    <span>.</span><span>OfType</span><span>&lt;</span><span>IPropertySymbol</span><span>&gt;</span><span>(</span><span>)</span><span>)</span>
+                <span>{</span>
+                    <span>string</span> <span>type</span> <span>=</span> <span>interfaceProperty</span><span>.</span><span>Type</span><span>.</span><span>ToDisplayString</span><span>(</span><span>SymbolDisplayFormat</span><span>.</span><span>FullyQualifiedFormat</span><span>)</span><span>;</span>
+
+                    <span>//Check if property has a setter</span>
+                    <span>string</span> <span>setter</span> <span>=</span> <span>interfaceProperty</span><span>.</span><span>SetMethod</span> <span>is</span> not <span>null</span>
+                        <span>?</span> <span>"set; "</span>
+                        <span>:</span> <span>string</span><span>.</span><span>Empty</span><span>;</span>
+
+                    <span>properties</span><span>.</span><span>Add</span><span>(</span><span><span>$$</span><span>"""</span></span>
+<span>                            public <span>{{</span><span>type</span><span>}}</span> <span>{{</span><span>interfaceProperty</span><span>.</span><span>Name</span><span>}}</span> { get; <span>{{</span><span>setter</span><span>}}</span>}</span>
+<span>                        <span>"""</span></span><span>)</span><span>;</span>
+                <span>}</span>
+
+                <span>ret</span><span>.</span><span>Add</span><span>(</span><span>new</span> <span>InterfaceModel</span><span>(</span><span>interfaceSymbol</span><span>.</span><span>ToDisplayString</span><span>(</span><span>)</span><span>,</span> <span>properties</span><span>)</span><span>)</span><span>;</span>
+            <span>}</span>
+        <span>}</span>
+
+        <span>return</span> <span>ret</span><span>;</span>
+    <span>}</span>
+
+    <span>private</span> <span>record</span> <span>ClassModel</span><span>(</span><span>string</span> <span>Name</span><span>,</span> <span>string</span> <span>NameSpace</span><span>,</span> <span>EquatableList</span><span>&lt;</span><span>InterfaceModel</span><span>&gt;</span> <span>Interfaces</span><span>)</span><span>;</span>
+    <span>private</span> <span>record</span> <span>InterfaceModel</span><span>(</span><span>string</span> <span>FullyQualifiedName</span><span>,</span> <span>EquatableList</span><span>&lt;</span><span>string</span><span>&gt;</span> <span>Properties</span><span>)</span><span>;</span>
+
+    <span>private</span> <span>class</span> <span>EquatableList</span><span>&lt;</span><span>T</span><span>&gt;</span> <span>:</span> <span>List</span><span>&lt;</span><span>T</span><span>&gt;</span><span>,</span> <span>IEquatable</span><span>&lt;</span><span>EquatableList</span><span>&lt;</span><span>T</span><span>&gt;</span><span>&gt;</span>
+    <span>{</span>
+        <span>public</span> <span>bool</span> <span>Equals</span><span>(</span><span>EquatableList</span><span>&lt;</span><span>T</span><span>&gt;</span><span>?</span> <span>other</span><span>)</span>
+        <span>{</span>
+            <span>// If the other list is null or a different size, they're not equal</span>
+            <span>if</span> <span>(</span><span>other</span> <span>is</span> <span>null</span> <span>||</span> <span>Count</span> <span>!=</span> <span>other</span><span>.</span><span>Count</span><span>)</span>
+            <span>{</span>
+                <span>return</span> <span>false</span><span>;</span>
+            <span>}</span>
+
+            <span>// Compare each pair of elements for equality</span>
+            <span>for</span> <span>(</span><span>int</span> <span>i</span> <span>=</span> <span>0</span><span>;</span> <span>i</span> <span>&lt;</span> <span>Count</span><span>;</span> <span>i</span><span>++</span><span>)</span>
+            <span>{</span>
+                <span>if</span> <span>(</span><span>!</span><span>EqualityComparer</span><span>&lt;</span><span>T</span><span>&gt;</span><span>.</span><span>Default</span><span>.</span><span>Equals</span><span>(</span><span>this</span><span>[</span><span>i</span><span>]</span><span>,</span> <span>other</span><span>[</span><span>i</span><span>]</span><span>)</span><span>)</span>
+                <span>{</span>
+                    <span>return</span> <span>false</span><span>;</span>
+                <span>}</span>
+            <span>}</span>
+
+            <span>// If we got this far, the lists are equal</span>
+            <span>return</span> <span>true</span><span>;</span>
+        <span>}</span>
+        <span>public</span> <span>override</span> <span>bool</span> <span>Equals</span><span>(</span><span>object</span> <span>obj</span><span>)</span>
+        <span>{</span>
+            <span>return</span> <span>Equals</span><span>(</span><span>obj</span> <span>as</span> <span>EquatableList</span><span>&lt;</span><span>T</span><span>&gt;</span><span>)</span><span>;</span>
+        <span>}</span>
+        <span>public</span> <span>override</span> <span>int</span> <span>GetHashCode</span><span>(</span><span>)</span>
+        <span>{</span>
+            <span>return</span> <span>this</span><span>.</span><span>Select</span><span>(</span>item <span>=&gt;</span> <span>item</span><span>?</span><span>.</span><span>GetHashCode</span><span>(</span><span>)</span> <span>??</span> <span>0</span><span>)</span><span>.</span><span>Aggregate</span><span>(</span><span>(</span><span>x</span><span>,</span> <span>y</span><span>)</span> <span>=&gt;</span> <span>x</span> <span>^</span> <span>y</span><span>)</span><span>;</span>
+        <span>}</span>
+        <span>public</span> <span><span>static</span></span> <span>bool</span> <span>operator</span> <span>==</span><span>(</span><span>EquatableList</span><span>&lt;</span><span>T</span><span>&gt;</span> <span>list1</span><span>,</span> <span>EquatableList</span><span>&lt;</span><span>T</span><span>&gt;</span> <span>list2</span><span>)</span>
+        <span>{</span>
+            <span>return</span> <span>ReferenceEquals</span><span>(</span><span>list1</span><span>,</span> <span>list2</span><span>)</span>
+                <span>||</span> <span>list1</span> <span>is</span> not <span>null</span> <span>&amp;&amp;</span> <span>list2</span> <span>is</span> not <span>null</span> <span>&amp;&amp;</span> <span>list1</span><span>.</span><span>Equals</span><span>(</span><span>list2</span><span>)</span><span>;</span>
+        <span>}</span>
+        <span>public</span> <span><span>static</span></span> <span>bool</span> <span>operator</span> <span>!=</span><span>(</span><span>EquatableList</span><span>&lt;</span><span>T</span><span>&gt;</span> <span>list1</span><span>,</span> <span>EquatableList</span><span>&lt;</span><span>T</span><span>&gt;</span> <span>list2</span><span>)</span>
+        <span>{</span>
+            <span>return</span> <span>!</span><span>(</span><span>list1</span> <span>==</span> <span>list2</span><span>)</span><span>;</span>
+        <span>}</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Breaking Changes:</h2><a id="user-content-breaking-changes" aria-label="Permalink: Breaking Changes:" href="#breaking-changes"></a>
+<ul dir="auto">
+<li>None currently</li>
+</ul>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Open Issues</h2><a id="user-content-open-issues" aria-label="Permalink: Open Issues" href="#open-issues"></a>
+<p dir="auto">This section track other miscellaneous TODO items:</p>
+<p dir="auto"><strong>Framework targets</strong>: May want to mention if we have framework requirements for the generators, e.g. they must target netstandard2.0 or similar.</p>
+<p dir="auto"><strong>Conventions</strong>: (See TODO in <a href="#conventions">conventions</a> section above). What standard conventions are we suggesting to users?</p>
+<p dir="auto"><strong>Feature detection</strong>: Show how to create a generator that relies on specific target framework features, without depending on the TargetFramework property.</p>
+</article></div></div></article></body></html>

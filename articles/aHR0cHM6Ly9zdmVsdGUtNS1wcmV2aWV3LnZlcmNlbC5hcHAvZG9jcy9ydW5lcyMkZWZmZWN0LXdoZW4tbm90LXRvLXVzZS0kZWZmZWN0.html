@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Overview &bull; Svelte Docs</title><meta name="author" content=""><meta name="description" content="Overview • Svelte documentation"><meta name="dendron:source-url" content="https://svelte-5-preview.vercel.app/docs/runes#$effect-when-not-to-use-$effect"><meta name="dendron:length" content="1008"><meta name="dendron:time-to-read-minutes" content="1"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div><!----><p>Svelte is a framework for building user interfaces on the web. It uses a compiler to turn declarative components written in HTML, CSS and JavaScript...</p><div><p><span data-ext=".svelte">App</span></p><pre data-js="" data-language="svelte"><code><span><span>&lt;</span><span>script</span><span>&gt;</span></span>
+<span>	<span>function</span> <span>greet</span><span>() {</span></span>
+<span>		<span>alert</span><span>(</span><span>'Welcome to Svelte!'</span><span>);</span></span>
+<span>	<span>}</span></span>
+<span><span>&lt;/</span><span>script</span><span>&gt;</span></span>
+<span></span>
+<span><span>&lt;</span><span>button</span> <span>onclick</span><span>=</span><span>{greet}&gt;click me&lt;/</span><span>button</span><span>&gt;</span></span>
+<span></span>
+<span><span>&lt;</span><span>style</span><span>&gt;</span></span>
+<span>	<span>button</span> <span>{</span></span>
+<span>		<span>font-size</span><span>:</span> <span>2</span><span>em</span><span>;</span></span>
+<span>	<span>}</span></span>
+<span><span>&lt;/</span><span>style</span><span>&gt;</span></span></code></pre><pre data-ts="" data-language="svelte"><code><span><span>&lt;</span><span>script</span> <span>lang</span><span>=</span><span>"ts"</span><span>&gt;</span></span>
+<span>	<span>function</span> <span>greet</span><span>() {</span></span>
+<span>		<span>alert</span><span>(</span><span>'Welcome to Svelte!'</span><span>);</span></span>
+<span>	<span>}</span></span>
+<span><span>&lt;/</span><span>script</span><span>&gt;</span></span>
+<span></span>
+<span><span>&lt;</span><span>button</span> <span>onclick</span><span>=</span><span>{greet}&gt;click me&lt;/</span><span>button</span><span>&gt;</span></span>
+<span></span>
+<span><span>&lt;</span><span>style</span><span>&gt;</span></span>
+<span>	<span>button</span> <span>{</span></span>
+<span>		<span>font-size</span><span>:</span> <span>2</span><span>em</span><span>;</span></span>
+<span>	<span>}</span></span>
+<span><span>&lt;/</span><span>style</span><span>&gt;</span></span></code></pre></div><p>...into lean, tightly optimized JavaScript.</p><p>You can use it to build anything on the web, from standalone components to ambitious full stack apps (using Svelte's companion application framework, <a href="https://svelte-5-preview.vercel.app/docs/../kit">SvelteKit</a>) and everything in between.</p><p>These pages serve as reference documentation. If you're new to Svelte, we recommend starting with the <a href="https://svelte-5-preview.vercel.app/tutorial">interactive tutorial</a> and coming back here when you have questions.</p><p>You can also try Svelte online in the <a href="https://svelte-5-preview.vercel.app/playground">playground</a> or, if you need a more fully-featured environment, on <a href="https://sveltekit.new">StackBlitz</a>.</p><!----><!----></div></div></article></body></html>

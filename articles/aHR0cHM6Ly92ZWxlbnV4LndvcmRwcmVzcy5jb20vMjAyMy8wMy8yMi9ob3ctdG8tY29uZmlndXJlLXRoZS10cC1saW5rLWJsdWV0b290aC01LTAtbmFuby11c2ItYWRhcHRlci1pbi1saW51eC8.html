@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>How to configure the TP-Link Bluetooth 5.0 Nano USB Adapter in Linux</title><meta name="author" content="Gilberto Ficara"><meta name="description" content="On my Debian and LMDE system, this adapter (USB ID: 2357:0604) would not work automatically, I had to upgrade to a newer kernel first (this should be available from Linux 5.15 onwards) by enabling the backports, adding this line in /etc/apt/sources.list: deb http://deb.debian.org/debian bullseye-backports main non-free contrib and then installing the new kernel: apt update…"><meta name="dendron:source-url" content="https://velenux.wordpress.com/2023/03/22/how-to-configure-the-tp-link-bluetooth-5-0-nano-usb-adapter-in-linux/"><meta name="dendron:length" content="951"><meta name="dendron:time-to-read-minutes" content="1"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div id="content-wrapper"><main id="main" role="main">
+
+		
+			
+<article id="post-1253">
+			<!-- .entry-header -->		<!-- .entry-meta -->
+	
+	<div><p>On my Debian and LMDE system, this adapter (USB ID: <code>2357:0604</code>) would not work automatically, I had to upgrade to a newer kernel first (this should be available from Linux 5.15 onwards) by enabling the backports, adding this line in <code>/etc/apt/sources.list</code>:</p><pre><code>deb http://deb.debian.org/debian bullseye-backports main non-free contrib</code></pre><p>and then installing the new kernel:</p><pre><code>apt update
+apt install linux-image-6.1.0-0.deb11.5-amd64-unsigned</code></pre><p>unfortunately this was not enough, even after rebooting with the new kernel I had a problem with the firmware missing:</p><pre><code>[...] firmware load for rtl_bt/rtl8761bu_fw.bin failed with error -2<br>firmware file rtl_bt/rtl8761bu_fw.bin not found</code></pre><p>The firmware is available from the <a href="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/rtl_bt">kernel git repo</a>, you need both <a href="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/rtl_bt/rtl8761bu_config.bin">rtl8761bu_config.bin</a> and <a href="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/tree/rtl_bt/rtl8761bu_fw.bin">rtl8761bu_fw.bin</a> save them in <code>/lib/firmware/rtl_bt/</code> and remove and reinsert the USB BT adapter.</p><p>Hope this helps someone out there.</p></div><!-- .entry-content -->
+
+	<!-- .entry-footer -->
+
+	<div><p><strong>Published</strong>
+			<time datetime="2023-03-22T09:56:59+01:00">2023-03-22</time><time datetime="2023-03-22T10:01:19+01:00">2023-03-22</time></p><!-- .site-posted-on --></div>
+</article><!-- #post-## -->
+
+			
+	<nav aria-label="Posts">
+		<h2>Post navigation</h2>
+		
+	</nav>
+			
+		
+		</main><!-- #main --></div></div></article></body></html>

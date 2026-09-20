@@ -3,8 +3,8 @@ id: Perso.archlinux
 title: Perso.archlinux
 desc: install ArchLinux & Omarchy
 updated: 1752134368756
-created: 0
 ---
+
 # configuration du réseau
 
 en utilisant `wpa_supplicant`.

@@ -3,8 +3,8 @@ id: Perso.projects.console-interactive.TIL
 title: Perso.projects.console-interactive.TIL
 desc: TIL
 updated: 1765311671310
-created: 0
 ---
+
 # nuget source generator et runtime
 Si un nuget embarque à la fois un source generator et des classes runtime alors il faut absolument que `<IncludeBuildOutput>true</IncludeBuildOutput>`
 

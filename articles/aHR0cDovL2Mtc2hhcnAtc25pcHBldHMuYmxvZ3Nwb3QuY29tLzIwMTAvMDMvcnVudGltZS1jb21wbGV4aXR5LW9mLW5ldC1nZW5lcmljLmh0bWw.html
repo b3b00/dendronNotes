@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Runtime Complexity of .NET Generic Collection</title><meta name="author" content=""><meta name="description" content="I had to implement some data structures for my computational geometry class. Deciding whether to implement the data structures myself or us..."><meta name="dendron:source-url" content="http://c-sharp-snippets.blogspot.com/2010/03/runtime-complexity-of-net-generic.html"><meta name="dendron:length" content="1673"><meta name="dendron:time-to-read-minutes" content="1"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div dir="ltr" trbidi="on" id="post-body-1809352020739629051" itemprop="description articleBody"><p>
+I had to implement some data structures for my computational geometry class. Deciding whether to implement the data structures myself or using the build-in classes turned out to be a hard decision, as the runtime complexity information is located at the method itself, if present at all. So I went ahead to consolidate all the information in one table, then looked at the source code in Reflector and verified them. Below is my result.</p><table><tbody>
+<tr>       <td></td>        <td>Internal Implement-         <br>
+ation</td>        <td>Add/insert</td>        <td>Add beyond capacity</td>        <td>Queue/Push</td>        <td>Dequeue/         <br>
+Pop/Peek</td>        <td>Remove/         <br>
+RemoveAt</td>        <td>Item[index]/ElementAt(index)</td>        <td>GetEnumerator</td>        <td>Contains(value)/IndexOf/ContainsValue/Find</td>     </tr>
+<tr>       <td>List</td>        <td>Array</td>        <td>O(1) to add, O(n) to insert</td>        <td>O(n)</td>        <td>-</td>        <td>-</td>        <td>O(n)</td>        <td>O(1)</td>        <td>O(1)</td>        <td>O(n)</td>     </tr>
+<tr>       <td>LinkedList</td>        <td>Doubly linked list</td>        <td>O(1), before/after given node</td>        <td>O(1)</td>        <td>O(1)</td>        <td>O(1)</td>        <td>O(1), before/after given node</td>        <td>O(n)</td>        <td>O(1)</td>        <td>O(n)</td>     </tr>
+<tr>       <td>Stack</td>        <td>Array</td>        <td>O(1)</td>        <td>O(n)</td>        <td>O(1)</td>        <td>O(1)</td>        <td>-</td>        <td>-</td>        <td>O(1)</td>        <td>O(n)</td>     </tr>
+<tr>       <td>Queue</td>        <td>Array</td>        <td>O(1)</td>        <td>O(n)</td>        <td>O(1)</td>        <td>O(1)</td>        <td>-</td>        <td>-</td>        <td>O(1)</td>        <td>O(n)</td>     </tr>
+<tr>       <td>Dictionary</td>        <td>Hashtable with links to another array index for collision</td>        <td>O(1), O(n) if collision</td>        <td>O(n)</td>        <td>-</td>        <td>-</td>        <td>O(1), O(n) if collision</td>        <td>O(1), O(n) if collision</td>        <td>O(1)</td>        <td>O(n)</td>     </tr>
+<tr>       <td>HashSet</td>        <td>Hashtable with links to another array index for collision</td>        <td>O(1), O(n) if collision</td>        <td>O(n)</td>        <td>-</td>        <td>-</td>        <td>O(1), O(n) if collision</td>        <td>O(1), O(n) if collision</td>        <td>O(1)</td>        <td>-</td>     </tr>
+<tr>       <td>SortedDictionary</td>        <td>Red-black tree</td>        <td>O(log n)</td>        <td>O(log n)</td>        <td>-</td>        <td>-</td>        <td>O(log n)</td>        <td>O(log n)</td>        <td>O(log n)</td>        <td>O(n)</td>     </tr>
+<tr>       <td>SortedList</td>        <td>Array</td>        <td>O(n), O(log n) if added to end of list</td>        <td>O(n)</td>        <td>-</td>        <td>-</td>        <td>O(n)</td>        <td>O(log n)</td>        <td>O(1)</td>        <td>O(n)</td>     </tr>
+<tr>       <td>SortedSet</td>        <td>Red-black tree</td>        <td>O(log n)</td>        <td>O(log n)</td>        <td>-</td>        <td>-</td>        <td>O(log n)</td>        <td>O(log n)</td>        <td>O(log n)</td>        <td>-</td>     </tr>
+</tbody></table><p>
+Note:</p><table><tbody>
+<tr>       <td>Dictionary</td>        <td>Add, remove and item[i] has expected O(1) running time</td>     </tr>
+<tr>       <td>HashSet</td>        <td>Add, remove and item[i] has expected O(1) running time</td>     </tr>
+</tbody></table><p>
+Update 25 April 2010: Added SortedSet</p></div></div></article></body></html>

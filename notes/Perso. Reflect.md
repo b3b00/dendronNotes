@@ -3,8 +3,8 @@ id: Perso. Reflect
 title: Perso. Reflect
 desc: Reflections
 updated: 1768843533981
-created: 0
 ---
+
 # AI will help frugality
 
 Reflecting how gen AI is now used for software development and knowing it's limitations in term of context window I think that it could force as developers to make smaller systems.

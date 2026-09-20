@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>GitHub - excubo-ag/Blazor.ScriptInjection</title><meta name="author" content=""><meta name="description" content="Contribute to excubo-ag/Blazor.ScriptInjection development by creating an account on GitHub."><meta name="dendron:source-url" content="https://github.com/excubo-ag/Blazor.ScriptInjection"><meta name="dendron:length" content="5012"><meta name="dendron:time-to-read-minutes" content="4"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-hpc="true" containertiming="hpc"><article itemprop="text">
+<p dir="auto"><a href="https://www.nuget.org/packages/Excubo.Blazor.ScriptInjection/" rel="nofollow"></a>
+<a href="https://www.nuget.org/packages/Excubo.Blazor.ScriptInjection/" rel="nofollow"></a>
+<a href="https://github.com/excubo-ag/Blazor.ScriptInjection/"></a></p>
+<p dir="auto">This library brings the <code>script</code> tag to Blazor. Since components can occur any number of times, the usage of <code>script</code> tags in components is usually frowned upon.
+The <code>AddScript</code> component in <code>Excubo.Blazor.ScriptInjection</code> is different, as it makes sure that the source file is only put into the page's body once.</p>
+<p dir="auto">This can be used to lazily load javascript sources for any component that requires javascript.
+As a component library author, you can use this to relieve your users of the burden of adding script tags to their pages' <code>&lt;head&gt;</code>.
+Simply add <code>&lt;AddScript Src="_content/My.Library/code.js" /&gt;</code> to any component in your library that requires that file.
+<code>Excubo.Blazor.ScriptInjection</code> makes sure the script gets loaded once and only once, regardless of how many components you have, and regardless of how many components your users use.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Changelog</h2><a id="user-content-changelog" aria-label="Permalink: Changelog" href="#changelog"></a>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Version 3.1.Y</h3><a id="user-content-version-31y" aria-label="Permalink: Version 3.1.Y" href="#version-31y"></a>
+<p dir="auto">The target framework compatibility is now limited to pre-net5.0 TFMs. This is effectively deprecating this library, for one simple reason: working with <a href="https://docs.microsoft.com/en-us/aspnet/core/blazor/javascript-interoperability/call-javascript-from-dotnet?view=aspnetcore-6.0#javascript-isolation-in-javascript-modules" rel="nofollow">JavaScript isolation</a> is a better way to achieve this.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Version 3.X.Y</h3><a id="user-content-version-3xy" aria-label="Permalink: Version 3.X.Y" href="#version-3xy"></a>
+<p dir="auto">Since <code>&lt;Script /&gt;</code> fails in Blazor under some circumstances (<a href="https://github.com/dotnet/aspnetcore/issues/24159">aspnetcore#24159</a>), <code>Script</code> is now deprecated in favor of <code>AddScript</code>.
+<code>Script</code> will be removed starting with v4.0.0.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">Version 2.X.Y</h3><a id="user-content-version-2xy" aria-label="Permalink: Version 2.X.Y" href="#version-2xy"></a>
+<p dir="auto">Since version 2.0.0, you get a utility function that only returns when the script has been loaded. This makes sure that your javascript code is available before you try to execute it.
+This behavior is optional (but enabled by default). If you do not need it at all, simply disable it when you add the <code>ScriptInjection</code> service.
+This notification adds a payload of 409 bytes to your page (214 bytes, if your web server supports gzipped files and you activate the gzipped option on the service: <code>services.AddScriptInjection(gzipped_bootstrap: true)</code>).</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Usage</h2><a id="user-content-usage" aria-label="Permalink: Usage" href="#usage"></a>
+<p dir="auto"><h3 tabindex="-1" dir="auto">1. Install the nuget package Excubo.Blazor.ScriptInjection</h3><a id="user-content-1-install-the-nuget-package-excuboblazorscriptinjection" aria-label="Permalink: 1. Install the nuget package Excubo.Blazor.ScriptInjection" href="#1-install-the-nuget-package-excuboblazorscriptinjection"></a>
+<p dir="auto">Excubo.Blazor.ScriptInjection is distributed <a href="https://www.nuget.org/packages/Excubo.Blazor.ScriptInjection/" rel="nofollow">via nuget.org</a>.
+<a href="https://www.nuget.org/packages/Excubo.Blazor.ScriptInjection/" rel="nofollow"></a></p>
+<p dir="auto"><h4 tabindex="-1" dir="auto">Package Manager:</h4><a id="user-content-package-manager" aria-label="Permalink: Package Manager:" href="#package-manager"></a>
+<div dir="auto" data-snippet-clipboard-copy-content="Install-Package Excubo.Blazor.ScriptInjection"><pre><span>Install-Package</span> <span>Excubo.Blazor.ScriptInjection</span></pre></div>
+<p dir="auto"><h4 tabindex="-1" dir="auto">.NET Cli:</h4><a id="user-content-net-cli" aria-label="Permalink: .NET Cli:" href="#net-cli"></a>
+<div dir="auto" data-snippet-clipboard-copy-content="dotnet add package Excubo.Blazor.ScriptInjection"><pre>dotnet add package Excubo.Blazor.ScriptInjection</pre></div>
+<p dir="auto"><h4 tabindex="-1" dir="auto">Package Reference</h4><a id="user-content-package-reference" aria-label="Permalink: Package Reference" href="#package-reference"></a>
+<div dir="auto" data-snippet-clipboard-copy-content="<PackageReference Include=&quot;Excubo.Blazor.ScriptInjection&quot; />"><pre>&lt;<span>PackageReference</span> <span>Include</span>=<span><span>"</span>Excubo.Blazor.ScriptInjection<span>"</span></span> /&gt;</pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">2. Add ScriptInjection to your services</h3><a id="user-content-2-add-scriptinjection-to-your-services" aria-label="Permalink: 2. Add ScriptInjection to your services" href="#2-add-scriptinjection-to-your-services"></a>
+<div dir="auto" data-snippet-clipboard-copy-content="    //...
+    //using Excubo.Blazor.ScriptInjection;
+    services.AddScriptInjection();
+    // if your web server supports gzipped javascript files, it's recommended to use the following instead:
+    services.AddScriptInjection(gzipped_bootstrap: true);
+    // Alternative: if you do not require notification on load of the scripts, disable it completely:
+    services.AddScriptInjection(onload_notification: false); // default is true.
+    //..."><pre>    <span>//...</span>
+    <span>//using Excubo.Blazor.ScriptInjection;</span>
+    <span>services</span><span>.</span><span>AddScriptInjection</span><span>(</span><span>)</span><span>;</span>
+    <span>// if your web server supports gzipped javascript files, it's recommended to use the following instead:</span>
+    <span>services</span><span>.</span><span>AddScriptInjection</span><span>(</span><span>gzipped_bootstrap</span><span>:</span> <span>true</span><span>)</span><span>;</span>
+    <span>// Alternative: if you do not require notification on load of the scripts, disable it completely:</span>
+    <span>services</span><span>.</span><span>AddScriptInjection</span><span>(</span><span>onload_notification</span><span>:</span> <span>false</span><span>)</span><span>;</span> <span>// default is true.</span>
+    <span>//...</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">3. Use the AddScript component</h3><a id="user-content-3-use-the-addscript-component" aria-label="Permalink: 3. Use the AddScript component" href="#3-use-the-addscript-component"></a>
+<div dir="auto" data-snippet-clipboard-copy-content="<h3>My component requiring some js</h3>
+<AddScript Src=&quot;path/to/code.js&quot; Async=&quot;true&quot; Defer=&quot;false&quot; />
+<!--...-->"><pre><span>&lt;</span><span>h3</span><span>&gt;</span>My component requiring some js<span>&lt;/</span><span>h3</span><span>&gt;</span>
+<span>&lt;</span><span>AddScript</span> <span>Src</span>="<span>path/to/code.js</span>" <span>Async</span>="<span>true</span>" <span>Defer</span>="<span>false</span>" <span>/&gt;</span>
+<span>&lt;!--...--&gt;</span></pre></div>
+<p dir="auto">Note: <code>Async</code> and <code>Defer</code> are <code>false</code> by default. It is recommended to use these options wherever possible to improve page performance.</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">4. Wait for the script to be loaded (optional)</h3><a id="user-content-4-wait-for-the-script-to-be-loaded-optional" aria-label="Permalink: 4. Wait for the script to be loaded (optional)" href="#4-wait-for-the-script-to-be-loaded-optional"></a>
+<p dir="auto">Most likely, you need to be sure that the script you added is actually loaded before calling any method in it:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="@inject IJSRuntime js
+@inject IScriptInjectionTracker script_injection_tracker
+<AddScript Src=&quot;path/to/code.js&quot; Async=&quot;true&quot; Defer=&quot;false&quot; />
+
+<button @onclick=&quot;Run&quot;>Execute code in path/to/code.js</button>
+
+@code {
+    private async Task Run()
+    {
+        await script_injection_tracker.LoadedAsync(&quot;path/to/code.js&quot;);
+        await js.InvokeVoidAsync(&quot;console.log&quot;, &quot;we know that our file has been loaded successfully! now we execute something&quot;);
+        await js.InvokeVoidAsync(&quot;code.sayhello&quot;, &quot;world&quot;);
+    }
+}"><pre>@inject IJSRuntime js
+@inject IScriptInjectionTracker script_injection_tracker
+<span>&lt;</span><span>AddScript</span> <span>Src</span>="<span>path/to/code.js</span>" <span>Async</span>="<span>true</span>" <span>Defer</span>="<span>false</span>" <span>/&gt;</span>
+
+<span>&lt;</span><span>button</span> <span>@onclick</span>="<span>Run</span>"<span>&gt;</span>Execute code in path/to/code.js<span>&lt;/</span><span>button</span><span>&gt;</span>
+
+@code {
+    private async Task Run()
+    {
+        await script_injection_tracker.LoadedAsync("path/to/code.js");
+        await js.InvokeVoidAsync("console.log", "we know that our file has been loaded successfully! now we execute something");
+        await js.InvokeVoidAsync("code.sayhello", "world");
+    }
+}</pre></div>
+<p dir="auto">If you never require to call <code>IScriptInjectionTracker.LoadedAsync</code>, then you can safely disable the onload notification with <code>services.AddScriptInjection(onload_notification: false);</code>.</p>
+<p dir="auto"><h2 tabindex="-1" dir="auto">Recommendations for component library authors</h2><a id="user-content-recommendations-for-component-library-authors" aria-label="Permalink: Recommendations for component library authors" href="#recommendations-for-component-library-authors"></a>
+<p dir="auto">To make use of this library in your component library, there are two easy steps to follow (a third one being optional):</p>
+<p dir="auto"><h3 tabindex="-1" dir="auto">1. Add ScriptInjection to your service extension method</h3><a id="user-content-1-add-scriptinjection-to-your-service-extension-method" aria-label="Permalink: 1. Add ScriptInjection to your service extension method" href="#1-add-scriptinjection-to-your-service-extension-method"></a>
+<div dir="auto" data-snippet-clipboard-copy-content="using Excubo.Blazor.ScriptInjection;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace MyLibrary
+{
+    public static class ServiceExtension
+    {
+        public static IServiceCollection AddMyLibrary(this IServiceCollection services)
+        {
+            return services
+                //... add your own services here
+                .AddScriptInjection();
+        }
+    }
+}"><pre><span>using</span> <span>Excubo</span><span>.</span><span>Blazor</span><span>.</span><span>ScriptInjection</span><span>;</span>
+<span>using</span> <span>Microsoft</span><span>.</span><span>Extensions</span><span>.</span><span>DependencyInjection</span><span>;</span>
+
+<span>namespace</span> <span>MyLibrary</span>
+<span>{</span>
+    <span>public</span> <span><span>static</span></span> <span>class</span> <span>ServiceExtension</span>
+    <span>{</span>
+        <span>public</span> <span><span>static</span></span> <span>IServiceCollection</span> <span>AddMyLibrary</span><span>(</span><span>this</span> <span>IServiceCollection</span> <span>services</span><span>)</span>
+        <span>{</span>
+            <span>return</span> <span>services</span>
+                <span>//... add your own services here</span>
+                <span>.</span><span>AddScriptInjection</span><span>(</span><span>)</span><span>;</span>
+        <span>}</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">2. Use the AddScript component</h3><a id="user-content-2-use-the-addscript-component" aria-label="Permalink: 2. Use the AddScript component" href="#2-use-the-addscript-component"></a>
+<p dir="auto">Make sure you use the <code>_content/[Name of Library]</code> prefix in the <code>Src</code> parameter.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<h3>My reusable component in an awesome library (requiring some js)</h3>
+<AddScript Src=&quot;_content/MyLibrary/path/to/code.js&quot; Async=&quot;true&quot; Defer=&quot;false&quot; />
+<!--...-->"><pre><span>&lt;</span><span>h3</span><span>&gt;</span>My reusable component in an awesome library (requiring some js)<span>&lt;/</span><span>h3</span><span>&gt;</span>
+<span>&lt;</span><span>AddScript</span> <span>Src</span>="<span>_content/MyLibrary/path/to/code.js</span>" <span>Async</span>="<span>true</span>" <span>Defer</span>="<span>false</span>" <span>/&gt;</span>
+<span>&lt;!--...--&gt;</span></pre></div>
+<p dir="auto"><h3 tabindex="-1" dir="auto">3. Optionally, tell your users that they can remove the awkward script tag from their <code>_Host.cshtml</code> / <code>index.html</code> file.</h3><a id="user-content-3-optionally-tell-your-users-that-they-can-remove-the-awkward-script-tag-from-their-_hostcshtml--indexhtml-file" aria-label="Permalink: 3. Optionally, tell your users that they can remove the awkward script tag from their _Host.cshtml / index.html file." href="#3-optionally-tell-your-users-that-they-can-remove-the-awkward-script-tag-from-their-_hostcshtml--indexhtml-file"></a>
+<p dir="auto">Now that your making sure that the javascript code is loaded only when it's needed, you can tell your users that they can remove some clutter from their <code>_Host.cshtml</code> / <code>index.html</code> file.
+This is only relevant for updated libraries, not when you use <code>Excubo.Blazor.ScriptInjection</code> from version 1 of your component library.</p>
+</article></div></div></article></body></html>

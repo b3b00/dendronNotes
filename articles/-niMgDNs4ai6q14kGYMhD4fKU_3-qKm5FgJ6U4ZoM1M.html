@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Semantic Enrichment: The Critical Step After Parsing</title><meta name="author" content="Federico Tomassetti"><meta name="description" content="Semantic Enrichment: the critical step after parsing. This is a step that significantly increases the value of the ASTs we got from parsing"><meta name="dendron:source-url" content="https://tomassetti.me/semantic-enrichment-the-critical-step-after-parsing/"><meta name="dendron:length" content="16445"><meta name="dendron:time-to-read-minutes" content="13"></head><body><article id="dendron-article-content"><div id="readability-page-1" class="page"><div data-id="c3849b8" data-element_type="widget" data-e-type="widget" id="allcont" data-widget_type="theme-post-content.default"><p>It all starts with parsing, so we often put all of our enthusiasm into this step, and once our parser is done, we feel we made it. I am afraid I am the bearer of bad news, as there is more to do. There is a step that significantly increases the value of the ASTs we got from parsing, and that is the semantic enrichment. In this article we will see what that is, what it enables us to do, and put our hands on some code.</p><p>As always, the code for this article is available on GitHub. You can find it at <a href="https://github.com/Strumenta/an-entity-language">https://github.com/Strumenta/an-entity-language</a>.</p><h2>It all starts with parsing, but the assembly lines continue</h2><p>When we parse, we recognize the structure of the code.</p><p>But what does it mean to parse? It means to:</p><ol>
+<li>To <strong>check</strong> the code is structurally correct</li>
+
+
+
+<li>To <strong>build the Abstract Syntax Tree</strong> (AST), we make nodes representing the structures we recognize. For example, we could process the code dog.fly() and return a node representing a method call.&nbsp;</li>
+</ol><pre><code></code></pre><figure></figure><p>All is good, <strong><em>except for the fact that dogs cannot fly</em></strong>.</p><p>The code is syntactically correct and semantically incorrect.&nbsp;</p><p>When we process code we first verify it is syntactically correct.&nbsp;</p><p>If it is, we move to the semantic analysis. When the code is semantically correct, we can enrich the AST with semantic information.</p><p>In essence, we are interested in two things:</p><ol>
+<li>Connecting references to the corresponding declarations. We call this <strong><em>symbol resolution</em></strong></li>
+
+
+
+<li>Calculating the types of elements that can be typed. We call this <strong><em>type calculation</em></strong></li>
+</ol><h3>The interconnection between symbol resolution and type calculation</h3><p>I am an engineer by trade, and I really like the assembly-line approach to problem-solving: I like to solve a piece of the problem and only then move to the next step. So you may wonder why I am conflating two apparently different problems, like <em>symbol resolution</em> and <em>type calculation</em>. As for most things I do, it is because I have no alternative.</p><p>The two mechanisms are interconnected: one depends on the other. For example, let’s say that I have this code:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">class TimeMachine { 
+Time move(TimeIncrement) 
+Point move(Direction)
+}
+class Point {
+	Point add(Direction)
+}
+class Time {
+	Time add(TimeIncrement)
+}
+myTimeMachine.move(foo).add(bar)
+</pre><p>Let’s say my goal is to figure out the type of the overall expression myTimeMachine.move(foo).add(bar).</p><p>To answer this question I need to figure out which “add” method we are referring to. If it is the one declared in Point, then the overall result will be of type Point. If instead we are referring to the add method declared in Time, then the overall result will be of type Time.&nbsp;</p><p>Ok, but how do I know which “add” method I am calling? Well, it depends on the type of myTimeMachine.move(foo):</p><ul>
+<li>If that expression has type Point and bar has type Direction, then we are calling the “add” method in Point.&nbsp;</li>
+
+
+
+<li>If instead that expression has type Time, and the expression bar has type TimeIncrement, then we are calling the “add” method in Time.</li>
+</ul><p>This means, I need to figure out the type of myTimeMachine.move(foo). To do so, I need first to figure out if I am calling the first or the second overloaded variant of TimeMachine.move. And that depends on the type of foo.</p><p>So, you see, I cannot districate the two problems: they affect each other results, and therefore, in principle, we treat them together. In practice, for very simple languages we can get away by treating them separately. Typically you need to treat the problems in a combined way if there are composite types or cascading functions/method calls.&nbsp;</p><p>If you want to read about symbol resolution for a language like Java, you may be interested in <a href="https://tomassetti.me/how-to-build-a-symbol-solver-for-java-in-clojure/">https://tomassetti.me/how-to-build-a-symbol-solver-for-java-in-clojure/</a> or <a href="https://tomassetti.me/resolve-method-calls-using-java-symbol-solver/">https://tomassetti.me/resolve-method-calls-using-java-symbol-solver/</a></p><h3>A Prerequisite for Any Non-Trivial Operation</h3><p>Semantic Enrichment is a prerequisite for any meaningful usage of the code.</p><p>You may perhaps implement a linter or a code formatter without semantic enrichment, but for the most typical language engineering applications you need semantic enrichment:</p><ul>
+<li><strong>Interpretation</strong>: To execute code, we need to connect function invocation to their definition</li>
+
+
+
+<li><strong>Migrations</strong>: To migrate code in any nontrivial way, we want to take into account the type of the different elements. For example, if we were translating the operation a + b, depending on the target language and the type of the operands, we may want to translate it as a + b or perhaps a.concat(b) or again a + b.toDouble().</li>
+
+
+
+<li><strong>Static analysis and refactoring</strong>: Automated code modifications, such as renaming variables or moving functions, depend on knowing which references are linked to which declarations.</li>
+
+
+
+<li><strong>Editors:</strong> Autocompletion or error-checking depends on semantic enrichment. But also go-to-definition or find-usages. In essence the difference between a basic editor and an advanced one is in their support for semantic enrichment for the language of interest.</li>
+</ul><h3>The StarLasu Approach and Semantic Enrichment</h3><p>When it comes to parsing, at Strumenta we apply the principles of the <a href="https://tomassetti.me/chisel-an-open-source-method-for-parsers/">Chisel Method</a>. They are quite established at this point, after years of refining. For Semantic Enrichment, things are not as crystalized as we evolve the approach at each new project, finding new solutions to new challenges. That said, we are finding patterns that work and incorporating them in our core libraries and in Kolasu in particular.&nbsp;</p><p>At this stage, Kolasu has a module called <em>kolasu-semantics,</em> which has a reasonably good approach to symbol resolution. Type calculation is instead still implemented ad-hoc for each project, at this time. So we call the type calculation logic from symbol resolution (and viceversa). It is just that we have standard APIs for symbol resolution and not for type calculation.</p><h2>Let’s see an example of Semantic Enrichment</h2><p>In our example we will work with a simple language that permits us to define entities. These entities have fields and methods. The methods contain statements.</p><p><br>This is an example:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">module demo
+
+import external
+
+entity FirstEntity {
+
+&nbsp;&nbsp;&nbsp;name: String
+
+&nbsp;&nbsp;&nbsp;second: SecondEntity
+
+}
+
+entity SecondEntity {
+
+&nbsp;&nbsp;&nbsp;name: String
+
+&nbsp;&nbsp;&nbsp;foo(): Integer {
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 2 * 3
+
+&nbsp;&nbsp;&nbsp;}
+
+&nbsp;&nbsp;&nbsp;bar(): Integer {
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return new SecondEntity().foo() + 1
+
+&nbsp;&nbsp;&nbsp;}
+
+}</pre><p>This language, while simple, contains some of the elements that we can find in most languages:</p><ul>
+<li>We can import modules</li>
+
+
+
+<li>We can define new types (entities are used as types)</li>
+
+
+
+<li>We have built-in types such as String and Integer</li>
+
+
+
+<li>We can invoke operations without specifying the context (therefore using the current object as context) or specifying it</li>
+</ul><h3>Symbol Resolution</h3><p>Let’s take a look at a portion of our symbolResolver:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">fun symbolResolver(
+   moduleFinder: ModuleFinder,
+   typeCalculator: TypeCalculator,
+): SymbolResolver {
+   val dsp = DeclarativeScopeProvider()
+   val sr = SymbolResolver(dsp)
+
+
+   …
+
+
+   fun moduleLevelTypes(ctx: Node): ScopeDescription =
+   ScopeDescription().apply {
+       val module = ctx.findAncestorOfType(Module::class.java)
+       module?.let { m -&gt;
+           define(m.entities)
+           m.imports.forEach { import -&gt;
+               sr.resolve(import)
+               import.module.referred?.entities?.forEach {
+                   define(it)
+               }
+           }
+       }
+       builtinTypes.forEach(this::define)
+   }
+
+
+
+
+   …
+
+
+   dsp.addRule(
+       scopeFor(Import::module) {
+           moduleFinder.findModule(it.node.module.name)?.let { importedModule -&gt;
+               define(importedModule)
+           }
+       },
+   )
+   dsp.addRule(
+       scopeFor(Operation::type) {
+           parent(moduleLevelTypes(it.node))
+       },
+   )
+dsp.addRule(
+       scopeFor(Feature::type) {
+           parent(moduleLevelTypes(it.node))
+       },
+   )
+  dsp.addRule(
+       scopeFor(InvocationExpression::operation) {
+           sr.resolve(it.node.context)
+           val type =
+               typeCalculator.getType(it.node.context)
+                   ?: throw IllegalStateException(
+                       "Cannot resolve operation as the type of the context is unknown. " +
+                           "Context: ${it.node.context}",
+                   )
+           val entity = type as? Entity ?: throw IllegalStateException("We cannot only invoke operations on entities")
+           define(entity.operations)
+       },
+   )
+   …
+   return sr
+}
+</pre><p>We see that the symbol resolution depends on two things:</p><ul>
+<li>The moduleFinder, which permits to identify modules</li>
+
+
+
+<li>The typeCalculator, because, as we discussed, symbol resolution may need to trigger type calculation</li>
+</ul><p>We can then see a few rules:</p><ul>
+<li>The way in which we resolve imports is by delegating to the moduleFinder object. This is the case because we need to use some logic to find other files and parse them on demand, possibly managing loops (what if a file import itself, directly or indirectly?)</li>
+
+
+
+<li>When looking for the types used in features and operations, we do not specify any element declared at that level. We just look for features and operations declared in the entity containing them. So to do this, we define a parent scope</li>
+
+
+
+<li>The case of moduleLevelTypes is interesting because there we can see a combination of elements:
+<ul>
+<li>We get all the entities declared in the module</li>
+
+
+
+<li>We get all the entities declared in the imported modules</li>
+
+
+
+<li>We get all the built-in entities</li>
+</ul>
+</li>
+
+
+
+<li>In InvocationExpression we see that we get the type of the context. The context is what gets before the dot. It could be potentially very complex. We could have, for example, a.b().c.d().e().foo(). In such a case the context would be the expression: a.b().c.d().e(). We would always get the type of the context, and we expect that to be an entity. We then look at the operations that the entity defines and use them to define our scope</li>
+</ul><p>These few rules cover many of the most common patterns we see in languages we work with, either Domain Specific Languages we design or legacy languages for which we build parsers.</p><h3>Type Calculation</h3><p>Let’s take a look at our simple Type Calculator:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">class EntityTypeCalculator : TypeCalculator {
+   var sr: SymbolResolver? = null
+
+
+   private fun &lt;T:Node,S:PossiblyNamed&gt;getTypeOfReference(
+       refHolder: T,
+       ref: KProperty1&lt;T, ReferenceByName&lt;S&gt;?&gt;,
+   ): Type? {
+       val refValue = ref.getValue(refHolder, ref) ?: return null
+       if (!refValue.resolved) {
+           sr?.resolve(refHolder, ref as KProperty1&lt;Node, ReferenceByName&lt;PossiblyNamed&gt;?&gt;)
+       }
+       return if (refValue.resolved) {
+           getType(refValue.referred!! as Node)
+       } else {
+           null
+       }
+   }
+
+
+   override fun calculateType(node: Node): Type? {
+       return when (node) {
+           is OperatorExpression -&gt; {
+               val leftType = getType(node.left)
+               val rightType = getType(node.right)
+               if (leftType == null || rightType == null) {
+                   return null
+               }
+               when (node.operator) {
+                   Operator.ADDITION -&gt; {
+                       when (val operandTypes = Pair(leftType, rightType)) {
+                           Pair(StringType, StringType) -&gt; StringType
+                           Pair(StringType, IntegerType) -&gt; StringType
+                           else -&gt; TODO("$operandTypes for expression $node")
+                       }
+                   }
+                   Operator.MULTIPLICATION -&gt; {
+                       when (val operandTypes = Pair(leftType, rightType)) {
+                           Pair(IntegerType, IntegerType) -&gt; IntegerType
+                           else -&gt; TODO("$operandTypes for expression $node")
+                       }
+                   }
+                   else -&gt; TODO(node.operator.toString())
+               }
+           }
+           is ReferenceExpression -&gt; {
+               getTypeOfReference(node, ReferenceExpression::target)
+           }
+           is Feature -&gt; {
+               getTypeOfReference(node, Feature::type)
+           }
+           is Entity -&gt; {
+               node
+           }
+           is StringLiteralExpression -&gt; {
+               StringType
+           }
+           is BooleanLiteralExpression -&gt; {
+               BooleanType
+           }
+           is IntegerLiteralExpression -&gt; {
+               IntegerType
+           }
+           is InvocationExpression -&gt; {
+               getTypeOfReference(node, InvocationExpression::operation)
+           }
+           is Operation -&gt; {
+               if (node.type == null) {
+                   UnitType
+               } else {
+                   getTypeOfReference(node, Operation::type)
+               }
+           }
+           is ConstructorExpression -&gt; {
+               getTypeOfReference(node, ConstructorExpression::entity)
+           }
+           else -&gt; TODO("Does not know how to calculate the type of $node")
+       }
+   }
+
+
+}</pre><p>The first thing you may notice is that it contains a field to hold the SymbolResolver (sr). It is initially null, as we have a chicken-and-egg problem: we want a TypeCalculator in the SymbolResolver, and a SymbolResolver in the TypeCalculator. So we first create the TypeCalculator, with its sr field initially null, then, as we have instantiate the SymbolResolver, we set the field sr.</p><p>The method getTypeOfReference uses a bit of reflection. In essence it checks if a certain property corresponds to a reference that is solved. If it is not, then it trigger the symbol resolution, supposing we have a SymbolResolver available (sr different from null). Then we get the type referred to.</p><p>The rules for type calculation are nothing to call home about:</p><ul>
+<li>The operator expression considers the type of the operands to determine the return type of the operation.</li>
+
+
+
+<li>The type of a Feature is based on the entity referred to</li>
+
+
+
+<li>The literals all have a corresponding type</li>
+
+
+
+<li>In the invocation expression, the type is the type of the operation invoked</li>
+
+
+
+<li>The type of an operation is the special type UnitType, if no return type is specified. Otherwise, we just look at the entity referred to in the type field</li>
+
+
+
+<li>A constructor expression will return an object having the type corresponding to the entity being invoked</li>
+</ul><p>Again, it may sound quite boring, but these are the kind of patterns we routinely see. Of course, things can get more exciting if we throw generics and type inference in the mix, but for this time, let’s keep things simple.</p><h3>Using Semantic Enrichment</h3><p>The way in which we glue together symbol resolution and type calculation is this:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">fun Module.semanticEnrichment(moduleFinder: ModuleFinder): List&lt;Issue&gt; {
+   val issues = mutableListOf&lt;Issue&gt;()
+   val typeCalculator = EntityTypeCalculator()
+   val sr = symbolResolver(moduleFinder, typeCalculator)
+   typeCalculator.sr = sr
+   sr.resolve(this, entireTree = true)
+   this.walkDescendants(Expression::class).forEach { expression -&gt;
+       typeCalculator.setTypeIfNeeded(expression)
+   }
+   return issues
+}</pre><p>So, we can take any module and trigger symbol resolution. We will then get an AST containing references that have been resolved. Also, the types will be stored in a cache. How it works? Like this:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">interface Type
+
+
+private object Typing {
+   private val memory = IdentityHashMap&lt;Node, Type&gt;()
+
+
+   fun setType(
+       node: Node,
+       type: Type?,
+   ) {
+       if (type == null) {
+           memory.remove(node)
+       } else {
+           memory[node] = type
+       }
+   }
+
+
+   fun getType(node: Node): Type? {
+       return memory[node]
+   }
+}
+
+
+
+
+var Node.type: Type?
+   get() = Typing.getType(this)
+   set(value) {
+       Typing.setType(this, value)
+   }
+</pre><p>This means that after invoking the semantic enrichment, we can take each of our nodes can check their type by using mynode.type. Easy, right?</p><h3>An example</h3><p>What is life without tests? I do not want to imagine it, so our repository has a few tests. Let’s see a simple one:</p><pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">@Test
+fun resolveInvocations() {
+   val simpleModuleFinder = SimpleModuleFinder()
+   val animalsModule =
+       parser.parse(
+           """
+           module animals
+          
+           entity Dog {
+               move(): Integer {
+                   return 2
+               }
+           }
+          
+           entity FastDog {
+               move(): Integer {
+                   return new Dog().move() * 2
+               }
+           }              
+           """.trimIndent(),
+       ).root!! as Module
+   simpleModuleFinder.registerModule(animalsModule)
+   animalsModule.semanticEnrichment(simpleModuleFinder)
+   animalsModule.assertReferencesResolved(forProperty = InvocationExpression::operation)
+
+
+   // we get the only invocation we have in the code
+   val invocation = animalsModule.walkDescendants(InvocationExpression::class).first()
+   assertEquals("move", invocation.operation.name)
+   assertEquals("new Dog()", invocation.context.sourceText)
+
+
+   // We find the Dog entity
+   val entityDog = animalsModule.walkDescendants(Entity::class).find { it.name == "Dog" }!!
+
+
+   // We verify that the type of "new Dog()" is indeed Dog
+   assertEquals(entityDog, invocation.context.type)
+
+
+   // Now, to check we refer to the right "move" method, we get the entity Dog and
+   // find the "move" method there, then we check our invocation is pointing to it
+   val dogMoveMethod = entityDog.operations.find { it.name == "move" }
+       ?: throw IllegalStateException("move method not found in Dog")
+   assertEquals(dogMoveMethod, invocation.operation.referred!!)
+}
+</pre><p>Here we have an invocation: new Dog().move(). We want to verify that it is resolved. Resolving it is tricky as to find what move refers to, we first find the type of new Dog() (which is, unsurprisingly, the entity Dog). Then we look among the methods of Dog and find the method move (the one returning 2). And there it ends our simple example.</p><h2>Conclusions</h2><p>While <strong>parsing</strong> organizes code into a syntactic structure, <strong>Semantic Enrichment</strong> uncovers its meaning by resolving symbols and determining types. Without this critical step, advanced operations such as code generation, interpretation, and refactoring would be impossible. Semantic Enrichment is not trivial to implement.&nbsp;</p><p>With this article, we wanted to share some of the principles behind it, and through the support built-in in Kolasu, we want to provide a way to simplify the implementation of advanced Language Engineering solutions. For us it has been working pretty well, and we hope it will work similarly well for you.&nbsp;</p><p>Have fun with your Language Engineering project!</p></div></div></article></body></html>
