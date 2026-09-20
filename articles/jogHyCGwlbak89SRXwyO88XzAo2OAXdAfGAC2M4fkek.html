@@ -1,0 +1,1456 @@
+<html><head><meta charset="utf-8"><title>A Guide to Parsing: Algorithms and Terminology</title><meta content="Gabriele Tomassetti" name="author"><meta content="An in-depth coverage of parsing terminology an issues, together with an explanation for each one of the major algorithms and when to use them" name="description"><meta content="https://tomassetti.me/guide-parsing-algorithms-terminology/" name="dendron:source-url"><meta content="68505" name="dendron:length"><meta content="56.22" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div>
+          
+<p>We have already introduced a few parsing terms, while listing the major tools and libraries used for parsing in <a href="https://tomassetti.me/parsing-in-java/">Java</a>, <a href="https://tomassetti.me/parsing-in-csharp/">C#</a>, <a href="https://tomassetti.me/parsing-in-python/">Python</a> and <a href="https://tomassetti.me/parsing-in-javascript/">JavaScript</a>. In this article we make a more in-depth presentation of the concepts and algorithms used in parsing, so that you can get a better understanding of this fascinating world.</p>
+
+
+
+<p>We have tried to be practical in this article. Our goal is to help practitioners, not to explain the full theory. We just explain what you need to know to understand and build a parser.</p>
+
+
+
+<p>After the definition of parsing the article is divided in three parts:</p>
+
+
+
+<ol>
+<li><strong>The Big Picture</strong>. A section in which we describe the fundamental terms and components of a parser.</li>
+
+
+
+<li><strong>Grammars</strong>. In this part we explain the main formats of a grammar and the most common issues in writing them.</li>
+
+
+
+<li><strong>Parsing Algorithms</strong>. Here we discuss all the most used parsing algorithms and say what they are good for.</li>
+</ol>
+
+
+
+
+
+
+
+<h2 id="definition">Definition of Parsing</h2>
+
+
+
+
+
+
+
+<p>There are a few ways to define the meaning of parsing. However the gist remain the same: parsing means to find the underlying structure of the data we are given.</p>
+
+
+
+<figure><img fetchpriority="high" decoding="async" width="600" height="600" src="https://tomassetti.me/wp-content/uploads/2017/07/parsing_simple.png" alt="Simple definition of parsing" srcset="https://tomassetti.me/wp-content/uploads/2017/07/parsing_simple.png 600w, https://tomassetti.me/wp-content/uploads/2017/07/parsing_simple-300x300.png 300w, https://tomassetti.me/wp-content/uploads/2017/07/parsing_simple-150x150.png 150w" sizes="(max-width: 600px) 100vw, 600px"></figure>
+
+
+
+<p>In a way parsing can be considered the inverse of templating: identifying the structure and extracting the data. In templating we have a structure and we fill it with data instead. In the case of parsing you have to determine the model from the raw representation. While for templating you have to combine the data with the model, to create the raw representation. Raw representation is usually text, but it can also be binary data.</p>
+
+
+
+<p>Fundamentally parsing is necessary because different entities need the data to be in different forms. Parsing allows to transform data in a way that can be understood by a specific software. The obvious example are programs: they are written by humans, but they must be executed by computers. So humans write them in a form that they can understand, then software transforms them in a way that can be used by a computer.</p>
+
+
+
+<p>However parsing might be necessary even when passing data between two software that have different needs. For instance, it is needed when you have to serialize or deserialize a class.</p>
+
+
+
+<h2 id="big">The Big Picture</h2>
+
+
+
+<figure><img decoding="async" width="1024" height="724" src="https://tomassetti.me/wp-content/uploads/2017/08/type-786900_1920-1024x724.jpg" alt="The big wall of text about parsing" srcset="https://tomassetti.me/wp-content/uploads/2017/08/type-786900_1920-1024x724.jpg 1024w, https://tomassetti.me/wp-content/uploads/2017/08/type-786900_1920-300x212.jpg 300w, https://tomassetti.me/wp-content/uploads/2017/08/type-786900_1920-768x543.jpg 768w, https://tomassetti.me/wp-content/uploads/2017/08/type-786900_1920-1536x1086.jpg 1536w, https://tomassetti.me/wp-content/uploads/2017/08/type-786900_1920.jpg 1920w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<p>In this section we are going to describe the fundamental components of a parser. We are not trying to give you formal explanations, but practical ones.</p>
+
+
+
+<h3 id="regularExpressions">Regular Expressions</h3>
+
+
+
+<blockquote>
+<p>A sequence of characters that can be defined by a pattern</p>
+</blockquote>
+
+
+
+<p>Regular expression are often touted as the thing you should not use for parsing. This is not strictly correct, because you can use regular expressions for parsing simple input. The problem is that some programmers only know regular expressions. So they use them to try to parse everything, even the things they should not. The result is usually a series of regular expressions hacked together, that are very fragile.</p>
+
+
+
+<p>You can use regular expressions to parse some simpler languages, but this excludes most programming languages, even the ones that look simple enough like HTML. In fact, languages that can be parsed with just regular expressions are called regular languages. There is a formal mathematical definition, but that is beyond the scope of this article.</p>
+
+
+
+<p>Though one important consequence of the theory is that regular languages can be parsed or expressed also by a <a href="https://en.wikipedia.org/wiki/Finite-state_machine">finite state machine</a>. That is to say regular expressions and finite state machines are equally powerful. This is the reason why they are used to implement lexers, as we are going to see later.</p>
+
+
+
+<p>A regular language can be defined by a series of regular expressions, while more complex languages need something more. A simple rule of thumb is: if a grammar of a language has recursive, or nested, elements it is not a regular language. For instance, HTML can contain an arbitrary number of tags inside any tag, therefore is not a regular language and it cannot be parsed using solely regular expressions, no matter how clever.</p>
+
+
+
+<h4>Regular Expressions in Grammars</h4>
+
+
+
+<p>The familiarity of a typical programmer with regular expressions often lends them to be used to define the grammar of a language. More precisely, their syntax is used to define the rules of a lexer or a parser. For example, the <em><a href="https://en.wikipedia.org/wiki/Kleene_star">Kleene star</a> </em>(<code>*</code>) is used in a rule to indicate that a particular element can be present zero or an infinite amount of times.</p>
+
+
+
+<p>The definition of the rule should not be confused with how the actual lexer or parser is implemented. You can implement a lexer using the regular expression engine provided by your language. However usually the regular expressions defined in the grammar are actually converted to a finite-state machine to gain better performance.</p>
+
+
+
+<h3 id="structureParser">Structure of a Parser</h3>
+
+
+
+<p>Having now clarified the role of regular expressions, we can look at the general structure of a parser. A complete parser is usually composed of two parts: a <em>lexer</em>, also known as <em>scanner</em> or <em>tokenizer</em>, and the proper parser. The parser needs the lexer because it does not work directly on the text, but on the output produced by the lexer. Not all parsers adopt this two-steps schema: some parsers do not depend on a separate lexer and they combine the two steps. They are called <em>scannerless parsers</em>.</p>
+
+
+
+<p>A lexer and a parser work in sequence: the lexer scans the input and produces the matching tokens, the parser then scans the tokens and produces the parsing result.</p>
+
+
+
+<p>Let’s look at the following example and imagine that we are trying to parse an addition.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">437 + 734</pre>
+
+
+
+<p>The lexer scans the text and finds <code>4</code>, <code>3</code>, <code>7</code> and then a space <code>( )</code>. The job of the lexer is to recognize that the characters <code>437</code> constitute one token of type <strong>NUM</strong>. Then the lexer finds a <code>+</code> symbol, which corresponds to a second token of type <strong>PLUS</strong>, and lastly it finds another token of type <strong>NUM</strong>.</p>
+
+
+
+<p>The parser will typically combine the tokens produced by the lexer and group them.</p>
+
+
+
+<figure><img decoding="async" width="1024" height="186" src="https://tomassetti.me/wp-content/uploads/2017/02/lexer-parser-center-1024x186.webp" alt="The input stream is transformed into Tokens and then into an AST by the parser" srcset="https://tomassetti.me/wp-content/uploads/2017/02/lexer-parser-center-1024x186.webp 1024w, https://tomassetti.me/wp-content/uploads/2017/02/lexer-parser-center-300x55.webp 300w, https://tomassetti.me/wp-content/uploads/2017/02/lexer-parser-center-768x140.webp 768w, https://tomassetti.me/wp-content/uploads/2017/02/lexer-parser-center.webp 1100w" sizes="(max-width: 1024px) 100vw, 1024px"><figcaption>The input stream is transformed into tokens and then into an AST by the parser</figcaption></figure>
+
+
+
+<p>The definitions used by lexers and parsers are called <em>rules</em> or <em>productions</em>. In our example a lexer rule will specify that a sequence of digits corresponds to a token of type NUM, while a parser rule will specify that a sequence of tokens of type NUM, PLUS, NUM corresponds to a <strong>sum</strong> expression.</p>
+
+
+
+<p>It is now typical to find suites that can generate both a lexer and parser. In the past it was instead more common to combine two different tools: one to produce the lexer and one to produce the parser. For example, this was the case of the venerable <strong>lex</strong> &amp; <strong>yacc</strong> couple: using <strong>lex</strong> it was possible to generate a lexer, while using <strong>yacc</strong> it was possible to generate a parser.</p>
+
+
+
+<h4 id="scannerless">Scannerless Parsers</h4>
+
+
+
+<p>Scannerless parsers operate differently because they process directly the original text, instead of processing a list of tokens produced by a lexer. That is to say, a scannerless parser works as a lexer and a parser combined.</p>
+
+
+
+<p>While it is certainly important to know for debugging purposes if a particular parsing tool is a scannerless parser or not, in many cases it is not relevant to defining a grammar. That is because you usually still define patterns that group sequence of characters to create (virtual) tokens; then you combine them to obtain the final result. This is simply because it is more convenient to do so.</p>
+
+
+
+<p>In other words, the grammar of a scannerless parser looks very similar to one for a tool with separate steps. Again, you should not confuse how things are defined for your convenience and how things work behind the scene.</p>
+
+
+
+<h3 id="grammar">Grammar</h3>
+
+
+
+<blockquote>
+<p>A formal grammar is a set of rules that syntactically describes a language</p>
+</blockquote>
+
+
+
+<p>There are two important parts in this definition: a grammar describes a language, but this description pertains only to the syntax of the language and not the semantics. That is to say, it defines its structure, but not its meaning. The correctness of the meaning of the input must be checked, if necessary, in some other way.</p>
+
+
+
+<p>For instance, imagine that we want to define a grammar for the language shown in the paragraph <strong>Definition of Parsing</strong>.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">HELLO: "Hello"
+NAME: [a-zA-Z]+
+greeting: HELLO NAME</pre>
+
+
+
+<p>This grammar accepts input such as <code>"Hello Michael"</code> and&#160; <code>"Hello Programming"</code>. They are both syntactically correct, but we know that <code>Programming</code> it is not a name. Thus it is semantically wrong. A grammar does not specify semantic rules, and they are not verified by a parser. You would need to ensure the validity of the provided name some other way, for example comparing it to a database of valid names.</p>
+
+
+
+<h4 id="anatomyGrammar">Anatomy of a Grammar</h4>
+
+
+
+<p>To define the elements of a grammars, let us look at an example in the most used format to describe grammars: the <strong>Backus-Naur Form (BNF)</strong>. This format has many variants, including the <strong>Extended Backus-Naur Form</strong>. The Extended variant has the advantage of including a simple way to denote repetitions. Another notable variant is the <strong>Augmented</strong> <strong>Backus-Naur Form </strong>which is mostly used to describe bidirectional communications protocols.</p>
+
+
+
+<p>A typical rule in a Backus-Naur grammar looks like this:</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">&lt;symbol&gt; ::= __expression__</pre>
+
+
+
+<p>The <strong>&lt;symbol&gt;</strong> is a <em>nonterminal</em>, which means that it can be replaced by the group of elements on the right, <strong>__expression__</strong>. The element <strong>__expression__</strong> could contain other nonterminal symbols or terminal ones. <em>Terminal </em>symbols are simply the ones that do not appear as a <strong>&lt;symbol&gt;</strong> anywhere in the grammar. A typical example of a terminal symbol is a string of characters, like <code>"Hello"</code>.</p>
+
+
+
+<p>A <em>rule</em> can also be called <em>production rule</em>. Technically, it defines a transformation between the nonterminal, on the left, and the set of nonterminals and terminals, on the right.</p>
+
+
+
+<h4 id="typesGrammar">Types of Grammars</h4>
+
+
+
+<p>There are mainly two kinds of grammars used in parsing: <strong>regular grammars</strong> and <strong>context-free grammars</strong>. Usually to a kind of grammar corresponds the same kind of language: a regular grammar defines a regular language and so on. However, there is also a more recent kind of grammars called <strong>Parsing Expression Grammar</strong> (PEG) that is equally powerful as context-free grammars and thus define a context-free language. The difference between the two is in the notation and the interpretation of the rules.</p>
+
+
+
+<p>As we already mentioned, the two kinds of languages are in a hierarchy of complexity: regular languages are simpler than context-free languages.</p>
+
+
+
+<p>A relatively easy way to distinguish the two grammars would be that the <code>__expression__</code> of a regular grammar, that is to say the right side of the rule, could be only one of:</p>
+
+
+
+<ul>
+<li>the empty string</li>
+
+
+
+<li>a single terminal symbol</li>
+
+
+
+<li>a single terminal symbol followed by a nonterminal symbol</li>
+</ul>
+
+
+
+<p>In practice though this is harder to check, because a particular tool could allow using more terminal symbols in one definition. Then the tool itself will automatically transform this expression in an equivalent series of expressions all belonging to one of the three mentioned cases.</p>
+
+
+
+<p>So you could write an expression that is incompatible with a regular language, but it will be transformed into the proper form. In other words, the tool could provide syntactic sugar for writing grammars.</p>
+
+
+
+<p>In a later paragraph we are going to discuss more at length the different kinds of grammars and their formats.</p>
+
+
+
+<h3 id="lexer">Lexer</h3>
+
+
+
+<blockquote>
+<p>A lexer transforms a sequence of characters into a sequence of tokens</p>
+</blockquote>
+
+
+
+<p><em>Lexers</em> are also known as <em>scanners</em> or <em>tokenizers</em>. Lexers play a role in parsing, because they transform the initial input into a form that is more manageable by the proper parser, which works at a later stage. Typically lexers are easier to write than parsers. Although there are special cases when both are quite complicated, for instance in the case of C (see <a href="https://en.wikipedia.org/wiki/The_lexer_hack">the lexer hack</a>).</p>
+
+
+
+<p>A very important part of the job of the lexer is dealing with whitespace. Most of the times you want the lexer to discard whitespace. That is because otherwise the parser would have to check for the presence of whitespace between every single token, which would quickly become annoying.</p>
+
+
+
+<p>There are cases when you cannot do that, because whitespace is relevant to the language, like in the case of Python where it is used to identify a block of code. Even in these cases, though, usually it is the lexer that deals with the problem of distinguishing the relevant whitespace from the irrelevant one. This means that you want the lexer to understand which whitespace is relevant to parsing. For example, when parsing Python you want the lexer to check if whitespace defines indentation (relevant) or space between the keyword <code>if</code> and the following expression (irrelevant).</p>
+
+
+
+<h4>Where the Lexer Ends and the Parser Begins</h4>
+
+
+
+<p>Given that lexers are almost exclusively used in conjunction with parsers, the dividing line between the two can be blurred at times. That is because the parsing must produce a result that is useful for the particular need of a program. So there is not just one correct way of parsing something, but you care about only the one way that serves your needs.</p>
+
+
+
+<p>For example, imagine that you are creating a program that must parse the logs of a server to save them in a database. For this goal, the lexer will identify the series of numbers and dots and transform them into an IPv4 token.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">IPv4: [0-9]+ "." [0-9]+ "." [0-9]+ "." [0-9]+</pre>
+
+
+
+<p>Then the parser will analyze the sequence of tokens to determine if it is a message, a warning, etc.</p>
+
+
+
+<p>What would happen instead if you were developing software that had to use the IP address to identify the country of the visitor? Probably you would want the lexer to identity the octets of the address, for later use, and make IPv4 a parser element.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">DOT   : "."
+OCTET : [0-9]+
+
+ipv4  : OCTET DOT OCTET DOT OCTET DOT OCTET</pre>
+
+
+
+<p>This is one example of how the same information can be parsed in different ways because of different goals.</p>
+
+
+
+<h3 id="parser">Parser</h3>
+
+
+
+<p>In the context of parsing, “parser” can refer both to the software that performs the whole process and also just to the proper parser, that analyzes the tokens produced by the lexer. This is simply a consequence of the fact that the parser takes care of the most important and difficult part of the whole process of parsing. By most important we mean what the user cares about the most and will actually sees. In fact, as we said, the lexer works as a helper to facilitate the work of the parser.</p>
+
+
+
+<p>In any sense you pick, the output of the parser is an organized structure of the code, usually a tree. The tree can be a <strong>parse tree</strong> or an <strong>abstract syntax tree</strong>. They are both trees, but they differ in how closely they represent the actual code written and the intermediate elements defined by the parser. The line between the two can be blurry at times; we are going to see their differences a bit better in a later paragraph.</p>
+
+
+
+<p>The form of a tree is chosen because it is an easy and natural way to work with the code at different levels of detail. For example, a class in C# has one body, this body is made of one statement, the block statement, that is a list of statements enclosed in a pair of curly brackets, and so on…</p>
+
+
+
+<h4 id="syntaxSemantic">Syntactic vs Semantic Correctness</h4>
+
+
+
+<p>A parser is a fundamental part of a compiler, or an interpreter, but of course can be part of a variety of other software. For example, in our article <a href="https://tomassetti.me/generate-diagrams-csharp/">Generate diagrams from C# source code using Roslyn</a> we parsed C# files to produce diagrams.</p>
+
+
+
+<p>The parser can only check the syntactic correctness of a piece of code, but the compiler can use its output also in the process of checking the semantic validity of the same piece of code.</p>
+
+
+
+<p>Let us see an example of code that is syntactically correct, but semantically incorrect.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">int x = 10
+int sum = x + y</pre>
+
+
+
+<p>The problem is that one variable (<code>y</code>) is never defined and thus, if executed, the program will fail. However the parser has no way of knowing this, because it does not keep track of variables, it just looks at the structure of the code.</p>
+
+
+
+<p>A compiler instead would typically traverse the parse tree a first time and keeps a list of all the variables that are defined. Then it would traverse the parse tree a second time and checks whether the variables that are used are all properly defined. In this example they are not and it will throw an error. So that is one way the parse tree can also be used to check the semantics by the compiler.</p>
+
+
+
+<h4 id="scannerlessParser">Scannerless Parser</h4>
+
+
+
+<p>A <em>scannerless parser</em>, or more rarely a <em>lexerless parser</em>, is a parser that performs the tokenization (i.e., the transformation of a sequence of characters into tokens) and the proper parsing in a single step. In theory having a separate lexer and parser is preferable because it allows a clearer separation of objectives and the creation of a more modular parser.</p>
+
+
+
+<p>A scannerless parser is a better design for a language where a clear distinction between lexer and parser is difficult or unnecessary. An example is a parser for a markup language, where special markers are inserted in a sea of text. It can also facilitate the handling of languages where traditional lexing is difficult, like C. That is because a scannerless parser can more easily deal with complex tokenizations.</p>
+
+
+
+<h4 id="issues">Issues With Parsing Real Programming Languages</h4>
+
+
+
+<p>In theory contemporary parsing is designed to handle real programming languages, but in practice there are challenges with some real programming languages. At least, it might be harder parsing them using normal parsing generator tools.</p>
+
+
+
+<h5>Context-sensitive Parts</h5>
+
+
+
+<p>Parsing tools are traditionally designed to handle context-free languages, but sometimes the languages are context-sensitive. This might be the case in order to simplify the life of programmers or simply because of a bad design. I remember reading about a programmer that thought he could produce a parser for C in a week, but then it found so many corner cases that a year later he was still working on it…</p>
+
+
+
+<p>A typical example of context-sensitive elements are the so-called <em>soft keywords</em>, i.e., strings that can be considered keywords in certain places, but otherwise can be used as identifiers).</p>
+
+
+
+<h5>Whitespace</h5>
+
+
+
+<p>Whitespace plays a significant role in some languages. The most well-known example is Python, where the indentation of a statement indicates if it is part of a certain block of code.</p>
+
+
+
+<p>In most places whitespace is irrelevant even in Python: spaces between words or keywords do not matter. The real problem is indentation, that is used to identify blocks of code. The simplest way to deal with it is to check the indentation at the start of the line and transform it into the proper token, i.e., to create a token when the indentation changes from the previous line.</p>
+
+
+
+<p>In practice, a custom function in the lexer produces INDENT and DEDENT tokens, when the indentation increases or decreases. These tokens play the role that in C-like languages is played by curly brackets: they indicate the start and end of code blocks.</p>
+
+
+
+<p>This approach makes the lexing context-sensitive, instead of context-free. This complicates parsing and you normally you would not want to do it, but you are forced to do in this case.</p>
+
+
+
+<h5>Multiple Syntaxes</h5>
+
+
+
+<p>Another common issue is dealing with the fact that a language might actually include a few different syntaxes. In other words, the same source file may contain sections of code that follow a different syntax. In the context of parsing effectively the same source file contains different languages. The most famous example is probably the C or C++ preprocessor, which is actually a fairly complicated language on its own and can magically appear inside any random C code.</p>
+
+
+
+<p>An easier case to deal with are annotations, that are present in many contemporary programming languages. Among other things they can be used to process the code before it arrives to the compiler. They can command the annotation processor to transform the code in some way, for instance to execute a specific function before executing the annotated one. They are easier to manage, because they can appear only in specific places.</p>
+
+
+
+<h5>Dangling Else</h5>
+
+
+
+<p>The dangling else is a common problem in parsing linked to the <em>if-then-else</em> statement. Since the else clause is optional, a sequence of <em>if</em> statements could be ambiguous. For example this one.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">if one
+   then if two
+       then two
+else ???</pre>
+
+
+
+<p>It is unclear if the <code>else</code> belongs to the first <code>if</code> or the second one.</p>
+
+
+
+<p>To be fair, this is for the most part a problem of language design. Most of the solutions do not really complicate parsing that much, for example requiring the use of an <code>endif</code> or requiring the use of blocks to delimit the <code>if</code> statement when it includes an else clause.</p>
+
+
+
+<p>However there are also languages that offer no solution, that is to say that are designed ambiguously, for example (you guessed it) C. The conventional approach is to associate the else to the nearest if statement, which makes the parsing context-sensitive.</p>
+
+
+
+<h3 id="parsingTree">Parsing Tree and Abstract Syntax Tree</h3>
+
+
+
+<p>There are two terms that are related and sometimes they are used interchangeably: <em>Parse Tree</em> and <em>Abstract Syntax Tree</em> (AST). Technically the parse tree could also be called Concrete Syntax Tree (CST), because it should reflect more concretely the actual syntax of the input, at least compared to the AST.</p>
+
+
+
+<p>Conceptually they are very similar. They are both <strong>trees</strong>: there is a root that has nodes representing the whole source code. The root has children nodes, that contain subtrees representing smaller and smaller portions of code, until single tokens (terminals) appear in the tree.</p>
+
+
+
+<p>The difference is in the level of abstraction: a parse tree might contain all the tokens which appeared in the program and possibly a set of intermediate rules.&#160; Instead the AST is a polished version of the parse tree, in which only the information relevant to understanding the code is maintained. We are going to see an example of an intermediate rule in the next section.</p>
+
+
+
+<p>Some information might be absent both in the AST and the parse tree. For instance, comments and grouping symbols (i.e., parentheses) are usually not represented. Things like comments are superfluous for a program and grouping symbols are implicitly defined by the structure of the tree.</p>
+
+
+
+<h4 id="fromParseTree">From Parse Tree to Abstract Syntax Tree</h4>
+
+
+
+<p>A parse tree is a representation of the code closer to the concrete syntax. It shows many details of the implementation of the parser. For instance, usually each rule corresponds to a specific type of a node. A parse tree is usually transformed into an AST by the user, possibly with some help from the parser generator. A common help allows to annotate some rule in the grammar, to exclude the corresponding nodes from the generated tree. Another one is an option to collapse some kinds of nodes if they have only one child.</p>
+
+
+
+<p>This makes sense because the parse tree is easier to produce for the parser, since it is a direct representation of the parsing process. However the AST is simpler and easier to process by the following steps of the program. They typically include all the operations that you may want to perform on the tree: code validation, interpretation, compilation, etc…</p>
+
+
+
+<p>Let us look at a simple example to show the difference between a parse tree and an AST. Let’s start with a look at an example grammar.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">// lexer
+PLUS: '+'
+WORD_PLUS: 'plus'
+NUMBER: [0-9]+
+
+// parser
+// the pipe | symbol indicate an alternative between the two
+sum: NUMBER (PLUS | WORD_PLUS) NUMBER
+</pre>
+
+
+
+<p>In this grammar we can define a sum using both the symbol plus (<code>+</code>) or the string <code>plus</code> as operators. Imagine that you have to parse the following code.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">10 plus 21</pre>
+
+
+
+<p>These could be the resulting parse tree and abstract syntax tree.</p>
+
+
+
+<figure><img loading="lazy" decoding="async" width="600" height="600" src="https://tomassetti.me/wp-content/uploads/2017/08/trees.png" alt="A Parse Tree and Abstract Syntax Tree" srcset="https://tomassetti.me/wp-content/uploads/2017/08/trees.png 600w, https://tomassetti.me/wp-content/uploads/2017/08/trees-300x300.png 300w, https://tomassetti.me/wp-content/uploads/2017/08/trees-150x150.png 150w" sizes="(max-width: 600px) 100vw, 600px"><figcaption>A Parse Tree and Abstract Syntax Tree</figcaption></figure>
+
+
+
+<p>In the AST the indication of the specific operator has disappeared and all that remains is the operation to be performed. The specific operator is an example of an intermediate rule.</p>
+
+
+
+<h4 id="graphicalRepresentation">Graphical Representation Of A Tree</h4>
+
+
+
+<p>The output of a parser is a tree, but the tree can also be represented in graphical ways. That is to allow an easier understanding for the developer. Some parsing generator tools can output a file in the DOT language, a language designed to describe graphs (a tree is a particular kind of graph). Then this file is fed to a program that can create a graphical representation starting from this textual description (e.g., <a href="https://en.wikipedia.org/wiki/Graphviz">Graphviz</a>).</p>
+
+
+
+<p>Let’s see a .DOT text, based on the previous sum example.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">digraph sum {
+     sum -&gt; 10;
+     sum -&gt; 21;
+}</pre>
+
+
+
+<p>The appropriate tool can create the following graphical representation.</p>
+
+
+
+<figure><img loading="lazy" decoding="async" width="179" height="155" src="https://tomassetti.me/wp-content/uploads/2017/08/example_dot_tree.png" alt="Example image of a tree created by graphviz"><figcaption>Example image of a tree created by graphviz</figcaption></figure>
+
+
+
+<p>If you want to see a bit more of DOT you can read our article <a href="https://tomassetti.me/language-server-dot-visual-studio/">Language Server Protocol: A Language Server For DOT With Visual Studio Code</a>. In that article we show show how to create a Visual Studio Code plugin that can handle DOT files.</p>
+
+
+
+<h2 id="grammars">Grammars</h2>
+
+
+
+<figure><img loading="lazy" decoding="async" width="1024" height="678" src="https://tomassetti.me/wp-content/uploads/2017/08/grammar-389907_1920-1024x678.jpg" alt="A dictionary open on the term grammar" srcset="https://tomassetti.me/wp-content/uploads/2017/08/grammar-389907_1920-1024x678.jpg 1024w, https://tomassetti.me/wp-content/uploads/2017/08/grammar-389907_1920-300x199.jpg 300w, https://tomassetti.me/wp-content/uploads/2017/08/grammar-389907_1920-768x508.jpg 768w, https://tomassetti.me/wp-content/uploads/2017/08/grammar-389907_1920-1536x1017.jpg 1536w, https://tomassetti.me/wp-content/uploads/2017/08/grammar-389907_1920.jpg 1920w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<p>Grammars are a set of rules used to describe a language, so it comes naturally to study the formats of the rules. However there are also several elements of a typical grammar that could use further attention. Some of them are due to the fact that a grammar can also be used to define other duties or to execute some code.</p>
+
+
+
+<h3 id="typicalGrammarIssues">Typical Grammar Issues</h3>
+
+
+
+<p>First we are going to talk about some special rules or issues you might encounter in parsing.</p>
+
+
+
+<h4 id="missingTokens">The Missing Tokens</h4>
+
+
+
+<p>If you read grammars you will probably encounter many in which only a few tokens are defined and not all of them. Like in this grammar:</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">NAME     : [a-zA-Z]+
+greeting : "Hello" NAME</pre>
+
+
+
+<p>There is no definition for the token <code>"Hello"</code>, but since you know that a parser deals with tokens, you may ask yourself how is this possible. The answer is that some tools generate for you the corresponding token for a string literal, to save you some time.</p>
+
+
+
+<p>Be aware that this might be possible only under certain conditions. For instance, with ANTLR you must define all tokens yourself if you define separate lexer and parser grammars.</p>
+
+
+
+<h4 id="leftRecursive">Left-recursive Rules</h4>
+
+
+
+<p>In the context of parsers, an important feature is the support for left-recursive rules. This means that a rule starts with a reference to itself. Sometime this reference could also be indirect, that is to say it could appear in another rule referenced by the first one.</p>
+
+
+
+<p>Consider for example arithmetic operations. An addition could be described as two expressions separated by the plus (<code>+</code>) symbol, but the operands of the additions could be other additions.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">addition       : expression '+' expression
+multiplication : expression '*' expression
+// an expression could be an addition or a multiplication or a number
+expression     : multiplication | addition | [0-9]+</pre>
+
+
+
+<p>In this example <strong>expression</strong> contains an indirect reference to itself via the rules <strong>addition</strong> and <strong>multiplication</strong>.</p>
+
+
+
+<p>This description also matches multiple additions like <code>5 + 4 + 3</code>. That is because it can be interpreted as <code>expression (5) ('+') expression(4+3)</code> (the rule addition: the first expression corresponds to the option [0-9]+, the second one is another addition). And then <code>4 + 3</code> itself can be divided into its two components: <code>expression(4) ('+') expression(3)</code> (the rule addition: both the first and second expression corresponds to the option [0-9]+) .</p>
+
+
+
+<p>The problem is that left-recursive rules may not be used with some parser generators. The alternative is a long chain of expressions, that takes care also of the precedence of operators. A typical grammar for a parser that does not support such rules would look similar to this one:</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">expression     : addition
+addition       : multiplication ('+' multiplication)* 
+multiplication : atom ('*' atom)* 
+atom           : [0-9]+</pre>
+
+
+
+<p>As you can see, the expressions are defined in the inverse order of precedence. So the parser would put the expression with the lower precedence at the lowest level of the three; thus they would be executed first.</p>
+
+
+
+<p>Some parser generators support direct left-recursive rules, but not indirect ones. Notice that usually the issue is with the parsing algorithm itself, that does not support left-recursive rules. So the parser generator may transform rules written as left-recursive in the proper way to make them work with its algorithm. In this sense, left-recursive support may be (very useful) syntactic sugar.</p>
+
+
+
+<h5>How Left-recursive Rules Are Transformed</h5>
+
+
+
+<p>The specific way in which the rules are transformed vary from one parser generator to the other, however the logic remains the same. The expressions are divided in two groups: the ones with an operator and two operands and the atomic ones. In our example the only atomic expression is a number (<code>[0-9]+</code>), but it could also be an expression between parentheses (<code>(5 + 4)</code>). That is because in mathematics parentheses are used to increase the precedence of an expression.</p>
+
+
+
+<p>Once you have these two groups: you maintain the order of the members of the second group and reverse the order of the members of the first group. The reason is that humans reason on a first come, first serve basis: it is easier to write the expressions in their order of precedence.</p>
+
+
+
+<figure><img loading="lazy" decoding="async" width="800" height="275" src="https://tomassetti.me/wp-content/uploads/2017/09/example_expression_parse_tree.png" alt="Example expression parse tree" srcset="https://tomassetti.me/wp-content/uploads/2017/09/example_expression_parse_tree.png 800w, https://tomassetti.me/wp-content/uploads/2017/09/example_expression_parse_tree-300x103.png 300w, https://tomassetti.me/wp-content/uploads/2017/09/example_expression_parse_tree-768x264.png 768w" sizes="(max-width: 800px) 100vw, 800px"></figure>
+
+
+
+<p>However the final form of the parsing is a tree, which operates on a different principle: you start working on the leaves and rise up. So that at the end of this process the root node contains the final result. Which means that in the parsing tree the atomic expressions are at the bottom, while the ones with operators appear in the inverse order to the one in which they are applied.</p>
+
+
+
+<h4 id="predicates">Predicates</h4>
+
+
+
+<p><em>Predicates</em>, sometimes called <em>syntactic</em> or <em>semantic predicates</em>, are special rules that are matched only if a certain condition is met. The condition is defined with code in a programming language supported by the tool for which the grammar is written.</p>
+
+
+
+<p>Their advantage is that they allow some form of context-sensitive parsing, which is sometime unavoidable to match certain elements. For instance, they can be used to determine if a sequence of characters that defines a soft keyword is used in a position where it would be a keyword (e.g., the previous token can be followed by the keyword) or it is a simple identifier.</p>
+
+
+
+<p>The disadvantages are that they slow parsing down and they make the grammar dependent on said programming language. That is because the condition is expressed in a programming language and must be checked. And, of course, to check this condition you must execute the code in the corresponding programming language.</p>
+
+
+
+<h4>Embedded Actions</h4>
+
+
+
+<p>Embedded actions identify code that is executed every time the rule is matched. They have the clear disadvantage that they make the grammar harder to read, since the rules are surrounded by code. Furthermore, just like predicates, they break the separation between a grammar that describes the language and the code that manipulates the results of the parsing.</p>
+
+
+
+<p>Actions are frequently used by less sophisticated parsing generators as the only way to easily execute some code when a node is matched. Using these parser generations, the only alternative would be to traverse the tree and execute the proper code yourself. More advanced tools allow to use the <a href="https://en.wikipedia.org/wiki/Visitor_pattern">visitor pattern</a> instead to execute arbitrary code when needed, and also to govern the traversing of the tree.</p>
+
+
+
+<p>They can also be used to add certain tokens or change the generated tree. While ugly, this might be the only practical way to deal with complicated languages, like C, or specific issues, like whitespace in Python.</p>
+
+
+
+<h3 id="formats">Formats</h3>
+
+
+
+<p>There are two main formats for a grammar: BNF (and its variants) and PEG. Many tools implement their own variants of these ideal formats. Some tools use custom formats altogether. A frequent custom format consists of a three parts grammar: options together with custom code, followed by the lexer section and finally the parser section.</p>
+
+
+
+<p>Given that a BNF-like format is usually the foundation of a context-free grammar you could also see it identified like the CFG format.</p>
+
+
+
+<h4 id="bnf">Backus-Naur Form and Its Variants</h4>
+
+
+
+<p><strong>Backus–Naur Form</strong> (BNF) is the most successful format and was even the basis of PEG. However it is quite simple, and thus it is not often used in its basic form. A more powerful variant is typically used.</p>
+
+
+
+<p>To show why these variants were necessary let’s show an example in BNF: the description of a character.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">&lt;letter&gt;    ::= "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z"
+&lt;digit&gt;     ::= "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+&lt;character&gt; ::= &lt;letter&gt; | &lt;digit&gt;</pre>
+
+
+
+<p>The symbol <strong>&lt;letter&gt;</strong> can be transformed into any of the letters of the English alphabet, although in our example only lowercase letters are valid. A similar process happens for <strong>&lt;digit&gt;</strong>, which can indicate any among the alternative digits. The first issue is that you have to list all the alternatives individually; you cannot use character classes like you do with regular expressions. This is annoying, but usually manageable, unless of course you have to list all Unicode characters.</p>
+
+
+
+<p>A much harder problem is that there is no easy way to denote optional elements or repetitions. So if you want to do that, you have to rely on boolean logic and the alternative (<code>|</code>) symbol.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">&lt;text&gt;      ::= &lt;character&gt; | &lt;character&gt; &lt;text&gt;</pre>
+
+
+
+<p>This rule states that <strong>&lt;text&gt;</strong> can be composed of a <strong>&lt;character&gt;</strong> or a <strong>&lt;character&gt;</strong> followed by a <strong>&lt;text&gt;</strong>. Basically, since we cannot say “this a sequence of characters”, we have to devise a complicated way to express the same idea by using logic. This would be the parse tree for the word “dog”.</p>
+
+
+
+<figure><img loading="lazy" decoding="async" width="600" height="454" src="https://tomassetti.me/wp-content/uploads/2017/09/dog.png" alt="Parse tree for 'dog'" srcset="https://tomassetti.me/wp-content/uploads/2017/09/dog.png 600w, https://tomassetti.me/wp-content/uploads/2017/09/dog-300x227.png 300w" sizes="(max-width: 600px) 100vw, 600px"><figcaption>Parse tree for ‘dog’</figcaption></figure>
+
+
+
+<p>BNF has many other limitations: it makes complicated to use empty strings or the symbols used by the format (e.g., <code>::=</code>) in the grammar, it has a verbose syntax (e.g., you have to include terminals between &lt; and &gt;), etc.</p>
+
+
+
+<h5>Extended Backus-Naur Form</h5>
+
+
+
+<p>To solve some of these limitations Niklaus Wirth created the <strong>Extended Backus-Naur Form </strong>(EBNF), which includes some concepts from his own <a href="https://en.wikipedia.org/wiki/Wirth_syntax_notation">Wirth syntax notation</a>.</p>
+
+
+
+<p>EBNF is the most used form in contemporary parsing tools, although tools might deviate from the standard notation. EBNF has a much cleaner notation and adopts more operators to deal with concatenation or optional elements.</p>
+
+
+
+<p>Let’s see how you would write the previous example in EBNF.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">letter    = "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" ;
+digit     = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+character = letter | digit ;
+text      = character , { character } ;</pre>
+
+
+
+<p>The <strong>text</strong> symbol now it is described more easily with the help of the concatenation operator (<code>,</code>) and the optional one (<code>{ .. }</code>). The resulting parse tree would also be simpler. The standard EBNF still presents some problems, like the unfamiliar syntax. To overcome this issue most parsing tools adopt a syntax inspired by regular expressions and also support additional elements like characters classes.</p>
+
+
+
+<p>If you need an in-depth coverage of the format you can read our article on <a href="https://tomassetti.me/ebnf/">EBNF</a>.</p>
+
+
+
+<h5>ABNF</h5>
+
+
+
+<p><strong>Augmented BNF</strong> (ABNF) is another variants of BNF, mainly developed to describe bidirectional communication protocols and formalized by the IETF with several documents (see <a href="https://tools.ietf.org/html/rfc5234">RFC 5234</a> and updates).</p>
+
+
+
+<p>ABNF can be as productive as EBNF, but it has some quirks that have limited its adoption outside of internet protocols. For example, until recently the standard dictated that strings were matched in a case-insensitive way, which would have been a problem for matching identifiers in many programming languages.</p>
+
+
+
+<p>ABNF has a different syntax from EBNF, for example the alternative operator is the slash (<code>/</code>), and sometimes it is plainly better. For instance, there is no need for a concatenation operator. It also has a few more feature than standard EBNF. For example, it allows you to define numeric ranges, such as <code>%x30-39</code> that is equivalent to <code>[0-9]</code>. This is also used by the designers themselves, to include standard character classes-like basic rules that the end user can use. An example of such rule is ALPHA, that is equivalent to <code>[a-zA-Z]</code>.</p>
+
+
+
+<h4 id="peg">PEG</h4>
+
+
+
+<p><strong>Parsing Expression Grammar</strong> (PEG) is a format presented by <a href="https://pdos.csail.mit.edu/papers/parsing:popl04.pdf">Brian Ford in a 2004 paper</a>. Technically it derives from an old formal grammar called <strong>Top-Down Parsing Language</strong> (TDPL). However a simple way to describe is: EBNF in the real world.</p>
+
+
+
+<p>In fact it looks similar to EBNF, but also directly supports widely used features, like character ranges (character classes). Although it also has some differences that are not actually that pragmatic, like using the more formal arrow symbol (<code>←</code>) for assignment, instead of the more common equals symbol (<code>=</code>). The previous example could be written this way with PEG.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">letter    ← [a-z]
+digit     ← [0-9]
+character ← letter / digit
+text      ← character+</pre>
+
+
+
+<p>As you can see, this is the most obvious way a programmer would write it, with character classes and regular expression operators. The only anomalies are the alternative operator (<code>/</code>) and the arrow character, and in fact many implementations of PEG use the equals character.</p>
+
+
+
+<p>The pragmatic approach is the foundation of the PEG formalism: it was created to describe programming languages more naturally. That is because context-free grammar has its origin in the work to describe natural languages. In theory, CFG is a <em>generative grammar</em>, while PEG an <em>analytic grammar</em>.</p>
+
+
+
+<p>The first should be a sort of recipe to generate only the valid sentences in the language described by the grammar. It does not have to be related to the parsing algorithm. Instead the second kind directly define the structure and semantics of a parser for that language.</p>
+
+
+
+<h5>PEG vs CFG</h5>
+
+
+
+<p>The practical implications of this theoretical difference are limited: PEG is more closely associated to the <strong>packrat</strong> algorithm, but that is basically it. For instance, generally PEG (packrat) does not permit left recursion. Although the algorithm itself can be modified to support it, this eliminates the linear-time parsing property. Also, PEG parsers are generally scannerless parsers.</p>
+
+
+
+<p>Probably the most important difference between PEG and CFG is that the ordering of choices is meaningful in PEG, but not in CFG. If there are many possible valid ways to parse an input, a CFG will be ambiguous and thus will usually return an error. By usually we mean that some parsers that adopt CFGs can deal with ambiguous grammars. For instance, by providing all possible valid results to the developer and letting him sort it out. Instead PEG eliminates ambiguity altogether because the first applicable choice will be chosen, thus a PEG can never be ambiguous.</p>
+
+
+
+<p>The disadvantage of this approach is that you have to be more careful in listing possible alternatives, because otherwise you could have unexpected consequences. That is to say some choices could never be matched.</p>
+
+
+
+<p>In the following example <code>doge</code> will never be matched, since dog comes first it will be picked each time.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">dog ← 'dog' / 'doge'</pre>
+
+
+
+<p>It is an open area of research whether PEG can describe all grammars that can be defined with CFG, but for all practical purposes it does.</p>
+
+
+
+<h2 id="parsingAlgorithms">Parsing Algorithms</h2>
+
+
+
+<figure><img loading="lazy" decoding="async" width="1024" height="799" src="https://tomassetti.me/wp-content/uploads/2017/08/blue-1815442_1920-1024x799.jpg" alt="A terrible pun on abstrac trees and real trees. Also, the sun is a gear." srcset="https://tomassetti.me/wp-content/uploads/2017/08/blue-1815442_1920-1024x799.jpg 1024w, https://tomassetti.me/wp-content/uploads/2017/08/blue-1815442_1920-300x234.jpg 300w, https://tomassetti.me/wp-content/uploads/2017/08/blue-1815442_1920-768x599.jpg 768w, https://tomassetti.me/wp-content/uploads/2017/08/blue-1815442_1920-1536x1198.jpg 1536w, https://tomassetti.me/wp-content/uploads/2017/08/blue-1815442_1920.jpg 1920w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<p>In theory parsing is a solved problem, but it is the kind of problem that keeps being solved again and again. That is to say that there are many different algorithms, each one with strong and weak points, and they are still being improved by academics.</p>
+
+
+
+<p>In this section we are not going to teach how to implement every one of the parsing algorithm, but we are going to explain their features. The goal is that you can choose with more awareness which parsing tool to use, or which algorithm to study better and implement for your custom parser.</p>
+
+
+
+<h3 id="parsingAlgorithmsOverview">Overview</h3>
+
+
+
+<p>Let’s start with a global overview of the features and strategies of all parsers.</p>
+
+
+
+<h4>Two Strategies</h4>
+
+
+
+<p>There are two strategies for parsing: <strong>top-down parsing</strong> and <strong>bottom-up parsing</strong>. Both terms are defined in relation to the parse tree generated by the parser. In simple terms:</p>
+
+
+
+<ul>
+<li>a top-down parser tries to identity the root of the parse tree first, then it moves down the subtrees, until it find the leaves of the tree.</li>
+
+
+
+<li>a bottom-up parser starts from the lowest part of the tree instead, the leaves, and rise up until it determines the root of the tree.</li>
+</ul>
+
+
+
+<p>Let’s see an example, starting with a parse tree.</p>
+
+
+
+<figure><img loading="lazy" decoding="async" width="884" height="808" src="https://tomassetti.me/wp-content/uploads/2017/08/Parse_Tree_Example.png" alt="Example Parse Tree" srcset="https://tomassetti.me/wp-content/uploads/2017/08/Parse_Tree_Example.png 884w, https://tomassetti.me/wp-content/uploads/2017/08/Parse_Tree_Example-300x274.png 300w, https://tomassetti.me/wp-content/uploads/2017/08/Parse_Tree_Example-768x702.png 768w" sizes="(max-width: 884px) 100vw, 884px"><figcaption>Example Parse Tree <a href="https://en.wikipedia.org/wiki/File:Parse_Tree_Example.svg">from Wikipedia</a></figcaption></figure>
+
+
+
+<p>The same tree would be generated in a different order by a top-down and a bottom-up parser. In the following images the number indicate the order in which the nodes are created.</p>
+
+
+
+<figure><img loading="lazy" decoding="async" width="300" height="290" src="https://tomassetti.me/wp-content/uploads/2017/08/Top-down_Parse_Tree_Order-300x290.png" alt="Top-down Parse Tree Order" srcset="https://tomassetti.me/wp-content/uploads/2017/08/Top-down_Parse_Tree_Order-300x290.png 300w, https://tomassetti.me/wp-content/uploads/2017/08/Top-down_Parse_Tree_Order-768x744.png 768w, https://tomassetti.me/wp-content/uploads/2017/08/Top-down_Parse_Tree_Order.png 882w" sizes="(max-width: 300px) 100vw, 300px"><figcaption>Top-down order of generation of the tree (<a href="https://en.wikipedia.org/wiki/File:Top-down_Parse_Tree_Order.svg">from Wikipedia</a>)</figcaption></figure>
+
+
+
+<figure><img loading="lazy" decoding="async" width="300" height="288" src="https://tomassetti.me/wp-content/uploads/2017/08/Bottom-up_Parse_Tree_Order-300x288.png" alt="Bottom-up Parse Tree Order" srcset="https://tomassetti.me/wp-content/uploads/2017/08/Bottom-up_Parse_Tree_Order-300x288.png 300w, https://tomassetti.me/wp-content/uploads/2017/08/Bottom-up_Parse_Tree_Order-768x736.png 768w, https://tomassetti.me/wp-content/uploads/2017/08/Bottom-up_Parse_Tree_Order.png 869w" sizes="(max-width: 300px) 100vw, 300px"><figcaption>Bottom-up order of generation of the tree (<a href="https://en.wikipedia.org/wiki/File:Bottom-up_Parse_Tree_Order.svg">from Wikipedia</a>)</figcaption></figure>
+
+
+
+<p>Traditionally top-down parsers were easier to build, but bottom-up parsers were more powerful. Now the situation is more balanced, mostly because of advancement in top-down parsing strategies.</p>
+
+
+
+<p>The concept of derivation is closely associated to the strategies. Derivation indicates the order in which the nonterminal elements that appears in the rule, on the right, are applied to obtain the nonterminal symbol, on the left. Using the BNF terminology, it indicates how the elements that appear in <code>__expression__</code> are used to obtain <code>&lt;symbol&gt;</code>. The two possibilities are: <strong>leftmost derivation</strong> and <strong>rightmost derivation</strong>. The first indicates that the rule are applied from left to right, while the second indicates the opposite.</p>
+
+
+
+<p>A simple example: imagine that you are trying to parse the symbol <code>result</code> which is defined as such in the grammar.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">expr_one = .. // stuff
+expr_two = .. // stuff
+result   = expr_one 'operator' expr_two</pre>
+
+
+
+<p>You can apply first the rule for symbol <code>expr_one</code> and then <code>expr_two</code> or vice versa. In the case of leftmost derivation you pick the first option, while for rightmost derivation you pick the second one.</p>
+
+
+
+<p>It is important to understand that the derivation is applied depth-first or recursively. That is to say, it is applied on the starting expression then it is applied again on the intermediate result that is obtained. So, in this example, if after applying the rule corresponding to <code>expr_one</code> there is a new nonterminal, that one is transformed first. The nonterminal <code>expr_two</code> is applied only when it becomes the first nonterminal and not following the order in the original rule.</p>
+
+
+
+<p>Derivation is associated with the two strategies, because for bottom-up parsing you would apply rightmost derivation, while for top-down parsing you would choose leftmost derivation. Note that this has no effect on the final parsing tree, it just affects the intermediate elements and the algorithm used.</p>
+
+
+
+<h4>Common Elements</h4>
+
+
+
+<p>Parsers built with top-down and bottom-up strategies shares a few elements that we can talk about.</p>
+
+
+
+<h5>Lookahead and Backtracking</h5>
+
+
+
+<p>The terms <em>lookadhead</em> and <em>backtracking</em> do not have a different meaning in parsing than the one they have in the larger computer science field. Lookahead indicates the number of elements, following the current one, that are taken into consideration to decide which current action to take.</p>
+
+
+
+<p>A simple example: a parser might check the next token to decide which rule to apply now. When the proper rule is matched the current token is consumed, but the next one remains in the queue.</p>
+
+
+
+<p>Backtracking is a technique of an algorithm. It consists of finding a solution to a complex problems by trying partial solutions, and then keep checking for the most promising one. If the one that is currently being tested fails, then the parser backtracks (i.e., it goes back to the last position that was successfully parsed) and tries another one.</p>
+
+
+
+<p>Lookahead is especially relevant to <strong>LL</strong>, <strong>LR</strong> and <strong>LALR</strong> parsing algorithms, because parsers for languages that just needs one lookahead token are easier to build and quicker to run. The lookahead tokens used by such algorithms are indicated between parentheses after the name of the algorithm (e.g., LL(1), LR(<em>k</em>)). The notation (*) indicate that the algorithm can check infinite lookahead tokens, although this might affect performance.</p>
+
+
+
+<h5>Chart Parsers</h5>
+
+
+
+<p>Chart parsers are a family of parsers that can be bottom-up (e.g., CYK) or top-down (e.g., Earley). Chart parsers essentially try to avoid backtracking, which can be expensive, by using <em>dynamic programming</em>. <a href="https://en.wikipedia.org/wiki/Dynamic_programming">Dynamic programming</a>, or dynamic optimization, is a general method to break down larger problem in smaller subproblems.</p>
+
+
+
+<p>A common dynamic programming algorithm used by chart parser is the <a href="https://en.wikipedia.org/wiki/Viterbi_algorithm">Viterbi algorithm</a>. The goal of the algorithm is to find the most likely hidden states given the sequence of known events. Basically given the tokens that we know, we try to find the most probable rules that have produced them.</p>
+
+
+
+<p>The name chart parser derives from the fact that the partial results are stored in a structure called chart (usually the chart is a table). The particular technique of storing partial results is called <em>memoization</em>. Memoization is also used by other algorithms, unrelated to chart parsers, like <strong>packrat</strong>.</p>
+
+
+
+<h4>Automatons</h4>
+
+
+
+<p>Before discussing parsing algorithms we would like to talk about the use of automatons in parsing algorithms. <a href="https://en.wikipedia.org/wiki/Automata_theory">Automaton</a>s are a family of abstract machines, among which there is the well known <em>Turing machine</em>.</p>
+
+
+
+<p>When it comes to parsers you might hear the term <strong>(Deterministic)</strong> <strong>Pushdown Automaton</strong> (PDA) and when you read about lexers you would hear the term <strong>Deterministic Finite Automaton</strong> (DFA). A PDA is more powerful and complex than a DFA (although still simpler than a Turing machine).</p>
+
+
+
+<p>Since they define abstract machines, usually they are not directly related to an actual algorithm. Rather, they describe in a formal way the level of complexity that an algorithm must be able to deal with. If somebody says that to solve problem X you need a DFA, he means that you need an algorithm as equally powerful as a DFA.</p>
+
+
+
+<p>However, since DFAs are state machines in the case of a lexer the distinction is frequently moot . That is because state machines are relatively straightforward to implement (i.e., there are ready to use libraries), so most of the time a DFA is implemented with a state machine. That is why we are going to briefly talk about DFA and why they are frequently used for lexers.</p>
+
+
+
+<h5>Lexing With a Deterministic Finite Automaton</h5>
+
+
+
+<p>DFA is a (finite-)state machine, a concept with which we assume you are familiar. Basically, a state machine has many possible states and a transition function for each of them. These transition functions govern how the machine can move from one state to a different one in response to an event. When used for lexing, the machine is fed the input characters one at a time until it reaches an accepted state (i.e., it can build a token).</p>
+
+
+
+<p>They are used for a few reasons:</p>
+
+
+
+<ul>
+<li>it has been proven that they recognize exactly the set of regular languages, that is to say they are equally powerful as regular languages</li>
+
+
+
+<li>there are a few mathematical methods to manipulate and check their properties (e.g., whether they can parse all strings or any strings)</li>
+
+
+
+<li>they can work with an efficient online algorithm (see below)</li>
+</ul>
+
+
+
+<p>An online algorithm is one that does not need the whole input to work. In the case of a lexer, it means that it can recognize a token as soon as its characters are seen by the algorithm. The alternative would be that it would need the whole input to identify each token.</p>
+
+
+
+<p>In addition to these properties it is fairly easy to transform a set of regular expressions into a DFA, which makes it possible to input the rules in a simple way that is familiar to many developers. Then you can automatically convert them into a state machine that can work on them efficiently.</p>
+
+
+
+<h3 id="tablesParsingAlgorithms">Tables of Parsing Algorithms</h3>
+
+
+
+<p>We provide a table to offer a summary of the main information needed to understand and implement a specific parser algorithm. You can find more implementations by reading our articles that present parsing tools and libraries for <a href="https://tomassetti.me/parsing-in-java/">Java</a>, <a href="https://tomassetti.me/parsing-in-csharp/">C#</a>, <a href="https://tomassetti.me/parsing-in-python/">Python</a> and <a href="https://tomassetti.me/parsing-in-javascript/">JavaScript</a>.</p>
+
+
+
+<p>The table lists:</p>
+
+
+
+<ul>
+<li>a formal description, to explain the theory behind the algorithm</li>
+
+
+
+<li>a more practical explanation</li>
+
+
+
+<li>one or two implementations, usually one easier and the other a professional parser. Sometimes, though, there is no easier or professional version.</li>
+</ul>
+
+
+
+<figure><table><thead><tr><th>Algorithm</th><th>Formal Description</th><th>Explanation</th><th>Example Implementation</th></tr></thead><tbody><tr><td>CYK</td><td><a href="https://web.archive.org/web/20211018183546/https://www.ideals.illinois.edu/bitstream/handle/2142/74304/B4-257.pdf">An Efficient Recognition and Syntax-Analysis Algorithm for Context-Free Languages </a>(PDF)</td><td><a href="https://web.archive.org/web/20170829021116/https://www.cs.bgu.ac.il/~michaluz/seminar/CKY1.pdf">CKY And Earley Algorithms</a> (PDF)</td><td><a href="https://github.com/kkdai/cyk">CYK Algorithm in Golang</a> / <a href="https://github.com/Hugo-ter-Doest/chart-parsers">Chart-parsers</a></td></tr><tr><td>Earley</td><td><a href="https://web.archive.org/web/20170809132728/https://staff.icar.cnr.it/ruffolo/progetti/projects/10.Parsing%20Earley/1970-An%20efficient%20context-free%20parsing%20algorithm-earley.pdf">An Efficient Context-Free Parsing Algorithm</a> (PDF)</td><td><a href="http://loup-vaillant.fr/tutorials/earley-parsing/">Earley Parsing Explained</a></td><td><a href="https://github.com/Hardmath123/nearley">Nearley</a></td></tr><tr><td>LL</td><td><a href="http://www.antlr.org/papers/LL-star-PLDI11.pdf"> LL(*): The Foundation of the ANTLR Parser Generator </a>(PDF)</td><td><a href="https://en.wikipedia.org/wiki/LL_parser">LL Parser on Wikipedia</a> / <a href="https://gist.github.com/DmitrySoshnikov/29f7a9425cdab69ea68f">LL-parser.js</a></td><td><a href="https://web.archive.org/web/20230205144330/https://github.com/jjingram/parser">ll(1) parser</a> /<a href="http://www.antlr.org/"> ANTLR</a></td></tr><tr><td>LR</td><td><a href="https://web.archive.org/web/20180728224654/https://www.cs.dartmouth.edu/~mckeeman/cs48/mxcom/doc/knuth65.pdf">On the Translation of Languages from Left to Right</a> (PDF)</td><td><a href="https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/">Compiler Course</a> by Stanford</td><td><a href="https://web.archive.org/web/20230101022424/http://zaa.ch/jison/">Jison</a><span>archived copy</span> /<a href="https://www.gnu.org/software/bison/"> Bison</a></td></tr><tr><td>Packrat (PEG)</td><td><a href="https://pdos.csail.mit.edu/~baford/packrat/thesis/thesis.pdf">Packrat Parsing: a Practical Linear-Time Algorithm with Backtracking</a> (PDF)</td><td><a href="http://bford.info/pub/lang/packrat-icfp02.pdf">Packrat Parsing: Simple, Powerful, Lazy, Linear TimePackrat Parsing in Scala</a> (PDF)</td><td><a href="https://pdos.csail.mit.edu/~baford/packrat/thesis/">Companion code of the thesis</a> / <a href="http://canopy.jcoglan.com/">Canopy</a></td></tr><tr><td>Parser Combinator</td><td><a href="http://web.archive.org/web/20130606162214/https://courses.cit.cornell.edu/ling4424/frost-launchbury.pdf">Constructing natural language interpreters in a lazy functional language</a> (PDF)</td><td><a href="https://web.archive.org/web/20210505042203/https://qntm.org/combinators"> Parser combinators explained</a></td><td><a href="https://fsharpforfunandprofit.com/posts/understanding-parser-combinators/">Understanding Parser Combinators</a> / <a href="https://github.com/sprache/Sprache">Sprache</a></td></tr><tr><td>Pratt</td><td><a href="https://tdop.github.io/">Top Down Operator Precedence</a></td><td><a href="https://web.archive.org/web/20180114023723/http://effbot.org/zone/simple-top-down-parsing.htm">Simple Top-Down Parsing in Python</a></td><td><a href="https://github.com/percolate/pratt-parser">A Pratt Parser in Python</a> / <a href="https://github.com/douglascrockford/JSLint">JSLint</a></td></tr></tbody></table></figure>
+
+
+
+<p>To understand how a parsing algorithm works you can also look at the <a href="https://github.com/DmitrySoshnikov/syntax">syntax analytic toolkit</a>. It is an educational parser generator that describes the steps that the generated parser takes to accomplish its objective. It implements a LL and a LR algorithm.</p>
+
+
+
+<figure><img loading="lazy" decoding="async" width="1024" height="994" src="https://tomassetti.me/wp-content/uploads/2017/09/parsing_algorithms-1-1024x994.webp" alt="Table of parsing Algorithms features and uses" srcset="https://tomassetti.me/wp-content/uploads/2017/09/parsing_algorithms-1-1024x994.webp 1024w, https://tomassetti.me/wp-content/uploads/2017/09/parsing_algorithms-1-300x291.webp 300w, https://tomassetti.me/wp-content/uploads/2017/09/parsing_algorithms-1-768x746.webp 768w, https://tomassetti.me/wp-content/uploads/2017/09/parsing_algorithms-1.webp 1041w" sizes="(max-width: 1024px) 100vw, 1024px"></figure>
+
+
+
+<p>The second table shows a summary of the main features of the different parsing algorithms and for what they are generally used.<br>
+</p>
+
+
+
+<h3 id="topDown">Top-down Algorithms</h3>
+
+
+
+<p>The top-down strategy is the most widespread of the two strategies and there are several successful algorithms applying it.</p>
+
+
+
+<h4 id="llParser">LL Parser</h4>
+
+
+
+<p>LL (<strong>L</strong>eft-to-right read of the input, <strong>L</strong>eftmost derivation) parsers are table-based parsers without backtracking, but with lookahead. Table-based means that they rely on a parsing table to decide which rule to apply. The parsing table use as rows and columns nonterminals and terminals, respectively.</p>
+
+
+
+<p>To find the correct rule to apply:</p>
+
+
+
+<ol>
+<li>first, the parser looks at the current token and the appropriate amount of lookahead tokens</li>
+
+
+
+<li>then it tries to apply the different rules until it finds the correct match.</li>
+</ol>
+
+
+
+<p>The concept of LL parser does not refers to a specific algorithm, but more to a class of parsers. They are defined in relations to grammars. That is to say an LL parser is one that can parse a LL grammar. In turn LL grammars are defined in relation to the number of lookahead tokens that are needed to parse them. This number is indicated between parentheses next to LL, in the form LL(<em>k</em>).</p>
+
+
+
+<p>An LL(<em>k</em>) parser uses <em>k</em> tokens of lookahead and thus it can parse, at most, a grammar which needs <em>k</em> tokens of lookahead to be parsed. Effectively the concept of LL(<em>k</em>) grammar is more widely employed than the corresponding parser. Which means that LL(<em>k</em>) grammars are used as a meter when comparing different algorithms. For instance, you would read that PEG parsers can handle LL(*) grammars.</p>
+
+
+
+<h5>The Value Of LL Grammars</h5>
+
+
+
+<p>This use of LL grammars is due both to the fact that LL parsers are widely used and that they are a bit restrictive. In fact, LL grammars does not support left-recursive rules. You can transform any left-recursive grammar into an equivalent non-recursive form, but this limitation matters for a couple of reasons: productivity and power.</p>
+
+
+
+<p>The loss of productivity is due to the requirement that you have to write the grammar in a special way, which takes time. The power is limited because a grammar that might need 1 token of lookahead, when written with a left-recursive rule, might need 2-3 tokens of lookahead, when written in a non-recursive way. So this limitation is not merely annoying, but it is limiting the power of the algorithm, i.e., the grammars it can be used for.</p>
+
+
+
+<p>The loss of productivity can be mitigated by an algorithm that automatically transforms a left-recursive grammar into a non-recursive one. <a href="https://tomassetti.me/antlr-mega-tutorial/">ANTLR</a> is a tool that can do that, but, of course, if you are building your own parser, you have to do it yourself.</p>
+
+
+
+<p>There are two special kinds of LL(<em>k</em>) grammars: LL(1) and LL(*). In the past the first kind were the only one considered practical, because it is easy to build efficient parsers for them. Up to the point that many computer languages were purposefully designed to be described by a LL(1) grammar. An LL(*), also known as <em>LL-regular</em> parser, can deal with languages using an infinite amount of lookahead tokens.</p>
+
+
+
+<p>On StackOverflow you can read a simple comparison between <a href="https://stackoverflow.com/questions/1044600/difference-between-an-ll-and-recursive-descent-parser/1044678#1044678">LL parsers and Recursive Descent parsers</a> or one between <a href="https://stackoverflow.com/questions/5975741/what-is-the-difference-between-ll-and-lr-parsing/6824545#6824545">LL parsers and LR parsers</a>.</p>
+
+
+
+<h4 id="earley">Earley Parser</h4>
+
+
+
+<p>The Earley parser is a chart parser named after its inventor Jay Earley. The algorithm is usually compared to CYK, another chart parser, that is simpler, but also usually worse in performance and memory. The distinguishing feature of the Earley algorithm is that, in addition to storing partial results, it implements a prediction step to decide which rule is going to try to match next.</p>
+
+
+
+<p>The Earley parser fundamentally works by dividing a rule in segments, like in the following example.</p>
+
+
+
+<pre data-enlighter-language="generic" data-enlighter-theme="" data-enlighter-highlight="" data-enlighter-linenumbers="" data-enlighter-lineoffset="" data-enlighter-title="" data-enlighter-group="">// an example grammar
+HELLO    : "hello"
+NAME     : [a-zA-Z]+
+greeting : HELLO NAME
+
+// Earley parser would break up greeting like this
+// . HELLO NAME
+// HELLO . NAME
+// HELLO NAME .</pre>
+
+
+
+<p>Then working on these segments, that can be connected at the dot (<code>.</code>), tries to reach a completed state, that is to say one with the dot at the end.</p>
+
+
+
+<p>The appeal of an Earley parser is that it is guaranteed to be able to parse all context-free languages, while other famous algorithms (e.g., LL, LR) can parse only a subset of them. For instance, it has no problem with left-recursive grammars. More generally, an Earley parser can also deal with nondeterministic and ambiguous grammars.</p>
+
+
+
+<p>It can do that at the risk of a worse performance (O(n<sup>3</sup>)), in the worst case. However it has a linear time performance for normal grammars. The catch is that the set of languages parsed by more traditional algorithms are the one we are usually interested in.</p>
+
+
+
+<p>There is also a side effect of the lack of limitations: by forcing a developer to write the grammar in certain way the parsing can be more efficient. I.e., building a LL(1) grammar might be harder for the developer, but the parser can apply it very efficiently. With Earley you do less work, so the parser does more of it.</p>
+
+
+
+<p>In short, Earley allows you to use grammars that are easier to write, but that might be suboptimal in terms of performance.</p>
+
+
+
+<h5>Earley Use Cases</h5>
+
+
+
+<p>So Earley parsers are easy to use, but the advantage, in terms of performance, in the average case might be non-existent. This makes the algorithm great for an educational environment or whenever productivity is more relevant than speed.</p>
+
+
+
+<p>In the first case it is useful, for example, because most of the time the grammars your users write work just fine. The problem is that the parser will throw at them obscure and seemingly random errors. Of course the errors are not actually random, but they are due to the limitations of an algorithm that your users do not know or understand. So you are forcing the user to understand the inner workings of your parser in order to use it, which should be unnecessary.</p>
+
+
+
+<p>An example of when productivity is more important than speed might be a parser generator to implement syntax highlighting, for an editor that needs to support many languages. In a similar situation, being able to support new languages quickly might be more desirable than completing the task as soon as possible.</p>
+
+
+
+<h4 id="packrat">Packrat (PEG)</h4>
+
+
+
+<p>Packrat is often associated to the formal grammar PEG, since they were invented by the same person: Brian Ford. Packrat was described first in his thesis: <a href="https://pdos.csail.mit.edu/~baford/packrat/thesis/thesis.pdf">Packrat Parsing: a Practical Linear-Time Algorithm with Backtracking</a>. The title says almost everything that we care about: it has a linear time of execution, also because it does not use backtracking.</p>
+
+
+
+<p>The other reason for its efficiency it is memoization: the storing of partial results during the parsing process. The drawback, and the reason why the technique was not used until recently, is the quantity of memory it needs to store all the intermediate results. If the memory required exceeds what is available, the algorithm loses its linear time of execution.</p>
+
+
+
+<p>Packrat also does not support left-recursive rules, a consequence of the fact that PEG requires to always choose the first option. Actually some variants can support direct left-recursive rules, but at the cost of losing linear complexity.</p>
+
+
+
+<p>Packrat parsers can perform with an infinite amount of lookahead, if necessary. This influence the execution time, that in the worst case can be exponential.</p>
+
+
+
+<h4 id="recursiveDescent">Recursive Descent Parser</h4>
+
+
+
+<p>A recursive descent parser is a parser that works with a set of (mutually) recursive procedures, usually one for each rule of the grammars. Thus the structure of the parser mirrors the structure of the grammar.</p>
+
+
+
+<p>The term <strong>predictive parser</strong> is used in a few different ways: some people mean it as a synonym for top-down parser, some as a recursive descent parser that never backtracks.</p>
+
+
+
+<p>The opposite to this second meaning is a recursive descent parser that do backtracks. That is to say one that finds the rule that matches the input by trying each of the rules in sequence, and then going back each time it fails.</p>
+
+
+
+<p>Typically recursive descent parsers have problems parsing left-recursive rules, because the algorithm would end up calling the same function again and again. A possible solution to this problem is using tail recursion. Parsers that use this method are called<strong> tail recursive parsers</strong>.</p>
+
+
+
+<p>Tail recursion <em>per se</em> is simply recursion that happens at the end of the function. However tail recursion is employed in conjunction with transformations of the grammar rules. The combination of transforming the grammar rules and putting recursion at the end of the process allows to deal with left-recursive rules.</p>
+
+
+
+<h5>Pratt Parser</h5>
+
+
+
+<p>A Pratt parser is a widely unused, but much appreciated (by the few that know it) parsing algorithm defined by Vaughan Pratt in a paper called <a href="https://tdop.github.io/">Top Down Operator Precedence</a>. The paper itself starts with a polemic on BNF grammars, which the author wrongly argues are the exclusive concerns of parsing studies. This is one of the reasons for the lack of success. In fact the algorithm does not rely on a grammar, but works directly on tokens, which makes it unusual to parsing experts.</p>
+
+
+
+<p>The second reason is that traditional top-down parsers work great if you have a meaningful prefix that helps distinguish between different rules. For example, if you get the token <strong>FOR</strong> you are looking at a <strong>for</strong> statement. Since this essentially applies to all programming languages and their statements, it is easy to understand why the Pratt parser did not change the parsing world.</p>
+
+
+
+<p>Where the Pratt algorithm shines is with expressions. In fact, the concept of precedence makes it impossible to understand the structure of the input simply by looking at the order in which the tokens are presented.</p>
+
+
+
+<p>Basically, the algorithm requires you to assign a precedence value to each operator token and a couple of functions that determine what to do, according to what is on the left and right of the token. Then it uses these values and functions to bind the operations together while it traverses the input.</p>
+
+
+
+<p>While the Pratt algorithm has not been overtly successful, it is used for parsing expressions. It was also adopted by Douglas Crockford (of JSON fame) for JSLint.</p>
+
+
+
+<h5>Parser Combinator</h5>
+
+
+
+<p>A parser combinator is a higher-order function that accepts parser functions as input and returns a new parser function as output. A parser function usually means a function that accepts a string and outputs a parse tree.</p>
+
+
+
+<p>A parser combinator is modular and easy to build, but they are also slower (they have O(n<sup>4</sup>) complexity in the worst case) and less sophisticated. They are typically adopted for easier parsing tasks or for prototyping. In a sense the user of a parser combinator builds the parser partially by hand, but relying on the hard work done by whoever created the parser combinator.</p>
+
+
+
+<p>Generally they do not support left recursive rules, but there are more advanced implementations that do just that. See, for example, the paper <a href="https://web.archive.org/web/20230121072634/https://richard.myweb.cs.uwindsor.ca/PUBLICATIONS/PADL_08.pdf">Parser Combinators for Ambiguous Left-Recursive Grammars</a><span>archived copy</span>, that also manages to describe an algorithm that has polynomial time of execution.</p>
+
+
+
+<p>Many contemporary implementations are called <strong>monadic parser combinators</strong>, since they rely on the structure of functional programming called <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)">monad</a>. Monads are a fairly complex concept that we cannot hope to explain here. However, basically a monad is able to combine functions and actions relying on a data type. The crucial feature is that the data type specifies how its different values can be combined.</p>
+
+
+
+<p>The most basic example is the <em>Maybe</em> monad. This is a wrapper around a normal type, like integer, that returns the value itself when the value is valid (e.g., 567), but a special value <em>Nothing</em> when it is not (e.g., undefined or division by zero). Thus you can avoid using a <em>null</em> value and unceremoniously crashing the program. Instead the <em>Nothing</em> value is managed normally, like any other value would be managed.</p>
+
+
+
+<h3 id="bottomUp">Bottom-up Algorithms</h3>
+
+
+
+<p>The bottom-up strategy main success is the family of many different LR parsers. The reason of their relative unpopularity is that historically they have been harder to build, although LR parsers are also more powerful than traditional LL(1) grammars. So we mostly concentrate on them, apart from a brief description of CYK parsers.</p>
+
+
+
+<p>This means that we avoid talking about the more generic class of <a href="https://en.wikipedia.org/wiki/Shift-reduce_parser">Shift-reduce Parser</a>s, which also includes LR parsers.</p>
+
+
+
+<p>We only say that shift-reduce algorithms works with two steps:</p>
+
+
+
+<ul>
+<li><strong>Shift</strong>: read one token from the input, that becomes a new (momentarily isolated) node</li>
+
+
+
+<li><strong>Reduce</strong>: once the proper rule is matched join the resulting tree with a precedent existing subtree</li>
+</ul>
+
+
+
+<p>Basically the shift step reads the input until completion, while the reduce join the subtrees until the final parse tree is built.</p>
+
+
+
+<h4 id="cyk">CYK Parser</h4>
+
+
+
+<p>The Cocke-Younger-Kasami (CYK) parser has been formulated independently by the three authors. Its notability is due to a great worst-case performance (O(n<sup>3</sup>)), although it is hampered by a comparatively bad performance in most common scenarios.</p>
+
+
+
+<p>However the real disadvantage of the algorithm is that it requires the grammars to be expressed in the <a href="https://en.wikipedia.org/wiki/Chomsky_normal_form">Chomsky normal form</a>.</p>
+
+
+
+<p>That is because the algorithm relies on the properties of this particular form to be able to split the input in half to trying matching all the possibilities. Now, in theory, any context-free grammar can be transformed in a corresponding CNF, but this is seldom practical to do by hand. Imagine being annoyed by the fact that you cannot use left-recursive rules and being asked to learn a special kind of form…</p>
+
+
+
+<p>The CYK algorithm is used mostly for specific problems. For instance the membership problem: to determine if a string is compatible with a certain grammar. It can also be used in natural language processing to find the most probable parsing between many options.</p>
+
+
+
+<p>For all practical purposes, if you need to parse any context-free grammar with a great worst-case performance, you want to use an Earley parser.</p>
+
+
+
+<h4 id="lrParser">LR Parser</h4>
+
+
+
+<p>LR (<strong>L</strong>eft-to-right read of the input, <strong>R</strong>ightmost derivation) parsers are bottom-up parsers that can handle deterministic context-free languages in linear time, with lookahead and without backtracking. The invention of LR parsers is credited to the renown Donald Knuth.</p>
+
+
+
+<p>Traditionally they have been compared to, and competed with, LL parsers. So there is a similar analysis related to the number of lookahead tokens necessary to parse a language. An LR(<em>k</em>) parser can parse grammars that need <em>k</em> tokens of lookahead to be parsed. However LR grammars are less restrictive, and thus more powerful, than the corresponding LL grammars. For example, there is no need to exclude left-recursive rules.</p>
+
+
+
+<p>Technically, LR grammars are a superset of LL grammars.&#160; One consequence of this is that you need only LR(1) grammars, so usually the (<em>k</em>) is omitted.</p>
+
+
+
+<p>They are also table-based, just like LL-parsers, but they need two complicated tables. In very simple terms:</p>
+
+
+
+<ul>
+<li>one table tells the parser what to do depending on the current token, the state it is in and the tokens that can possibly follow it (<em>lookahead sets</em>)</li>
+
+
+
+<li>the other one tells the parser to which state to move next</li>
+</ul>
+
+
+
+<p>LR parsers are powerful and have great performance, so where is the catch? The tables they need are hard to build by hand and can grow very large for normal computer languages, so usually they are mostly used through parser generators. If you need to build a parser by hand, you would probably prefer a top-down parser.</p>
+
+
+
+<h5>Simple LR and Lookahead LR</h5>
+
+
+
+<p>Parser generators avoid the problem of manually creating such tables, but they do not solve the issue of the cost of generating and navigating them. So there are simpler alternatives to the <strong>Canonical LR(1) parser</strong>, described by Knuth. These alternatives are less powerful than the original one. They are: <strong>Simple LR parser</strong> (SLR) and <strong>Lookahead LR parser</strong> (LALR). So in order of power we have: LR(1) &gt; LALR(1) &gt; SLR(1) &gt; LR(0).</p>
+
+
+
+<p>The names of the two parsers, both invented by Frank DeRemer, are somewhat misleading: one is not really that simple and the other is not the only one that uses lookahead. We can say that one is simpler, and the other relies more heavily on lookahead to make decisions.</p>
+
+
+
+<p>Basically they differ in the tables they employ, mostly they change the “what to do” part and the lookahead sets. Which in turn pose different restrictions on the grammars that they can parse. In other words, they use different algorithms to derive the parsing tables from the grammar.</p>
+
+
+
+<p>A SLR parser is quite restrictive in practical terms and it is not very widely used. A LALR parser instead works for most practical grammars and it is widely employed. In fact the popular tools <strong>yacc</strong> and <strong>bison </strong>works with LALR parser tables.</p>
+
+
+
+<p>Contrary to LR grammars, LALR and SLR grammars are not a superset of LL grammars. They are not&#160;easily comparable: some grammars can be covered by one class and not the other or vice versa.</p>
+
+
+
+<h5>Generalized LR Parser</h5>
+
+
+
+<p>Generalized LR parsers (GLR) are more powerful variants of LR parsers. They were described by Bernard Land, in 1974, and implemented for the first time by Masaru Tomita, in 1984. The reason for the existence of GLR is the need to parse nondeterministic and ambiguous grammars.</p>
+
+
+
+<p>The power of a GLR parser is not found in its tables, which are equivalent to those of a traditional LR parser, but in the fact that can move to different states. In practice, when there is an ambiguity it forks new parser(s) that handle that particular case. These parsers might fail at a later stage and be discarded.</p>
+
+
+
+<p>The worst-case complexity of a GLR parser is the same as that of an Earley parser (O(n<sup>3</sup>)), though it may have better performance with the best case of deterministic grammars. A GLR parser is also harder to build than an Earley one.</p>
+
+
+
+<h2 id="summary">Summary</h2>
+
+
+
+<p>With this great (or at least large) article we hope to have solved most of the doubts about parsing terms and algorithms: what the terms means and why to pick a certain algorithm instead of another one. We have not just explained them, but we have given a few pointers on common issues with parsing programming languages.</p>
+
+
+
+<p>For reasons of space we could not provide a detailed explanation of all parsing algorithms. So we have also provided a few links to get a deeper understanding of the algorithms: the theory behind them and an explanation of how they work. If you are specifically interested in building things like compiler and interpreters, you can read another one of our articles in order to find <a href="https://tomassetti.me/resources-create-programming-languages/">resources to create programming languages</a>.</p>
+
+
+
+<p>If you are just interested in parsing you may want to read <a href="http://www.springer.com/us/book/9780387202488">Parsing Techniques</a>, a book that is as comprehensive as it is expensive. It obviously goes much more in depth than we could and it also covers less used parsing algorithms.</p>
+
+
+
+<p><em>We would like to thank Dimitrios Kourkoulis for having revised the article and helped us improve it.</em></p>
+
+
+
+<p><em>We would also like to thank Dustin Whitney for having spotted a typo.</em></p>
+
+
+
+
+
+                                  <blockquote>
+The analysis of an input to organize the data according to the rule of a grammar
+</blockquote>
+                  </div></div></article></body></html>

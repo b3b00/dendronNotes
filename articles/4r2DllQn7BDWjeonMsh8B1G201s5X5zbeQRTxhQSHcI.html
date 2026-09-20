@@ -1,0 +1,249 @@
+<html><head><meta charset="utf-8"><title>How Core Git Developers Configure Git</title><meta content="Scott Chacon" name="author"><meta content="What `git config` settings should be defaults by now? Here are some settings that even the core developers change." name="description"><meta content="https://blog.gitbutler.com/how-git-core-devs-configure-git/" name="dendron:source-url"><meta content="18230" name="dendron:length"><meta content="15.865" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div><p>A few weeks ago I <a href="/why-is-git-autocorrect-too-fast-for-formula-one-drivers/">wrote about</a> Git’s <code>help.autocorrect</code> setting and the strange tale of the origin of it’s deciseconds value.</p>
+<p>It got me to thinking about other <code>git config</code> settings that most people likely don’t know about and which should probably be defaulted differently.</p>
+<p>In this post, I’ll go through some of the perhaps obscure Git config settings that I have personally globally enabled and go into them to explain what they do and why they should <em>probably</em> be the default settings.</p>
+<p>Also, it turns out that I learned most of these from the people who actually work on the core Git codebase every day.</p>
+<figure><iframe src="https://www.youtube.com/embed/0FkBpQxOPt4?feature=oembed" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen="" title="Git Config | Ep. 14 Bits and Booze"></iframe><figcaption>For a video version of this post, check out our Bits and Booze episode</figcaption></figure>
+
+<p>First, though, some of you may not particularly care about the wonderful and sordid history of the <code>rerere</code> values or whatever. You may just be thinking “just give me the settings so I can blindly throw them into my <code>~/.gitconfig</code> file."</p>
+<p>Well, fair enough. Here is the fun stuff:</p>
+<div><p>INI</p><pre><code><span># clearly makes git better</span><span>
+</span>
+<span></span><span>[</span><span>column</span><span>]</span><span>
+</span><span>        </span><span>ui</span><span> </span><span>=</span><span> </span><span>auto</span><span>
+</span><span></span><span>[</span><span>branch</span><span>]</span><span>
+</span><span>        </span><span>sort</span><span> </span><span>=</span><span> </span><span>-committerdate</span><span>
+</span><span></span><span>[</span><span>tag</span><span>]</span><span>
+</span><span>        </span><span>sort</span><span> </span><span>=</span><span> </span><span>version:refname</span><span>
+</span><span></span><span>[</span><span>init</span><span>]</span><span>
+</span><span>        </span><span>defaultBranch</span><span> </span><span>=</span><span> </span><span>main</span><span>
+</span><span></span><span>[</span><span>diff</span><span>]</span><span>
+</span><span>        </span><span>algorithm</span><span> </span><span>=</span><span> </span><span>histogram</span><span>
+</span><span>        </span><span>colorMoved</span><span> </span><span>=</span><span> </span><span>plain</span><span>
+</span><span>        </span><span>mnemonicPrefix</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span>        </span><span>renames</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span></span><span>[</span><span>push</span><span>]</span><span>
+</span><span>        </span><span>default</span><span> </span><span>=</span><span> </span><span>simple</span><span>
+</span><span>        </span><span>autoSetupRemote</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span>        </span><span>followTags</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span></span><span>[</span><span>fetch</span><span>]</span><span>
+</span><span>        </span><span>prune</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span>        </span><span>pruneTags</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span>        </span><span>all</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span>
+<span></span><span># why the hell not?</span><span>
+</span>
+<span></span><span>[</span><span>help</span><span>]</span><span>
+</span><span>        </span><span>autocorrect</span><span> </span><span>=</span><span> </span><span>prompt</span><span>
+</span><span></span><span>[</span><span>commit</span><span>]</span><span>
+</span><span>        </span><span>verbose</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span></span><span>[</span><span>rerere</span><span>]</span><span>
+</span><span>        </span><span>enabled</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span>        </span><span>autoupdate</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span></span><span>[</span><span>core</span><span>]</span><span>
+</span><span>        </span><span>excludesfile</span><span> </span><span>=</span><span> </span><span>~/.gitignore</span><span>
+</span><span></span><span>[</span><span>rebase</span><span>]</span><span>
+</span><span>        </span><span>autoSquash</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span>        </span><span>autoStash</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span>        </span><span>updateRefs</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span>
+<span></span><span># a matter of taste (uncomment if you dare)</span><span>
+</span>
+<span></span><span>[</span><span>core</span><span>]</span><span>
+</span><span>        </span><span># fsmonitor = true</span><span>
+</span><span>        </span><span># untrackedCache = true</span><span>
+</span><span></span><span>[</span><span>merge</span><span>]</span><span>
+</span><span>        </span><span># (just 'diff3' if git version &lt; 2.3)</span><span>
+</span><span>        </span><span># conflictstyle = zdiff3</span><span>
+</span><span></span><span>[</span><span>pull</span><span>]</span><span>
+</span><span>        </span><span># rebase = true</span><span>
+</span></code></pre></div>
+<p>Copypasta, my friends.</p>
+
+<p>Before I dig into these one by one, there is an interesting question about if even the core Git developers think that some of these default values should be changed.</p>
+<p>This came up not too long ago on the Git mailing list, and honestly, a few of these settings I personally learned from <a href="https://lore.kernel.org/git/60b5d281552d6_e359f20828@natae.notmuch/" target="_blank" rel="noopener noreferrer">this thread</a> called "Spring Cleaning" where Felipe Contreras challenged the Git core team to remove all their built up config options and aliases and see what it’s like to use Git stock, out of the box.</p>
+<p>He challenged the list to pay attention to what settings they really wanted to change and share the top settings changes that seemed the most important with the list.</p>
+<p>The <a href="https://lore.kernel.org/git/60df97ed24687_34a92088a@natae.notmuch/" target="_blank" rel="noopener noreferrer">results</a> were very interesting, a rather concise list of 9 config settings and 3 aliases that the experiment participants more or less agreed should arguably be new defaults. Let's just take a look at the proposed config setting changes.</p>
+<div><p>INI</p><pre><code><span>merge.conflictstyle</span><span> </span><span>=</span><span> </span><span>zdiff3</span><span>
+</span><span></span><span>rebase.autosquash</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span></span><span>rebase.autostash</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span></span><span>commit.verbose</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span></span><span>diff.colorMoved</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span></span><span>diff.algorithm</span><span> </span><span>=</span><span> </span><span>histogram</span><span>
+</span><span></span><span>grep.patternType</span><span> </span><span>=</span><span> </span><span>perl</span><span>
+</span><span></span><span>feature.experimental</span><span> </span><span>=</span><span> </span><span>true</span><span>
+</span><span></span><span>branch.sort</span><span> </span><span>=</span><span> </span><span>committerdate</span><span>
+</span></code></pre></div>
+<p>Now, <em>none</em> of these have become the new defaults in the 3 or 4 years since this experiment, but it’s interesting that a lot of the Git developers themselves have a hard time using Git without several of these turned on.</p>
+<p>Even more interesting is that <em>most of you</em> probably don’t know what <em>any</em> of these do.</p>
+<p>So, let’s dig into them. What do these do and why should you almost certainly blindly trust me and go ahead and enable them?</p>
+<p>I'm going to group these settings into three categories:</p>
+<ul>
+<li><a href="#clearly-makes-git-better">Clearly Makes Git Better</a></li>
+<li><a href="#why-the-hell-not">Why the Hell Not?</a></li>
+<li><a href="#a-matter-of-taste">A Matter of Taste</a></li>
+</ul>
+<p>Let's get started.</p>
+
+<p>This first group of settings <em>clearly</em> makes Git better by default. There are generally zero downsides to enabling any of them.</p>
+
+<p>I noted this in a previous blog post here about Git Tips under “<a href="/git-tips-2-new-stuff-in-git/#some-git-branch-stuff">Branch Stuff</a>” but as this was also in the Spring Cleaning list, I think everyone agrees that listing out Git branches should probably not be alpha-ordered by default.</p>
+<p>The two settings which help improve this are <code>branch.sort</code> and <code>column.ui</code>. The first of which sorts the list by the most recent commit date (so probably more interesting at the top) rather than by alpha order. The second will put the branch names in a column format so you can see more per screen.</p>
+<pre><code>git config --global column.ui auto
+git config --global branch.sort -committerdate
+</code></pre>
+<p>The <code>column.ui</code> setting also affects the output of other listing commands (clean, status, tag), but generally I think it’s better than the default.</p>
+<p><img alt="" loading="lazy" width="1200" height="800" decoding="async" data-nimg="1" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" srcSet="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-08.04.03%25402x.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-08.04.03%25402x.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-08.04.03%25402x.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-08.04.03%25402x.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-08.04.03%25402x.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-08.04.03%25402x.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-08.04.03%25402x.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-08.04.03%25402x.png&w=3840&q=75 3840w" src="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-08.04.03%25402x.png&w=3840&q=75"></p>
+<p>You can also sort by other things than committer date, but I think it’s pretty clearly the most useful one.</p>
+
+<p>Speaking of listing things, it’s also pretty ridiculous that this isn’t the default for listing tags, since it’s what nearly everyone actually wants.</p>
+<p>Normally, if you list tags by alpha order, you’ll get something like this:</p>
+<pre><code>$ git tag
+nightly/0.5.100
+nightly/0.5.1000
+nightly/0.5.1001
+nightly/0.5.101
+nightly/0.5.1010
+</code></pre>
+<p>Nobody wants <code>0.5.101</code> to come after <code>0.5.1000</code>, but that’s alpha order. You can fix this by setting this:</p>
+<pre><code>git config --global tag.sort version:refname
+</code></pre>
+<p>Which will generally do what you expect, treating dotted version numbers as a series of integer values for sorting purposes. Trust me, just enable this.</p>
+
+<p>This one may be a little more controversial, since it can be argued to be somewhat political, but there should be a default branch name in Git where it doesn’t complain every time you <code>init</code> a new repo.</p>
+<pre><code>git config --global init.defaultBranch main
+</code></pre>
+<p>Personally, I don’t have a problem with <code>master</code> and most of my repositories use that since that used to be the default, but I’m also fine with <code>main</code>, so whatever it is you want to use, just go ahead and set it.</p>
+<p>Mostly what I find stupid is that now Git is annoying about this rather than just updating the default value. I wish Git had some taste here, but they don't, so you should just set it to something you find reasonable. But whatever.</p>
+
+<p>There is actually a whole blog post that could be written about <code>git diff</code> algorithms, but the short story is that by default Git will use an old, fast, pretty reliable diff algorithm called "myers diff".</p>
+<p>To give you a sense of what ‘old’ means, it was first published in a paper in 1986, so it’s almost 40 years old now. If you’re as old as I am, perhaps I can give you some childhood perspective as to what that means. The movies ‘The Three Amigos’, ‘An American Tail’ and the first ‘Highlander’ came out in theaters that year.</p>
+<p>In any case, some advances have been made since then (with some tradeoffs too) and it may surprise you to know that Git actually ships with 4 built in diff algorithms it can use: <code>myers</code>, <code>minimal</code>, <a href="https://blog.jcoglan.com/2017/09/19/the-patience-diff-algorithm/?utm_source=chatgpt.com" target="_blank" rel="noopener noreferrer"><code>patience</code></a> and <code>histogram</code>.</p>
+<p>Almost certainly what you want to be using is the <code>histogram</code> algorithm (an incremental improvement on ‘patience’), rather than the default of 'myers'. You can globally change it like this:</p>
+<pre><code>git config --global diff.algorithm histogram
+</code></pre>
+<p>Here is an example of simple code movement diffed in <code>myers</code> vs <code>histogram</code>, to give a short taste of how it can be a bit smarter:</p>
+<p>Let's say we move a css class below a similar one, change it a little, and then run <code>git diff</code> with the default <code>myers</code> algorithm. We may get something like this:</p>
+<p><img alt="" loading="lazy" width="1200" height="800" decoding="async" data-nimg="1" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" srcSet="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.07.58%25402x.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.07.58%25402x.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.07.58%25402x.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.07.58%25402x.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.07.58%25402x.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.07.58%25402x.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.07.58%25402x.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.07.58%25402x.png&w=3840&q=75 3840w" src="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.07.58%25402x.png&w=3840&q=75"></p>
+<p>Ok, a little confusing. Here is what <code>histogram</code> would give us in the same scenario:</p>
+<p><img alt="" loading="lazy" width="1200" height="800" decoding="async" data-nimg="1" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" srcSet="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.08.28%25402x.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.08.28%25402x.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.08.28%25402x.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.08.28%25402x.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.08.28%25402x.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.08.28%25402x.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.08.28%25402x.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.08.28%25402x.png&w=3840&q=75 3840w" src="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.08.28%25402x.png&w=3840&q=75"></p>
+<p>It's a bit more clear here what's actually happened.</p>
+<p>As recently as last year, Elijah (of our <a href="https://www.youtube.com/watch?v=KXPmiKfNlZE" target="_blank" rel="noopener noreferrer">Git Merge fame</a>) suggested that
+<a href="https://lore.kernel.org/git/CABPp-BEmgOAj17DozyXNaf-9CawDic4uTpMbckef3+zHf7URqQ@mail.gmail.com/" target="_blank" rel="noopener noreferrer">histogram or patience</a> might make better defaults, in addition to Felipe's Spring Cleaning suggestion of the same thing, but in reality it’s unlikely to get through the gauntlet anytime soon.</p>
+<p>That’s a big one, but there are also a few more smaller tweaks you can make to <code>git diff</code>:</p>
+<pre><code>git config --global diff.colorMoved plain
+git config --global diff.mnemonicPrefix true
+git config --global diff.renames true
+</code></pre>
+<p>The <code>colorMoved</code> was also in the Spring Cleaning suggestion list, so it also should probably be a default change.</p>
+<p>Here is an example of the previous code movement with the <code>colorMoved</code> turned on:</p>
+<p><img alt="" loading="lazy" width="1200" height="800" decoding="async" data-nimg="1" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" srcSet="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.14.15%25402x.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.14.15%25402x.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.14.15%25402x.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.14.15%25402x.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.14.15%25402x.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.14.15%25402x.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.14.15%25402x.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.14.15%25402x.png&w=3840&q=75 3840w" src="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-16.14.15%25402x.png&w=3840&q=75"></p>
+<p>You can see actually the difference between the moved code and the added line. With <code>colorMoved</code> it will show code movement in different colors then added and removed lines.</p>
+<p>The <code>diff.renames</code> option will detect if a file has been renamed, which is generally good (if slightly more expensive) and <code>diff.mnemonicPrefix</code> will replace the <code>a/</code> and <code>b/</code> in your diff header output with where the diff is coming from, so <code>i/</code> (index), <code>w/</code> (working directory) or <code>c/</code> commit.</p>
+<p>So if I diff a change in my index to my working directory I get this as my diff header instead:</p>
+<div><p>DIFF</p><pre><code><span>❯ git diff
+</span>diff --git i/apps/web/page.js w/apps/web/page.js
+<!-- -->index 7568be2ef..b9e9a00d7 100644
+<span></span><span>--- i/apps/web/page.js</span><span>
+</span><span></span><span>+++ w/apps/web/page.js</span><span>
+</span></code></pre></div>
+<p>A little difficult to see in this example perhaps, but you can tell which side is from the index and which is from the working directory by the leading path names. It’s really subtle, but I like it.</p>
+
+<p>One of the things that has continued to confuse and frustrate me since the very early days of Git is setting up tracking branches properly. When I push, where does it push, or does it push at all?</p>
+<p>There are three updated push settings that I think make for a much nicer default experience. The first (<code>push.default simple</code>) has been the new default since Git 2.0, but the others still need to be set explicitly.</p>
+<pre><code>git config --global push.default simple # (default since 2.0)
+git config --global push.autoSetupRemote true
+git config --global push.followTags true
+</code></pre>
+<p>This has always been a bit of a pain in Git. The new <code>simple</code> default is built more or less for centralized workflows and by default pushes the current branch to the same name on the remote. I think this is a pretty sensible default.</p>
+<p>However, if that branch does not exist and there is no tracking branch setup, you’ll still get this error:</p>
+<pre><code>$ git push
+fatal: The current branch my-branch-name has no upstream branch.
+To push the current branch and set the remote as upstream, use
+
+    git push --set-upstream origin my-branch-name
+</code></pre>
+<p>I have to imagine that you have all seen this roughly <em>one million</em> times.</p>
+<p>If you set <code>push.autoSetupRemote</code> to true, then you won’t get this error anymore. If the upstream is not set, it will automatically set it. I cannot tell you how much I love this setting.</p>
+<p>Finally, the <code>push.followTags</code> setting will push all tags that you have locally that aren’t on the server, every time you push anything. I’ve been bitten by this a few times - if you ever create tags locally, set this up so you don’t have to worry about other people not seeing them.</p>
+
+<p>It can be argued that it’s nice to keep some historical local copies of branches and tags that used to be on the server but are not any longer, but I don’t really buy that.</p>
+<p>Personally, I think the default behavior of Git should be to make your remote references as close to what is on the remote as possible. Prune stuff that’s gone, etc.</p>
+<p>So, I think these fetch settings should be the default:</p>
+<pre><code>git config --global fetch.prune true
+git config --global fetch.pruneTags true
+git config --global fetch.all true
+</code></pre>
+<p>Really all that this does is make sure we delete <code>origin/blah</code> if <code>blah</code> is deleted on the server, and also do it automatically for all the remotes that we have configured. Seems pretty reasonable to me.</p>
+
+<p>This next batch of settings are generally harmless and occasionally helpful.</p>
+<p>I’m not sure I would necessarily change the defaults, but I also don’t think it would hurt anyone and in many cases would be more helpful, so I’m including them in my list.</p>
+
+<p>As I explained in great length in my <a href="/why-is-git-autocorrect-too-fast-for-formula-one-drivers/">previous post</a>, there is a rather nice feature in Git where if your fingers trip up while typing a command, it will guess what you meant and try to run it.</p>
+<p>The default is to not do this at all. What I rather prefer is to guess and prompt you.</p>
+<pre><code>git config --global help.autocorrect prompt
+</code></pre>
+<p>If you want to read about this setting, it’s reasoning and it’s history ad nauseam, I have <a href="/why-is-git-autocorrect-too-fast-for-formula-one-drivers/">just the post for you</a>.</p>
+
+<p>This was also one of the suggestions in the Spring Cleaning list, I think mostly because it just adds more information to the context you can reference when you write your commit message in your editor.</p>
+<p>By default, a <code>git commit</code> will give you a message that looks something like this:</p>
+<p><img alt="" loading="lazy" width="1200" height="800" decoding="async" data-nimg="1" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" srcSet="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.03.26%25402x.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.03.26%25402x.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.03.26%25402x.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.03.26%25402x.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.03.26%25402x.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.03.26%25402x.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.03.26%25402x.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.03.26%25402x.png&w=3840&q=75 3840w" src="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.03.26%25402x.png&w=3840&q=75"></p>
+<p>Where there is just a list of files that were changed. If you set <code>commit.verbose</code> to be true, it will put the whole <code>diff</code> output in there for you to reference as you write your message.</p>
+<pre><code>git config --global commit.verbose true
+</code></pre>
+<p>Here’s what it looks like now when you go to commit:</p>
+<p><img alt="" loading="lazy" width="1200" height="800" decoding="async" data-nimg="1" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" srcSet="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.01.54%25402x.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.01.54%25402x.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.01.54%25402x.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.01.54%25402x.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.01.54%25402x.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.01.54%25402x.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.01.54%25402x.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.01.54%25402x.png&w=3840&q=75 3840w" src="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-20-at-17.01.54%25402x.png&w=3840&q=75"></p>
+<p>All of this will be removed from the commit message (everything under the hilarious <code>-- &gt;8 --</code> "scissors" line), but it can give you much more context in writing your message.</p>
+
+<p>This setting is only useful if you’re doing rebases with conflicts over and over again. It’s not the most common situation, but there is not really an issue if it’s turned on and never used.</p>
+<pre><code>git config --global rerere.enabled true
+git config --global rerere.autoupdate true
+</code></pre>
+<p>The <code>enabled</code> option will make sure it records the before and after states of rebase conflicts and the <code>autoupdate</code> will automatically re-apply the resolutions if it sees them again. I wrote about this at some length <a href="/git-tips-1-theres-a-git-config-for-that/#reuse-recorded-resolution">over here</a>, so I won’t bore you with the recap any further.</p>
+
+<p>This is pretty dumb, but as there is a <code>~/.gitconfig</code> file with global values, it would be cool if there were a <code>~/.gitignore</code> file with global values. This setting accomplishes that:</p>
+<pre><code>git config --global core.excludesfile ~/.gitignore
+</code></pre>
+<p>In reality, this is sort of unnecessary, since Git will already look for global ignore values in the following two places: <code>~/git/ignore</code> and <code>~/.config/git/ignore</code> but since those are a little obscure, I feel like it’s nice to have this more guessable path.</p>
+
+<p>This section mostly has to do with the use case where you're fixing up and squashing your commits. If you don't know what that is, please check out our previous blog post on <a href="/git-autosquash/">autosquashing</a>.</p>
+<p>However, if you are squashing and rebasing a lot (or even occasionally), these settings could help and certainly won't hurt things.</p>
+<pre><code>git config --global rebase.autoSquash true
+git config --global rebase.autoStash true
+git config --global rebase.updateRefs true
+</code></pre>
+<p>The <code>updateRefs</code> setting should almost certainly be a default, honestly. It just takes stacked refs in a branch and makes sure they're also moved when a branch is rebased.</p>
+<p>If you want to learn a tiny bit more about how to use fixup, autosquash and updateRefs, it's probably easiest to watch a few minutes of a talk where I go over it here:</p>
+<figure><iframe src="https://www.youtube.com/embed/Md44rcw13k4?feature=oembed" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowFullScreen="" title="So You Think You Know Git Part 2 - DevWorld 2024"></iframe></figure>
+
+<p>The next group is based on your personal taste, but most people don’t know they exist and a lot of people may find them useful. They are commented out in my TLDR settings.</p>
+
+<p>So, while this is brought up in the Spring Cleaning thread as something that might want to be the new default, I'm not sure that all of you would agree.</p>
+<p>When you have a merge conflict in Git, instead of inserting the conflict markers from left and right, you can ask it to insert what the base of it looked like too. Sometimes this can be really useful, but some people can find it pretty annoying.</p>
+<pre><code>git config --global merge.conflictstyle zdiff3
+</code></pre>
+<p>There have been discussions on the Git mailing list to make this the default and actually GitButler uses the <code>diff3</code> strategy when dealing with merge conflict markers and to be totally honest, not all of us love it.</p>
+<p>Here is an example of a simple merge conflict marker you might get in a file when doing a merge or rebase:</p>
+<p><img alt="" loading="lazy" width="1200" height="800" decoding="async" data-nimg="1" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" srcSet="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.47.34%25402x.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.47.34%25402x.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.47.34%25402x.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.47.34%25402x.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.47.34%25402x.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.47.34%25402x.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.47.34%25402x.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.47.34%25402x.png&w=3840&q=75 3840w" src="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.47.34%25402x.png&w=3840&q=75"></p>
+<p>With the <code>merge.conflictStyle zdiff3</code> setting, it would look like this:</p>
+<p><img alt="" loading="lazy" width="1200" height="800" decoding="async" data-nimg="1" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" srcSet="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.48.36%25402x.png&w=640&q=75 640w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.48.36%25402x.png&w=750&q=75 750w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.48.36%25402x.png&w=828&q=75 828w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.48.36%25402x.png&w=1080&q=75 1080w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.48.36%25402x.png&w=1200&q=75 1200w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.48.36%25402x.png&w=1920&q=75 1920w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.48.36%25402x.png&w=2048&q=75 2048w, /_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.48.36%25402x.png&w=3840&q=75 3840w" src="/_next/image?url=https%3A%2F%2Fd2m1ukvwmu7gz4.cloudfront.net%2Fimages%2Fimages-2025-02-CleanShot-2025-02-21-at-11.48.36%25402x.png&w=3840&q=75"></p>
+<p>Essentially, in addition to the <code>&lt;&lt;&lt;&lt;&lt;&lt;</code> and <code>&gt;&gt;&gt;&gt;&gt;&gt;</code> sections that show you how you changed the block and how the other person changed it, it adds a <code>|||||||</code> block that shows you what the block looked like before either of you changed it.</p>
+<p>That extra context (what that section looked like before either side modified it) can sometimes be super useful, but often it's just more data and somewhat confusing.</p>
+<p>Really, it's up to you if you prefer more data there.</p>
+<div><p><span>⚠️</span></p><p>Git has nearly always had <code>diff3</code> as a strategy. I'm recommending <code>zdiff3</code> here, which stands for "<strong>zealous diff3</strong>" and is slightly better, but only available since Git 2.35 (Jan 2022). If you have an older Git version, just remove the "z".</p></div>
+
+<p>The merge versus rebase debate is of course one that may never be agreed upon, but most of us have a preference. However, you may not know that you can set the <code>git pull</code> default so that it will only do one or the other. No need for <code>git pull --rebase</code>, you can make it the default:</p>
+<pre><code>git config --global pull.rebase true
+</code></pre>
+<p>This is a personal decision, but as I’ve migrated to the rebase only camp recently, it is in fact in my config.</p>
+
+<p>Again, this is really only a thing for larger repositories, and maybe you don’t want filesystem monitors running all over the place, but it can make things like <code>git status</code> much faster if you have big working directories.</p>
+<p>Maybe it shouldn’t be a default, but it’s not very bad and can make a big difference. Maybe <code>git clone</code> should ask you if you want to set it or not. Whatever, it’s an option for you.</p>
+<pre><code>git config --global core.fsmonitor true
+git config --global core.untrackedCache true
+</code></pre>
+<p>This will run a filesystem monitor (per repository) that notices file changes and updates a cache so that <code>git status</code> doesn’t have to crawl every file and see if anything changed via a thousand <code>mtime</code> stat calls, it can just look at a simple log of file changes.</p>
+<div><p><span>⚠️</span></p><p>Be aware that this will run a single process <strong>per repository</strong> that you are active in, which can be a lot. They mostly don't do much as they're event based, so it shouldn't affect memory or CPU noticeably, even with hundreds of them, but it's something to keep in mind. You can also leave out the <code>--global</code> and just enable it for your larger repos.</p></div>
+
+<p>Hopefully this has been a useful reference and maybe you learned some new Git config things, some of which should almost certainly already be the defaults, which isn’t even a controversial option in the Git mailing list community.</p>
+<p>There are lots of other ways to pimp your Git ride (aliases, cool external <a href="https://github.com/dandavison/delta" target="_blank" rel="noopener noreferrer">pager</a> and <a href="https://github.com/so-fancy/diff-so-fancy" target="_blank" rel="noopener noreferrer">diff</a> tools, things like that) but I thought it would be best to just stick to globally useful and relatively simple vanilla Git settings.</p>
+<p>Hope you enjoyed this and see you next time!</p></div></div></article></body></html>

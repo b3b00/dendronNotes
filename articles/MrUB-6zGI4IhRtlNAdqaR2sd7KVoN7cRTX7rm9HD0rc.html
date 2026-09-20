@@ -1,0 +1,244 @@
+<html><head><meta charset="utf-8"><title>Introducing Incrementalist, an Incremental .NET Build Tool for Large Solutions</title><meta content="Aaron Stannard" name="author"><meta content="Reduced Akka.NET's average build time from ~1.25hrs to 15 minutes." name="description"><meta content="https://petabridge.com/blog/introducing-incrementalist/?utm_source=bonobopress" name="dendron:source-url"><meta content="10072" name="dendron:length"><meta content="8.04" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div>
+          <p>We blog a ton about <a href="https://getakka.net/">Akka.NET</a> here, but Petabridge really is a <strong>.NET</strong> open source company. Throughout our work on Akka.NET we create many other OSS tools in support of much more general purpose .NET use cases, such as <a href="https://www.youtube.com/watch?v=9WXY9rP8hMw">the .NET Runtime Dashboards we touted on our YouTube channel a couple of weeks ago</a> or, back in the day, tools like <a href="../introduction-to-nbench/">NBench</a><sup id="fnref:1" role="doc-noteref"><a href="#fn:1" rel="footnote">1</a></sup>.</p>
+
+<p>Today though we’re writing about a brand new tool we’ve been working on for the past several months: <a href="https://github.com/petabridge/Incrementalist/releases/tag/1.0.0">Incrementalist v1.0</a>, a command-line tool that leverages git and Roslyn solution analysis to <strong>drastically</strong> reduce build times for large .NET solutions and monorepos.</p>
+
+<p><a href="https://github.com/petabridge/Incrementalist/"><img src="/images/2025/incrementalist/incrementalist-opengraph.png" alt="Incrementalist - a Git-based incremental build and testing platform for .NET and .NET Core."></a></p>
+
+<p>We’ve been using older versions of Incrementalist in production inside the Akka.NET build pipeline since 2019 - it cuts our average pull request build time down from about 1 hour and 15 minutes to ~15 minutes. Those older versions of Incrementalist just spat out the smallest possible build graphs as a <code>.csv</code> file - it was up to you to parse it and use the data accordingly.</p>
+
+<p>Incrementalist v1.0 is a totally different animal: it runs the <code>dotnet</code> commands for you.</p>
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/XF5amRAsJpQ?si=eoZe3VBBnub0e0_z" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+<p>For example, from Akka.NET’s live build system:</p>
+
+<div><pre><code>dotnet incrementalist run <span>--config</span> .incrementalist/testsOnly.json <span>--</span> <span>test</span> <span>-c</span> Release <span>--no-build</span> <span>--framework</span> net8.0 <span>--logger</span>:trx <span>--results-directory</span> TestResults
+</code></pre></div>
+
+<p>This call:</p>
+
+<ol>
+  <li>Invokes the <code>run</code> verb - which means we’re going to execute a <code>dotnet</code> command against all of the matching projects (C# or F#);</li>
+  <li>Uses the <code>--config</code> parameter to load a non-default <a href="https://github.com/petabridge/Incrementalist/blob/dev/docs/config.md">Incrementalist configuration file</a>; and</li>
+  <li>Then executes everything after the <code>--</code> as a <code>dotnet [verb] [impactedProjectFile.*proj]</code></li>
+</ol>
+
+<p>Let’s dive in and learn more.</p>
+
+<!-- more -->
+
+<h2 id="installation">Installation</h2>
+
+<p>You can install <a href="https://www.nuget.org/packages/Incrementalist.Cmd">Incrementalist.Cmd</a> either as a global or local <code>dotnet tool</code>:</p>
+
+<h3 id="global-tool">Global Tool</h3>
+
+<div><pre><code>dotnet tool <span>install</span> <span>--global</span> Incrementalist.Cmd <span>--version</span> 1.0.0
+</code></pre></div>
+
+<p>This will make <code>incrementalist</code> available everywhere for the current user on this machine.</p>
+
+<h3 id="local-tool">Local Tool</h3>
+
+<p>I personally prefer local <code>dotnet tool</code> installations because they tend to be more CI/CD and <a href="https://github.com/dependabot">Dependabot</a>-friendly:</p>
+
+<div><pre><code>dotnet new tool-manifest <span># if you haven't already created a .config/dotnet-tools.json</span>
+dotnet tool <span>install </span>Incrementalist.Cmd
+</code></pre></div>
+
+<p>This will create a <code>.config/dotnet-tools.json</code> at the root of your repository, which will look like:</p>
+
+<div><pre><code><span>{</span><span>
+  </span><span>"version"</span><span>:</span><span> </span><span>1</span><span>,</span><span>
+  </span><span>"isRoot"</span><span>:</span><span> </span><span>true</span><span>,</span><span>
+  </span><span>"tools"</span><span>:</span><span> </span><span>{</span><span>
+    </span><span>"incrementalist.cmd"</span><span>:</span><span> </span><span>{</span><span>
+      </span><span>"version"</span><span>:</span><span> </span><span>"1.0.0"</span><span>,</span><span>
+      </span><span>"commands"</span><span>:</span><span> </span><span>[</span><span>
+        </span><span>"incrementalist"</span><span>
+      </span><span>],</span><span>
+      </span><span>"rollForward"</span><span>:</span><span> </span><span>false</span><span>
+    </span><span>}</span><span>
+  </span><span>}</span><span>
+</span><span>}</span><span>
+</span></code></pre></div>
+
+<p>And just as a “FYI” - I will almost always set <code>rollForward</code> to <code>true</code> because that will allow this tool to automatically run on newer versions of the .NET runtime without needing to be updated by the vendor first.</p>
+
+<h2 id="how-it-works">How It Works</h2>
+
+<p>We have a fairly detailed “<a href="https://github.com/petabridge/Incrementalist/blob/dev/docs/how-it-works.md">How Incrementalist Works</a>” page in the Incrementalist documentation, but just to save you a click - it works like this:</p>
+
+<pre><code>flowchart TD
+    A[Your Git Changes] --&gt; B[Incrementalist]
+    B --&gt; C{Analyze Changes}
+    C --&gt;|Solution-wide changes| D[Build All Projects]
+    C --&gt;|Specific changes| E[Build Affected Projects]
+    
+    style B fill:#f9f,stroke:#333,stroke-width:4px
+</code></pre>
+
+<p>When Incrementalist launches, it’ll first consider the verb you’re using: <code>create-config</code>, <code>list-affected-folders</code>, or most popularly: <code>run</code>. We’ll focus on the <code>run</code> command because that’s the real benefit of this tool.</p>
+
+<p>Suppose you have two git branches, using Akka.NET as an example:</p>
+
+<ul>
+  <li><code>dev</code> - this is our “trunk” that all pull requests get merged into<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" rel="footnote">2</a></sup>.</li>
+  <li><code>feature/{name}</code> - this is a feature branch that you are currently doing some work on.</li>
+</ul>
+
+<p>Incrementalist’s first job is to determine which files have been affected between <code>feature/{name}</code> compared to <code>dev</code> - and we specify the base branch name either on the <code>dotnet incrementalist</code> command line or in a configuration file.</p>
+
+<p>So imagine you have the following solution structure in your project:</p>
+
+<div><pre><code>root
+├── src
+│   ├── A
+│   │   └── A.csproj
+│   ├── B
+│   │   ├── B.csproj  ← Depends on A
+│   ├── Directory.Build.props
+│   └── Directory.Packages.props
+├── tests
+│   ├── A.Tests
+│   │   └── A.Tests.csproj
+│   └── B.Tests
+│       └── B.Tests.csproj
+├── YourApp.sln
+└── global.json
+</code></pre></div>
+
+<p>You modify some files in <code>B.Tests.csproj</code> - that’s going to show up on the <code>git diff</code> performed by Incrementalist. Simple enough.</p>
+
+<p>The next stage of analysis is where Roslyn enters the picture - Incrementalist is going to:</p>
+
+<ol>
+  <li>Load <code>YourApp.sln</code>;</li>
+  <li>Determine which projects have modified files; and</li>
+  <li>Compute all of the dependencies of modified projects; and</li>
+  <li>Construct the smallest set of projects to build possible given the dependencies and other rules specified in the Incrementalist configuration file or CLI arguments.</li>
+</ol>
+
+<p>In this case, <code>B.Tests.csproj</code> is the only project that would be run.</p>
+
+<p>However, consider the following scenarios:</p>
+
+<ol>
+  <li>
+    <p>Changes to <code>B.csproj</code> - this will trigger both <code>B.csproj</code> and <code>B.Tests.csproj</code> to have their <code>dotnet</code> command executed; no commands for <code>A.csproj</code> or <code>A.Tests.csproj</code> will be carried out.</p>
+  </li>
+  <li>
+    <p>Changes to <code>A.csproj</code> - Incrementalist will quickly determine that every other project in the solution has either a direct dependency on <code>A.csproj</code> or a transitive dependency on it. This will result in a full solution build.</p>
+  </li>
+  <li>
+    <p>Changes to a “solution-wide” file: <code>YourApp.sln</code> itself, <code>global.json</code>, <code>Directory.Build.props</code>, <code>Directory.Packages.props</code>, <em>or any other files imported by a solution-wide file</em> (such as a custom <code>.props</code> or <code>.targets</code> file) will trigger a solution-wide build.</p>
+  </li>
+</ol>
+
+<p>Incrementalist works from the impacted files to determine the impact they have on the projects. It does not consider code-level changes: “<code>Assembly.Class.Method</code> was updated so only test all objects that might transitively be impacted by this” - we don’t bother with that because it’s error-prone and <em>tremendously expensive</em> to compute. Instead, Incrementalist sticks with project-level dependencies.</p>
+
+<h2 id="advanced-configuration-and-use-cases">Advanced Configuration and Use Cases</h2>
+
+<h3 id="configuration-files">Configuration Files</h3>
+
+<p><a href="https://github.com/petabridge/Incrementalist/blob/dev/docs/config.md">Incrementalist supports configuration files</a> and by default will use one if <code>.incrementalist/incrementalist.json</code> exists.</p>
+
+<p>If you want to generate a configuration file for your own use, we have a built-in verb to do just that:</p>
+
+<div><pre><code>dotnet incrementalist create-config <span>-b</span> dev <span>--verbose</span> <span>--parallel</span>
+</code></pre></div>
+
+<p>This will create or overwrite the configuration file at <code>.incrementalist/incrementalist.json</code> with the following content:</p>
+
+<div><pre><code><span>{</span><span>
+  </span><span>"gitBranch"</span><span>:</span><span> </span><span>"dev"</span><span>,</span><span>
+  </span><span>"verbose"</span><span>:</span><span> </span><span>true</span><span>,</span><span>
+  </span><span>"runInParallel"</span><span>:</span><span> </span><span>true</span><span>
+</span><span>}</span><span>
+</span></code></pre></div>
+
+<blockquote>
+  <p>Incrementalist configuration values can be overwritten by CLI arguments.</p>
+
+  <p>If a configuration value is specified both in the file and on the CLI, the CLI always wins.</p>
+</blockquote>
+
+<p>If you want to create a custom configuration file, you can specify a file path for it here:</p>
+
+<div><pre><code>dotnet incrementalist create-config <span>-b</span> otherBranch <span>--verbose</span> <span>--parallel</span> <span>--config</span> .incrementalist/customConfig.json
+</code></pre></div>
+
+<h3 id="globbing-and-output-files">Globbing and Output Files</h3>
+
+<p>Incrementalist also supports filtering build results - we have to use this in the Akka.NET project because none of our tests that depend on <a href="https://testcontainers.com/">Testcontainers</a> can run on Windows build agents due to lack of Linux guest OS Docker support.</p>
+
+<div><pre><code><span>{</span><span>
+  </span><span>"outputFile"</span><span>:</span><span> </span><span>"bin/output/incrementalist.txt"</span><span>,</span><span>
+  </span><span>"gitBranch"</span><span>:</span><span> </span><span>"dev"</span><span>,</span><span>
+  </span><span>"verbose"</span><span>:</span><span> </span><span>false</span><span>,</span><span>
+  </span><span>"timeoutMinutes"</span><span>:</span><span> </span><span>20</span><span>,</span><span>
+  </span><span>"continueOnError"</span><span>:</span><span> </span><span>true</span><span>,</span><span>
+  </span><span>"runInParallel"</span><span>:</span><span> </span><span>false</span><span>,</span><span>
+  </span><span>"failOnNoProjects"</span><span>:</span><span> </span><span>false</span><span>,</span><span>
+  </span><span>"skip"</span><span>:</span><span> </span><span>[</span><span>
+    </span><span>"**/.Tests.MultiNode.csproj"</span><span>,</span><span>
+    </span><span>"src/examples/**"</span><span>
+  </span><span>],</span><span>
+  </span><span>"target"</span><span>:</span><span> </span><span>[</span><span>
+    </span><span>"**/*.Tests.csproj"</span><span>,</span><span>
+    </span><span>"**/**/Akka.Streams.Tests.TCK.csproj"</span><span>,</span><span>
+    </span><span>"**/.Tests.fsproj"</span><span>
+  </span><span>]</span><span>
+</span><span>}</span><span>
+</span></code></pre></div>
+
+<p>What this configuration does:</p>
+
+<ol>
+  <li>The CSV build graphs detected by Incrementalist (and filtered by the globs) will be emitted to <code>bin/output/incrementalist.txt</code> regardless of whether the <code>dotnet</code> tasks succeed or fail.</li>
+  <li>We will give each <code>dotnet</code> invocation up to 20 minutes to succeed before we cancel it.</li>
+  <li>We have disabled assembly parallelization via <code>"runInParallel": false</code>.</li>
+  <li>We will always exclude any projects that match the <code>skip</code> glob criteria, even if they have changes AND even if Incrementalist has recommended a solution-wide build.</li>
+  <li>We will only execute <code>dotnet</code> commands on projects that match the <code>target</code> criteria - only <em>one</em> of these criteria has to match in order for a project to be included.</li>
+</ol>
+
+<p>You can then tell Incrementalist to run this custom configuration inside your build pipelines:</p>
+
+<div><pre><code>dotnet incrementalist run <span>--config</span> .incrementalist/customConfig.json <span>--</span> <span>test</span> <span>-c</span> Release
+</code></pre></div>
+
+<h3 id="dry-runs-and-previewing-execution">Dry Runs and Previewing Execution</h3>
+
+<p>One thing I absolutely loathe is testing <code>.yaml</code> files for Azure DevOps and GitHub Actions. It’s one of the worst possible feedback loops in software development: waiting to find out what your CI/CD system is going to actually do with a given set of changes.</p>
+
+<p>Therefore, I like being able to preview things locally <em>and quickly</em>. Therefore, the <code>--dry</code> parameter on the <code>incrementalist run</code> command will help us do that:</p>
+
+<div><pre><code>dotnet incrementalist run <span>--config</span> .incrementalist/testsOnly.json <span>--</span> <span>test</span> <span>-c</span> Release <span>--no-build</span> <span>--framework</span> net8.0 <span>--logger</span>:trx <span>--results-directory</span> TestResults
+</code></pre></div>
+
+<p>Let’s see what this does on a <a href="https://github.com/akkadotnet/akka.net/pull/7541">fairly beefy (in terms of project impact) Akka.NET pull request</a>:</p>
+
+<p><a href="/images/2025/incrementalist/incrementalist-dry-run.png"><img src="/images/2025/incrementalist/incrementalist-dry-run.png" alt="Incrementalist `--dryrun` results on a large Akka.NET pull request"></a>
+<a href="/images/2025/incrementalist/incrementalist-dry-run.png"><em>Click here for a full-sized image</em></a></p>
+
+<p>We can see that Incrementalist determined that 69 projects would be impacted, and it listed them all, but then after glob filtering was applied we’d only be running against 24 of them. It took Incrementalist about 40 seconds to do this on my computer, which is not bad considering that it has to analyze the ~100 project solution without the benefit of IDE caching.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>So there you have it. If you liked this post, give <a href="https://github.com/petabridge/Incrementalist/">Incrementalist a star on GitHub</a> and then take it for a spin in your own projects! Let us know if there’s anything we can do to improve it for you and your use cases too.</p>
+
+<p>And if you want to see some more real-world examples of where Incrementalist is used, we’ve added some of those to the documentation here: “<a href="https://github.com/petabridge/Incrementalist/blob/dev/docs/examples.md">Real-World Uses of Incrementalist</a>”</p>
+
+<div role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p><a href="https://nbench.io/">NBench</a> is still used in some of our projects, but we’ve largely stopped using it in favor of <a href="https://benchmarkdotnet.org/">BenchmarkDotNet</a> these days.&#160;<a href="#fnref:1" role="doc-backlink">↩</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>Your repository’s trunk branch might be called <code>master</code> or <code>main</code>. Akka.NET’s projects all use <code>dev</code>.&#160;<a href="#fnref:2" role="doc-backlink">↩</a></p>
+    </li>
+  </ol>
+</div>
+
+        </div></div></article></body></html>

@@ -1,0 +1,260 @@
+<html><head><meta charset="utf-8"><title>Présentation des notifications push</title><meta content="Présentation des notifications push, des raisons pour lesquelles vous pourriez les utiliser et de leur fonctionnement." name="description"><meta content="https://web.dev/articles/push-notifications-overview?hl=fr" name="dendron:source-url"><meta content="12458" name="dendron:length"><meta content="9.515" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div has-sidebar="" id="main-content" role="main">
+          
+          <devsite-content>
+            
+              
+
+
+
+
+
+
+
+
+
+
+<article>
+  
+  
+  
+  
+  
+    
+  
+
+  
+  
+    <h2 tabindex="-1">
+      Présentation des notifications push
+  
+      
+    </h2>
+  
+  
+
+  <devsite-toc depth="2" devsite-toc-embedded="">
+  </devsite-toc>
+  
+    
+  <div>
+
+  
+    
+    
+    
+
+
+
+
+<p>Présentation des notifications push, de leurs avantages et de leur fonctionnement.</p>
+
+<div translate="no">
+        
+          <p><img alt="Kayce Basques" decoding="async" height="64" loading="lazy" src="https://web.dev/images/authors/kaycebasques.jpg?hl=fr" width="64"></p>
+      </div>
+
+<h2 data-text="Que sont les notifications push ?" id="what" tabindex="-1">Que sont les notifications push ?</h2>
+
+<p>Les messages push vous permettent d'attirer l'attention de vos utilisateurs sur des informations, même lorsqu'ils n'utilisent pas votre site Web. Ils sont appelés messages <strong>push</strong> , car vous pouvez "pousser" des informations vers vos utilisateurs même lorsqu'ils ne sont pas actifs. Comparez <a href="https://en.wikipedia.org/wiki/Push_technology">la technologie push</a> à <a href="https://en.wikipedia.org/wiki/Pull_technology">la technologie pull</a> pour mieux comprendre ce
+concept.</p>
+
+<p>Les notifications présentent de petites quantités d'informations à un utilisateur. Les sites Web peuvent utiliser des notifications pour informer les utilisateurs d'événements importants et urgents, ou d'actions qu'ils doivent effectuer. L'apparence des notifications varie selon les plates-formes :</p>
+
+<figure>
+  <img alt="Exemples de notifications sur macOS et Android." height="361" sizes="(max-width: 840px) 100vw, 856px" src="https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836.png?hl=fr" srcset="https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_36.png?hl=fr 36w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_48.png?hl=fr 48w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_72.png?hl=fr 72w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_96.png?hl=fr 96w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_480.png?hl=fr 480w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_720.png?hl=fr 720w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_856.png?hl=fr 856w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_960.png?hl=fr 960w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_1440.png?hl=fr 1440w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_1920.png?hl=fr 1920w,https://web.dev/static/articles/push-notifications-overview/image/examples-notifications-940d01bcab836_2880.png?hl=fr 2880w" width="800">
+  <figcaption>Exemples de notifications sur macOS et Android.</figcaption>
+</figure>
+
+<p>Les messages push et les notifications sont deux technologies distinctes, mais complémentaires.
+La technologie push permet d'envoyer des messages de votre serveur aux utilisateurs, même lorsqu'ils n'utilisent pas activement votre site Web. Les notifications permettent d'afficher les informations envoyées sur l'appareil de l'utilisateur. Il est possible d'utiliser des notifications sans messagerie push. Il sera peut-être un jour possible d'utiliser des messages push sans notifications visibles par l'utilisateur (<strong>push silencieux</strong>), mais les navigateurs ne le permettent pas actuellement. En pratique, elles sont généralement utilisées ensemble.
+Un utilisateur non technique ne comprendra probablement pas la différence entre les messages push et les notifications. Dans cette collection, lorsque nous parlons de <strong>notifications push</strong> , nous faisons référence à la combinaison d'un message push suivi de son affichage sous forme de notification. Lorsque nous parlons de <strong>messages push</strong> , nous faisons référence à la technologie push seule. Et lorsque nous parlons de <strong>notifications</strong> , nous faisons référence à la technologie de notification seule.</p>
+
+<h2 data-text="Pourquoi utiliser des notifications push ?" id="why" tabindex="-1">Pourquoi utiliser des notifications push ?</h2>
+
+<ul>
+<li>Pour les utilisateurs, les notifications push sont un moyen de recevoir des informations <strong>pertinentes</strong>, <strong>précises</strong>,
+et <strong>en temps voulu</strong>.</li>
+<li>Pour vous (propriétaire d'un site Web), les notifications push sont un moyen d'accroître l'engagement des utilisateurs.</li>
+</ul>
+
+
+
+<h2 data-text="Comment fonctionnent les notifications push ?" id="how" tabindex="-1">Comment fonctionnent les notifications push ?</h2>
+
+<p>De manière générale, les principales étapes d'implémentation des notifications push sont les suivantes :</p>
+
+<ol>
+<li>Ajouter une logique client pour demander à l'utilisateur l'autorisation d'envoyer des notifications push, puis envoyer les informations d'identifiant client à votre serveur pour les stocker dans une base de données.</li>
+<li>Ajouter une logique serveur pour envoyer des messages push aux appareils clients.</li>
+<li>Ajouter une logique client pour recevoir les messages envoyés à l'appareil et les afficher sous forme de notifications.</li>
+</ol>
+
+<p>Le reste de cette page explique ces étapes plus en détail.</p>
+
+<h3 data-text="Obtenir l'autorisation d'envoyer des notifications push" id="permission" tabindex="-1">Obtenir l'autorisation d'envoyer des notifications push</h3>
+
+<p>Tout d'abord, votre site Web doit obtenir l'autorisation de l'utilisateur pour envoyer des notifications push.
+Cela doit être déclenché par un geste de l'utilisateur, par exemple en cliquant sur un bouton <strong>Oui</strong> à côté d'une invite <code dir="ltr" translate="no">Do you want to receive push notifications?</code> (Souhaitez-vous recevoir des notifications push ?). Après cette confirmation,
+appelez <a href="https://developer.mozilla.org/docs/Web/API/Notification/requestPermission"><code dir="ltr" translate="no">Notification.requestPermission()</code></a>. Le système d'exploitation ou le navigateur de l'appareil de l'utilisateur présentera probablement une interface utilisateur pour confirmer officiellement que l'utilisateur souhaite activer les notifications push. Cette interface utilisateur varie selon les plates-formes.</p>
+
+<h3 data-text="Abonner le client aux notifications push" id="subscription" tabindex="-1">Abonner le client aux notifications push</h3>
+
+<p>Une fois que vous avez obtenu l'autorisation, votre site Web doit lancer le processus d'abonnement de l'utilisateur aux notifications push. Pour ce faire, utilisez JavaScript,
+en utilisant l'<a href="https://developer.mozilla.org/docs/Web/API/Push_API">API Push</a>. Vous devrez fournir une clé d'authentification publique lors du processus d'abonnement, dont vous en apprendrez davantage plus tard. Une fois le processus d'abonnement lancé, le navigateur envoie une requête réseau à un service Web appelé service push, dont vous en apprendrez également davantage plus tard.</p>
+
+<p>Si l'abonnement a réussi, le navigateur renvoie un
+<a href="https://developer.mozilla.org/docs/Web/API/PushSubscription"><code dir="ltr" translate="no">PushSubscription</code></a>
+objet. Vous devrez stocker ces données à long terme.
+En règle générale, cela se fait en envoyant les informations à un serveur que vous contrôlez, puis en les stockant dans une base de données.</p>
+
+<p><img alt="1 Obtenez l'autorisation d'envoyer des messages push. 2. Obtenez PushSubscription. 3. Envoyez PushSubscription à votre serveur." height="213" src="https://web.dev/static/articles/push-notifications-overview/image/get-permission-send-push-bd9323129e7a5.svg?hl=fr" width="800"></p>
+
+<h3 data-text="Envoyer un message push" id="send" tabindex="-1">Envoyer un message push</h3>
+
+<p>Votre serveur n'envoie pas directement le message push à un client. C'est un <strong>service push</strong> qui le fait. Un service push est un service Web contrôlé par le fournisseur du navigateur de votre utilisateur. Lorsque vous souhaitez envoyer une notification push à un client, vous devez effectuer une requête de service Web auprès d'un service push. La requête de service Web que vous envoyez au service push est appelée <strong>requête de protocole push Web</strong>. La requête de protocole push Web doit inclure les éléments suivants :</p>
+
+<ul>
+<li>Les données à inclure dans le message.</li>
+<li>Le client auquel envoyer le message.</li>
+<li>Les instructions sur la manière dont le service push doit envoyer le message. Par exemple, vous pouvez spécifier que le service push doit cesser de tenter d'envoyer le message au bout de 10 minutes.</li>
+</ul>
+
+<p>Normalement, vous effectuez la requête de protocole push Web via un serveur que vous contrôlez.
+Bien sûr, votre serveur n'a pas besoin de construire lui-même la requête de service Web brute. Il existe des bibliothèques qui peuvent le faire pour vous, comme les
+<a href="https://github.com/web-push-libs/">bibliothèques web-push-libs</a>. Toutefois, le mécanisme sous-jacent est une requête de service Web via HTTP.</p>
+
+<p><img alt="Votre serveur envoie une requête de protocole Web Push au service de notification push, qui envoie le message à l'appareil de l'utilisateur." height="220" src="https://web.dev/static/articles/push-notifications-overview/image/your-server-sends-web-pu-55e06fc9c0017.svg?hl=fr" width="800"></p>
+
+<p>Le service push reçoit votre requête, l'authentifie et achemine le message push vers le client approprié. Si le navigateur du client est hors connexion, le service push met en file d'attente le message push jusqu'à ce que le navigateur se connecte.</p>
+
+<p>Chaque navigateur utilise le service push de son choix. En tant que développeur de site Web, vous n'avez aucun contrôle sur ce point. Ce n'est pas un problème, car la <a href="https://tools.ietf.org/html/draft-ietf-webpush-protocol">requête de protocole push Web
+est standardisée</a>.
+En d'autres termes, vous n'avez pas à vous soucier du service push utilisé par le fournisseur du navigateur. Vous devez simplement vous assurer que votre requête de protocole push Web respecte les spécifications. Entre autres, les spécifications indiquent que la requête doit inclure certains en-têtes et que les données doivent être envoyées sous forme de flux d'octets.</p>
+
+<p>Vous devez toutefois vous assurer que vous envoyez la requête de protocole push Web au service push approprié. Les données <code dir="ltr" translate="no">PushSubscription</code> que le navigateur vous a renvoyées lors du processus d'abonnement fournissent ces informations. Un objet <code dir="ltr" translate="no">PushSubscription</code> se présente comme suit :</p>
+<devsite-code><pre translate="no" dir="ltr" is-upgraded="" syntax="JSON"><code translate="no" dir="ltr"><span>{</span>
+<span>  </span><span>"endpoint"</span><span>:</span><span> </span><span>"https://fcm.googleapis.com/fcm/send/c1KrmpTuRm…"</span><span>,</span>
+<span>  </span><span>"expirationTime"</span><span>:</span><span> </span><span>null</span><span>,</span>
+<span>  </span><span>"keys"</span><span>:</span><span> </span><span>{</span>
+<span>    </span><span>"p256dh"</span><span>:</span><span> </span><span>"BGyyVt9FFV…"</span><span>,</span>
+<span>    </span><span>"auth"</span><span>:</span><span> </span><span>"R9sidzkcdf…"</span>
+<span>  </span><span>}</span>
+<span>}</span>
+</code></pre></devsite-code>
+<p>Le domaine de l'<code dir="ltr" translate="no">endpoint</code> est essentiellement le service push. Le chemin d'accès de l'<code dir="ltr" translate="no">endpoint</code> correspond aux informations d'identifiant client qui aident le service push à déterminer exactement à quel client envoyer le message.</p>
+
+<p>Les <code dir="ltr" translate="no">keys</code> sont utilisées pour le chiffrement, qui est expliqué ensuite.</p>
+
+<h4 data-text="Chiffrer le message push" id="encrypt" tabindex="-1">Chiffrer le message push</h4>
+
+<p>Les données que vous envoyez à un service push doivent être chiffrées. Cela empêche le service push de pouvoir afficher les données que vous envoyez au client.
+N'oubliez pas que le fournisseur du navigateur décide du service push à utiliser, et que ce service push pourrait théoriquement être dangereux ou non sécurisé. Votre serveur doit utiliser les <code dir="ltr" translate="no">keys</code> fournies dans le <code dir="ltr" translate="no">PushSubscription</code> pour chiffrer ses requêtes de protocole push Web.</p>
+
+<h4 data-text="Signer vos requêtes de protocole push Web" id="sign" tabindex="-1">Signer vos requêtes de protocole push Web</h4>
+
+<p>Le service push permet d'empêcher quiconque d'envoyer des messages à vos utilisateurs. Techniquement, vous n'avez pas à le faire, mais l'implémentation la plus simple sur Chrome l'exige. Elle est facultative sur Firefox. D'autres navigateurs pourront l'exiger à l'avenir.</p>
+
+<p>Ce workflow implique une clé privée et une clé publique propres à votre application. Le processus d'authentification fonctionne à peu près comme suit :</p>
+
+<ul>
+<li>Vous générez la clé privée et la clé publique en une seule fois. La combinaison de la clé privée et de la clé publique est appelée <strong>clés du serveur d'application</strong>. Vous pouvez également les voir appelées <strong>clés VAPID</strong>. <a href="https://tools.ietf.org/html/draft-thomson-webpush-vapid-02">VAPID</a> est
+la spécification qui définit ce processus d'authentification.</li>
+<li>Lorsque vous abonnez un client aux notifications push à partir de votre code JavaScript, vous fournissez votre clé publique. Lorsque le service push génère un <code dir="ltr" translate="no">endpoint</code> pour l'appareil, il associe la clé publique fournie à l'<code dir="ltr" translate="no">endpoint</code>.</li>
+<li>Lorsque vous envoyez une requête de protocole push Web, vous signez certaines informations JSON avec votre clé privée.</li>
+<li>Lorsque le service push reçoit votre requête de protocole push Web, il utilise la clé publique stockée pour authentifier les informations signées. Si la signature est valide, le service push sait que la requête provient d'un serveur avec la clé privée correspondante.</li>
+</ul>
+
+<h4 data-text="Personnaliser la diffusion du message push" id="customize" tabindex="-1">Personnaliser la diffusion du message push</h4>
+
+<p>La spécification de la requête de protocole push Web définit également des paramètres qui vous permettent de personnaliser la manière dont le service push tente d'envoyer le message push au client.
+Par exemple, vous pouvez personnaliser les éléments suivants :</p>
+
+<ul>
+<li>La valeur TTL (Time To Live) d'un message, qui définit la durée pendant laquelle le service push doit tenter de diffuser un message.</li>
+<li>L'urgence du message, ce qui est utile si le service push préserve l'autonomie de la batterie du client en ne diffusant que les messages à priorité élevée.</li>
+<li>Le sujet d'un message, qui remplace tous les messages en attente du même sujet par le dernier message.</li>
+</ul>
+
+<h3 data-text="Recevoir et afficher les messages push sous forme de notifications" id="notification" tabindex="-1">Recevoir et afficher les messages push sous forme de notifications</h3>
+
+<p>Une fois que vous avez envoyé la requête de protocole push Web au service push, celui-ci la met en file d'attente jusqu'à ce que l'un des événements suivants se produise :</p>
+
+<ol>
+<li>Le client se connecte et le service push diffuse le message push.</li>
+<li>Le message expire.</li>
+</ol>
+
+<p>Lorsqu'un navigateur client reçoit un message push, il déchiffre les données du message push
+et envoie un <code dir="ltr" translate="no">push</code> événement à votre <a href="https://web.dev/articles/service-workers-cache-storage?hl=fr#service_workers">service
+worker</a>. Un service worker est un code JavaScript qui peut s'exécuter en arrière-plan, même lorsque votre site Web n'est pas ouvert ou que le navigateur est fermé. Dans le gestionnaire d'événements <code dir="ltr" translate="no">push</code> de votre service worker, vous appelez <code dir="ltr" translate="no">ServiceWorkerRegistration.showNotification()</code> pour afficher les informations sous forme de notification.</p>
+
+<p><img alt="1. Le message arrive sur l'appareil. 2. Le navigateur réactive le service worker. 3. L'événement push est envoyé." height="238" src="https://web.dev/static/articles/push-notifications-overview/image/message-arrives-device-a6799c98fd39b.svg?hl=fr" width="800"></p>
+
+<h2 data-text="Étapes suivantes" id="where_to_go_next" tabindex="-1">Étapes suivantes</h2>
+
+<ul>
+<li>Présentation des notifications push sur le Web</li>
+<li><a href="https://web.dev/articles/push-notifications-how-push-works?hl=fr">Fonctionnement de la technologie push</a></li>
+<li><a href="https://web.dev/articles/push-notifications-subscribing-a-user?hl=fr">Abonner un utilisateur</a></li>
+<li><a href="https://web.dev/articles/push-notifications-permissions-ux?hl=fr">Expérience utilisateur pour l'autorisation</a></li>
+<li><a href="https://web.dev/articles/sending-messages-with-web-push-libraries?hl=fr">Envoyer des messages avec des bibliothèques push Web</a></li>
+<li><a href="https://web.dev/articles/push-notifications-web-push-protocol?hl=fr">Protocole push Web</a></li>
+<li><a href="https://web.dev/articles/push-notifications-handling-messages?hl=fr">Gérer les messages</a></li>
+<li><a href="https://web.dev/articles/push-notifications-display-a-notification?hl=fr">Afficher une notification</a></li>
+<li><a href="https://web.dev/articles/push-notifications-notification-behaviour?hl=fr">Comportement des notifications</a></li>
+<li><a href="https://web.dev/articles/push-notifications-common-notification-patterns?hl=fr">Modèles de notifications courants</a></li>
+<li><a href="https://web.dev/articles/push-notifications-faq?hl=fr">Questions fréquentes sur les notifications push</a></li>
+<li><a href="https://web.dev/articles/push-notifications-common-issues-and-reporting-bugs?hl=fr">Problèmes courants et signalement de bugs</a></li>
+</ul>
+
+<h3 data-text="Ateliers de programmation" id="code_labs" tabindex="-1">Ateliers de programmation</h3>
+
+<ul>
+<li><a href="https://web.dev/articles/push-notifications-client-codelab?hl=fr">Créer un client de notifications push</a></li>
+<li><a href="https://web.dev/articles/push-notifications-server-codelab?hl=fr">Créer un serveur de notifications push</a></li>
+</ul>
+
+  
+
+  
+
+  
+</div>
+
+  
+    
+    
+      
+    <devsite-thumb-rating position="footer">
+    </devsite-thumb-rating>
+  
+       
+    
+    
+  
+
+  </article>
+
+
+<devsite-content-footer data-nosnippet="">
+  <p>Sauf indication contraire, le contenu de cette page est régi par une licence <a href="https://creativecommons.org/licenses/by/4.0/">Creative&#160;Commons Attribution&#160;4.0</a>, et les échantillons de code sont régis par une licence <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache&#160;2.0</a>. Pour en savoir plus, consultez les <a href="https://developers.google.com/site-policies?hl=fr">Règles du site Google&#160;Developers</a>. Java est une marque déposée d'Oracle et/ou de ses sociétés affiliées.</p>
+  <p>Dernière mise à jour le 2020/11/10&#160;(UTC).</p>
+</devsite-content-footer>
+
+
+<devsite-notification>
+</devsite-notification>
+
+
+  
+<p>
+  
+  
+    <template>
+      [[["Facile à comprendre","easyToUnderstand","thumb-up"],["J'ai pu résoudre mon problème","solvedMyProblem","thumb-up"],["Autre","otherUp","thumb-up"]],[["Il n'y a pas l'information dont j'ai besoin","missingTheInformationINeed","thumb-down"],["Trop compliqué/Trop d'étapes","tooComplicatedTooManySteps","thumb-down"],["Obsolète","outOfDate","thumb-down"],["Problème de traduction","translationIssue","thumb-down"],["Mauvais exemple/Erreur de code","samplesCodeIssue","thumb-down"],["Autre","otherDown","thumb-down"]],["Dernière mise à jour le 2020/11/10&#160;(UTC)."],[],[]]
+    </template>
+  
+</p>
+            
+          </devsite-content>
+        </div></div></article></body></html>

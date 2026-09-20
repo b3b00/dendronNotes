@@ -1,0 +1,141 @@
+<html><head><meta charset="utf-8"><title>Profiler Agent – Delegate the analysis, not the performance</title><meta content="Nik Karpinsky" name="author"><meta content="In Visual Studio 2026 we introduced Copilot Profiler Agent, a new AI-powered assistant that helps you analyze and optimize performance bottlenecks in your" name="description"><meta content="https://devblogs.microsoft.com/visualstudio/delegate-the-analysis-not-the-performance/" name="dendron:source-url"><meta content="10140" name="dendron:length"><meta content="9.955" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div>
+        <header>
+            <div>
+                <p><span>December 2nd, 2025</span>
+                                    </p>
+                <p><span><img alt="celebrate" src="https://devblogs.microsoft.com/visualstudio/wp-content/themes/devblogs-evo/images/emojis/celebrate.svg"><img alt="heart" src="https://devblogs.microsoft.com/visualstudio/wp-content/themes/devblogs-evo/images/emojis/heart.svg"></span><span>3 reactions</span>                </p>
+            </div>
+                    </header><!-- .entry-header -->
+                <div>
+                    <p><img src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2021/09/62749798106__ECECFB6D-BD1F-4F2C-8B81-B273B5F1EA3B-96x96.jpg" alt="">
+                    </p>
+                    <div>
+                                                
+
+                        <p>Principal Software Engineer Lead</p>                    </div>
+                </div>
+    </div><div id="single-wrapper">
+    
+    <article data-clarity-region="article" id="post-255047">
+        <div data-bi-area="body_article" data-bi-id="post_page_body_article">
+            <p><span lang="EN-US" xml:lang="EN-US" data-contrast="auto"><span>In Visual Studio </span><span>2026</span><span> we introduced Copilot Profiler Agent, a new AI-powered assistant that helps you analyze and optimize performance bottlenecks in your code. By combining the power of GitHub Copilot with Visual Studio’s performance profiler, you can now ask natural language questions about </span><span>performance</span><span>, get insights into hot paths, and quickly </span><span>identify</span><span> optimization opportunities. </span><span>Let’s</span><span> walk through a real-world example of how this tool can help you make meaningful performance improvements.</span></span><span data-ccp-props="{}">&#160;</span></p>
+<h2>Benchmarking a real project</h2>
+<p><span data-contrast="auto">To demonstrate the capabilities of the Copilot Profiler Agent, let’s optimize <a href="https://joshclose.github.io/CsvHelper/">CsvHelper</a>, a popular open-source project. You can follow along by cloning <a href="https://github.com/karpinsn/CsvHelper.git">my fork of the repo</a></span><span data-contrast="auto"> then checking out to right before my fix that we will detail below with <code>git checkout 435ff7c</code>. If you just want to see it in action you can watch along in our <a href="https://www.youtube.com/live/t0j6R4p_uTA?t=471s">toolbox episode</a> demonstrating this.</span></p>
+<p><span data-contrast="auto">In one of my <a href="https://devblogs.microsoft.com/visualstudio/benchmarking-with-visual-studio-profiler/">previous blog posts</a></span><span data-contrast="auto"> I added a CsvHelper.Benchmarks project that contains a benchmark for reading CSV records. This time I want to see if we can optimize writing CSV records instead. Normally I would start this investigation by creating a benchmark for the code that I want to optimize, and while we will still do that we can have Copilot do the toil work for us. In the Copilot Chat window I can ask <code>@Profiler Help me write a benchmark for the #WriteRecords method</code>. The <code>@Profiler</code> gets us talking directly with the Copilot Profiler agent and <code>#WriteRecords</code> tells it exactly the method we are interested in benchmarking.</span><span data-ccp-props="{}"> <a href="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler1Full.webp"><img src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler1Full.webp" alt="CopilotProfiler1Full image" width="1600" height="900" loading="eager" fetchpriority="high" decoding="async" srcset="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler1Full.webp 1600w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler1Full-300x169.webp 300w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler1Full-1024x576.webp 1024w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler1Full-768x432.webp 768w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler1Full-1536x864.webp 1536w" sizes="(max-width: 1082px) 100vw, 637px"></a></span></p>
+<p>From here Copilot starts creating our new benchmark, asking us if its ok to install the <a href="https://www.nuget.org/packages/Microsoft.VisualStudio.DiagnosticsHub.BenchmarkDotNetDiagnosers">profiler’s NuGet package</a>&#160;to pull information from the benchmarks when it runs it. It also models the benchmarks after any existing benchmarks that it finds so the resulting benchmark is very similar to the one we already wrote keeping things consistent with the style of the repository. Lastly, it kicks off a build to make sure everything is good.</p>
+<p><a href="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler2Full.webp"><img decoding="async" data-src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler2Full.webp" src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler2Full.webp" alt="CopilotProfiler2Full image" width="1600" height="900" srcset="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler2Full.webp 1600w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler2Full-300x169.webp 300w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler2Full-1024x576.webp 1024w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler2Full-768x432.webp 768w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler2Full-1536x864.webp 1536w" sizes="(max-width: 1082px) 100vw, 637px"></a></p>
+<p>Once it’s done, it provides some useful follow-up prompts to start the investigation. We could click one of these to launch into our investigation, though I want to edit things slightly in the benchmark.</p>
+<p><a href="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler3Full.webp"><img decoding="async" data-src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler3Full.webp" src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler3Full.webp" alt="CopilotProfiler3Full image" width="1600" height="900" srcset="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler3Full.webp 1600w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler3Full-300x169.webp 300w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler3Full-1024x576.webp 1024w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler3Full-768x432.webp 768w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler3Full-1536x864.webp 1536w" sizes="(max-width: 1082px) 100vw, 637px"></a></p>
+<p>I tweaked the benchmark to have a few more fields for us to write, in this case 2 int fields and 2 string fields. When I originally had Copilot do this, before writing it up for this blog, instead of writing to the same memory stream it wrote to a new one each time. Writing into the same memory stream is probably the better way to go about things, you win this time Copilot, but in my original PR to CsvHelper I didn’t and it should be fine.</p>
+<pre><code>public class BenchmarkWriteCsv 
+{ 
+    private const int entryCount = 10000; 
+    private readonly List records = new(entryCount); 
+
+    public class Simple 
+    { 
+        public int Id1 { get; set; } 
+        public int Id2 { get; set; } 
+        public string Name1 { get; set; } 
+        public string Name2 { get; set; } 
+    } 
+
+    [GlobalSetup] 
+    public void GlobalSetup() 
+    { 
+        var random = new Random(42); 
+        var chars = new char[10]; 
+
+        string getRandomString() 
+        { 
+            for (int i = 0; i &lt; 10; ++i) 
+                chars[i] = (char)random.Next('a', 'z' + 1); 
+            return new string(chars); 
+        } 
+
+        for (int i = 0; i &lt; entryCount; ++i) 
+        { 
+            records.Add(new Simple 
+            { 
+                Id1 = random.Next(), 
+                Id2 = random.Next(), 
+                Name1 = getRandomString(), 
+                Name2 = getRandomString(), 
+            }); 
+        } 
+    } 
+
+    [Benchmark] 
+    public void WriteRecords() 
+    { 
+        using var stream = new MemoryStream(); 
+        using var streamWriter = new StreamWriter(stream); 
+        using var writer = new CsvHelper.CsvWriter(streamWriter, CultureInfo.InvariantCulture); 
+        writer.WriteRecords(records); 
+        streamWriter.Flush(); 
+    } 
+} </code></pre>
+<h2>Getting insight into the benchmark</h2>
+<p>Now to get started with the analysis I can either ask Profiler Agent to run the benchmark or just click on the follow up prompt for <code>@Profiler Run the benchmark and analyze results</code>. From here Copilot edits my main method which at first glance might seem odd but when looking at the changes I see it made the necessary changes to use BenchmarkSwitcher so it can choose which benchmarks to run:</p>
+<pre><code>static void Main(string[] args)
+{
+    // Use assembly-wide discovery so all benchmarks in this assembly are run,
+    // including the newly added BenchmarkWriteRecords.
+    _ = BenchmarkSwitcher.FromAssembly(typeof(BenchmarkEnumerateRecords).Assembly).Run(args);
+}</code></pre>
+<p>Then it kicks off a benchmarking run and when it’s done I’m presented with a diagsession where we can begin investigating.</p>
+<h2>Using Copilot Profiler Agent to find bottlenecks</h2>
+<p>Now comes the exciting part. After running the benchmark, the Profiler agent analyzes the trace and highlights where time is spent. I can ask the Profiler Agent questions about the trace and have it explain why code is slow or why certain optimizations could help. It has already pointed out that most of the time is spent in delegate compilation and invocation, which is done for each field in the CSV record. For a record with 4 fields written 10,000 times, that means 40,000 delegate invocations. Each invocation has overhead, and this is showing up as a hot path in the profiler.</p>
+<p><a href="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler5Full.webp"><img decoding="async" data-src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler5Full.webp" src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler5Full.webp" alt="CopilotProfiler5Full image" width="1600" height="900" srcset="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler5Full.webp 1600w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler5Full-300x169.webp 300w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler5Full-1024x576.webp 1024w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler5Full-768x432.webp 768w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler5Full-1536x864.webp 1536w" sizes="(max-width: 1082px) 100vw, 637px"></a></p>
+<p>I can ask the Profiler Agent: “How can I reduce the delegate invocation overhead?” or “Why is delegate invocation slow” and the agent like a patient teacher will explain concepts and suggest fixes.</p>
+<h2>Implementing the fix</h2>
+<p>I’m going to click the <code>@Profiler Optimize library to produce a single compiled write delegate (reduce multicast invokes)</code> and see what it comes up with. The Profiler Agent makes an edit to <code>ObjectRecordWriter</code> and I can click on that in the chat window to see the diff of the changes it makes.</p>
+<p>Looking at the current implementation, the code builds a list of delegates, one for each field:</p>
+<pre><code>var delegates = new List&lt;Action&gt;();
+
+foreach (var memberMap in members)
+{
+    // ... field writing logic ...
+
+    delegates.Add(Expression.Lambda&lt;Action&gt;(writeFieldMethodCall, recordParameter).Compile());
+}
+
+var action = CombineDelegates(delegates) ?? new Action((T parameter) =&gt; { });
+return action;</code></pre>
+<p>The issue is that <code>CombineDelegates</code> creates a multicast delegate which invokes each individual delegate separately in series. Instead, Profiler Agent is suggesting we use <code>Expression.Block</code> to combine all the expressions before compiling:</p>
+<pre><code>var expressions = new List&lt;Expression&gt;(members.Count);
+
+foreach (var memberMap in members)
+{
+    // ... field writing logic ...
+
+    expressions.Add(writeFieldMethodCall);
+}
+
+if (expressions.Count == 0)
+{
+    return new Action&lt;T&gt;((T parameter) =&gt; { });
+}
+
+// Combine all field writes into a single block
+var block = Expression.Block(expressions);
+return Expression.Lambda&lt;Action&lt;T&gt;&gt;(block, recordParameter).Compile();</code></pre>
+<p>This change is small but elegant: instead of creating multiple delegates and invoking them sequentially, we create a single block expression containing all the field writes, then compile it once. Now all fields are written in a single call when we invoke the delegate for each record, with no additional delegate overhead.</p>
+<h2>Measuring the impact</h2>
+<p>After making this change, Copilot automatically reruns the benchmarks to measure the improvement. The results show approximately 24% better performance in this run with the profiler. Our previously staged <a href="https://github.com/JoshClose/CsvHelper/pull/2350">PR for CsvHelper</a> shows ~15% better performance. The CPU profiler confirms that we’ve eliminated the delegate invocation overhead and instead of 40,000 delegate calls for our 10,000 records with 4 fields each, we now have just 10,000 delegate calls.</p>
+<p><a href="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler6Full.webp"><img decoding="async" data-src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler6Full.webp" src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler6Full.webp" alt="CopilotProfiler6Full image" width="1600" height="900" srcset="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler6Full.webp 1600w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler6Full-300x169.webp 300w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler6Full-1024x576.webp 1024w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler6Full-768x432.webp 768w, https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2025/12/CopilotProfiler6Full-1536x864.webp 1536w" sizes="(max-width: 1082px) 100vw, 637px"></a></p>
+<p>This is a meaningful win for a library that’s already heavily optimized. For applications writing large CSV files with many fields, this improvement translates directly to reduced CPU time and faster processing. And because CsvHelper has millions of downloads, this optimization benefits a huge number of users. From here I went ahead and <a href="https://github.com/JoshClose/CsvHelper/pull/2350">staged the PR</a>, though Copilot helpfully provides more follow up prompts regarding the type conversion and ShouldQuote logic so that I could continue to improve performance further.</p>
+<h2>The power of Copilot Profiler Agent</h2>
+<p>What makes this workflow powerful is the combination of precise performance data from the Visual Studio Profiler with the analytical and code generation capabilities of Copilot. Instead of manually digging through CPU traces and trying to understand what the hot paths mean, you can ask natural language questions, get actionable insights, and quickly test ideas.</p>
+<p>The agent doesn’t just tell you what’s slow – it helps you understand why it’s slow and suggests concrete ways to fix it. In this case, it identified that delegate invocation overhead was the bottleneck and suggested the <code>Expression.Block</code> optimization, which is exactly the right solution for this problem. It even reran the benchmarks to confirm the optimization!</p>
+<h2>Let us know what you think</h2>
+<p>We’ve shown how the Copilot Profiler Agent can help you take a real-world project, identify performance bottlenecks through natural language queries, and make meaningful improvements backed by data. The measure/change/measure cycle becomes much faster when you can ask questions about your performance data and get intelligent answers. We’d love to hear what you think!</p>
+
+        </div><!-- .entry-content -->
+
+        <!-- AI Disclaimer -->
+            </article>
+    
+</div><div><!-- Author section -->
+            <h2>Author</h2>
+            <div><div><p><img src="https://devblogs.microsoft.com/visualstudio/wp-content/uploads/sites/4/2021/09/62749798106__ECECFB6D-BD1F-4F2C-8B81-B273B5F1EA3B-96x96.jpg" alt="Nik Karpinsky"></p><div><p>Principal Software Engineer Lead</p></div></div><p>I lead the profiling team within Visual Studio who's mission is to help answer "Why is my code slow?!?!"</p></div>        </div></div></article></body></html>

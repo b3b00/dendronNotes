@@ -1,0 +1,418 @@
+<html><head><meta charset="utf-8"><title>GitHub - ByronMayne/SourceGenerator.Foundations: A Source Generator for Source Generators. Gives out of the box support for transistent dependencies and logging right in Visual Studio</title><meta content="A Source Generator for Source Generators. Gives out of the box support for transistent dependencies and logging right in Visual Studio - ByronMayne/SourceGenerator.Foundations" name="description"><meta content="https://github.com/ByronMayne/SourceGenerator.Foundations" name="dendron:source-url"><meta content="14644" name="dendron:length"><meta content="9.84" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div data-hpc="true" containertiming="hpc"><article itemprop="text"><p dir="auto"><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/4b2539c26489e60efdbb567569e8726355bc4fdaabe1878923b386202e6d0cbb/68747470733a2f2f696d672e736869656c64732e696f2f6e756765742f762f536f7572636547656e657261746f722e466f756e646174696f6e73"><img src="https://camo.githubusercontent.com/4b2539c26489e60efdbb567569e8726355bc4fdaabe1878923b386202e6d0cbb/68747470733a2f2f696d672e736869656c64732e696f2f6e756765742f762f536f7572636547656e657261746f722e466f756e646174696f6e73" alt="Nuget" data-canonical-src="https://img.shields.io/nuget/v/SourceGenerator.Foundations"></a> <a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/bd7b291bc95589a28b55946040b743122aa53aba901cd91aba831ad4b91d576b/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f776f726b666c6f772f7374617475732f4279726f6e4d61796e652f536f7572636547656e657261746f722e466f756e646174696f6e732f2e4e4554"><img src="https://camo.githubusercontent.com/bd7b291bc95589a28b55946040b743122aa53aba901cd91aba831ad4b91d576b/68747470733a2f2f696d672e736869656c64732e696f2f6769746875622f776f726b666c6f772f7374617475732f4279726f6e4d61796e652f536f7572636547656e657261746f722e466f756e646174696f6e732f2e4e4554" alt="GitHub Workflow Status" data-canonical-src="https://img.shields.io/github/workflow/status/ByronMayne/SourceGenerator.Foundations/.NET"></a></p>
+
+<p dir="auto">Source Generators are awesome but working with them can be a bit painful. This library is designed to try to smooth out some bumps. To get started using the library just add a nuget reference. Once that is done you will have access to new types contained within your assembly.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Quick Start</h2><a id="user-content-quick-start" aria-label="Permalink: Quick Start" href="#quick-start"></a><p></p>
+<p dir="auto">To get started all you need to do is add the NuGet package reference. You may or may not have to restart Visual Studio for the new types to show up. Then implement the base class <code>IncrementalGenerator</code> and apply the <code>[IncrementalGenerator]</code> attribute to your type;</p>
+<div dir="auto" data-snippet-clipboard-copy-content="using SGF;
+
+namespace Example
+{
+    // IncrementalGenerator, is a generated type from `SourceGenerator.Foundations'
+    [IncrementalGenerator]
+    public class ExampleSourceGenerator : IncrementalGenerator 
+    {
+        public ExampleSourceGenerator() : base(&quot;ExampleSourceGenerator&quot;)
+        {
+            
+        }
+
+        // SgfInitializationContext is a wrapper around IncrementalGeneratorInitializationContext
+       protected override void OnInitialize(SgfInitializationContext context)
+       {
+            // Attaches Visual Studio debugger without prompt 
+            AttachDebugger();
+
+            // Writes output to Visual Studio's output window
+            Logger.Information(&quot;Hello World&quot;);
+       }
+    }
+}"><pre><span>using</span> <span>SGF</span><span>;</span>
+
+<span>namespace</span> <span>Example</span>
+<span>{</span>
+    <span>// IncrementalGenerator, is a generated type from `SourceGenerator.Foundations'</span>
+    <span>[</span><span>IncrementalGenerator</span><span>]</span>
+    <span>public</span> <span>class</span> <span>ExampleSourceGenerator</span> <span>:</span> <span>IncrementalGenerator</span> 
+    <span>{</span>
+        <span>public</span> <span>ExampleSourceGenerator</span><span>(</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>"ExampleSourceGenerator"</span><span>)</span>
+        <span>{</span>
+            
+        <span>}</span>
+
+        <span>// SgfInitializationContext is a wrapper around IncrementalGeneratorInitializationContext</span>
+       <span>protected</span> <span>override</span> <span>void</span> <span>OnInitialize</span><span>(</span><span>SgfInitializationContext</span> <span>context</span><span>)</span>
+       <span>{</span>
+            <span>// Attaches Visual Studio debugger without prompt </span>
+            <span>AttachDebugger</span><span>(</span><span>)</span><span>;</span>
+
+            <span>// Writes output to Visual Studio's output window</span>
+            <span>Logger</span><span>.</span><span>Information</span><span>(</span><span>"Hello World"</span><span>)</span><span>;</span>
+       <span>}</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<blockquote>
+<p dir="auto">🛈 You don't apply the <code>SourceGenerator</code> attribute or implement the <code>IIncrementalGenerator</code> interface. Behind the scenes Source Generator Foundations is generating a class that will host your generator. This is done so that we can capture all errors and also resolve any type loading.</p>
+</blockquote>
+<p dir="auto"></p><h2 dir="auto" tabindex="-1">What is inside?</h2><a id="user-content-what-is-inside" aria-label="Permalink: What is inside?" href="#what-is-inside"></a><p></p>
+<p dir="auto">There is a series of features this library hopes to provide.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Nuget Nightmares</h2><a id="user-content-nuget-nightmares" aria-label="Permalink: Nuget Nightmares" href="#nuget-nightmares"></a><p></p>
+<p dir="auto">Source generators run in a unique place and their references don't act the same. If you have a source generator that attempts to reference a NuGet package it will fail to be found at runtime. The reason is the source generators need to have their dll's alongside the running process but that also means that the project the generator is running aginst will to. If you look online the best option is to do this:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<ItemGroup>
+    <PackageReference Include=&quot;Newtonsoft.Json&quot; Version=&quot;13.0.1&quot; GeneratePathProperty=&quot;true&quot; PrivateAssets=&quot;all&quot; />
+</ItemGroup>
+<ItemGroup>
+    <EmbeddedResource Include=&quot;$(PKGNewtonsoft_Json)\lib\netstandard2.0\Newtonsoft.Json.dll&quot; Visible=&quot;false&quot; />
+</ItemGroup>"><pre>&lt;<span>ItemGroup</span>&gt;
+    &lt;<span>PackageReference</span> <span>Include</span>=<span><span>"</span>Newtonsoft.Json<span>"</span></span> <span>Version</span>=<span><span>"</span>13.0.1<span>"</span></span> <span>GeneratePathProperty</span>=<span><span>"</span>true<span>"</span></span> <span>PrivateAssets</span>=<span><span>"</span>all<span>"</span></span> /&gt;
+&lt;/<span>ItemGroup</span>&gt;
+&lt;<span>ItemGroup</span>&gt;
+    &lt;<span>EmbeddedResource</span> <span>Include</span>=<span><span>"</span>$(PKGNewtonsoft_Json)\lib\netstandard2.0\Newtonsoft.Json.dll<span>"</span></span> <span>Visible</span>=<span><span>"</span>false<span>"</span></span> /&gt;
+&lt;/<span>ItemGroup</span>&gt;</pre></div>
+<p dir="auto">This MSBuild logic adds a reference to <code>Newtonsoft.Json</code> version <code>13.0.1</code> and sets a few attributes. Using <code>GeneratePathProperty="true"</code> will emit the variable <code>PKGNewtonsoft_Json</code> which points at the root of the NuGet package on disk. Using <code>EmbeddedResource</code> we then give the full path to the dll. When the project is compiled the dlls will be embeded as a resource.</p>
+<p dir="auto">This works well but requires a lot of boilerplate. Even worse is this is just for one package. You would need to repeat this for every dependency and any transitive ones as well. This gets out of hand very fast.</p>
+<p dir="auto"><em>Source.Generator foundations automates this all for you. Just add your NuGet references and nothing else</em></p>
+<p dir="auto">By default, SGF does <strong>not</strong> embed <code>Microsoft.CodeAnalysis.*</code> assemblies. Roslyn is provided by the compiler/IDE host at runtime, so embedding those assemblies can cause type identity conflicts and broken design-time behavior. This behavior is controlled through the <code>SGFExcludeAssemblyName</code> MSBuild item.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Logging Framework</h2><a id="user-content-logging-framework" aria-label="Permalink: Logging Framework" href="#logging-framework"></a><p></p>
+<p dir="auto">Source generator run in the background and it can be very hard to debug. If you want to make a log you have to write the files to disk and open to read them.</p>
+<p dir="auto">With this library we leverage the existing Output window and create an entry for each source generator. This is all done by using some Visual Studio api. Internally this uses a custom Sink for <a href="https://serilog.net/" rel="nofollow">Serilog.net</a>. Every generator comes with a <code>Logger</code> property allowing you to output any information</p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Log Levels</h3><a id="user-content-log-levels" aria-label="Permalink: Log Levels" href="#log-levels"></a><p></p>
+<p dir="auto">Every generator includes configurable log levels for fine-grained control over diagnostic output:</p>
+<ul dir="auto">
+<li><strong>None</strong> - Disables all logging</li>
+<li><strong>Trace</strong> - Very detailed diagnostic information</li>
+<li><strong>Debug</strong> - Detailed debugging information</li>
+<li><strong>Information</strong> - General informational messages (default)</li>
+<li><strong>Warning</strong> - Warning messages</li>
+<li><strong>Error</strong> - Error messages only</li>
+</ul>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Configuring Log Levels</h3><a id="user-content-configuring-log-levels" aria-label="Permalink: Configuring Log Levels" href="#configuring-log-levels"></a><p></p>
+<p dir="auto"><strong>Via MSBuild (Global):</strong></p>
+<div dir="auto" data-snippet-clipboard-copy-content="<PropertyGroup>
+  <SgfLogLevel>Debug</SgfLogLevel>
+</PropertyGroup>"><pre>&lt;<span>PropertyGroup</span>&gt;
+  &lt;<span>SgfLogLevel</span>&gt;Debug&lt;/<span>SgfLogLevel</span>&gt;
+&lt;/<span>PropertyGroup</span>&gt;</pre></div>
+<p dir="auto"><strong>Via MSBuild (Per-Generator):</strong></p>
+<div dir="auto" data-snippet-clipboard-copy-content="<PropertyGroup>
+  <!-- Set specific log level for MyGenerator -->
+  <SgfLogLevel_MyGenerator>Trace</SgfLogLevel_MyGenerator>
+
+  <!-- All other generators use Warning -->
+  <SgfLogLevel>Warning</SgfLogLevel>
+</PropertyGroup>"><pre>&lt;<span>PropertyGroup</span>&gt;
+  <span><span>&lt;!--</span> Set specific log level for MyGenerator <span>--&gt;</span></span>
+  &lt;<span>SgfLogLevel_MyGenerator</span>&gt;Trace&lt;/<span>SgfLogLevel_MyGenerator</span>&gt;
+
+  <span><span>&lt;!--</span> All other generators use Warning <span>--&gt;</span></span>
+  &lt;<span>SgfLogLevel</span>&gt;Warning&lt;/<span>SgfLogLevel</span>&gt;
+&lt;/<span>PropertyGroup</span>&gt;</pre></div>
+<p dir="auto"><strong>Create Context-Specific Loggers:</strong></p>
+<div dir="auto" data-snippet-clipboard-copy-content="public class MyGenerator : IncrementalGenerator
+{
+    private readonly ILogger parsingLogger;
+    private readonly ILogger codeGenLogger;
+
+    public MyGenerator() : base(nameof(MyGenerator))
+    {
+        // Each aspect gets its own logger with its own level
+        parsingLogger = Logger.ForContext<SyntaxParser>();
+        Logger.Configuration.SetContextLevel<SyntaxParser>(LogLevel.Trace);
+
+        codeGenLogger = Logger.ForContext<CodeGenerator>();
+        Logger.Configuration.SetContextLevel<CodeGenerator>(LogLevel.Debug);
+    }
+
+    public override void OnInitialize(SgfInitializationContext context)
+    {
+        parsingLogger.Trace(&quot;Very detailed parsing info&quot;);
+        codeGenLogger.Debug(&quot;Code generation details&quot;);
+        Logger.Information(&quot;General generator info&quot;);
+    }
+}"><pre><span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IncrementalGenerator</span>
+<span>{</span>
+    <span>private</span> <span>readonly</span> <span>ILogger</span> <span>parsingLogger</span><span>;</span>
+    <span>private</span> <span>readonly</span> <span>ILogger</span> <span>codeGenLogger</span><span>;</span>
+
+    <span>public</span> <span>MyGenerator</span><span>(</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>nameof</span><span>(</span><span>MyGenerator</span><span>)</span><span>)</span>
+    <span>{</span>
+        <span>// Each aspect gets its own logger with its own level</span>
+        <span>parsingLogger</span> <span>=</span> <span>Logger</span><span>.</span><span>ForContext</span><span>&lt;</span><span>SyntaxParser</span><span>&gt;</span><span>(</span><span>)</span><span>;</span>
+        <span>Logger</span><span>.</span><span>Configuration</span><span>.</span><span>SetContextLevel</span><span>&lt;</span><span>SyntaxParser</span><span>&gt;</span><span>(</span><span>LogLevel</span><span>.</span><span>Trace</span><span>)</span><span>;</span>
+
+        <span>codeGenLogger</span> <span>=</span> <span>Logger</span><span>.</span><span>ForContext</span><span>&lt;</span><span>CodeGenerator</span><span>&gt;</span><span>(</span><span>)</span><span>;</span>
+        <span>Logger</span><span>.</span><span>Configuration</span><span>.</span><span>SetContextLevel</span><span>&lt;</span><span>CodeGenerator</span><span>&gt;</span><span>(</span><span>LogLevel</span><span>.</span><span>Debug</span><span>)</span><span>;</span>
+    <span>}</span>
+
+    <span>public</span> <span>override</span> <span>void</span> <span>OnInitialize</span><span>(</span><span>SgfInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+        <span>parsingLogger</span><span>.</span><span>Trace</span><span>(</span><span>"Very detailed parsing info"</span><span>)</span><span>;</span>
+        <span>codeGenLogger</span><span>.</span><span>Debug</span><span>(</span><span>"Code generation details"</span><span>)</span><span>;</span>
+        <span>Logger</span><span>.</span><span>Information</span><span>(</span><span>"General generator info"</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Available Logging Methods</h3><a id="user-content-available-logging-methods" aria-label="Permalink: Available Logging Methods" href="#available-logging-methods"></a><p></p>
+<ul dir="auto">
+<li><code>Logger.Trace("message")</code> / <code>Logger.Trace(exception, "message")</code></li>
+<li><code>Logger.Debug("message")</code> / <code>Logger.Debug(exception, "message")</code></li>
+<li><code>Logger.Information("message")</code> / <code>Logger.Information(exception, "message")</code></li>
+<li><code>Logger.Warning("message")</code> / <code>Logger.Warning(exception, "message")</code></li>
+<li><code>Logger.Error("message")</code> / <code>Logger.Error(exception, "message")</code></li>
+</ul>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/ByronMayne/SourceGenerator.Foundations/blob/master/img/OutputWindow.png"><img src="/ByronMayne/SourceGenerator.Foundations/raw/master/img/OutputWindow.png" alt="output"></a></p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto"><strong>Captured Exceptions</strong></h3><a id="user-content-captured-exceptions" aria-label="Permalink: Captured Exceptions" href="#captured-exceptions"></a><p></p>
+<p dir="auto">When a source generator throws an exception it normally just stops. In the base library we process all exceptions and forward their output to the <code>Source Generator</code> output tab.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="# Build Window 
+6>CSC : warning CS8032: An instance of analyzer ConsoleApp.SourceGenerator.ConsoleAppSourceGenerator cannot be created from D:\Repositories\SourceGenerator.Foudations\src\Sandbox\ConsoleApp.SourceGenerator\bin\Debug\netstandard2.0\ConsoleApp.SourceGenerator.dll : Exception has been thrown by the target of an invocation..
+
+# Source Generator Window 
+[13:02:39 ERR] ConsoleApp | Unhandled exception was throw while running the generator ConsoleApp
+System.NotImplementedException: The method or operation is not implemented.
+   at ConsoleApp.SourceGenerator.ConsoleAppSourceGenerator.PostInit(IncrementalGeneratorPostInitializationContext obj) in D:\Repositories\SourceGenerator.Foudations\src\Sandbox\ConsoleApp.SourceGenerator\ConsoleAppSourceGenerator.cs:line 42
+   at SGF.SgfInitializationContext.<>c__DisplayClass19_0.<RegisterPostInitializationOutput>b__0(IncrementalGeneratorPostInitializationContext context) in D:\Repositories\SourceGenerator.Foudations\src\Sandbox\ConsoleApp.SourceGenerator\SourceGenerator.Foundations\SGF.Generators.ScriptInjectorGenerator\SgfInitializationContext.generated.cs:line 106
+"><pre><span><span>#</span> Build Window </span>
+6&gt;CSC : warning CS8032: An instance of analyzer ConsoleApp.SourceGenerator.ConsoleAppSourceGenerator cannot be created from D:\Repositories\SourceGenerator.Foudations\src\Sandbox\ConsoleApp.SourceGenerator\bin\Debug\netstandard2.0\ConsoleApp.SourceGenerator.dll : Exception has been thrown by the target of an invocation..
+
+<span><span>#</span> Source Generator Window </span>
+<span>[13:02:39 ERR]</span> ConsoleApp | Unhandled exception was throw while running the generator ConsoleApp
+System.NotImplementedException: The method or operation is not implemented.
+   at ConsoleApp.SourceGenerator.ConsoleAppSourceGenerator.PostInit(IncrementalGeneratorPostInitializationContext obj) in D:\Repositories\SourceGenerator.Foudations\src\Sandbox\ConsoleApp.SourceGenerator\ConsoleAppSourceGenerator.cs:line 42
+   at SGF.SgfInitializationContext.&lt;&gt;c__DisplayClass19_0.&lt;RegisterPostInitializationOutput&gt;b__0(IncrementalGeneratorPostInitializationContext context) in D:\Repositories\SourceGenerator.Foudations\src\Sandbox\ConsoleApp.SourceGenerator\SourceGenerator.Foundations\SGF.Generators.ScriptInjectorGenerator\SgfInitializationContext.generated.cs:line 106
+</pre></div>
+<p dir="auto">In this case my source generator just throws <code>NotImplementedException</code> but all details are lost with the build in framework. Using the source generator tab it will give you a full call stack.</p>
+<p dir="auto">This is done by implementing a wrapper around <code>IncrementalGeneratorInitializationContext</code> which is called <code>SgfInitializationContext</code>. This will wrap every single subscription in a <code>try {} catch {}</code> and give details whenever an unhandled exception is thrown.</p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Debugging</h3><a id="user-content-debugging" aria-label="Permalink: Debugging" href="#debugging"></a><p></p>
+<p dir="auto">Traditional debugging of source generators requires boilerplate code that shows an annoying prompt:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="static CustomSourceGenerator()
+{
+    Debugger.Launch(); // Shows dialog every time
+}"><pre><span><span>static</span></span> <span>CustomSourceGenerator</span><span>(</span><span>)</span>
+<span>{</span>
+    <span>Debugger</span><span>.</span><span>Launch</span><span>(</span><span>)</span><span>;</span> <span>// Shows dialog every time</span>
+<span>}</span></pre></div>
+<p dir="auto">This shows a debugger selection dialog every time the generator runs, which is disruptive during development.</p>
+<p dir="auto"><strong>With SGF, just call <code>AttachDebugger()</code>:</strong></p>
+<div dir="auto" data-snippet-clipboard-copy-content="[IncrementalGenerator]
+public class MyGenerator : IncrementalGenerator
+{
+    public MyGenerator() : base(nameof(MyGenerator)) { }
+
+    public override void OnInitialize(SgfInitializationContext context)
+    {
+        AttachDebugger(); // Automatically attaches to current VS instance - no prompt!
+
+        // Set breakpoints here - they now work!
+        Logger.Debug(&quot;Debugging is now active&quot;);
+    }
+}"><pre><span>[</span><span>IncrementalGenerator</span><span>]</span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IncrementalGenerator</span>
+<span>{</span>
+    <span>public</span> <span>MyGenerator</span><span>(</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>nameof</span><span>(</span><span>MyGenerator</span><span>)</span><span>)</span> <span>{</span> <span>}</span>
+
+    <span>public</span> <span>override</span> <span>void</span> <span>OnInitialize</span><span>(</span><span>SgfInitializationContext</span> <span>context</span><span>)</span>
+    <span>{</span>
+        <span>AttachDebugger</span><span>(</span><span>)</span><span>;</span> <span>// Automatically attaches to current VS instance - no prompt!</span>
+
+        <span>// Set breakpoints here - they now work!</span>
+        <span>Logger</span><span>.</span><span>Debug</span><span>(</span><span>"Debugging is now active"</span><span>)</span><span>;</span>
+    <span>}</span>
+<span>}</span></pre></div>
+<p dir="auto">The debugger will automatically attach to the current Visual Studio instance without any prompts or dialogs.</p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/ByronMayne/SourceGenerator.Foundations/blob/master/img/DebuggerAttach.gif"><img src="/ByronMayne/SourceGenerator.Foundations/raw/master/img/DebuggerAttach.gif" alt="AutoAttach" data-animated-image=""></a></p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Helpers</h2><a id="user-content-helpers" aria-label="Permalink: Helpers" href="#helpers"></a><p></p>
+<p dir="auto">Included in the project is a series of helper classes to help you while working on your generator.</p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">SGFPath</h3><a id="user-content-sgfpath" aria-label="Permalink: SGFPath" href="#sgfpath"></a><p></p>
+<ul dir="auto">
+<li>Contains methods for normalizing paths which does the following
+<ul dir="auto">
+<li><code>files/../cats</code> -&gt; <code>/cats</code></li>
+<li>[Windows] <code>files\cats/dogs</code> -&gt; <code>\\files\\cats\\dogs</code></li>
+<li>[Linux|Mac] <code>files\cats/dogs</code> -&gt; <code>/files/cats/dogs</code></li>
+</ul>
+</li>
+<li>Combing paths without having to worry about leading or trailing slashes.</li>
+</ul>
+<p dir="auto"></p><h2 dir="auto" tabindex="-1">How it works</h2><a id="user-content-how-it-works" aria-label="Permalink: How it works" href="#how-it-works"></a><p></p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Assembly Resolver</h2><a id="user-content-assembly-resolver" aria-label="Permalink: Assembly Resolver" href="#assembly-resolver"></a><p></p>
+<p dir="auto">When your source generator runs it needs to find it's dependencies and this is often what fails. When you want to provide external packages you will have to write your own resolve that is able to locate the required assemblies. So instead we have the <code>ScriptInjector</code> inject an implemention for you. This assembly resolver will loop over all the resources in the current assembly and look for all resources that start with <code>SGF.Assembly::</code>. If the assembly being requested to be loaded exists in the resources, it's extracted and loaded into the current appdomain.</p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/ByronMayne/SourceGenerator.Foundations/blob/master/img/AssemblyLoading.jpg"><img src="/ByronMayne/SourceGenerator.Foundations/raw/master/img/AssemblyLoading.jpg" alt="AssemblyResolver"></a></p>
+<p dir="auto">You can embed any assemblies you want by adding them to <code>&lt;SGF_EmbeddedAssembly Include="Your Assembly Path"/&gt;</code>.</p>
+<p dir="auto"><code>Microsoft.CodeAnalysis.*</code> assemblies are excluded from SGF dependency embedding by default using <code>SGFExcludeAssemblyName</code>.</p>
+<p dir="auto">To exclude additional assemblies from embedding, add to <code>SGFExcludeAssemblyName</code>:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<ItemGroup>
+    <SGFExcludeAssemblyName Include=&quot;My.Host.Provided.Dependency&quot; />
+    <SGFExcludeAssemblyName Include=&quot;Company.Shared.Utility.dll&quot; />
+</ItemGroup>"><pre>&lt;<span>ItemGroup</span>&gt;
+    &lt;<span>SGFExcludeAssemblyName</span> <span>Include</span>=<span><span>"</span>My.Host.Provided.Dependency<span>"</span></span> /&gt;
+    &lt;<span>SGFExcludeAssemblyName</span> <span>Include</span>=<span><span>"</span>Company.Shared.Utility.dll<span>"</span></span> /&gt;
+&lt;/<span>ItemGroup</span>&gt;</pre></div>
+<p dir="auto">If you want to embed Roslyn assemblies anyway, remove the default exclusions in your project:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<ItemGroup>
+    <SGFExcludeAssemblyName Remove=&quot;Microsoft.CodeAnalysis&quot; />
+    <SGFExcludeAssemblyName Remove=&quot;Microsoft.CodeAnalysis.CSharp&quot; />
+</ItemGroup>"><pre>&lt;<span>ItemGroup</span>&gt;
+    &lt;<span>SGFExcludeAssemblyName</span> <span>Remove</span>=<span><span>"</span>Microsoft.CodeAnalysis<span>"</span></span> /&gt;
+    &lt;<span>SGFExcludeAssemblyName</span> <span>Remove</span>=<span><span>"</span>Microsoft.CodeAnalysis.CSharp<span>"</span></span> /&gt;
+&lt;/<span>ItemGroup</span>&gt;</pre></div>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Diagnostic Analyzer</h2><a id="user-content-diagnostic-analyzer" aria-label="Permalink: Diagnostic Analyzer" href="#diagnostic-analyzer"></a><p></p>
+<p dir="auto">Included with this package is a code analyzer that will be used to catch common mistakes when working with this library.</p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto"><code>SGF1001</code></h3><a id="user-content-sgf1001" aria-label="Permalink: SGF1001" href="#sgf1001"></a><p></p>
+<p dir="auto"><strong>Has SgfGenerator Attribute</strong></p>
+<p dir="auto">Any class that inherits from <code>IncrementalGenerator</code> is required to have the <code>SgfGenerator</code> attribute applied to it.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Error 
+public class MyGenerator : IncrementalGenerator 
+{
+    public MyGenerator() : base(&quot;MyGenerator&quot;)
+    {}
+}"><pre><span>// Error </span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IncrementalGenerator</span> 
+<span>{</span>
+    <span>public</span> <span>MyGenerator</span><span>(</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>"MyGenerator"</span><span>)</span>
+    <span>{</span><span>}</span>
+<span>}</span></pre></div>
+<p dir="auto">To fix the error just apply the attribute.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Fixed 
+[IncrementalGenerator]
+public class MyGenerator : IncrementalGenerator 
+{
+    public MyGenerator() : base(&quot;MyGenerator&quot;)
+    {}
+}"><pre><span>// Fixed </span>
+<span>[</span><span>IncrementalGenerator</span><span>]</span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IncrementalGenerator</span> 
+<span>{</span>
+    <span>public</span> <span>MyGenerator</span><span>(</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>"MyGenerator"</span><span>)</span>
+    <span>{</span><span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto"><code>SGF1002</code></h3><a id="user-content-sgf1002" aria-label="Permalink: SGF1002" href="#sgf1002"></a><p></p>
+<p dir="auto"><strong>Prohibit Generator Attribute</strong></p>
+<p dir="auto">If an <code>IncrementalGenerator</code> has the <code>Generator</code> attribute applied it will cause a compiler error. The reason being that the <code>Generator</code> attribute is used on classes that implement <code>IIncrementalGenerator</code> which <code>IncrementalGenerator</code> does not. SGF has it's own attribute to not confuse roslyn. SGFs <code>IncrementalGenerator</code> is run from within a wrapper to help capture exceptions and handle runtime type resolving.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Error 
+[Generator]
+public class MyGenerator : IncrementalGenerator 
+{
+    public MyGenerator() : base(&quot;MyGenerator&quot;)
+    {}
+}"><pre><span>// Error </span>
+<span>[</span><span>Generator</span><span>]</span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IncrementalGenerator</span> 
+<span>{</span>
+    <span>public</span> <span>MyGenerator</span><span>(</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>"MyGenerator"</span><span>)</span>
+    <span>{</span><span>}</span>
+<span>}</span></pre></div>
+<p dir="auto">To fix the error just remove the attribute.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Fixed 
+public class MyGenerator : IncrementalGenerator 
+{
+    public MyGenerator() : base(&quot;MyGenerator&quot;)
+    {}
+}"><pre><span>// Fixed </span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IncrementalGenerator</span> 
+<span>{</span>
+    <span>public</span> <span>MyGenerator</span><span>(</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>"MyGenerator"</span><span>)</span>
+    <span>{</span><span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto"><code>SGF1003</code></h3><a id="user-content-sgf1003" aria-label="Permalink: SGF1003" href="#sgf1003"></a><p></p>
+<p dir="auto"><strong>Has Default Constructor</strong></p>
+<p dir="auto"><code>IncrementalGenerator</code> require a default constructor so they can be instantiated at runtime. If no constructor is defined the generator will never be run.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Error 
+public class MyGenerator : IncrementalGenerator 
+{
+    public MyGenerator(string name) : base(name)
+    {}
+}"><pre><span>// Error </span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IncrementalGenerator</span> 
+<span>{</span>
+    <span>public</span> <span>MyGenerator</span><span>(</span><span>string</span> <span>name</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>name</span><span>)</span>
+    <span>{</span><span>}</span>
+<span>}</span></pre></div>
+<p dir="auto">Add a default constructor that takes no arguments.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Fixed 
+public class MyGenerator : IncrementalGenerator 
+{
+    public MyGenerator() : base(&quot;MyGenerator&quot;)
+    {}
+}"><pre><span>// Fixed </span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IncrementalGenerator</span> 
+<span>{</span>
+    <span>public</span> <span>MyGenerator</span><span>(</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>"MyGenerator"</span><span>)</span>
+    <span>{</span><span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto"><code>SGF1004</code></h3><a id="user-content-sgf1004" aria-label="Permalink: SGF1004" href="#sgf1004"></a><p></p>
+<p dir="auto"><strong>ModuleInitializerAttribute Conflict</strong></p>
+<p dir="auto">SGF adds the <code>ModuleInitializerAttribute</code> by default for .NET Standard 2.0 compatibility. If your project already defines this attribute or references a library that provides it, you must disable SGF's version to avoid duplicate definition errors.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Error - ModuleInitializerAttribute is already defined in the compilation
+[IncrementalGenerator]
+public class MyGenerator : IncrementalGenerator 
+{
+    public MyGenerator() : base(&quot;MyGenerator&quot;) {}
+
+    public override void OnInitialize(SgfInitializationContext context) {}
+}"><pre><span>// Error - ModuleInitializerAttribute is already defined in the compilation</span>
+<span>[</span><span>IncrementalGenerator</span><span>]</span>
+<span>public</span> <span>class</span> <span>MyGenerator</span> <span>:</span> <span>IncrementalGenerator</span> 
+<span>{</span>
+    <span>public</span> <span>MyGenerator</span><span>(</span><span>)</span> <span>:</span> <span>base</span><span>(</span><span>"MyGenerator"</span><span>)</span> <span>{</span><span>}</span>
+
+    <span>public</span> <span>override</span> <span>void</span> <span>OnInitialize</span><span>(</span><span>SgfInitializationContext</span> <span>context</span><span>)</span> <span>{</span><span>}</span>
+<span>}</span></pre></div>
+<p dir="auto"><strong>Fix:</strong> Add this property to your <code>.csproj</code> file:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="<PropertyGroup>
+  <SgfAddModuleInitializerAttribute>false</SgfAddModuleInitializerAttribute>
+</PropertyGroup>"><pre>&lt;<span>PropertyGroup</span>&gt;
+  &lt;<span>SgfAddModuleInitializerAttribute</span>&gt;false&lt;/<span>SgfAddModuleInitializerAttribute</span>&gt;
+&lt;/<span>PropertyGroup</span>&gt;</pre></div>
+<p dir="auto">After adding this property, the error will be resolved and your generator will compile successfully.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Unit Tests</h2><a id="user-content-unit-tests" aria-label="Permalink: Unit Tests" href="#unit-tests"></a><p></p>
+<p dir="auto">You can write unit test to validate that your source generators are working as expected. To do this for this library requires a very tiny amount of extra work. You can also look at the <a href="/ByronMayne/SourceGenerator.Foundations/blob/master/src/Sandbox/ConsoleApp.SourceGenerator.Tests/TestCase.cs">example project</a> to see how it works.</p>
+<p dir="auto">The generated class will all be internal so your unit test assembly will need to have viability.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo(&quot;ConsoleApp.SourceGenerator.Tests&quot;)]"><pre><span>using</span> <span>System</span><span>.</span><span>Runtime</span><span>.</span><span>CompilerServices</span><span>;</span>
+
+<span>[</span>assembly<span>:</span> <span>InternalsVisibleTo</span><span>(</span><span>"ConsoleApp.SourceGenerator.Tests"</span><span>)</span><span>]</span></pre></div>
+<p dir="auto">Then for your unit test functions the only difference will be that instead of creating an instance of your class you create an instance of the <code>Hoist</code> class.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="// Create the instance of our generator and set whatever properties 
+ConsoleAppSourceGenerator generator = new ConsoleAppSourceGenerator()
+{
+    Explode = true
+};
+
+// Build the instance of the wrapper `Hoist` which takes in your generator
+ConsoleAppSourceGeneratorHoist host = new ConsoleAppSourceGeneratorHoist(generator);
+
+// From here it's just like testing any other generator
+GeneratorDriver driver = CSharpGeneratorDriver.Create(host);
+driver = driver.RunGenerators(compilation);
+
+// Assert on the results
+GeneratorDriverRunResult runResult = driver.GetRunResult();
+Assert.NotEmpty(runResult.GeneratedTrees);"><pre><span>// Create the instance of our generator and set whatever properties </span>
+<span>ConsoleAppSourceGenerator</span> <span>generator</span> <span>=</span> <span>new</span> <span>ConsoleAppSourceGenerator</span><span>(</span><span>)</span>
+<span>{</span>
+    <span>Explode</span> <span>=</span> <span>true</span>
+<span>}</span><span>;</span>
+
+<span>// Build the instance of the wrapper `Hoist` which takes in your generator</span>
+<span>ConsoleAppSourceGeneratorHoist</span> <span>host</span> <span>=</span> <span>new</span> <span>ConsoleAppSourceGeneratorHoist</span><span>(</span><span>generator</span><span>)</span><span>;</span>
+
+<span>// From here it's just like testing any other generator</span>
+<span>GeneratorDriver</span> <span>driver</span> <span>=</span> <span>CSharpGeneratorDriver</span><span>.</span><span>Create</span><span>(</span><span>host</span><span>)</span><span>;</span>
+<span>driver</span> <span>=</span> <span>driver</span><span>.</span><span>RunGenerators</span><span>(</span><span>compilation</span><span>)</span><span>;</span>
+
+<span>// Assert on the results</span>
+<span>GeneratorDriverRunResult</span> <span>runResult</span> <span>=</span> <span>driver</span><span>.</span><span>GetRunResult</span><span>(</span><span>)</span><span>;</span>
+<span>Assert</span><span>.</span><span>NotEmpty</span><span>(</span><span>runResult</span><span>.</span><span>GeneratedTrees</span><span>)</span><span>;</span></pre></div>
+<p dir="auto">The only unique feature is the wrapper class <code>{YourGeneratorName}Hoist</code>. This class is an internal feature of <code>SGF</code> and is used to make sure all dependencies are resolved before calling into your source generator.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Advanced Features</h2><a id="user-content-advanced-features" aria-label="Permalink: Advanced Features" href="#advanced-features"></a><p></p>
+<p dir="auto">There are some features that are designed for more advanced users or niche cases.</p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Debugger Attaching</h3><a id="user-content-debugger-attaching" aria-label="Permalink: Debugger Attaching" href="#debugger-attaching"></a><p></p>
+<p dir="auto">When your source generator is being used in the wild it can happen there are exceptions that are thrown which can be hard to track down. There is no nice way to debug these issues besides logging. To get around this you can set the environment variable <code>SGF_DEBUGGER_LAUNCH=true</code> the debugger will be launched at the entrypoint of SGF.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Projects Using SGF</h2><a id="user-content-projects-using-sgf" aria-label="Permalink: Projects Using SGF" href="#projects-using-sgf"></a><p></p>
+<ul dir="auto">
+<li><a href="https://github.com/ByronMayne/AutoFactories">ByronMayne.AutoFactories</a></li>
+<li><a href="https://github.com/AssetRipper/AssetRipper">AssetRipper.AssetRipper</a></li>
+</ul>
+<p dir="auto"><em>Want to add your project here? Just make a PR</em></p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Attribution</h2><a id="user-content-attribution" aria-label="Permalink: Attribution" href="#attribution"></a><p></p>
+<p dir="auto">Icon by <a href="https://www.flaticon.com/free-icons/drywall" title="drywall icons" rel="nofollow">Drywall icons created by HAJICON - Flaticon</a></p>
+</article></div></div></article></body></html>

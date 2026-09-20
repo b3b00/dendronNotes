@@ -1,0 +1,161 @@
+<html><head><meta charset="utf-8"><title>Blockchain Without the Crypto</title><meta content="Driving down the #9 highway in Southeast Saskatchewan yesterday, I giggled in surprise when I noticed a small piece of Internet lodged in a canola field. I saw the unmistakeable orange logo as we approached the unincorporated hamlet of Görlitz (population unknown) from the north. Amid the other billboards for bulk fertilizer and local honey was a painted plywood sign: Bitcoin ATM now available!
+Just what Görlitz needs. I’m not sure if humanity has reached peak cryptocurrency yet but we are definitely on our way." name="description"><meta content="https://www.deobald.ca/essays/2021-11-11-blockchain-without-crypto/" name="dendron:source-url"><meta content="15391" name="dendron:length"><meta content="11.34" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div>
+    <p><img src="/img/2021-11-11-blockchain-without-crypto3.png" alt="Blockchain or Database?"></p>
+<p>Driving down the #9 highway in Southeast Saskatchewan yesterday, I giggled in surprise when I noticed a small piece of Internet lodged in a canola field.
+I saw the unmistakeable orange logo as we approached the unincorporated hamlet of Görlitz (population unknown) from the north.
+Amid the other billboards for bulk fertilizer and local honey was a painted plywood sign: <em>Bitcoin ATM now available!</em></p>
+<p>Just what Görlitz needs.
+I’m not sure if humanity has reached peak cryptocurrency yet but we are definitely on our way.</p>
+<p>The incongruity of Bitcoin advertisements along Canadian gravel roads is easier to reconcile if I think of Bitcoin as an actual currency – or a semi-fungible asset like Beanie Babies.
+In the abstract, cryptocurrencies are no more or less confusing than the Euro, cowry shells, or a lump of soft metal.
+All of them claim to be money and money is a straightforward abstraction. People only want money because everyone else wants money.
+This is true even in the <a href="https://www.youtube.com/watch?v=Bw9P_ZXWDJU&t=1680s">total absence of physical or biological reality</a>.</p>
+<p>Ironically, it was the manifestation of cryptocurrencies in physical reality – the blockchain – which caused me to giggle.
+Perhaps some of those farmers buying Bitcoin from the local ATM understand the distributed computing and cryptographic principles which underpin the blockchain.
+But most won’t.</p>
+<p>The reason the blockchain is inaccessible to canola farmers is the same reason it is inaccessible to software developers: it’s not a simple concept.
+Although built out of simple ideas, a blockchain is an amalgam of distributed computing, immutable records, cryptography, and psychology.
+Misunderstanding this entanglement of concepts leads to hilarious misapplications of the blockchain, which in turn lead experienced observers to wonder, "don’t you really just want a competent database?"</p>
+<hr>
+<p>From <a href="https://www.bloomberg.com/opinion/articles/2016-02-01/blockchains-ponzis-and-robot-panic">manual settlements</a> and <a href="https://www.bloomberg.com/opinion/articles/2017-11-22/blockchain-makes-the-world-interested-in-finance-s-dullest-parts">boring back-office equity swaps</a> to <a href="https://www.bloomberg.com/opinion/articles/2017-03-06/cargo-blockchains-and-deutsche-bank">tracking shipping containers</a>, Matt Levine has spoken the most broadly and accessibly on the subject.
+His analysis is even-handed and always extends beyond naïve, binary questions ("is the blockchain good or bad?"):</p>
+<div><blockquote><p>If you think the blockchain is a better database than other databases, then replacing other databases with blockchains is a good idea. If your settlement process, for legal or customary or whatever reasons, requires lots of manual intervention from multiple parties, then just looking into a mirror and saying "blockchain!" three times won’t solve that. You have to go to all those multiple parties and convince them to stop intervening manually. Once you’ve done that, sure, set up an electronic database. Maybe a blockchain, why not. But the problems here seem to be prior to the choice of database architecture.</p></blockquote></div>
+<p>Where Levine approaches the <em>blockchain-vs-databases</em> conversation outside-in, with entertaining industry examples, Audrey Tang frequently speaks to the inverse: what are the salient properties of a blockchain and which applications demand those properties?</p>
+<div><blockquote><p>Blockchain is just one implementation of a broad swath of technology known as distributed ledgers or DLTs, and relational databases, again, could be distributed. If people want easy accountability or auditability, they can use some of the technologies originated from blockchain. In that sense, Git is a "blockchain" because it’s a chain of blocks.</p></blockquote></div>
+<p>When we see the world through this lens, we can put the hype on the shelf and begin to analyze our technology options based on their merits.
+It’s worth noting that XTDB can be <em>combined</em> with a blockchain.
+Remy Rojas recently covered that topic in
+<a href="https://www.juxt.pro/blog/bridging-the-blockchain/"><em>Bridging the Blockchain / Database Divide</em></a>.
+Here, we’ll compare and contrast the two.</p>
+<p>Blockchains and databases: what are their respective merits?</p>
+<section><h2 id="_blockchain_virtues">Blockchain Virtues</h2><p>All software is built by accepting tradeoffs and blockchains are no exception.
+Since the dawn of Computer Science, the most common tradeoffs have been space for time and expensive messages (from function calls to network traffic) for correctness.
+Often the cost is worth it.
+Anyone who has ever worked on a UDP system appreciates why we spend the extra bits on TCP for the majority of internet traffic.
+But when we build a system on a blockchain, the tradeoff knobs we can fiddle are quite different.
+Blockchains trade in <em>everything</em>.
+Space, CPU cycles (time), and expensive network messages are all cashed in at once for the reward of correct, redundant, trustless, decentralized immutable records. Whew.</p>
+<div><blockquote><p>Programmers know the benefits of everything and the tradeoffs of nothing.</p></blockquote></div>
+<p>The costs of these tradeoffs are substantial.
+A system built on the blockchain carries with it the presupposition that distributed systems are fundamental, but most of us learned at an early age that the <em>First Law of Distributed Systems</em> is: "don’t".
+Blockchain transactions are <a href="https://www.researchgate.net/publication/330585021_Analysis_of_the_Possibilities_for_Improvement_of_BlockChain_Technology">very slow</a>. Peer-to-peer blockchain nodes with infinite retention are very large (each full Ethereum node requires <a href="https://ycharts.com/indicators/ethereum_chain_full_sync_data_size">1060GB for the full chain</a> as of this writing and is growing at a rate of ~2GB/day).</p>
+<p>Oddly enough, the benefits of such a data store have as much to do with psychology and philosophy as they do with technical merit.
+Trustless computing is the practical consequence of a psychological framework.
+Humans don’t always trust each other and cryptographically verifiable, decentralized, immutable records are designed to satisfy that constraint.
+These records are the reification of a philosophy.</p>
+<div><blockquote><p>Blockchain technology can provide a robust way to make sure that the signatures are in order, the ownership information is up to date, the inspections have been done. But if you then drill a hole in the [shipping] container, take out all the teddy bears, and replace them with cocaine, the blockchain won’t catch that.</p></blockquote></div>
+<p>The core of this philosophy states that by solving the <a href="https://dl.acm.org/doi/10.1145/357172.357176">Byzantine Generals Problem</a> a closed system solves the logistics of abstract trust: "how do I know what is being said is true?"
+By "closed system" I mean a system in which the teddy bears haven’t been replaced with cocaine.
+The philosophy does not address the question of "how do I trust that the system is itself trustworthy?"
+Any system which can answer this question has the same question within it, recursively embedded.
+It’s turtles all the way down.
+Thus, verification of the correctness of algorithms is left as an exercise for the reader.
+Either you can place your trust in the research of someone else or you can read and verify the code yourself.</p>
+<p>The philosophy also argues that immutable data is easier to observe and reason about.
+This is a fair argument since, comparatively, mutable data is nearly impossible to reason about in the domain of trust.
+I will admit that I am an apostle of immutability myself but I acknowledge it’s not without its costs.</p></section>
+<section><h2 id="_database_virtues">Database Virtues</h2><p>A database like XTDB also makes opinionated tradeoffs.
+These are based on experience building software for the early twenty-first century – and a calculated projection of software’s demands for the next 70 years.
+A number of these tradeoffs overlap, and share qualities with, the tradeoffs of the blockchain.</p>
+<p>XTDB trades space for immutability.
+In the 1980s and 1990s, databases traded space for time.
+An index cost disk space but exploiting that space made lookups faster.
+XTDB assumes that space is infinite (which it <a href="https://en.wikipedia.org/wiki/Zettabyte_Era">effectively is</a>) in order to acquire the powers that derive from immutability.
+These powers – such as perfect audits, pure reasoning, and freedom from deadlocks – derive from the same modern philosophy we see in the blockchain and functional programming languages.
+Immutability costs us some disk space and it is worth the simplicity it affords us.
+But unlike the blockchain, XTDB does not consider immutable data eternal.
+Instead, XTDB has <em>erasure</em> (née <em>eviction</em>) to satisfy the requirements of GDPR, which most blockchains <a href="https://www.wired.com/story/why-porn-on-the-blockchain-wont-doom-bitcoin/">cannot do</a>.</p>
+<p>XTDB also trades space for fast reads.
+Data written to XTDB goes to all nodes, which is reminiscent of a blockchain’s replication model without all the overhead of coordination.</p>
+<p>Last, XTDB, like a blockchain, is open source.
+For blockchains, open code is a requirement of verification.
+If users of a blockchain want to complete the "exercise for the reader" and verify that the algorithm is correct, they must at least have the ability to read the source.
+Open source licensing isn’t a requirement for databases, however.
+Closed-source databases exist.
+But it is hard to understand why anyone would trust their company’s data to a closed-source data store.
+All extant humans will die.
+All extant companies will dissolve.
+All extant software projects will terminate.
+No software author will live forever and the gatekeeper of your data is a strange candidate for pretending otherwise.</p></section>
+<section><h2 id="_the_delta">The Delta</h2><p>XTDB does not provide trustless or decentralized transactions.
+Although XTDB is an immutable ledger it is not a <em>distributed</em> ledger.
+This distinction further breaks down into two salient properties.</p>
+<p>With XTDB, transaction consensus is centralized.
+The direct consequence of centralized writes is that they are fast.
+If there is only one executive in the boardroom, consensus is easily reached.
+Where a blockchain always requires a lot of network traffic to complete a distributed write, XTDB has
+<a href="https://docs.xtdb.com/clients/clojure/#_submit_tx">asynchronous</a>,
+<a href="https://docs.xtdb.com/language-reference/datalog-transactions/">data-driven</a>
+transactions on a central transaction log.</p>
+<p>The second property is one of <em>Form</em>: the shape of the data changes.
+Because XTDB stores arbitrary facts as
+<a href="https://docs.xtdb.com/concepts/strength-of-the-record/">records</a>,
+it is a ledger of <em>truth</em>.
+In turn, these records form a graph of complex relationships and traversing these relationships is possible in both SQL and Datalog.</p>
+<p>The irony of a transparent, public, decentralized ledger is that it’s not easy to query.
+Ledgers tend to store one kind of record in indefinite succession.
+As such, a blockchain makes a great place to store IOUs and land titles but a terrible place to store relational data.
+Wikipedia isn’t swapping out MySQL for a blockchain any time soon.</p>
+<hr>
+<p>Although many databases provide immutable data or graph queries, few offer both.
+Fewer still are the databases which offer ubiquitous time-traveling queries.</p>
+<p>To completely understand this delta, a visualization may help:</p>
+<p><img src="/img/2021-11-11-xtdb-vs-blockchain6.svg" alt="2021 11 11 xtdb vs blockchain6" width="600px"></p>
+<p>Obviously, this diagram is incomplete.
+For example, it doesn’t address Kafka compaction or <code>git rebase</code> but if we take every edge case into account, the diagram becomes impossible to draw in two dimensions.
+Although the diagram only exists for illustrative purposes, hopefully it can act as a conversation piece.</p>
+<p>While an immutable ledger tends to be difficult to query, an <a href="http://www.odbms.org/2015/10/the-rise-of-immutable-data-stores/">"immutable database"</a> maintains immutable records while carrying the usual characteristics we expect from a database: ACID-compliance, structured queries, and so on.
+XTDB is both.
+It is an immutable database – but it also contains a Transaction Log which is an immutable ledger in the more traditional sense.</p>
+<p>For our purposes, any linear immutable store can be thought of as an immutable ledger: a log file, a git repo, Kafka, or an append-only Postgres table.
+(Although Tang was quoted earlier qualifying Git as a blockchain, we’re not quite so liberal with terminology in this diagram.)</p>
+<p>Postgres and other RDBMSes are obviously databases – it’s in the name – but append-only tables break the usual SQL semantics.
+Suddenly the developer is forced to slather new clauses onto queries that have nothing to do with the problem domain.
+Regularly, developers will simply accept defeat and maintain append-only tables exclusively for auditing.</p>
+<p>We have all lived some variation of this story, at one point or another.
+The arc of the story is never exactly the same but there are some milestones that show up again and again.</p></section>
+<section><h2 id="_from_constraints_to_mechanics">From Constraints to Mechanics</h2><p>Here is a representative story.
+Your software service begins with a relational database.
+<a href="https://www.youtube.com/watch?v=UgcC_bY4rPg">Just</a>
+<a href="https://vadosware.io/talks/2019-06-just-use-postgres.condensed.pdf">Use</a>
+<a href="https://news.ycombinator.com/item?id=16376096">Postgres</a>, right?</p>
+<p>At some point, you find that the development team is spending an unreasonable amount of time trolling through log files looking for particular facts to answer self-imposed auditing queries.
+You decide audit tables are a good idea and your team implements them.</p>
+<p>As your system evolves, you discover other emergent aspects of the design.
+You read <a href="https://dataintensive.net/">Martin Kleppmann’s book</a> and, convinced that "states" and "events" are different things, add state machine replication ("event sourcing") to your infrastructure with Kafka.
+You start to see the value of having immutable data that users and analysts themselves can query, causing a number of your tables to become append-only.
+This makes them an incredible pain to query and join, but the clarity of immutability is worth it.</p>
+<p>You start to see timelines everywhere as you realize that  <a href="https://www.juxt.pro/blog/bitemporality-more-than-a-design-pattern">bitemporality</a> is an absolute necessity.
+Now some of your tables have <code>VALID_FROM</code> and <code>VALID_TO</code> columns, which further complicate your queries.
+You try to avoid making tables both bitemporal and append-only because the complexity costs are just too high.
+You really wish you could, though, since you can see how immutability would make valid time much easier to reason about.
+Your team occasionally employs materialized views as a compromise.</p>
+<p>You start to service European customers and GDPR becomes an issue.
+Suddenly, your immutable logs and immutable tables are no longer immutable – you have to go back and delete both events and states.
+The simplicity you’d previously gained through immutability is lost.</p>
+<p>Your system begins to calcify.
+Queries are expensive and error-prone to write.
+You’re confident that there’s some combination of immutable event logs, immutable state, valid times, and GDPR-compliance that would satisfy your system’s requirements without creating such chaos.
+But every time you hash it out on the whiteboard, systems and app logic are coupled, events and states and times are entangled.
+Everything always winds up a jumbled mess.</p>
+<p>After putting it off for months, your team finally prioritizes "offline-first" for collaborative mobile users.
+You spend a few days reading CRDT whitepapers before you give up and announce to your alumni networks you’re looking for a new job.</p></section>
+<section><h2 id="_consensus_considered_harmful">Consensus Considered Harmful</h2><p>Human relationships are an effective model for distributed systems.
+For anyone who has run their own company, it is abundantly clear that consensus is expensive.
+Getting every individual party to agree on every decision requires a lot of coordination – coordination that most employees would agree is unnecessary and unpleasant anyway.
+If the number of decisions is negligible, consensus isn’t a problem.
+But a database or blockchain is making "decisions" continuously, every time new data is added.</p>
+<p>A data store can help the business disentangle events, states, schema, relationships, and time.
+Curiously, at no point in the typical story does the business require trustless, decentralized transactions.
+The other properties of a blockchain (immutable ledgers, cryptographic integrity) can be achieved in <a href="https://www.kai-waehner.de/blog/2020/07/17/apache-kafka-blockchain-dlt-comparison-kafka-native-vs-hyperledger-ethereum-ripple-iota-libra/">other ways</a>.</p>
+<p>If the very essence of your business model depends on trustless, decentralized transactions, well, you operate a very strange business.
+But you should probably build that business on a blockchain.
+Otherwise, just use a database to handle the difficult mechanics of storing and retrieving data for a trusted party.
+Choose to build a distributed system only when you absolutely need one.</p>
+<hr>
+<p>A copy of this article can always be found at this permanent URL:
+<a href="https://docs.xtdb.com/concepts/blockchain-without-crypto/">https://docs.xtdb.com/concepts/blockchain-without-crypto/</a></p>
+<p>This work by <a href="https://deobald.ca">Steven Deobald</a> for <a href="https://juxt.pro">JUXT Ltd.</a> is licensed under
+<a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.</p></section>
+
+  </div></div></article></body></html>

@@ -1,0 +1,334 @@
+<html><head><meta charset="utf-8"><title>Yet Another Neovim Setup Guide — 2024 Edition</title><meta content="..." name="description"><meta content="https://vineeth.io/posts/neovim-setup" name="dendron:source-url"><meta content="13602" name="dendron:length"><meta content="10.795" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div id="quartz-body"><article><blockquote>
+<p>The code and configuration associated with this post is available on
+<a href="https://github.com/VVoruganti/dotfiles" target="_blank">GitHub<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> some of the configs may be
+out of date as I’m not using all the same tools anymore</p>
+</blockquote>
+<p>It should be obvious by now that I’m a huge <a href="../notes/neovim" data-slug="notes/neovim">neovim</a> fan. I started using it early in my
+coding journey and it’s been my <a href="../posts/journaling" data-slug="posts/journaling">daily driver</a> for a long time.
+I’ve gone back and forth between different configurations and plugins time and
+time again, often losing nights to just rebuilding everything. I’ve even
+recently started creating my <a href="../projects/today" data-slug="projects/today">own plugins</a> to optimize my workflow.
+Many familiar with <a href="https://www.reddit.com/r/unixporn" target="_blank">ricing<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> will be familiar
+with the endless pursuit of making a custom thing feel just right.</p>
+<p>Up until very recently I had been using a preconfigured distribution of neovim
+called <a href="https://www.lunarvim.org/" target="_blank">LunarVim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a>. I’ve had a few custom setups
+before ,but was devoting too much time, so tried to stop that by using something
+with sane defaults and just stick with it. This had varying degrees of
+success… There were some plugins that I wanted that weren’t in LunarVim and
+when I wanted to further customize stuff I had to use their config format.
+However, it was still not too bad and better than the sometimes nightly practice
+of fine-tuning. That was all until my copilot stopped working for me after an
+update.</p>
+<p>I’ve been using <a href="https://codeium.com/" target="_blank">codeium.vim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> for my co-pilot in neovim
+since early on when stuff like <a href="https://github.com/github/copilot.vim" target="_blank">GitHub
+Copilot<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> was announced and it just wasn’t
+working after a random <code>LvimUpdate</code>. I figured this is something I messed up and
+broke so I needed to figure out what part of my setup is breaking down. In this
+process I ended up just deciding, ok I should just redo my setup and properly
+document it this time.</p>
+<blockquote data-callout="note">
+<div>
+                  
+                  <p>NOTE</p>
+                  
+                </div>
+<p>Turns out wasn’t my fault there was just a <a href="https://github.com/Exafunction/codeium.vim/issues/376" target="_blank">problem with
+codeium<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> but got me
+here anyways</p>
+</blockquote>
+<p>Neovim was also having a moment on Twitter and it’s 2024 so I figured there’s
+probably a bunch new extensions that standards to try. Starting from the
+LunarVim plugin list and also Googling for what I new hot plugins there were, I set out
+to rebuild my setup.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>I was setting up neovim on my M1 Macbook Pro, so some of the setup instructions
+may vary. The current version of neovim as of writing this post is <code>v0.10.0</code>. I
+used <a href="https://brew.sh/" target="_blank">homebrew<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> to install neovim.</p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark"><span data-line=""><span>brew</span><span> install</span><span> neovim</span></span></code></pre></figure>
+<p>The only other prerequisite I installed was <code>ripgrep</code> for making file searching
+faster.</p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="bash" data-theme="github-light github-dark"><code data-language="bash" data-theme="github-light github-dark"><span data-line=""><span>brew</span><span> install</span><span> ripgrep</span></span></code></pre></figure>
+<p>At this point entering <code>nvim</code> should open up the default neovim screen. I’m
+assuming that you have knowledge of how to use vim and vim commands generally,
+but may not have setup neovim before.</p>
+<h2 id="structure">Structure</h2>
+<p>All of the configuration files for my setup are located in <code>~/.config/nvim</code>. I
+believe this is the default location on Mac OS. Running <code>set runtimepath?</code> from
+the command menu in Neovim will display all of the paths neovim is checking.</p>
+<p>Below is an incomplete snapshot of the directory structure for my config files.</p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="markdown" data-theme="github-light github-dark"><code data-language="markdown" data-theme="github-light github-dark"><span data-line=""><span>.</span></span>
+<span data-line=""><span>└── .config/</span></span>
+<span data-line=""><span>└── nvim/</span></span>
+<span data-line=""><span>├── init.lua</span></span>
+<span data-line=""><span>├── lua/</span></span>
+<span data-line=""><span>│ └── marshmalon/</span></span>
+<span data-line=""><span>│ ├── lazy/</span></span>
+<span data-line=""><span>│ └── init.lua</span></span>
+<span data-line=""><span>└── after/</span></span>
+<span data-line=""><span>└── ftplugin/</span></span></code></pre></figure>
+<p>Everything starts with the <code>init.lua</code> in <code>.config/nvim</code>. This is the entrypoint
+for the config. Some older guides may use an <code>init.vim</code> for backwards
+compatibility, but I wanted my entire config to be in lua so I wouldn’t need to
+figure out any VimScript.</p>
+<p>Then there is the <code>lua</code> folder that holds all of the remaining configurations.
+The <code>lua/</code> folder is special because anything in there is requirable. In fact
+all of the setup is done in this folder. The <code>.config/nvim/init.lua</code> file just
+requires the <code>marshmalon</code> module.</p>
+<p><strong>init.lua</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="lua" data-theme="github-light github-dark"><code data-language="lua" data-theme="github-light github-dark"><span data-line=""><span>require</span><span>(</span><span>"marshmalon"</span><span>)</span></span></code></pre></figure>
+<p>That makes the new entrypoint <code>.config/nvim/lua/marshmalon/init.lua</code>. This
+structure is taken from <a href="https://www.youtube.com/watch?v=w7i4amO_zaE" target="_blank">ThePrimeagen’s Recommendations<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a>. I used the name</p>
+<blockquote data-callout="tip">
+<div>
+                  
+                  <p>TIP</p>
+                  
+                </div>
+<p>I used <code>marshmalon</code> because that’s usually my username online, but this can be
+anything. Can be the name of your system or your user the computer.</p>
+</blockquote>
+<p>The other directory within <code>marshmalon/</code> is <code>lazy/</code> which will contain all of
+the setup and configuration for plugins installed using the
+<a href="https://github.com/folke/lazy.nvim" target="_blank">Lazy<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> plugin manager.</p>
+<h3 id="setting-up-lazy">Setting up Lazy</h3>
+<p>Before we can start using fancy plugins and getting a really slick experience we
+need to setup a package manager. As I mentioned in the last section I’m using
+Lazy, but there are a number of older manages such as <code>packer</code> and <code>vim-plug</code>
+that are still used and referenced in documenation for plugins.</p>
+<p>From the <a href="https://lazy.folke.io/installation" target="_blank">Lazy Setup Docs<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> I use the single
+file setup to get started.</p>
+<p>Under <code>marshmalon/</code> I have a file called <code>lazy_init.lua</code> with the following
+contents:</p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="lua" data-theme="github-light github-dark"><code data-language="lua" data-theme="github-light github-dark"><span data-line=""><span>local</span><span> lazypath </span><span>=</span><span> vim.</span><span>fn</span><span>.</span><span>stdpath</span><span>(</span><span>"data"</span><span>) </span><span>..</span><span> "/lazy/lazy.nvim"</span></span>
+<span data-line=""><span>if</span><span> not</span><span> (vim.</span><span>uv</span><span> or</span><span> vim.</span><span>loop</span><span>).</span><span>fs_stat</span><span>(lazypath) </span><span>then</span></span>
+<span data-line=""><span>  vim.</span><span>fn</span><span>.</span><span>system</span><span>({</span></span>
+<span data-line=""><span>    "git"</span><span>,</span></span>
+<span data-line=""><span>    "clone"</span><span>,</span></span>
+<span data-line=""><span>    "--filter=blob:none"</span><span>,</span></span>
+<span data-line=""><span>    "https://github.com/folke/lazy.nvim.git"</span><span>,</span></span>
+<span data-line=""><span>    "--branch=stable"</span><span>, </span><span>-- latest stable release</span></span>
+<span data-line=""><span>    lazypath,</span></span>
+<span data-line=""><span>  })</span></span>
+<span data-line=""><span>end</span></span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>rtp</span><span>:</span><span>prepend</span><span>(lazypath)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>require</span><span>(</span><span>"lazy"</span><span>).</span><span>setup</span><span>({</span></span>
+<span data-line=""><span>    spec </span><span>=</span><span> "marshmalon.lazy"</span><span>,</span></span>
+<span data-line=""><span>    change_detection </span><span>=</span><span> { notify </span><span>=</span><span> false</span><span> }</span></span>
+<span data-line=""><span>})</span></span></code></pre></figure>
+<p>This will clone the package manager if it isn’t already installed and set the
+location for plugin definitions to be the <code>.config/nvim/lua/marshmalon/lazy/</code>
+folder.</p>
+<p>Before that works we need to update our <code>marshmalon/init.lua</code> file to include
+it.</p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="lua" data-theme="github-light github-dark"><code data-language="lua" data-theme="github-light github-dark"><span data-line=""><span>vim.</span><span>g</span><span>.</span><span>mapleader</span><span> =</span><span> " " </span><span>-- Set leader key before Lazy</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>require</span><span>(</span><span>"marshmalon.lazy_init"</span><span>)</span></span></code></pre></figure>
+<p>Lazy needs a leader key to defined before it is loaded so I run that before
+everything else and set the leader to a spacebar press.</p>
+<p>Now you should be able to exit and re-enter neovim with Lazy configured. Run
+<code>:Lazy</code> to verify that it is there. You should see a window like in the image
+below (without any additional plugins).</p>
+<p><img src="../assets/lazy.png" alt="Lazy"></p>
+<h2 id="plugins">Plugins</h2>
+<p>Now we can get into the different plugins I used. Below is a list of
+the different plugins I setup.</p>
+<ul>
+<li><a href="https://github.com/nvim-telescope/telescope.nvim" target="_blank">telescope.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Fuzzy file finder using ripgrep</li>
+<li><a href="https://github.com/VVoruganti/today.nvim" target="_blank">today.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — A daily journaling plugin</li>
+<li><a href="https://github.com/folke/tokyonight.nvim" target="_blank">tokyonight.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Colorscheme</li>
+<li><a href="https://github.com/neovim/nvim-lspconfig" target="_blank">nvim-lspconfig<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Language Server Protocol Configurations
+<ul>
+<li><a href="https://github.com/williamboman/mason.nvim" target="_blank">mason.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Manages language servers</li>
+<li><a href="https://github.com/williamboman/mason-lspconfig" target="_blank">mason-lspconfig.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Manages language servers</li>
+<li><a href="https://github.com/hrsh7th/cmp-buffer" target="_blank">cmp-buffer<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — completion source</li>
+<li><a href="https://github.com/hrsh7th/cmp-nvim-lsp" target="_blank">cmp-nvim-lsp<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — completion source</li>
+<li><a href="https://github.com/hrsh7th/cmp-path" target="_blank">cmp-path<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — completion source</li>
+<li><a href="https://github.com/L3MON4D3/LuaSnip" target="_blank">LuaSnip<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — snippets</li>
+<li><a href="https://github.com/hrsh7th/nvim-cmp" target="_blank">nvim-cmp<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — completion engine</li>
+</ul>
+</li>
+<li><a href="https://github.com/Exafunction/codeium.vim" target="_blank">codeium.vim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — GitHub Co-pilot alternative</li>
+<li><a href="https://github.com/folke/lazy.nvim" target="_blank">lazy.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Plugin Manager</li>
+<li><a href="https://github.com/nvim-lualine/lualine.nvim" target="_blank">lualine.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — configurable statusline</li>
+<li><a href="https://github.com/nvim-treesitter/nvim-treesitter" target="_blank">nvim-treesitter<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Tree Sitter and Syntax Highlighting</li>
+<li><a href="https://github.com/folke/which-key.nvim" target="_blank">which-key.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Shows keybindings</li>
+<li><a href="https://github.com/numToStr/Comment.nvim" target="_blank">Comment.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Easy Shortcut for commenting lines</li>
+<li><a href="https://github.com/simrat39/symbols-outline.nvim" target="_blank">symbols-outline.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Show outline of symbols in a file</li>
+<li><a href="https://github.com/RRethy/vim-illuminate" target="_blank">vim-illuminate<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — highlights all instances of word under cursor</li>
+<li><a href="https://github.com/windwp/nvim-autopairs" target="_blank">nvim-autopairs<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — Automatically pair for brackets and quotes</li>
+<li><a href="https://github.com/lewis6991/gitsigns.nvim" target="_blank">gitsigns.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — show git signs in side buffer</li>
+<li><a href="https://github.com/lukas-reineke/indent-blankline.nvim" target="_blank">indent-blankline.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — show lines for indent levels</li>
+<li><a href="https://github.com/akinsho/bufferline.nvim" target="_blank">bufferline.nvim<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — show tabs in bufferline at the top</li>
+</ul>
+<p>I won’t go into each one in exhaustive detail as I think it’s up to each user to
+decide what they want, but feel free to look at the
+<a href="https://github.com/VVoruganti/dotfiles" target="_blank">GitHub<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> and copy whatever you want.</p>
+<p>For each plugin I made a corresponding file under
+<code>.config/nvim/lua/marshmalon/lazy</code> and specified the configuration there. Below
+is an example for <a href="https://github.com/nvim-treesitter/nvim-treesitter" target="_blank">Treesitter<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a></p>
+<p><strong>.config/nvim/lua/marshmalon/lazy/treesitter.lua</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="lua" data-theme="github-light github-dark"><code data-language="lua" data-theme="github-light github-dark"><span data-line=""><span>return</span><span> {</span></span>
+<span data-line=""><span>  "nvim-treesitter/nvim-treesitter"</span><span>,</span></span>
+<span data-line=""><span>  build </span><span>=</span><span> ":TSUpdate"</span><span>,</span></span>
+<span data-line=""><span>  config</span><span> =</span><span> function</span><span>()</span></span>
+<span data-line=""><span>    local</span><span> configs </span><span>=</span><span> require</span><span>(</span><span>"nvim-treesitter.configs"</span><span>)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>    configs.</span><span>setup</span><span>({</span></span>
+<span data-line=""><span>      ensure_installed </span><span>=</span><span> {</span></span>
+<span data-line=""><span>        "c"</span><span>, </span><span>"lua"</span><span>, </span><span>"vim"</span><span>, </span><span>"vimdoc"</span><span>, </span><span>"elixir"</span><span>, </span><span>"javascript"</span><span>, </span><span>"html"</span><span>, </span><span>"python"</span><span>, </span><span>"typescript"</span></span>
+<span data-line=""><span>      },</span></span>
+<span data-line=""><span>      sync_install </span><span>=</span><span> false</span><span>,</span></span>
+<span data-line=""><span>      highlight </span><span>=</span><span> { enable </span><span>=</span><span> true</span><span> },</span></span>
+<span data-line=""><span>      indent </span><span>=</span><span> { enable </span><span>=</span><span> true</span><span> },</span></span>
+<span data-line=""><span>    })</span></span>
+<span data-line=""><span>  end</span></span>
+<span data-line=""><span>}</span></span></code></pre></figure>
+<p>The file needs to return a table that matches a <a href="https://lazy.folke.io/spec" target="_blank">Plugin
+Spec<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a>. The first entry is the name of the Git
+Repository that the plugin is located in on GitHub.</p>
+<p>Then some setup code. The <code>build</code> entry specifies a command to run when the
+plugin is installed or updated, and the <code>config</code> entry is a function to run when
+the plugin is loaded. See the full docs for all the available options. In this
+case I am ensuring that several treesitter parsers are installed and enabling
+highlighting and indentation.</p>
+<p>If you don’t know where to start or what plugins to install I would at the very
+least recommend the following</p>
+<ul>
+<li><a href="https://github.com/nvim-treesitter/nvim-treesitter" target="_blank">Treesitter<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — for syntax
+highlighting</li>
+<li><a href="https://github.com/nvim-telescope/telescope.nvim" target="_blank">Telescope<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> — for quick file
+search</li>
+<li>A colorscheme of your choice (I use <a href="https://github.com/folke/tokyonight.nvim" target="_blank">Tokyonight<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a>)</li>
+<li><a href="https://github.com/neovim/nvim-lspconfig" target="_blank">LSP Config<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> and <a href="https://github.com/williamboman/mason.nvim" target="_blank">Mason<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> for managing language servers</li>
+</ul>
+<h2 id="lsp">LSP</h2>
+<p>The Language Server Protocol (LSP) is a very powerful tool that is built-in to
+neovim and can be used for diagnostics, code completion, and more. To utilize it
+when coding you need a corresponding language server. Each language will have
+different ones with different capabilities.</p>
+<p>To manage this I recommend using <a href="https://github.com/williamboman/mason.nvim" target="_blank">Mason<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> a package manager
+for language servers in neovim.</p>
+<p>There are several ways to go about setting up the LSP. One popular way is to use
+the <a href="https://lsp-zero.netlify.app" target="_blank">LSP Zero<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> plugin that provides a lot of
+sane defaults.</p>
+<p>I did all of my LSP setup in a plugin definition under <code>.config/nvim/lua/marshmalon/lazy/lsp.lua</code>. In that file I also
+setup the <code>nvim-cmp</code> plugin for managing autocompletions and set up several
+sources for the completion including the language servers themselves.</p>
+<h2 id="miscellaneous-settings">Miscellaneous Settings</h2>
+<p>After installing all the plugins and language servers you want the last step is
+to configure any other defaults of the editor. I have two files for this.</p>
+<ul>
+<li><code>set.lua</code> — for setting defaults in neovim</li>
+<li><code>remap.lua</code> — for managing my custom keybindings</li>
+</ul>
+<p><strong>Set.lua</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="lua" data-theme="github-light github-dark"><code data-language="lua" data-theme="github-light github-dark"><span data-line=""><span>vim.</span><span>cmd</span><span>.</span><span>colorscheme</span><span>(</span><span>"tokyonight"</span><span>)</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>clipboard</span><span> =</span><span> 'unnamedplus' </span><span>-- use system keyboard for yank</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>nu</span><span> =</span><span> true</span><span>                 -- set line numbers -- set line numbers</span></span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>relativenumber</span><span> =</span><span> true</span><span>     -- use relative line numbers</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>-- set tab size to 2 spaces</span></span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>tabstop</span><span> =</span><span> 2</span></span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>softtabstop</span><span> =</span><span> 2</span></span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>shiftwidth</span><span> =</span><span> 2</span></span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>expandtab</span><span> =</span><span> true</span></span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>smartindent</span><span> =</span><span> true</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>wrap</span><span> =</span><span> false</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>incsearch</span><span> =</span><span> true</span><span> -- incremental search</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>vim.</span><span>opt</span><span>.</span><span>termguicolors</span><span> =</span><span> true</span></span></code></pre></figure>
+<p>This is a smaller file that sets various defaults for neovim such as tab
+size, line numbering, and clipboard configuration.</p>
+<p>For managing my keybindings I used a plugin called
+<a href="https://github.com/folke/which-key.nvim" target="_blank">which-key<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a> that let’s me annotate,
+organize, and create a small dialog window at the bottom that tells me what
+different keys will do. Very helpful for when I forget a key binding.</p>
+<p>My <code>remap.lua</code> file is rather long and has many comments but to illustrate how
+it works I put a small snippet from it below</p>
+<p><strong>Remap.lua snippet</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="lua" data-theme="github-light github-dark"><code data-language="lua" data-theme="github-light github-dark"><span data-line=""><span>local</span><span> which_key </span><span>=</span><span> require</span><span>(</span><span>"which-key"</span><span>)</span></span>
+<span data-line=""><span>local</span><span> non_lsp_mappings </span><span>=</span><span> {</span></span>
+<span data-line=""><span>  [</span><span>"&lt;leader&gt;"</span><span>] </span><span>=</span><span> {</span></span>
+<span data-line=""><span>    e </span><span>=</span><span> { vim.</span><span>cmd</span><span>.</span><span>Ex</span><span>, </span><span>"Open file explorer" </span><span>},</span></span>
+<span data-line=""><span>    p </span><span>=</span><span> { </span><span>"</span><span>\"</span><span>_dP"</span><span>, </span><span>"Paste without overwrite" </span><span>},</span></span>
+<span data-line=""><span>    [</span><span>"/"</span><span>] </span><span>=</span><span> { </span><span>"&lt;Plug&gt;(comment_toggle_linewise_current)"</span><span>, </span><span>"Toggle comment" </span><span>},</span></span>
+<span data-line=""><span>    s </span><span>=</span><span> { </span><span>[[:%s/\&lt;&lt;C-r&gt;&lt;C-w&gt;\&gt;/&lt;C-r&gt;&lt;C-w&gt;/gI&lt;Left&gt;&lt;Left&gt;&lt;Left&gt;]]</span><span>, </span><span>"Search and replace word under cursor" </span><span>},</span></span>
+<span data-line=""><span>    t </span><span>=</span><span> { </span><span>":Today&lt;CR&gt;"</span><span>, </span><span>"Open today's note" </span><span>},</span></span>
+<span data-line=""><span>  },</span></span>
+<span data-line=""><span>  J </span><span>=</span><span> { </span><span>"mzJ`z"</span><span>, </span><span>"Join lines and keep cursor position" </span><span>},</span></span>
+<span data-line=""><span>  [</span><span>"&lt;C-d&gt;"</span><span>] </span><span>=</span><span> { </span><span>"&lt;C-d&gt;zz"</span><span>, </span><span>"Half page down and center" </span><span>},</span></span>
+<span data-line=""><span>  [</span><span>"&lt;C-u&gt;"</span><span>] </span><span>=</span><span> { </span><span>"&lt;C-u&gt;zz"</span><span>, </span><span>"Half page up and center" </span><span>},</span></span>
+<span data-line=""><span>  n </span><span>=</span><span> { </span><span>"nzzzv"</span><span>, </span><span>"Next search result and center" </span><span>},</span></span>
+<span data-line=""><span>  N </span><span>=</span><span> { </span><span>"Nzzzv"</span><span>, </span><span>"Previous search result and center" </span><span>},</span></span>
+<span data-line=""><span>  Q </span><span>=</span><span> { </span><span>"&lt;nop&gt;"</span><span>, </span><span>"Disable Ex mode" </span><span>},</span></span>
+<span data-line=""><span>}</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>which_key.</span><span>register</span><span>(non_lsp_mappings)</span></span></code></pre></figure>
+<p>This creates several keybinds, but when entering a group (such as with
+&lt;leader&gt;) it will show a float window with all the keybinds in that group like
+so.</p>
+<p><img src="../assets/keybinds.png" alt="Keybinds"></p>
+<p>Before these work I need to make sure to include both files in my
+<code>marshmalon/init.lua</code> file. So my final <code>init.lua</code> looks like this.</p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="lua" data-theme="github-light github-dark"><code data-language="lua" data-theme="github-light github-dark"><span data-line=""><span>vim.</span><span>g</span><span>.</span><span>mapleader</span><span> =</span><span> " "</span></span>
+<span data-line=""> </span>
+<span data-line=""><span>require</span><span>(</span><span>"marshmalon.lazy_init"</span><span>)</span></span>
+<span data-line=""><span>require</span><span>(</span><span>"marshmalon.remap"</span><span>)</span></span>
+<span data-line=""><span>require</span><span>(</span><span>"marshmalon.set"</span><span>)</span></span></code></pre></figure>
+<h2 id="the-after-directory">The <code>after</code> Directory</h2>
+<p>This is a directory that I haven’t talked about until now. It let’s you define
+configurations that are loaded after everything else. This is useful if you want
+to ensure a set of plugins are installed before running some configurations. You
+can also set certain configurations to run on certain filetypes by specifying
+them inside <code>after/ftplugin</code></p>
+<p>I largely did not need to use the <code>after</code> directory as I was able to specify
+dependencies using <code>Lazy</code> and didn’t hit any conflicts. The configuration I did
+make is that I have a <code>markdown.lua</code> file that sets the text width to 80.</p>
+<p><strong>.config/nvim/after/ftplugin/markdown.lua</strong></p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="lua" data-theme="github-light github-dark"><code data-language="lua" data-theme="github-light github-dark"><span data-line=""><span>vim.</span><span>cmd</span><span>(</span><span>"setlocal textwidth=80"</span><span>)</span></span></code></pre></figure>
+<p>This is helpful when writing so that my lines automatically wrap at 80
+characters and I don’t just have lines that go forever.</p>
+<h2 id="conclusion">Conclusion</h2>
+<p>At the end of the setup my <code>.config/nvim</code> directory looks like so:</p>
+<figure data-rehype-pretty-code-figure=""><pre tabindex="0" data-language="markdown" data-theme="github-light github-dark"><code data-language="markdown" data-theme="github-light github-dark"><span data-line=""><span>.</span></span>
+<span data-line=""><span>└── .config/</span></span>
+<span data-line=""><span>└── nvim/</span></span>
+<span data-line=""><span>├── init.lua</span></span>
+<span data-line=""><span>├── lua/</span></span>
+<span data-line=""><span>│ └── marshmalon/</span></span>
+<span data-line=""><span>│ ├── lazy/</span></span>
+<span data-line=""><span>│ │ └── ...Many plugin specs</span></span>
+<span data-line=""><span>│ ├── init.lua</span></span>
+<span data-line=""><span>│ ├── lazy_init.lua</span></span>
+<span data-line=""><span>│ ├── remap.lua</span></span>
+<span data-line=""><span>│ └── set.lua</span></span>
+<span data-line=""><span>└── after/</span></span>
+<span data-line=""><span>└── ftplugin/</span></span>
+<span data-line=""><span>└── markdown.lua</span></span></code></pre></figure>
+<p>Everything is configured using strictly lua with no VimScript.</p>
+<p>Neovim is an ever-evolving platform that can change quite fast. One day’s
+plugins can be obsolete the next day, so inevitably there will be some drift and
+this guide will be dated. That being said the ecosystem has been maturing and many standards
+are becoming more cemented.</p>
+<p>I can’t see myself going to another editor at this point. Anything else I try
+feels too slow and being co-located in the terminal is always nice as I’m
+zipping around and running different commands.</p>
+<p>I hope this guide was clear and helpful and can just drive home some ideas other
+guides included.</p>
+<h3 id="further-work">Further Work</h3>
+<p>As I hinted to earlier just like ricing, customizing an editor can be an endless
+pursuit and just from the initial setup there are a few thins I want to work on.</p>
+<p>The main one being writing my own co-pilot extension so that I have full control
+of the model and prompt architecture.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://lsp-zero.netlify.app/v3.x/" target="_blank">lsp-zero<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a></li>
+<li><a href="https://github.com/ThePrimeagen/init.lua/tree/master" target="_blank">ThePrimeagen’s init.lua<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a></li>
+<li><a href="https://www.josean.com/posts/how-to-setup-neovim-2024" target="_blank">Josean’s 2024 Neovim Setup on Mac<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a></li>
+<li><a href="https://www.lunarvim.org/docs/configuration/plugins/example-configurations" target="_blank">LunarVim Plugin Setup<svg viewBox="0 0 512 512"><path d="M320 0H288V64h32 82.7L201.4 265.4 178.7 288 224 333.3l22.6-22.6L448 109.3V192v32h64V192 32 0H480 320zM32 32H0V64 480v32H32 456h32V480 352 320H424v32 96H64V96h96 32V32H160 32z" /></svg></a></li>
+</ul></article></div></div></article></body></html>

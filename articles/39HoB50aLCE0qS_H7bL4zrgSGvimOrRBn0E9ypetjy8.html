@@ -1,0 +1,59 @@
+<html><head><meta charset="utf-8"><title>Installation</title><meta content="nvim-tree" name="author"><meta content="A file explorer tree for neovim written in lua. Contribute to nvim-tree/nvim-tree.lua development by creating an account on GitHub." name="description"><meta content="https://github.com/nvim-tree/nvim-tree.lua/wiki/Installation" name="dendron:source-url"><meta content="1284" name="dendron:length"><meta content="1.17" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div data-view-component="true" id="wiki-body">
+              <div>
+                <p></p><h2>Plugins</h2><a id="user-content-plugins" aria-label="Permalink: Plugins" href="#plugins"></a><p></p>
+<p>Required</p>
+<ul>
+<li><code>nvim-tree/nvim-tree.lua</code></li>
+</ul>
+<p>Recommended</p>
+<ul>
+<li>
+<code>nvim-tree/nvim-web-devicons</code> file icons</li>
+</ul>
+<p>Optional</p>
+<ul>
+<li><a href="./Integrations-And-Extension-Plugins#integrations">Integrations</a></li>
+<li><a href="./Integrations-And-Extension-Plugins#extension-plugins">Extension Plugins</a></li>
+<li><a href="./Integrations-And-Extension-Plugins#color-schemes">Color Schemes</a></li>
+</ul>
+<p></p><h2>Neovim Plugin Manager</h2><a id="user-content-neovim-plugin-manager" aria-label="Permalink: Neovim Plugin Manager" href="#neovim-plugin-manager"></a><p></p>
+<p></p><h3>
+<a href="https://neovim.io/doc/user/pack.html#vim.pack" rel="nofollow">vim.pack</a> - Neovim 0.12+ Native Plugin Manager - Preferred</h3><a id="user-content-vimpack---neovim-012-native-plugin-manager---preferred" aria-label="Permalink: vim.pack - Neovim 0.12+ Native Plugin Manager - Preferred" href="#vimpack---neovim-012-native-plugin-manager---preferred"></a><p></p>
+<div data-snippet-clipboard-copy-content="vim.pack.add({
+  { src = 'https://github.com/nvim-tree/nvim-web-devicons' }, -- optional
+  { src = 'https://github.com/nvim-tree/nvim-tree.lua' },
+})
+"><pre><span>vim</span>.<span>pack</span>.<span>add</span>({
+  { <span>src</span> <span>=</span> <span><span>'</span>https://github.com/nvim-tree/nvim-web-devicons<span>' </span></span>}, <span><span>--</span> optional</span>
+  { <span>src</span> <span>=</span> <span><span>'</span>https://github.com/nvim-tree/nvim-tree.lua<span>' </span></span>},
+})
+</pre></div>
+<p></p><h2>Operating System Package</h2><a id="user-content-operating-system-package" aria-label="Permalink: Operating System Package" href="#operating-system-package"></a><p></p>
+<p>Ensure that your neovim plugin manager is not managing these plugins.</p>
+<p></p><h3><a href="https://archlinux.org/" rel="nofollow">Arch Linux</a></h3><a id="user-content-arch-linux" aria-label="Permalink: Arch Linux" href="#arch-linux"></a><p></p>
+<ul>
+<li><a href="https://aur.archlinux.org/packages/neovim-tree-lua-git" rel="nofollow">neovim-tree-lua-git</a></li>
+<li>
+<a href="https://aur.archlinux.org/packages/neovim-web-devicons-git" rel="nofollow">neovim-web-devicons-git</a> (optional)</li>
+</ul>
+<p></p><h2>Lazy Loading</h2><a id="user-content-lazy-loading" aria-label="Permalink: Lazy Loading" href="#lazy-loading"></a><p></p>
+<p>Lazy loading is not recommended.</p>
+<p>nvim-tree <code>setup</code> is very inexpensive, doing little more than validating and setting configuration. There's no performance benefit for lazy loading.</p>
+<p>Lazy loading can be problematic due to the somewhat nondeterministic startup order of plugins, session managers, netrw, <code>"VimEnter"</code> event etc.</p>
+<p></p><h2>Older neovim Versions</h2><a id="user-content-older-neovim-versions" aria-label="Permalink: Older neovim Versions" href="#older-neovim-versions"></a><p></p>
+<p>If you cannot use the required version of nvim-tree you may use an older version via tag:</p>
+<ul>
+<li><code>compat-nvim-0.9</code></li>
+<li><code>compat-nvim-0.8</code></li>
+<li><code>compat-nvim-0.7</code></li>
+<li><code>compat-nvim-0.6</code></li>
+</ul>
+<p>Please note that these compatibility versions are not maintained or updated.</p>
+
+              </div>
+
+              <p id="wiki-footer">
+                <a href="/nvim-tree/nvim-tree.lua/wiki/_new?wiki%5Bname%5D=_Footer">
+                   Add a custom footer
+</a>              </p>
+          </div></div></article></body></html>
