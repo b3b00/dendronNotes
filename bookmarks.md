@@ -6,7 +6,7 @@ A handy pocketguide that covers everything a .NET developer needs to know about 
 
 # GitHub - sebastienros/jint: Javascript Interpreter for .NET
 [https://github.com/sebastienros/jint](https://github.com/sebastienros/jint)
-![Javascript Interpreter for .NET. Contribute to sebastienros/jint development by creating an account on GitHub.](https://opengraph.githubassets.com/c2055906d2f9d1fa7b27601bcb8f6860ae2361ba3fa6b2b58657700dad422bea/sebastienros/jint)
+![](https://opengraph.githubassets.com/c2055906d2f9d1fa7b27601bcb8f6860ae2361ba3fa6b2b58657700dad422bea/sebastienros/jint)
 Javascript Interpreter for .NET. Contribute to sebastienros/jint development by creating an account on GitHub.
 [C#] [javascript]
 
@@ -18,13 +18,13 @@ As a software developer debugging skills are invaluable. Over the years debuggin
 
 # GitHub - iabdelkareem/csharp.nvim: Neovim plugin written in Lua, powered by omnisharp-roslyn, that aims to enhance the development experience for .NET developers.
 [https://github.com/iabdelkareem/csharp.nvim](https://github.com/iabdelkareem/csharp.nvim)
-![Neovim plugin written in Lua, powered by omnisharp-roslyn, that aims to enhance the development experience for .NET developers. - iabdelkareem/csharp.nvim](https://opengraph.githubassets.com/685156e20a232bf9fbc83d29c47dfb5e01af81e2fe017b6532f087caefce9a24/iabdelkareem/csharp.nvim)
+![](https://opengraph.githubassets.com/685156e20a232bf9fbc83d29c47dfb5e01af81e2fe017b6532f087caefce9a24/iabdelkareem/csharp.nvim)
 Neovim plugin written in Lua, powered by omnisharp-roslyn, that aims to enhance the development experience for .NET developers. - iabdelkareem/csharp.nvim
 [C#] [Nvim]
 
 # roslyn/docs/features/incremental-generators.cookbook.md at main · dotnet/roslyn
 [https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.cookbook.md](https://github.com/dotnet/roslyn/blob/main/docs/features/incremental-generators.cookbook.md)
-![The Roslyn .NET compiler provides C# and Visual Basic languages with rich code analysis APIs. - dotnet/roslyn](https://opengraph.githubassets.com/ce91d32b4b20e8d22a52bc9efa2144828f25257b98178361435639253f8659a7/dotnet/roslyn)
+![](https://opengraph.githubassets.com/ce91d32b4b20e8d22a52bc9efa2144828f25257b98178361435639253f8659a7/dotnet/roslyn)
 The Roslyn .NET compiler provides C# and Visual Basic languages with rich code analysis APIs. - dotnet/roslyn
 [C#] [nuget] [source generators]
 
@@ -89,7 +89,7 @@ Most of us last saw calculus in school, but derivatives are a critical part of m
 
 # AI is not a high-precision technology, and that has big implications for the world of work
 [https://www.dailymaverick.co.za/opinionista/2024-09-26-ai-is-not-a-high-precision-technology-and-this-has-profound-implications-for-the-world-of-work/](https://www.dailymaverick.co.za/opinionista/2024-09-26-ai-is-not-a-high-precision-technology-and-this-has-profound-implications-for-the-world-of-work/)
-![AI is not a high-precision technology, and this has profound implications for the world of work](https://cdn.dailymaverick.co.za/i/Jw6Fhc8oqa2u_7uR_7O38SdRs1M=/1600x0/smart/filters:strip_exif()/file/dailymaverick/wp-content/uploads/Tshilidzi-Marwala-01_from-JanP-20180531-USE.jpg)
+![](https://cdn.dailymaverick.co.za/i/Jw6Fhc8oqa2u_7uR_7O38SdRs1M=/1600x0/smart/filters:strip_exif()
 If AI is too precise, it is considered flawed because it is memorising instead of learning, a phenomenon called over-fitting. This inherent imprecision in AI systems has significant implications for the world of work.
 [AI]
 
@@ -110,36 +110,18 @@ The ML technology that might end up having the biggest impact on technical writi
 ![](data:image/svg+xml;base64,CiAgICAgICAgICAgIDxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiPgogICAgICAgICAgICAgIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNzBhOTYwIi8+CiAgICAgICAgICAgICAgPHRleHQgeD0iMjAwIiB5PSIxNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExMCIgZm9udC13ZWlnaHQ9ImJvbGQiCiAgICAgICAgICAgICAgICAgICAgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SjwvdGV4dD4KICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgIA==)
 Discussions:
 Hacker News (347 points, 37 comments), Reddit r/MachineLearning (151 points, 19 comments)
-
-
-
 Translations: Chinese (Simplified), French, Korean, Portuguese, Russian
-
-
-
-  
-  
-
-
-
-  “There is in all things a pattern that is part of our universe. It has symmetry, elegance, and grace - those qualities you find always in that which the true artist captures. You can find it in the turning of the seasons, in the way sand trails along a ridge, in the branch clusters of the creosote
-  bush or the pattern of its leaves. 
-
-  We try to copy these patterns in our lives and our society,
-  seeking the rhythms, the dances, the forms that comfort.
-  Yet, it is possible to see peril in the finding of
-  ultimate perfection. It is clear that the ultimate
-  pattern contains it own fixity. In such
-  perfection, all things move toward death.”
-  ~ Dune (1965)
-
-
+“There is in all things a pattern that is part of our universe. It has symmetry, elegance, and grace - those qualities you find always in that which the true artist captures. You can find it in the turning of the seasons, in the way sand trails along a ridge, in the branch clusters of the creosote
+bush or the pattern of its leaves.
+We try to copy these patterns in our lives and our society,
+seeking the rhythms, the dances, the forms that comfort.
+Yet, it is possible to see peril in the finding of
+ultimate perfection. It is clear that the ultimate
+pattern contains it own fixity. In such
+perfection, all things move toward death.”
+~ Dune (1965)
 I find the concept of embeddings to be one of the most fascinating ideas in machine learning. If you’ve ever used Siri, Google Assistant, Alexa, Google Translate, or even smartphone keyboard with next-word prediction, then chances are you’ve benefitted from this idea that has become central to Natural Language Processing models. There has been quite a development over the last couple of decades in using embeddings for neural models (Recent developments include contextualized word embeddings leading to cutting-edge models like BERT and GPT2).
-
-
-
 Word2vec is a method to efficiently create word embeddings and has been around since 2013. But in addition to its utility as a word-embedding method, some of its concepts have been shown to be effective in creating recommendation engines and making sense of sequential data even in commercial, non-language tasks. Companies like Airbnb, Alibaba, Spotify, and Anghami have all benefitted from carving out this brilliant piece of machinery from the world of NLP and using it in production to empower a new breed of recommendation engines.
-
 In this post, we’ll go over the concept of embedding, and the mechanics of generating embeddings with word2vec. But let’s start with an example to get familiar with using vectors to represent things. Did you know that a list of five numbers (a vector) can represent so much about your personality?
 [AI] [embedding]
 
@@ -148,19 +130,10 @@ In this post, we’ll go over the concept of embedding, and the mechanics of gen
 ![](data:image/svg+xml;base64,CiAgICAgICAgICAgIDxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiPgogICAgICAgICAgICAgIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjNjBhOTY2Ii8+CiAgICAgICAgICAgICAgPHRleHQgeD0iMjAwIiB5PSIxNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExMCIgZm9udC13ZWlnaHQ9ImJvbGQiCiAgICAgICAgICAgICAgICAgICAgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SjwvdGV4dD4KICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgIA==)
 Discussions:
 Hacker News (63 points, 8 comments), Reddit r/programming (312 points, 37 comments)
-
 Translations: Arabic, French, Spanish
-
-
-
-    
-
-
 Update: Part 2 is now live: A Visual And Interactive Look at Basic Neural Network Math
-
 Motivation
 I’m not a machine learning expert. I’m a software engineer by training and I’ve had little interaction with AI. I had always wanted to delve deeper into machine learning, but never really found my “in”. That’s why when Google open sourced TensorFlow in November 2015, I got super excited and knew it was time to jump in and start the learning journey. Not to sound dramatic, but to me, it actually felt kind of like Prometheus handing down fire to mankind from the Mount Olympus of machine learning. In the back of my head was the idea that the entire field of Big Data and technologies like Hadoop were vastly accelerated when Google researchers released their Map Reduce paper. This time it’s not a paper – it’s the actual software they use internally after years and years of evolution.
-
 So I started learning what I can about the basics of the topic, and saw the need for gentler resources for people with no experience in the field. This is my attempt at that.
 [AI] [Réseau de neurones]
 
@@ -184,13 +157,13 @@ L'essor des modèles de langage avancés comme GPT-4o d'OpenAI a ouvert de vaste
 
 # Writing Code Was Never The Bottleneck
 [https://ordep.dev/posts/writing-code-was-never-the-bottleneck](https://ordep.dev/posts/writing-code-was-never-the-bottleneck)
-![Writing Code Was Never The Bottleneck](https://ordep.dev/assets/images/social/writing-code-was-never-the-bottleneck.png)
+![](https://ordep.dev/assets/images/social/writing-code-was-never-the-bottleneck.png)
 LLMs make it easier to write code, but understanding, reviewing, and maintaining it still takes time, trust, and good judgment.
 [AI] [Software] [software engineering] [LLM] [code]
 
 # ZeroEntropy — Specialized AI Models for Every System
 [https://www.zeroentropy.dev/blog/improving-rag-with-elo-scores](https://www.zeroentropy.dev/blog/improving-rag-with-elo-scores)
-![ZeroEntropy — Specialized AI Models for Every System](https://zeroentropy.dev/assets/images/ze-logo.png)
+![](https://zeroentropy.dev/assets/images/ze-logo.png)
 ZeroEntropy trains small, specialized AI models — state-of-the-art rerankers, embeddings, and custom-trained models for production AI systems. Higher accuracy, lower latency, lower cost than the generalist alternatives.
 [AI]
 
@@ -244,7 +217,7 @@ Like a lot of people, I’ve found that AI is terrible for my sleep schedule. In
 
 # What spec-driven development gets wrong
 [https://www.augmentcode.com/blog/what-spec-driven-development-gets-wrong?utm_source=changelog-news](https://www.augmentcode.com/blog/what-spec-driven-development-gets-wrong?utm_source=changelog-news)
-![What spec-driven development gets wrong](https://cdn.sanity.io/images/oraw2u2c/production/68c825bb7ebade59b14c3f1fb12cfcfcee220b07-3840x2560.png?w=1200&h=630&fit=crop&auto=format)
+![](https://cdn.sanity.io/images/oraw2u2c/production/68c825bb7ebade59b14c3f1fb12cfcfcee220b07-3840x2560.png?w=1200&h=630&fit=crop&auto=format)
 The only documentation you can 100% trust is the code itself. Design docs, changelogs, READMEs, architecture diagrams, onboarding wikis. Every one of these is…
 [AI] [software engineering]
 
@@ -268,13 +241,13 @@ De plus en plus de travailleurs utilisant l'IA disent voir leur charge de travai
 
 # GitHub - jbranchaud/til: :memo: Today I Learned
 [https://github.com/jbranchaud/til?utm_source=changelog-news](https://github.com/jbranchaud/til?utm_source=changelog-news)
-![:memo: Today I Learned. Contribute to jbranchaud/til development by creating an account on GitHub.](https://opengraph.githubassets.com/01d1c9439b83e1373f01151ad85b8c3ba0048b392e637851fa91b0314b3af339/jbranchaud/til)
+![](https://opengraph.githubassets.com/01d1c9439b83e1373f01151ad85b8c3ba0048b392e637851fa91b0314b3af339/jbranchaud/til)
 :memo: Today I Learned. Contribute to jbranchaud/til development by creating an account on GitHub.
 [TIL] [git]
 
 # How Core Git Developers Configure Git
 [https://blog.gitbutler.com/how-git-core-devs-configure-git/](https://blog.gitbutler.com/how-git-core-devs-configure-git/)
-![How Core Git Developers Configure Git](https://d2m1ukvwmu7gz4.cloudfront.net/images/images-2025-02-how-devs-config-git-core.webp)
+![](https://d2m1ukvwmu7gz4.cloudfront.net/images/images-2025-02-how-devs-config-git-core.webp)
 What `git config` settings should be defaults by now? Here are some settings that even the core developers change.
 [git]
 
@@ -310,7 +283,7 @@ Apple Calculator leaks 32GB RAM. VS Code leaks 96GB. CrowdStrike crashes 8.5M co
 
 # Debug Adapter installation
 [https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation](https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation)
-![Debug Adapter Protocol client implementation for Neovim - mfussenegger/nvim-dap](https://opengraph.githubassets.com/ffe4ab55a1f36a89777a2fd85586f655242a9ccc7056e4a54bbdedbe64514ac4/mfussenegger/nvim-dap)
+![](https://opengraph.githubassets.com/ffe4ab55a1f36a89777a2fd85586f655242a9ccc7056e4a54bbdedbe64514ac4/mfussenegger/nvim-dap)
 Debug Adapter Protocol client implementation for Neovim - mfussenegger/nvim-dap
 [.net] [Nvim]
 
@@ -318,7 +291,6 @@ Debug Adapter Protocol client implementation for Neovim - mfussenegger/nvim-dap
 [https://goatreview.com/dont-use-mediatr-by-default-net-projects/?utm_source=newsletter.csharpdigest.net](https://goatreview.com/dont-use-mediatr-by-default-net-projects/?utm_source=newsletter.csharpdigest.net)
 ![](https://goatreview.com/content/images/2024/12/pierrebelin_Reflecting_goat_with_a_bubble_next_to_it_containing_b6f74da8-953e-4d4f-97b9-d7afc10e0506.webp)
 The .NET ecosystem has witnessed a significant shift in recent years, with MediatR becoming almost synonymous with Clean Architecture implementations. This library, designed to implement the mediator pattern, has found its way into countless tutorials, templates, and starter kits, making it seem like an essential component of modern .NET Core applications.
-
 The appeal is understandable - MediatR provides an elegant solution for implementing the mediator pattern, facilitating communication betwee
 [.net]
 
@@ -336,7 +308,7 @@ Reduced Akka.NET's average build time from ~1.25hrs to 15 minutes.
 
 # GitHub - ByronMayne/SourceGenerator.Foundations: A Source Generator for Source Generators. Gives out of the box support for transistent dependencies and logging right in Visual Studio
 [https://github.com/ByronMayne/SourceGenerator.Foundations](https://github.com/ByronMayne/SourceGenerator.Foundations)
-![A Source Generator for Source Generators. Gives out of the box support for transistent dependencies and logging right in Visual Studio - ByronMayne/SourceGenerator.Foundations](https://opengraph.githubassets.com/b944adaab00ef3be1c73a32eceaf6301b6a23865bafaf1a1a4c3586f6b60f693/ByronMayne/SourceGenerator.Foundations)
+![](https://opengraph.githubassets.com/b944adaab00ef3be1c73a32eceaf6301b6a23865bafaf1a1a4c3586f6b60f693/ByronMayne/SourceGenerator.Foundations)
 A Source Generator for Source Generators. Gives out of the box support for transistent dependencies and logging right in Visual Studio - ByronMayne/SourceGenerator.Foundations
 [.net] [source generators]
 
@@ -350,7 +322,7 @@ In Visual Studio 2026 we introduced Copilot Profiler Agent, a new AI-powered ass
 [https://www.cameronmacleod.com/blog/how-does-shazam-work?utm_source=newsletter.programmingdigest.net](https://www.cameronmacleod.com/blog/how-does-shazam-work?utm_source=newsletter.programmingdigest.net)
 ![](https://www.cameronmacleod.com/images/abracadabra/header.png)
 Sat 19 February 2022
-    Tutorials
+Tutorials
 [Shazam] [DSP] [How it works]
 
 # Documentation - Migrating from JavaScript
@@ -367,7 +339,7 @@ Probably the ultimate Svelte.js with Typescript HOWTO there is
 
 # GitHub - ivanhofer/sveltekit-typescript-showcase: This repository shows how Svelte and SvelteKit work together with TypeScript.
 [https://github.com/ivanhofer/sveltekit-typescript-showcase](https://github.com/ivanhofer/sveltekit-typescript-showcase)
-![This repository shows how Svelte and SvelteKit work together with TypeScript. - ivanhofer/sveltekit-typescript-showcase](https://opengraph.githubassets.com/2a12678f0b106040875ead484d1c677cb627b2f139d63ddbf059ca48ef2e450c/ivanhofer/sveltekit-typescript-showcase)
+![](https://opengraph.githubassets.com/2a12678f0b106040875ead484d1c677cb627b2f139d63ddbf059ca48ef2e450c/ivanhofer/sveltekit-typescript-showcase)
 This repository shows how Svelte and SvelteKit work together with TypeScript. - ivanhofer/sveltekit-typescript-showcase
 [typescript] [svelte]
 
@@ -379,7 +351,7 @@ Maximize software quality with outcome-focused testing strategies, including eff
 
 # Mocking is an Anti-Pattern
 [https://www.amazingcto.com/mocking-is-an-antipattern-how-to-test-without-mocking/?utm_source=changelog-news](https://www.amazingcto.com/mocking-is-an-antipattern-how-to-test-without-mocking/?utm_source=changelog-news)
-![Mocking is an Anti-Pattern](https://www.amazingcto.com/images/DontMock.png)
+![](https://www.amazingcto.com/images/DontMock.png)
 Mocking creates false security by testing isolation, not real behavior. Separate business logic from IO, use in-memory DBs, write server-side E2E tests instead.
 [test]
 
@@ -464,7 +436,7 @@ I've seen this argument pop up so many times it's astonishing. I believe there i
 
 # Writing an operating system kernel from scratch
 [https://popovicu.com/posts/writing-an-operating-system-kernel-from-scratch/](https://popovicu.com/posts/writing-an-operating-system-kernel-from-scratch/)
-![Writing an operating system kernel from scratch - Uros Popovic](https://popovicu.com/static/og/writing-an-operating-system-kernel-from-scratch.png)
+![](https://popovicu.com/static/og/writing-an-operating-system-kernel-from-scratch.png)
 Exploring a minimal implementation of a time-sharing kernel on RISC-V, implemented in Zig, on top of OpenSBI.
 [OS]
 
@@ -476,13 +448,13 @@ Prime numbers are fascinating!
 
 # GitHub - excubo-ag/Blazor.ScriptInjection
 [https://github.com/excubo-ag/Blazor.ScriptInjection](https://github.com/excubo-ag/Blazor.ScriptInjection)
-![Contribute to excubo-ag/Blazor.ScriptInjection development by creating an account on GitHub.](https://opengraph.githubassets.com/edb85639cceadceba0a16482e8699343dc990901c1f482897015c648ad588d5e/excubo-ag/Blazor.ScriptInjection)
+![](https://opengraph.githubassets.com/edb85639cceadceba0a16482e8699343dc990901c1f482897015c648ad588d5e/excubo-ag/Blazor.ScriptInjection)
 Contribute to excubo-ag/Blazor.ScriptInjection development by creating an account on GitHub.
 [Blazor]
 
 # Installation
 [https://github.com/nvim-tree/nvim-tree.lua/wiki/Installation](https://github.com/nvim-tree/nvim-tree.lua/wiki/Installation)
-![A file explorer tree for neovim written in lua. Contribute to nvim-tree/nvim-tree.lua development by creating an account on GitHub.](https://opengraph.githubassets.com/d5d686d137b5e36d3cf72ec4e0df6c3cf0b6deeb4a1f0c600bd873e0670cef4e/nvim-tree/nvim-tree.lua)
+![](https://opengraph.githubassets.com/d5d686d137b5e36d3cf72ec4e0df6c3cf0b6deeb4a1f0c600bd873e0670cef4e/nvim-tree/nvim-tree.lua)
 A file explorer tree for neovim written in lua. Contribute to nvim-tree/nvim-tree.lua development by creating an account on GitHub.
 [Nvim]
 
@@ -562,7 +534,7 @@ Things you do need CRDTs for …
 
 # 256 cœurs et 2 nanomètres - AMD met en production son serveur monstre Epyc Venice
 [https://share.google/TbLjn6ymmOhex0nLd](https://share.google/TbLjn6ymmOhex0nLd)
-![256 cœurs et 2 nanomètres - AMD met en production son serveur monstre Epyc Venice - Korben](https://korben.info/256-coeurs-et-2-nanometres-amd-met-en-production-son-serveur-monstre-epyc-venice/256-coeurs-et-2-nanometres-amd-met-en-production-son-serveur-monstre-epyc-venice-1.jpg)
+![](https://korben.info/256-coeurs-et-2-nanometres-amd-met-en-production-son-serveur-monstre-epyc-venice/256-coeurs-et-2-nanometres-amd-met-en-production-son-serveur-monstre-epyc-venice-1.jpg)
 AMD lance la production de l'Epyc Venice chez TSMC : 256 cœurs, gravure 2 nm, +70 % de performances et 1,6 To/s de bande passante mémoire par socket.
 
 # TamboUI Promises to Bring Better Capabilities to Build TUIs in Java
@@ -591,7 +563,7 @@ A tour through AI engineering for developers who already know how to ship softwa
 
 # Microsoft Brings Linux-Like Coreutils Natively to Windows
 [https://linuxiac.com/microsoft-brings-linux-like-coreutils-natively-to-windows/](https://linuxiac.com/microsoft-brings-linux-like-coreutils-natively-to-windows/)
-![Microsoft Brings Linux-Like Coreutils Natively to Windows](https://linuxiac.com/wp-content/uploads/2026/06/windows-linux-coreutils.jpg)
+![](https://linuxiac.com/wp-content/uploads/2026/06/windows-linux-coreutils.jpg)
 Microsoft introduces Coreutils for Windows, bringing familiar Unix-style command-line tools to Windows without requiring WSL.
 [Linux]
 
@@ -632,7 +604,7 @@ Si la plupart des employés souhaitent de la flexibilité au travail, de plus en
 
 # When AI builds itself
 [https://www.anthropic.com/institute/recursive-self-improvement](https://www.anthropic.com/institute/recursive-self-improvement)
-![Anthropic logo](https://cdn.sanity.io/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg)
+![](https://cdn.sanity.io/images/4zrzovbb/website/6d4a0d28992ade92d6fa63646fd9c9d318245c6c-2400x1260.jpg)
 Our progress toward recursive self-improvement, and its implications.
 [AI]
 
@@ -656,13 +628,13 @@ Open Source backend in 1 file with realtime database, authentication, file stora
 
 # The Software Engineer Spectrum: Speed vs. Accuracy - Ben Howdle
 [https://benhowdle.im/software-engineer-spectrum?utm_source=bonobopress](https://benhowdle.im/software-engineer-spectrum?utm_source=bonobopress)
-![The Software Engineer Spectrum: Speed vs. Accuracy - Ben Howdle](https://benhowdle.im/img/me-2025.jpeg)
+![](https://benhowdle.im/img/me-2025.jpeg)
 Every engineer sits somewhere between speed and accuracy. Why matching that working style to a company's stage matters more than skill when hiring.
 [Software] [software engineering]
 
 # Defeating Nondeterminism in LLM Inference
 [https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/](https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/)
-![Defeating Nondeterminism in LLM Inference](https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/images/cover-social.png)
+![](https://thinkingmachines.ai/blog/defeating-nondeterminism-in-llm-inference/images/cover-social.png)
 Connectionism: Research Blog by Thinking Machines Lab
 [AI] [Determinism]
 
@@ -685,7 +657,7 @@ In this blog, we will learn about how Chain-of-Thought (CoT) Prompting works. We
 
 # GitHub - amitshekhariitbhu/100-days-of-ai: Take the 100 Days of AI challenge - learn one AI concept a day, from machine learning basics to AI agents in production, in 100 days.
 [https://github.com/amitshekhariitbhu/100-days-of-ai](https://github.com/amitshekhariitbhu/100-days-of-ai)
-![Take the 100 Days of AI challenge - learn one AI concept a day, from machine learning basics to AI agents in production, in 100 days. - amitshekhariitbhu/100-days-of-ai](https://repository-images.githubusercontent.com/1295965620/f768efdf-a581-4a35-ac64-3306cac82332)
+![](https://repository-images.githubusercontent.com/1295965620/f768efdf-a581-4a35-ac64-3306cac82332)
 Take the 100 Days of AI challenge - learn one AI concept a day, from machine learning basics to AI agents in production, in 100 days. - amitshekhariitbhu/100-days-of-ai
 [AI]
 
@@ -727,7 +699,7 @@ Anthropic hosted &quot;Code with Claude 2026&quot; in San Francisco, featuring l
 
 # GitHub - Strumenta/SmartReader: SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla
 [https://github.com/Strumenta/SmartReader](https://github.com/Strumenta/SmartReader)
-![SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla - Strumenta/SmartReader](https://opengraph.githubassets.com/731622a7b9c4471599c5ba74a678871793c6af9ac264c0ba8c1a4fb5b521a3a2/Strumenta/SmartReader)
+![](https://opengraph.githubassets.com/731622a7b9c4471599c5ba74a678871793c6af9ac264c0ba8c1a4fb5b521a3a2/Strumenta/SmartReader)
 SmartReader is a library to extract the main content of a web page, based on a port of the Readability library by Mozilla - Strumenta/SmartReader
 
 # Incremental Parsing Using Tree-sitter
@@ -832,7 +804,7 @@ If someone asks you something, send your answer. Not the AI's.
 
 # Pourquoi le remplacement du personnel par l'IA se retourne contre les entreprises – et 5 façons de créer une véritable valeur ajoutée
 [https://www.zdnet.fr/actualites/pourquoi-le-remplacement-du-personnel-par-lia-se-retourne-contre-les-entreprises-et-5-facons-dont-les-dirigeants-avises-creent-une-veritable-valeur-ajoutee-500376.htm](https://www.zdnet.fr/actualites/pourquoi-le-remplacement-du-personnel-par-lia-se-retourne-contre-les-entreprises-et-5-facons-dont-les-dirigeants-avises-creent-une-veritable-valeur-ajoutee-500376.htm)
-![purplepeople-gettyimages-2227030316](https://www.zdnet.fr/wp-content/uploads/zdnet/2026/08/purplepeople-gettyimages-2227030316.webp)
+![](https://www.zdnet.fr/wp-content/uploads/zdnet/2026/08/purplepeople-gettyimages-2227030316.webp)
 Les trois quarts des entreprises ont constaté que les licenciements liés à l'IA coûtaient plus cher que ce qu'ils permettaient d'économiser, et pas moins de neuf entreprises sur dix y réfléchiraient à deux fois si elles pouvaient revenir en arrière.
 [TODO]
 
