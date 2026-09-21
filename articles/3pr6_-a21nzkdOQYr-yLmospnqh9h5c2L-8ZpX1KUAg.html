@@ -1,0 +1,384 @@
+<html><head><meta charset="utf-8"><title>Optimistic vs Pessimistic Concurrency in .NET</title><meta content="Anton Martyniuk" name="author"><meta content="Two users edit the same record and one update silently disappears. Learn how to implement optimistic and pessimistic concurrency in .NET with EF Core and PostgreSQL, and how to choose between them." name="description"><meta content="https://antondevtips.com/blog/optimistic-vs-pessimistic-concurrency-in-dot-net" name="dendron:source-url"><meta content="21859" name="dendron:length"><meta content="17.095" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div><article><p>Almost everyone had this situation in production: a customer changed the delivery address on a shipment, saved it, saw the confirmation, and an hour later the old address is back.</p>
+<p>You start investigating, and you don't see any errors or exceptions in the logs.
+The request returned 200 OK, but the data is just wrong.</p>
+<p>This is a lost update, and it's one of the most common bugs in production .NET systems.
+It happens whenever two requests read the same row, change it in memory, and write it back.</p>
+<p>I've debugged this exact bug in payment systems, warehouse software, and booking flows.
+It never shows up in a unit or integration test, because the tests don't run two requests in the same millisecond (your integration test can actually test concurrent requests).</p>
+<p>There are two classic ways to solve it: optimistic concurrency and pessimistic concurrency.
+They solve the same problem with different assumptions, and picking the wrong one either kills your throughput or leaves the bug in place.</p>
+<p>In this post, we will explore:</p>
+<ul>
+<li>The Lost Update Problem</li>
+<li>Optimistic Concurrency: Detect the Conflict</li>
+<li>Handling DbUpdateConcurrencyException</li>
+<li>Retrying Conflicts with a Resilience Pipeline</li>
+<li>Pessimistic Concurrency: Lock the Row First</li>
+<li>A Third Option: One Atomic Statement</li>
+<li>Optimistic vs Pessimistic: Deep Comparison</li>
+<li>How to Choose: A Decision Checklist</li>
+</ul>
+<p>Let's dive in.</p><p><a href="#the-lost-update-problem" aria-label="Link to The Lost Update Problem"><span>Copied</span></a></p><h2 id="the-lost-update-problem" node="[object Object]">The Lost Update Problem</h2><p></p>
+<p>Here is the domain we'll use throughout the post: a shipment that a warehouse operator can edit.</p>
+<pre><div><p>csharp</p></div><p><code><span><span>public</span><span> </span><span>class</span><span> </span><span>Shipment</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>Guid</span><span> Id </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>string</span><span> Number </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>string</span><span> Address </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>string</span><span> Carrier </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>ShipmentStatus</span><span> Status </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>List</span><span>&lt;</span><span>ShipmentItem</span><span>&gt;</span><span> Items </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span> </span><span>=</span><span> </span><span>[</span><span>]</span><span>;</span><span>
+</span></span><span><span></span><span>}</span></span></code></p></pre>
+<p>And here is the update handler almost everyone writes first:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>public</span><span> </span><span>async</span><span> </span><span>Task</span><span>&lt;</span><span>Result</span><span>&gt;</span><span> </span><span>Handle</span><span>(</span><span>UpdateShipmentRequest</span><span> request</span><span>,</span><span> </span><span>CancellationToken</span><span> ct</span><span>)</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>var</span><span> shipment </span><span>=</span><span> </span><span>await</span><span> dbContext</span><span>.</span><span>Shipments
+</span></span><span><span>        </span><span>.</span><span>FirstOrDefaultAsync</span><span>(</span><span>s </span><span>=&gt;</span><span> s</span><span>.</span><span>Number </span><span>==</span><span> request</span><span>.</span><span>Number</span><span>,</span><span> ct</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span>    </span><span>if</span><span> </span><span>(</span><span>shipment </span><span>is</span><span> </span><span>null</span><span>)</span><span>
+</span></span><span><span>    </span><span>{</span><span>
+</span></span><span><span>        </span><span>return</span><span> Result</span><span>.</span><span>NotFound</span><span>(</span><span>$"Shipment '</span><span>{</span><span>request</span><span>.</span><span>Number</span><span>}</span><span>' not found"</span><span>)</span><span>;</span><span>
+</span></span><span><span>    </span><span>}</span><span>
+</span></span><span>
+</span><span><span>    shipment</span><span>.</span><span>Address </span><span>=</span><span> request</span><span>.</span><span>Address</span><span>;</span><span>
+</span></span><span><span>    shipment</span><span>.</span><span>Carrier </span><span>=</span><span> request</span><span>.</span><span>Carrier</span><span>;</span><span>
+</span></span><span>
+</span><span><span>    </span><span>await</span><span> dbContext</span><span>.</span><span>SaveChangesAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span><span>
+</span></span><span><span>    </span><span>return</span><span> Result</span><span>.</span><span>Success</span><span>(</span><span>)</span><span>;</span><span>
+</span></span><span><span></span><span>}</span></span></code></p></pre>
+<p>The code reads a row, changes it in memory, and writes it back.</p>
+<p>Between the read and the write there is a gap. It's small, usually a few milliseconds, but it's real. Anything that happens inside that gap is invisible to this handler.</p>
+<p>Now put two operators in that gap at the same time. One changes the address, the other changes the carrier:</p>
+<p>Loading diagram…</p>
+<p>Both requests got a success response, and both updated exactly one row. Neither of them did anything wrong on its own.</p>
+<p>But the row ends up with the address "Amsterdam" and the carrier "UPS". Request A's address change is gone, and no one was notified.</p>
+<p>This is what a <strong>lost update</strong> means: one writer silently overwrites another writer's change because it never saw it.</p>
+<p>The first instinct is to wrap the handler in a transaction, and that doesn't fix it.</p>
+<p>At the Read Committed isolation level, which is the default in PostgreSQL and SQL Server, both transactions read a valid committed row, and both writes succeed.
+The database is doing exactly what you asked. You just never told it that the second write depended on the first read.</p>
+<p>Serializable isolation does catch this, at the cost of serialization failures that you have to retry anyway.
+If you want the full picture of what each level protects against, I covered it in <a href="https://antondevtips.com/blog/complete-guide-to-transaction-isolation-levels-in-sql" target="_blank" rel="noopener">Complete Guide to Transaction Isolation Levels in SQL</a>.</p>
+<p>The two techniques below fix the problem directly, and you can apply either one per use case.</p><p><a href="/sponsorship">Sponsor my newsletter to reach <!-- -->27,000+<!-- --> readers</a></p><p><a href="#optimistic-concurrency-detect-the-conflict" aria-label="Link to Optimistic Concurrency: Detect the Conflict"><span>Copied</span></a></p><h2 id="optimistic-concurrency-detect-the-conflict" node="[object Object]">Optimistic Concurrency: Detect the Conflict</h2><p></p>
+<p>Optimistic concurrency starts with the assumption that conflicts are rare.</p>
+<p>So it doesn't lock anything. It lets both requests run at full speed and, at the moment of writing, makes the database check whether anyone changed the row in the meantime.</p>
+<p>The mechanism is a <strong>concurrency token</strong>: a column whose value changes on every update. You read it together with the row, and your <code>UPDATE</code> statement carries it in the <code>WHERE</code> clause.</p>
+<p>If the token in the database no longer matches the one you read, your <code>UPDATE</code> matches zero rows, and you know somebody got there first.</p>
+<p>EF Core supports this out of the box, and you have three ways to configure it.</p>
+<p><strong>PostgreSQL, using the built-in <code>xmin</code> system column:</strong></p>
+<pre><div><p>csharp</p></div><p><code><span><span>modelBuilder</span><span>.</span><span>Entity</span><span>&lt;</span><span>Shipment</span><span>&gt;</span><span>(</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>UseXminAsConcurrencyToken</span><span>(</span><span>)</span><span>;</span></span></code></p></pre>
+<p>This is the cheapest option on PostgreSQL because <code>xmin</code> already exists on every row. You get concurrency checks without adding a column or writing a migration.</p>
+<p><strong>SQL Server, using a <code>rowversion</code> column:</strong></p>
+<pre><div><p>csharp</p></div><p><code><span><span>modelBuilder</span><span>.</span><span>Entity</span><span>&lt;</span><span>Shipment</span><span>&gt;</span><span>(</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>Property</span><span>&lt;</span><span>byte</span><span>[</span><span>]</span><span>&gt;</span><span>(</span><span>"Version"</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>IsRowVersion</span><span>(</span><span>)</span><span>;</span></span></code></p></pre>
+<p>SQL Server maintains the value itself on every update, so you never assign it in code.</p>
+<p><strong>Any provider, using your own token:</strong></p>
+<pre><div><p>csharp</p></div><p><code><span><span>public</span><span> </span><span>class</span><span> </span><span>Shipment</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>// ...</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>Guid</span><span> Version </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span>
+</span></span><span><span></span><span>}</span><span>
+</span></span><span>
+</span><span><span>modelBuilder</span><span>.</span><span>Entity</span><span>&lt;</span><span>Shipment</span><span>&gt;</span><span>(</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>Property</span><span>(</span><span>s </span><span>=&gt;</span><span> s</span><span>.</span><span>Version</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>IsConcurrencyToken</span><span>(</span><span>)</span><span>;</span></span></code></p></pre>
+<p>A manual token is the one I reach for most often, and not because of provider portability. It's a plain <code>Guid</code> column, so it survives a round trip to a browser or a mobile client, which is exactly what a stateless web API needs.</p>
+<p>You do have to change the value yourself. The cleanest place is a <code>SaveChangesAsync</code> override on the DbContext:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>public</span><span> </span><span>override</span><span> </span><span>Task</span><span>&lt;</span><span>int</span><span>&gt;</span><span> </span><span>SaveChangesAsync</span><span>(</span><span>CancellationToken</span><span> ct </span><span>=</span><span> </span><span>default</span><span>)</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>var</span><span> entries </span><span>=</span><span> ChangeTracker</span><span>.</span><span>Entries</span><span>&lt;</span><span>Shipment</span><span>&gt;</span><span>(</span><span>)</span><span>
+</span></span><span><span>        </span><span>.</span><span>Where</span><span>(</span><span>e </span><span>=&gt;</span><span> e</span><span>.</span><span>State </span><span>is</span><span> </span><span>EntityState</span><span>.</span><span>Added</span><span> </span><span>or</span><span> EntityState</span><span>.</span><span>Modified</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span>    </span><span>foreach</span><span> </span><span>(</span><span>var</span><span> entry </span><span>in</span><span> entries</span><span>)</span><span>
+</span></span><span><span>    </span><span>{</span><span>
+</span></span><span><span>        entry</span><span>.</span><span>Entity</span><span>.</span><span>Version </span><span>=</span><span> Guid</span><span>.</span><span>NewGuid</span><span>(</span><span>)</span><span>;</span><span>
+</span></span><span><span>    </span><span>}</span><span>
+</span></span><span>
+</span><span><span>    </span><span>return</span><span> </span><span>base</span><span>.</span><span>SaveChangesAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span><span>
+</span></span><span><span></span><span>}</span></span></code></p></pre>
+<p>Whichever option you pick, EF Core now generates a different <code>UPDATE</code>:</p>
+<pre><div><p>sql</p></div><p><code><span><span>UPDATE</span><span> shipments
+</span></span><span><span></span><span>SET</span><span> address </span><span>=</span><span> </span><span>@p0</span><span>,</span><span> carrier </span><span>=</span><span> </span><span>@p1</span><span>,</span><span> version </span><span>=</span><span> </span><span>@p2</span><span>
+</span></span><span><span></span><span>WHERE</span><span> id </span><span>=</span><span> </span><span>@p3</span><span> </span><span>AND</span><span> version </span><span>=</span><span> </span><span>@p4</span><span>;</span></span></code></p></pre>
+<p>The <code>version = @p4</code> predicate is the whole trick. EF Core sends the value it read, counts how many rows the statement actually changed, and throws a <code>DbUpdateConcurrencyException</code> when the answer is zero.</p>
+<p>Here is the same race as before, with the token in place:</p>
+<p>Loading diagram…</p>
+<p>Request A still wins the race, exactly as it did before. The difference is that Request B now finds out rather than quietly replacing the value.</p>
+<p>There's one part that's easy to miss in a web API. Your two requests don't share a DbContext, and they don't even overlap in time. The operator opens an edit form, thinks for two minutes, and submits.</p>
+<p>For the check to mean anything, the version has to travel to the client and come back:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>public</span><span> </span><span>sealed</span><span> </span><span>record</span><span> </span><span>ShipmentResponse</span><span>(</span><span>
+</span></span><span><span>    </span><span>string</span><span> Number</span><span>,</span><span>
+</span></span><span><span>    </span><span>string</span><span> Address</span><span>,</span><span>
+</span></span><span><span>    </span><span>string</span><span> Carrier</span><span>,</span><span>
+</span></span><span><span>    </span><span>string</span><span> Version</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span></span><span>public</span><span> </span><span>sealed</span><span> </span><span>record</span><span> </span><span>UpdateShipmentRequest</span><span>(</span><span>
+</span></span><span><span>    </span><span>string</span><span> Number</span><span>,</span><span>
+</span></span><span><span>    </span><span>string</span><span> Address</span><span>,</span><span>
+</span></span><span><span>    </span><span>string</span><span> Carrier</span><span>,</span><span>
+</span></span><span><span>    </span><span>string</span><span> Version</span><span>)</span><span>;</span></span></code></p></pre>
+<p>Then you tell EF Core to use the client's version instead of the one you just read from the database:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>dbContext</span><span>.</span><span>Entry</span><span>(</span><span>shipment</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>Property</span><span>(</span><span>s </span><span>=&gt;</span><span> s</span><span>.</span><span>Version</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>OriginalValue </span><span>=</span><span> Guid</span><span>.</span><span>Parse</span><span>(</span><span>request</span><span>.</span><span>Version</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span>shipment</span><span>.</span><span>Address </span><span>=</span><span> request</span><span>.</span><span>Address</span><span>;</span><span>
+</span></span><span><span>shipment</span><span>.</span><span>Carrier </span><span>=</span><span> request</span><span>.</span><span>Carrier</span><span>;</span><span>
+</span></span><span>
+</span><span><span></span><span>await</span><span> dbContext</span><span>.</span><span>SaveChangesAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span></span></code></p></pre>
+<p>Setting <code>OriginalValue</code> is what puts the client's version into the <code>WHERE</code> clause. Without this line, you're comparing the row against a value you read milliseconds ago, and the two minutes when the operator was typing go completely unchecked.</p>
+<p>Now the write fails when it should. The next question is what to do about it.</p><p><a href="#handling-dbupdateconcurrencyexception" aria-label="Link to Handling DbUpdateConcurrencyException"><span>Copied</span></a></p><h2 id="handling-dbupdateconcurrencyexception" node="[object Object]">Handling DbUpdateConcurrencyException</h2><p></p>
+<p><code>DbUpdateConcurrencyException</code> isn't an error you log and forget. Somebody's change is about to be discarded, and you have to decide whose.</p>
+<pre><div><p>csharp</p></div><p><code><span><span>try</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>await</span><span> dbContext</span><span>.</span><span>SaveChangesAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span><span>
+</span></span><span><span>    </span><span>return</span><span> Result</span><span>.</span><span>Success</span><span>(</span><span>)</span><span>;</span><span>
+</span></span><span><span></span><span>}</span><span>
+</span></span><span><span></span><span>catch</span><span> </span><span>(</span><span>DbUpdateConcurrencyException</span><span> ex</span><span>)</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>var</span><span> entry </span><span>=</span><span> ex</span><span>.</span><span>Entries</span><span>.</span><span>Single</span><span>(</span><span>)</span><span>;</span><span>
+</span></span><span><span>    </span><span>var</span><span> databaseValues </span><span>=</span><span> </span><span>await</span><span> entry</span><span>.</span><span>GetDatabaseValuesAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span>    </span><span>if</span><span> </span><span>(</span><span>databaseValues </span><span>is</span><span> </span><span>null</span><span>)</span><span>
+</span></span><span><span>    </span><span>{</span><span>
+</span></span><span><span>        </span><span>return</span><span> Result</span><span>.</span><span>Conflict</span><span>(</span><span>"The shipment was deleted by another user"</span><span>)</span><span>;</span><span>
+</span></span><span><span>    </span><span>}</span><span>
+</span></span><span>
+</span><span><span>    </span><span>// resolve the conflict here</span><span>
+</span></span><span><span></span><span>}</span></span></code></p></pre>
+<p>A <code>null</code> result means the row is gone entirely. Somebody deleted the shipment while your user was editing it, and no merge strategy can help with that.</p>
+<p><strong>Store wins.</strong> Throw the user's edit away and show them the current data:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>await</span><span> entry</span><span>.</span><span>ReloadAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span></span><span>return</span><span> Result</span><span>.</span><span>Conflict</span><span>(</span><span>
+</span></span><span><span>    </span><span>"This shipment was changed by another user. Review the current values and try again."</span><span>)</span><span>;</span></span></code></p></pre>
+<p>This is the safest option and my default for anything a human edits. Nothing is overwritten silently, and the person gets to decide with the real data in front of them.</p>
+<p><strong>Client wins.</strong> Force your values through:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>entry</span><span>.</span><span>OriginalValues</span><span>.</span><span>SetValues</span><span>(</span><span>databaseValues</span><span>)</span><span>;</span><span>
+</span></span><span><span></span><span>await</span><span> dbContext</span><span>.</span><span>SaveChangesAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span></span></code></p></pre>
+<p>Copying the database values into <code>OriginalValues</code> refreshes the token, so the second <code>UPDATE</code> matches the row, and your changes overwrite the other user's changes.
+Use this only when your writer is authoritative, such as an import job that owns the record.</p>
+<p><strong>Merge.</strong> Keep the fields the user actually changed and take the rest from the database:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>var</span><span> currentValues </span><span>=</span><span> entry</span><span>.</span><span>CurrentValues</span><span>;</span><span>
+</span></span><span>
+</span><span><span></span><span>foreach</span><span> </span><span>(</span><span>var</span><span> property </span><span>in</span><span> currentValues</span><span>.</span><span>Properties</span><span>)</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>var</span><span> proposed </span><span>=</span><span> currentValues</span><span>[</span><span>property</span><span>]</span><span>;</span><span>
+</span></span><span><span>    </span><span>var</span><span> original </span><span>=</span><span> entry</span><span>.</span><span>OriginalValues</span><span>[</span><span>property</span><span>]</span><span>;</span><span>
+</span></span><span><span>    </span><span>var</span><span> fromDatabase </span><span>=</span><span> databaseValues</span><span>[</span><span>property</span><span>]</span><span>;</span><span>
+</span></span><span>
+</span><span><span>    </span><span>if</span><span> </span><span>(</span><span>Equals</span><span>(</span><span>proposed</span><span>,</span><span> original</span><span>)</span><span>)</span><span>
+</span></span><span><span>    </span><span>{</span><span>
+</span></span><span><span>        currentValues</span><span>[</span><span>property</span><span>]</span><span> </span><span>=</span><span> fromDatabase</span><span>;</span><span>
+</span></span><span><span>    </span><span>}</span><span>
+</span></span><span><span></span><span>}</span><span>
+</span></span><span>
+</span><span><span>entry</span><span>.</span><span>OriginalValues</span><span>.</span><span>SetValues</span><span>(</span><span>databaseValues</span><span>)</span><span>;</span><span>
+</span></span><span><span></span><span>await</span><span> dbContext</span><span>.</span><span>SaveChangesAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span></span></code></p></pre>
+<p>The loop compares each property's proposed value with the value originally loaded. If they're equal, the user didn't touch that field, so the database's newer value wins. If they differ, the user's edit is kept.</p>
+<p>Two operators editing different fields of the same shipment both get their change through, which is why merge is worth the extra code on forms with many independent fields.</p>
+<p>All three strategies assume somebody is waiting for an answer. Background jobs need something else.</p><p><a href="#retrying-conflicts-with-a-resilience-pipeline" aria-label="Link to Retrying Conflicts with a Resilience Pipeline"><span>Copied</span></a></p><h2 id="retrying-conflicts-with-a-resilience-pipeline" node="[object Object]">Retrying Conflicts with a Resilience Pipeline</h2><p></p>
+<p>When no user is watching, a concurrency conflict is just a transient failure. The correct response is to read the new row and repeat the work.</p>
+<p>That's a retry, and in .NET you can use the <a href="https://antondevtips.com/blog/how-to-implement-retries-and-resilience-patterns-with-polly-and-microsoft-resilience" target="_blank" rel="noopener">Polly library</a> and create a pipeline that handles exactly this exception:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>var</span><span> pipeline </span><span>=</span><span> </span><span>new</span><span> </span><span>ResiliencePipelineBuilder</span><span>(</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>AddRetry</span><span>(</span><span>new</span><span> </span><span>RetryStrategyOptions</span><span>
+</span></span><span><span>    </span><span>{</span><span>
+</span></span><span><span>        ShouldHandle </span><span>=</span><span> </span><span>new</span><span> </span><span>PredicateBuilder</span><span>(</span><span>)</span><span>
+</span></span><span><span>            </span><span>.</span><span>Handle</span><span>&lt;</span><span>DbUpdateConcurrencyException</span><span>&gt;</span><span>(</span><span>)</span><span>,</span><span>
+</span></span><span><span>        MaxRetryAttempts </span><span>=</span><span> </span><span>3</span><span>,</span><span>
+</span></span><span><span>        Delay </span><span>=</span><span> TimeSpan</span><span>.</span><span>FromMilliseconds</span><span>(</span><span>20</span><span>)</span><span>,</span><span>
+</span></span><span><span>        BackoffType </span><span>=</span><span> DelayBackoffType</span><span>.</span><span>Exponential</span><span>,</span><span>
+</span></span><span><span>        UseJitter </span><span>=</span><span> </span><span>true</span><span>
+</span></span><span><span>    </span><span>}</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>Build</span><span>(</span><span>)</span><span>;</span></span></code></p></pre>
+<p><code>UseJitter</code> matters here. Without it, several workers that collide on the same row will back off for the identical delay and collide again on the next attempt. Jitter spreads them out.</p>
+<p>The pipeline has to wrap the whole read-modify-write, not just the save:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>await</span><span> pipeline</span><span>.</span><span>ExecuteAsync</span><span>(</span><span>async</span><span> token </span><span>=&gt;</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>await</span><span> </span><span>using</span><span> </span><span>var</span><span> dbContext </span><span>=</span><span> </span><span>await</span><span> dbContextFactory</span><span>.</span><span>CreateDbContextAsync</span><span>(</span><span>token</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span>    </span><span>var</span><span> shipment </span><span>=</span><span> </span><span>await</span><span> dbContext</span><span>.</span><span>Shipments
+</span></span><span><span>        </span><span>.</span><span>FirstAsync</span><span>(</span><span>s </span><span>=&gt;</span><span> s</span><span>.</span><span>Number </span><span>==</span><span> number</span><span>,</span><span> token</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span>    shipment</span><span>.</span><span>Status </span><span>=</span><span> ShipmentStatus</span><span>.</span><span>Dispatched</span><span>;</span><span>
+</span></span><span><span>    shipment</span><span>.</span><span>DispatchedAtUtc </span><span>=</span><span> DateTime</span><span>.</span><span>UtcNow</span><span>;</span><span>
+</span></span><span>
+</span><span><span>    </span><span>await</span><span> dbContext</span><span>.</span><span>SaveChangesAsync</span><span>(</span><span>token</span><span>)</span><span>;</span><span>
+</span></span><span><span></span><span>}</span><span>,</span><span> ct</span><span>)</span><span>;</span></span></code></p></pre>
+<p>Retrying only <code>SaveChangesAsync</code> would send the same stale token again, causing every attempt to fail for the same reason. The read has to happen again too.</p>
+<blockquote>
+<p>Note: each attempt needs its own DbContext, created here through <code>IDbContextFactory</code>. A context whose <code>SaveChanges</code> already threw an exception still holds the failed entity in its change tracker with its original, stale values and reusing it turns a clean retry into a subtle bug. See <a href="https://antondevtips.com/blog/how-to-manage-ef-core-dbcontext-lifetime" target="_blank" rel="noopener">How To Manage EF Core DbContext Lifetime</a> for why a factory is the right tool in background work.</p>
+</blockquote><p><a href="#pessimistic-concurrency-lock-the-row-first" aria-label="Link to Pessimistic Concurrency: Lock the Row First"><span>Copied</span></a></p><h2 id="pessimistic-concurrency-lock-the-row-first" node="[object Object]">Pessimistic Concurrency: Lock the Row First</h2><p></p>
+<p>Pessimistic concurrency starts from the opposite assumption: conflicts are expected.</p>
+<p>Instead of detecting a conflict after the write, it stops the second writer from creating one. The first transaction locks the row, and everybody else waits their turn.</p>
+<p>The classic case is a counter that many requests hit at once. In our logistics domain, that's warehouse stock:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>public</span><span> </span><span>class</span><span> </span><span>StockItem</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>Guid</span><span> Id </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>string</span><span> Sku </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span>
+</span></span><span><span>    </span><span>public</span><span> </span><span>int</span><span> Quantity </span><span>{</span><span> </span><span>get</span><span>;</span><span> </span><span>set</span><span>;</span><span> </span><span>}</span><span>
+</span></span><span><span></span><span>}</span></span></code></p></pre>
+<p>During a sale, hundreds of requests per second decrement the quantity of the same popular SKU.
+Optimistic concurrency handles that poorly because, at high contention, most attempts lose the race, and the retries pile up on the same row.</p>
+<p>Locking gives you a queue instead (example for Postgres):</p>
+<pre><div><p>csharp</p></div><p><code><span><span>await</span><span> </span><span>using</span><span> </span><span>var</span><span> transaction </span><span>=</span><span> </span><span>await</span><span> dbContext</span><span>.</span><span>Database</span><span>.</span><span>BeginTransactionAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span></span><span>var</span><span> stockItem </span><span>=</span><span> </span><span>await</span><span> dbContext</span><span>.</span><span>StockItems
+</span></span><span><span>    </span><span>.</span><span>FromSql</span><span>(</span><span>$"SELECT * FROM stock_items WHERE sku = </span><span>{</span><span>sku</span><span>}</span><span> FOR UPDATE"</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>SingleAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span></span><span>if</span><span> </span><span>(</span><span>stockItem</span><span>.</span><span>Quantity </span><span>&lt;</span><span> request</span><span>.</span><span>Quantity</span><span>)</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>await</span><span> transaction</span><span>.</span><span>RollbackAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span><span>
+</span></span><span><span>    </span><span>return</span><span> Result</span><span>.</span><span>Conflict</span><span>(</span><span>$"Not enough stock for SKU '</span><span>{</span><span>sku</span><span>}</span><span>'"</span><span>)</span><span>;</span><span>
+</span></span><span><span></span><span>}</span><span>
+</span></span><span>
+</span><span><span>stockItem</span><span>.</span><span>Quantity </span><span>-=</span><span> request</span><span>.</span><span>Quantity</span><span>;</span><span>
+</span></span><span>
+</span><span><span></span><span>await</span><span> dbContext</span><span>.</span><span>SaveChangesAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span><span>
+</span></span><span><span></span><span>await</span><span> transaction</span><span>.</span><span>CommitAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span></span></code></p></pre>
+<p><code>FOR UPDATE</code> takes a row-level lock that the database holds until the transaction commits or rolls back.</p>
+<p>The second request blocks on the <code>SELECT</code> instead of the <code>UPDATE</code>.
+That's the important difference from everything above: by the time it gets to read, the first transaction is finished, and it sees the new quantity.
+There is no gap, so there is no conflict to resolve.</p>
+<p>EF Core has no built-in API for pessimistic locking, so the query is implemented manually using the <code>FromSql</code> method.
+The interpolated <code>{sku}</code> becomes a real SQL parameter, so this stays safe from injection.</p>
+<p>The same two requests with a pessimistic lock:</p>
+<p>Loading diagram…</p>
+<p>Compare this with the previous two diagrams. In all three, Request A wins. What changes is what happens to Request B: it silently destroys A's work, it gets an exception, or it waits and then reads the correct value.</p>
+<blockquote>
+<p>Note: on SQL Server the equivalent is a locking hint: <code>SELECT * FROM StockItems WITH (UPDLOCK, ROWLOCK) WHERE Sku = @sku</code>.</p>
+</blockquote>
+<p>By default, a blocked request waits for as long as the lock is held, so set a timeout right after you open the transaction:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>await</span><span> dbContext</span><span>.</span><span>Database</span><span>.</span><span>ExecuteSqlRawAsync</span><span>(</span><span>"SET LOCAL lock_timeout = '3s'"</span><span>,</span><span> ct</span><span>)</span><span>;</span></span></code></p></pre>
+<p>PostgreSQL offers two additional variants worth knowing about.</p>
+<p><strong><code>FOR UPDATE NOWAIT</code></strong> fails immediately instead of waiting, raising error <code>55P03</code>. Use it when a fast rejection is better for the caller than a slow success.</p>
+<p><strong><code>FOR UPDATE SKIP LOCKED</code></strong> skips rows that someone else has locked. This is how you build a job queue on a table that many workers poll at once:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>var</span><span> jobs </span><span>=</span><span> </span><span>await</span><span> dbContext</span><span>.</span><span>ShipmentJobs
+</span></span><span><span>    </span><span>.</span><span>FromSql</span><span>(</span><span>$""</span><span>"
+</span></span><span><span>        SELECT </span><span>*</span><span> FROM shipment_jobs
+</span></span><span><span>        </span><span>WHERE</span><span> status </span><span>=</span><span> 'Pending'
+</span></span><span><span>        ORDER BY </span><span>created_at</span><span>
+</span></span><span><span>        LIMIT </span><span>{</span><span>batchSize</span><span>}</span><span>
+</span></span><span>        FOR UPDATE SKIP LOCKED
+</span><span><span>        </span><span>""</span><span>"</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>ToListAsync</span><span>(</span><span>ct</span><span>)</span><span>;</span></span></code></p></pre>
+<p>Every worker gets a different batch, and none of them wait on each other. I've used this to scan the Outbox table in production apps, and for large data volumes, it holds up well.</p>
+<p>Locking isn't free, and the costs are the following:</p>
+<ul>
+<li><strong>The transaction stays open</strong> for the whole read-modify-write, holding a connection from the pool the entire time</li>
+<li><strong>Deadlocks become possible</strong> as soon as two code paths lock the same rows in a different order</li>
+<li><strong>It only works inside one transaction</strong>, so you can't hold a lock while a user fills in a form</li>
+<li><strong>A slow operation inside the lock</strong> blocks every other writer on that row</li>
+</ul>
+<p>That last point is worth repeating. Never call an external API inside a locked transaction, because a three-second payment provider timeout becomes three seconds of blocking for every request queued behind you.</p>
+<p>For a single counter, there's a way to skip both patterns entirely.</p><p><a href="#a-third-option-one-atomic-statement" aria-label="Link to A Third Option: One Atomic Statement"><span>Copied</span></a></p><h2 id="a-third-option-one-atomic-statement" node="[object Object]">A Third Option: One Atomic Statement</h2><p></p>
+<p>Optimistic and pessimistic concurrency both exist because of the gap between reading a value and writing it back.
+Sometimes you can just remove the gap.</p>
+<p>If the new value is a function of the old value, the database can compute it in one statement, and <code>ExecuteUpdateAsync</code> expresses that in LINQ:</p>
+<pre><div><p>csharp</p></div><p><code><span><span>var</span><span> affected </span><span>=</span><span> </span><span>await</span><span> dbContext</span><span>.</span><span>StockItems
+</span></span><span><span>    </span><span>.</span><span>Where</span><span>(</span><span>s </span><span>=&gt;</span><span> s</span><span>.</span><span>Sku </span><span>==</span><span> sku </span><span>&amp;&amp;</span><span> s</span><span>.</span><span>Quantity </span><span>&gt;=</span><span> request</span><span>.</span><span>Quantity</span><span>)</span><span>
+</span></span><span><span>    </span><span>.</span><span>ExecuteUpdateAsync</span><span>(</span><span>
+</span></span><span><span>        s </span><span>=&gt;</span><span> s</span><span>.</span><span>SetProperty</span><span>(</span><span>x </span><span>=&gt;</span><span> x</span><span>.</span><span>Quantity</span><span>,</span><span> x </span><span>=&gt;</span><span> x</span><span>.</span><span>Quantity </span><span>-</span><span> request</span><span>.</span><span>Quantity</span><span>)</span><span>,</span><span>
+</span></span><span><span>        ct</span><span>)</span><span>;</span><span>
+</span></span><span>
+</span><span><span></span><span>if</span><span> </span><span>(</span><span>affected </span><span>==</span><span> </span><span>0</span><span>)</span><span>
+</span></span><span><span></span><span>{</span><span>
+</span></span><span><span>    </span><span>return</span><span> Result</span><span>.</span><span>Conflict</span><span>(</span><span>$"Not enough stock for SKU '</span><span>{</span><span>sku</span><span>}</span><span>'"</span><span>)</span><span>;</span><span>
+</span></span><span><span></span><span>}</span></span></code></p></pre>
+<p>That produces a single round trip:</p>
+<pre><div><p>sql</p></div><p><code><span><span>UPDATE</span><span> stock_items
+</span></span><span><span></span><span>SET</span><span> quantity </span><span>=</span><span> quantity </span><span>-</span><span> </span><span>@p0</span><span>
+</span></span><span><span></span><span>WHERE</span><span> sku </span><span>=</span><span> </span><span>@p1</span><span> </span><span>AND</span><span> quantity </span><span>&gt;=</span><span> </span><span>@p2</span><span>;</span></span></code></p></pre>
+<p>The read and write occur in a single statement, and the database automatically locks the row for its duration. No entity is loaded, no transaction stays open across a network hop, and there is nothing to retry.</p>
+<p>The <code>quantity &gt;= @p2</code> guard is what makes it correct. It prevents the update from running at all when stock has already dropped below what the caller asked for, and the affected-row count indicates whether it ran.
+Zero rows means either the SKU doesn't exist or there wasn't enough stock, and both lead to the same answer for the caller.</p>
+<blockquote>
+<p>Note: <code>ExecuteUpdateAsync</code> bypasses the EF Core Change Tracker. Your concurrency token is not checked, entities already loaded in memory silently go stale, and no <code>SaveChanges</code> interceptors or domain events fire. The guard in <code>Where</code> is the only protection you get, so it has to be right. I covered the other consequences in <a href="https://antondevtips.com/blog/correct-way-to-use-execute-update-and-execute-delete-methods-in-ef-core" target="_blank" rel="noopener">Correct Way To Use ExecuteUpdate and ExecuteDelete Methods in EF Core</a>.</p>
+</blockquote>
+<p>This approach is limited and works for counters, flags, and status transitions, where the rule fits within a single SQL predicate.
+As soon as the decision needs several entities, external data, or logic that lives in your domain model, you're back to choosing between optimistic and pessimistic concurrency.</p><p><a href="#optimistic-vs-pessimistic-deep-comparison" aria-label="Link to Optimistic vs Pessimistic: Deep Comparison"><span>Copied</span></a></p><h2 id="optimistic-vs-pessimistic-deep-comparison" node="[object Object]">Optimistic vs Pessimistic: Deep Comparison</h2><p></p>
+<p>Let's compare the two approaches across the criteria that actually decide the choice.</p>
+<p><strong>Conflict handling</strong></p>
+<ul>
+<li>Optimistic: detects the conflict after the fact and fails the write</li>
+<li>Pessimistic: prevents the conflict by making the second writer wait</li>
+</ul>
+<p><strong>Best contention level</strong></p>
+<ul>
+<li>Optimistic: low to moderate, where conflicts are the exception</li>
+<li>Pessimistic: high, where many writers hit the same row constantly</li>
+</ul>
+<p><strong>Throughput and latency</strong></p>
+<ul>
+<li>Optimistic: fast while conflicts are rare, and it degrades as contention grows because every lost race is wasted work plus a retry</li>
+<li>Pessimistic: a lower ceiling, but predictable, because each writer waits for the lock instead of redoing the operation</li>
+</ul>
+<p><strong>Failure mode</strong></p>
+<ul>
+<li>Optimistic: an exception your code must handle, on every single update path</li>
+<li>Pessimistic: a wait, a lock timeout, or a deadlock</li>
+</ul>
+<p><strong>Deadlock risk</strong></p>
+<ul>
+<li>Optimistic: none, because nothing is locked</li>
+<li>Pessimistic: real as soon as two code paths take locks in different orders</li>
+</ul>
+<p><strong>Transaction duration</strong></p>
+<ul>
+<li>Optimistic: short, since the transaction is just the save</li>
+<li>Pessimistic: covers the whole read-modify-write, holding a connection throughout</li>
+</ul>
+<p><strong>Long-lived and stateless edits</strong></p>
+<ul>
+<li>Optimistic: works across requests, because the token travels to the client and back</li>
+<li>Pessimistic: impossible, since a lock can't survive between two HTTP requests</li>
+</ul>
+<p><strong>Complexity</strong></p>
+<ul>
+<li>Optimistic: a token, plus conflict resolution and retry code in every write path</li>
+<li>Pessimistic: raw SQL for the lock, plus timeouts and a consistent lock ordering</li>
+</ul>
+<p><strong>Database support</strong></p>
+<ul>
+<li>Optimistic: first-class in EF Core through concurrency tokens</li>
+<li>Pessimistic: no EF Core API, so the locking hint is written by hand (SQL) per database provider</li>
+</ul>
+<p><strong>Across services or databases</strong></p>
+<ul>
+<li>Optimistic: works anywhere, because the token is just a value you read, pass around, and compare</li>
+<li>Pessimistic: works across any number of services that share the same database, since the lock lives in the database and not in your process. It stops working when the data is split across separate databases, or when the lock would need to outlive one transaction</li>
+</ul>
+<p>Neither approach is universally better, and most systems I've worked on ended up using both.
+The interactive parts of the application were optimistic, and a handful of hot counters were pessimistic or atomic.</p><p><a href="#summary" aria-label="Link to Summary"><span>Copied</span></a></p><h2 id="summary" node="[object Object]">Summary</h2><p></p>
+<p>When you're picking an approach for one specific operation, walk through this list.</p>
+<p><strong>Use optimistic concurrency when:</strong></p>
+<ul>
+<li>Conflicts are rare, which is true of most business entities</li>
+<li>A human edits the data through a form, across separate requests</li>
+<li>The edit window is long, from seconds to minutes</li>
+<li>You can show the user a meaningful message and let them decide</li>
+<li>The write path spans services or databases, so no shared lock exists</li>
+</ul>
+<p><strong>Use pessimistic concurrency when:</strong></p>
+<ul>
+<li>Many writers hit the same row at once and optimistic retries keep failing</li>
+<li>The operation must succeed on the first attempt, not eventually</li>
+<li>Correctness depends on reading several rows and writing them as one unit</li>
+<li>You're distributing work from a queue (outbox) table, which is the <code>SKIP LOCKED</code> case</li>
+<li>The whole operation is short and runs inside one transaction</li>
+</ul>
+<p><strong>Use a single atomic statement when:</strong></p>
+<ul>
+<li>You're changing a counter or a flag, and the new value follows from the old one</li>
+<li>The rule fits into one SQL predicate, such as <code>quantity &gt;= @requested</code></li>
+<li>You want maximum throughput on a hot row with no retry logic at all</li>
+</ul>
+<p><strong>Red flags that you chose wrong:</strong></p>
+<ul>
+<li>Concurrency exceptions show up constantly in your logs, so optimistic is the wrong fit for that row</li>
+<li>Requests time out waiting for locks, so a pessimistic transaction is doing too much work</li>
+<li>Deadlock errors appear, so two paths take the same locks in a different order</li>
+<li>Users report changes disappearing, so you have no concurrency control at all yet</li>
+</ul><p>Hope you find this newsletter useful. See you next time.</p></article></div></div></article></body></html>

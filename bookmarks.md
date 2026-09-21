@@ -826,3 +826,9 @@ I generally try to avoid copying blobs in Azure and just reference a single copy
 Picture this, the year is 1996. You find yourself frustrated with the incumbent search engines like AltaVista, which primarily does a content-based search (it'll give you an article on "Hotels for Chickens" if you search "Hotels" because the word matches). There's gotta be a better way, right? Well, in hindsight, of course. Sergey Brin and
 [TODO] [FAVORITE]
 
+# Optimistic vs Pessimistic Concurrency in .NET
+[https://antondevtips.com/blog/optimistic-vs-pessimistic-concurrency-in-dot-net](https://antondevtips.com/blog/optimistic-vs-pessimistic-concurrency-in-dot-net)
+![](https://antondevtips.com/media/covers/dotnet/cover_dotnet_concurrency.png)
+Two users edit the same record and one update silently disappears. Learn how to implement optimistic and pessimistic concurrency in .NET with EF Core and PostgreSQL, and how to choose between them.
+[TODO]
+
