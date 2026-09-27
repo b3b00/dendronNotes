@@ -832,3 +832,15 @@ Picture this, the year is 1996. You find yourself frustrated with the incumbent 
 Two users edit the same record and one update silently disappears. Learn how to implement optimistic and pessimistic concurrency in .NET with EF Core and PostgreSQL, and how to choose between them.
 [TODO]
 
+# Plan mode is dead
+[https://www.aymannadeem.com/artificial/intelligence,/developer/tools/2026/09/24/plan-mode-is-dead.html](https://www.aymannadeem.com/artificial/intelligence,/developer/tools/2026/09/24/plan-mode-is-dead.html)
+![](data:image/svg+xml;base64,CiAgICAgICAgICAgIDxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiPgogICAgICAgICAgICAgIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjYTlhNDYwIi8+CiAgICAgICAgICAgICAgPHRleHQgeD0iMjAwIiB5PSIxNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExMCIgZm9udC13ZWlnaHQ9ImJvbGQiCiAgICAgICAgICAgICAgICAgICAgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QTwvdGV4dD4KICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgIA==)
+Earlier this year, I believed planning was going to become the most important part of building software with AI.
+[TODO]
+
+# the normalization of inexplicable failures
+[https://www.ihatethefuture.com/2026/09/the-normalization-of-inexplicable.html?m=1](https://www.ihatethefuture.com/2026/09/the-normalization-of-inexplicable.html?m=1)
+![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgWqOvF787cVQ7sqEe9MDHTU-hSCIot6pf5UrOqxmfAXhrwqcZvIIN4JWF9sQC5DYQ1qb7_9Ok7XuZGulQ9XH2sLSrjtwqGgJmP_jmzRDPJUBtnxolAij6heLf2oXP7sAHCG0aczxQzBV185kXeZbKvdvtz4_5Ext6EJvTpIr4hKA4pQJKhEp-Mg40H-w0/w1200-h630-p-k-no-nu/curtis_stupid-thing-sucks_1_door-blog.gif)
+In a recent episode of President Curtis , the President struggles with opening a door on two separate occasions. These doors don't work beca...
+[TODO]
+
