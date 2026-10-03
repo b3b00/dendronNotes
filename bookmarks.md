@@ -844,3 +844,27 @@ Earlier this year, I believed planning was going to become the most important pa
 In a recent episode of President Curtis , the President struggles with opening a door on two separate occasions. These doors don't work beca...
 [TODO]
 
+# Expected Goals
+[https://mikefisher.substack.com/p/expected-goals](https://mikefisher.substack.com/p/expected-goals)
+![](https://substackcdn.com/image/fetch/$s_!itSv!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fbf4c99df-cf84-4f91-a7b1-59dc9c29137c_1536x1024.png)
+Why the scoreboard is a terrible teacher
+[TODO]
+
+# The Evaporation of Software Engineering (and the Rise of the Agentic Builder)
+[https://donnfelker.substack.com/p/the-evaporation-of-software-engineering?utm_source=multiple-personal-recommendations-email](https://donnfelker.substack.com/p/the-evaporation-of-software-engineering?utm_source=multiple-personal-recommendations-email)
+![](https://substackcdn.com/image/fetch/$s_!zfHK!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcb2310f6-8d88-4287-af85-a8fe14f6f378_1672x941.png)
+Your identity was built on a bottleneck.
+[TODO]
+
+# 5x faster Edge Functions: How we replaced v8 isolates with Firecracker MicroVMs
+[https://www.netlify.com/blog/edge-functions-firecracker-microvms/](https://www.netlify.com/blog/edge-functions-firecracker-microvms/)
+![](https://www.netlify.com/images/blog/edge-functions-firecracker-microvms.png)
+See how Netlify rebuilt Edge Functions on MicroVMs to deliver lower latency, greater reliability, and faster log delivery.
+[TODO]
+
+# Everything you’ve been told about burnout is wrong
+[https://bscholl.substack.com/p/everything-youve-been-told-about](https://bscholl.substack.com/p/everything-youve-been-told-about)
+![](https://substackcdn.com/image/fetch/$s_!lNfb!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2F46f91b51-6769-4da9-a9ee-35ce755c1e00_2000x1322.png)
+Burnout is caused by a lack of believable motivation—not working too hard. Breaks won’t help. Engineering motivation will.
+[TODO]
+
