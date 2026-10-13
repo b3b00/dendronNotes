@@ -870,7 +870,7 @@ Burnout is caused by a lack of believable motivation—not working too hard. Bre
 
 # GitHub - dzhng/skills: Reusable AI agent skills for software factories: explore ideas, write specs, implement, review, and run autonomous research. Works with Claude Code, Codex, and other skill-compatible agents.
 [https://github.com/dzhng/skills](https://github.com/dzhng/skills)
-![Reusable AI agent skills for software factories: explore ideas, write specs, implement, review, and run autonomous research. Works with Claude Code, Codex, and other skill-compatible agents. - dzhn...](https://opengraph.githubassets.com/7793fb39ebff16ff7b565a7062b900c00c02a50c4162606f7c47693381fec91b/dzhng/skills)
+![](https://opengraph.githubassets.com/7793fb39ebff16ff7b565a7062b900c00c02a50c4162606f7c47693381fec91b/dzhng/skills)
 Reusable AI agent skills for software factories: explore ideas, write specs, implement, review, and run autonomous research. Works with Claude Code, Codex, and other skill-compatible agents. - dzhn...
 [TODO]
 
