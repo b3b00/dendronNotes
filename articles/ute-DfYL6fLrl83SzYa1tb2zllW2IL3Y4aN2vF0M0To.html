@@ -1,0 +1,287 @@
+<html><head><meta charset="utf-8"><title>GitHub - dzhng/skills: Reusable AI agent skills for software factories: explore ideas, write specs, implement, review, and run autonomous research. Works with Claude Code, Codex, and other skill-compatible agents.</title><meta content="Reusable AI agent skills for software factories: explore ideas, write specs, implement, review, and run autonomous research. Works with Claude Code, Codex, and other skill-compatible agents. - dzhn..." name="description"><meta content="https://github.com/dzhng/skills" name="dendron:source-url"><meta content="10598" name="dendron:length"><meta content="7.47" name="dendron:time-to-read-minutes"></head><body><article id="dendron-article-content"><div class="page" id="readability-page-1"><div data-hpc="true" containertiming="hpc"><article itemprop="text">
+<p dir="auto"><a href="https://skills.sh/dzhng/skills" rel="nofollow"><img src="https://camo.githubusercontent.com/7a02061d4bee8d78f84fb9d9de2a47402ef2b10ae66c840258a828fe4cfe3c74/68747470733a2f2f736b696c6c732e73682f622f647a686e672f736b696c6c73" alt="skills.sh" data-canonical-src="https://skills.sh/b/dzhng/skills"></a></p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/dzhng/skills/blob/main/assets/hero.jpg"><img src="/dzhng/skills/raw/main/assets/hero.jpg" alt="AI skills for building software factories"></a></p>
+<p dir="auto"><strong>AI skills for building software factories.</strong> My personal library of
+domain-agnostic agent skills, reused across every project. Small, composable,
+and hackable — works with any harness that supports skills: Claude Code, Codex,
+opencode, Cursor, <a href="https://duet.so" rel="nofollow">duet</a>, and
+<a href="https://github.com/vercel-labs/skills">70+ others</a>.</p>
+<div dir="auto" data-snippet-clipboard-copy-content="npx skills add dzhng/skills"><pre>npx skills add dzhng/skills</pre></div>
+<p dir="auto">Add <code>--list</code> to pick individual skills, or copy any <code>skills/&lt;category&gt;/&lt;name&gt;/</code>
+folder into your harness's skills directory (e.g. <code>.claude/skills/</code>).</p>
+<p dir="auto">From a clone, <code>npm run install-skills</code> does the same without the registry:</p>
+<div dir="auto" data-snippet-clipboard-copy-content="npm run install-skills              # into ~/.agents/skills, linked from ~/.claude/skills
+npm run install-skills -- ../my-app # into a repo instead of the home directory
+npm run install-skills -- --only write-spec,review ../my-app
+npm run list-skills                 # names and categories"><pre>npm run install-skills              <span><span>#</span> into ~/.agents/skills, linked from ~/.claude/skills</span>
+npm run install-skills -- ../my-app <span><span>#</span> into a repo instead of the home directory</span>
+npm run install-skills -- --only write-spec,review ../my-app
+npm run list-skills                 <span><span>#</span> names and categories</span></pre></div>
+<p dir="auto"><code>.agents/skills/&lt;name&gt;/</code> holds the real files (flat, category-free, with
+cross-category links rewritten to match); <code>.claude/skills/&lt;name&gt;</code> is a relative
+symlink into it, so both harnesses read one copy. Re-running overwrites the
+installed copies — a <code>.claude/skills/&lt;name&gt;</code> you keep as a real directory is
+left alone, and a <code>.claude/skills</code> that is already a symlink is left as is. Add
+<code>--dry-run</code> to see the plan first.</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Why</h2><a id="user-content-why" aria-label="Permalink: Why" href="#why"></a><p></p>
+<p dir="auto">Software is moving from tasks to <strong>factories</strong>: agents that pursue a goal
+autonomously until the output can be trusted. The hard part isn't breaking the
+goal into tasks — it's breaking it into <strong>independently verifiable pieces</strong>, and
+knowing where the pieces even are.</p>
+<p dir="auto">These skills run that loop. Treat the unknown as <strong>fog of war</strong>: map the
+terrain, carve it into territories that build and verify in isolation, and
+recursively re-slice whatever hides more map. And re-planning doesn't stop when
+planning ends — the spec is a living document, updated and re-sliced
+mid-implementation whenever the work teaches the agent that the plan is stale.
+Every piece must prove itself — architecture review, code review, and visual
+review against a baseline — before the loop moves on. Each iteration gets <em>less
+wrong</em>, until the goal is done.</p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/dzhng/skills/blob/main/assets/autonomous-run.png"><img src="/dzhng/skills/raw/main/assets/autonomous-run.png" alt="A single autonomous run — 3 days, 18 minutes pursuing one goal"></a></p>
+<blockquote>
+<p dir="auto">Proof: one unattended Codex run pursuing a single goal for <strong>3d 18m</strong> on top
+of these skills, slicing and iterating until done.</p>
+</blockquote>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">How to use</h2><a id="user-content-how-to-use" aria-label="Permalink: How to use" href="#how-to-use"></a><p></p>
+<p dir="auto">Use a chained pipeline to build a feature, a research loop to discover what
+works, or individual skills as needed. Every skill stands alone.</p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">The full loop — a big feature, start to finish</h3><a id="user-content-the-full-loop--a-big-feature-start-to-finish" aria-label="Permalink: The full loop — a big feature, start to finish" href="#the-full-loop--a-big-feature-start-to-finish"></a><p></p>
+<p dir="auto"><a target="_blank" rel="noopener noreferrer" href="/dzhng/skills/blob/main/assets/full-loop.png"><img src="/dzhng/skills/raw/main/assets/full-loop.png" alt="The full loop — explore, spec, build unattended, review the choices"></a></p>
+<ol dir="auto">
+<li>
+<p dir="auto"><strong>Map the fog.</strong> <code>/explore-unknowns</code> on the idea. It interviews you quadrant
+by quadrant and hands you rendered options, mocks, and decision tables to
+react to instead of asking you to imagine. By the end you know what the
+feature does.</p>
+</li>
+<li>
+<p dir="auto"><strong>Codify.</strong> <code>/write-spec</code> on that map. Most decisions were already made
+upstream, so this pass is transcription — I don't read the spec. Anything
+genuinely new it hits, it asks about instead of deciding.</p>
+</li>
+<li>
+<p dir="auto"><strong>Build.</strong> Kick off the loop:</p>
+<div data-snippet-clipboard-copy-content="/goal /implement-spec specs/<feature>"><pre><code>/goal /implement-spec specs/&lt;feature&gt;
+</code></pre></div>
+<p dir="auto"><code>/goal</code> is what puts the harness in loop mode — same move in Claude Code or
+Codex — and the spec drives it from there. A couple of hours for a small
+feature, two or three days for a large one. Add whatever framing fits: <code>on the xyz branch</code>, or <code>using /codex as the implementer while you stay the parent orchestrator and reviewer</code>.</p>
+</li>
+<li>
+<p dir="auto"><strong>Review the choices, not the diff.</strong> The run ends by consolidating
+<code>specs/&lt;feature&gt;/choices.md</code> — every decision the agent made where the spec
+was silent, ranked least-confident first. That's the review surface. Send
+changes back and the next pass re-audits: every time the AI writes code, you
+audit what it chose.</p>
+<p dir="auto">The rest fires on its own: a <code>/review</code> pass at the end of every slice,
+<code>/screenshot-critique</code> and <code>/compare-screenshots</code> on anything visual,
+<code>/close-spec</code> when the last slice lands, and a re-slice of the plan whenever
+implementation proves it stale.</p>
+</li>
+</ol>
+<p dir="auto">Budget: 30 minutes to a few hours on steps 1–2, 30 minutes to a few hours on
+step 4. A run that goes two days is more like 2–3 hours on each end. Your time
+is in the bookends; the middle is unattended.</p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Research — learn through fast experiments</h3><a id="user-content-research--learn-through-fast-experiments" aria-label="Permalink: Research — learn through fast experiments" href="#research--learn-through-fast-experiments"></a><p></p>
+<p dir="auto">Use <a href="/dzhng/skills/blob/main/skills/engineering/auto-research/SKILL.md">Auto Research</a> when the next
+decision needs experimental evidence. It starts with one fast, revealing task,
+tests a short batch of hypotheses, checks combinations, and expands coverage as
+the approach improves. New failures become the focus; earlier tasks become
+regression checks.</p>
+<div data-snippet-clipboard-copy-content="/auto-research Reduce cost per task by at least 15% relative to the saved
+baseline, without reducing task success. Start with one fast development task."><pre><code>/auto-research Reduce cost per task by at least 15% relative to the saved
+baseline, without reducing task success. Start with one fast development task.
+</code></pre></div>
+<p dir="auto">If the evaluator, metric, baseline, or required improvement is unclear, the
+skill asks before experimenting. Passing an evaluation and meeting an
+improvement target are separate requirements. The output includes the best
+verified artifact and a <strong>parameter-effect map</strong>: what was tested, where it
+helps or hurts, and how changes interact. Use that evidence to inform a spec
+when the research is ready for implementation.</p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">À la carte — the spontaneous path</h3><a id="user-content-à-la-carte--the-spontaneous-path" aria-label="Permalink: À la carte — the spontaneous path" href="#à-la-carte--the-spontaneous-path"></a><p></p>
+<ul dir="auto">
+<li>
+<p dir="auto"><strong>A brainstorm turns out to be a feature.</strong> <code>/explore-unknowns</code> works at the
+end of a discussion as well as at the start — run it to sweep for the angles
+neither of you thought of, then pick the loop up at step 2.</p>
+</li>
+<li>
+<p dir="auto"><strong>Any code change that didn't come from a spec.</strong> An ad hoc fix that touched
+more than expected: <code>/review</code> first (refactor-clean → code-review →
+write-docs), then <code>/audit-choices</code>. When the diff is too big to read, the
+choices ledger is how you still understand what is now in your codebase.</p>
+</li>
+</ul>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Skills</h2><a id="user-content-skills-1" aria-label="Permalink: Skills" href="#skills-1"></a><p></p>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Engineering — slice, build, verify, repeat</h3><a id="user-content-engineering--slice-build-verify-repeat" aria-label="Permalink: Engineering — slice, build, verify, repeat" href="#engineering--slice-build-verify-repeat"></a><p></p>
+<markdown-accessiblity-table><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/explore-unknowns/SKILL.md">explore-unknowns</a></td>
+<td>Walk the user through mapping a task's unknowns quadrant by quadrant — known knowns first, then interviews, reactable artifacts, and blindspot passes — ending with a complete four-quadrant map.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/auto-research/SKILL.md">auto-research</a></td>
+<td>Optimize through fast, progressive experiments, producing a verified candidate and a map of parameter effects and tradeoffs.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/write-spec/SKILL.md">write-spec</a></td>
+<td>Break a large feature into independently verifiable, human-reviewable slices with API seams and playable checkpoints.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/implement-spec/SKILL.md">implement-spec</a></td>
+<td>Build an existing spec to completion, one reviewable pass at a time, delegating independent slices in parallel.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/implement-spec-with-goal/SKILL.md">implement-spec-with-goal</a></td>
+<td>Use the harness's goal feature, then follow implement-spec to completion.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/implement-spec-with-codex/SKILL.md">implement-spec-with-codex</a></td>
+<td>Run implement-spec with Codex writing the code — you orchestrate, integrate, and review every pass.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/close-spec/SKILL.md">close-spec</a></td>
+<td>Archive a shipped spec and rewrite it from a build plan into a durable rationale record that points back at the code.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/handoff-spec/SKILL.md">handoff-spec</a></td>
+<td>Hand a spec that is mid-implementation to another machine or agent: capture what the session knows in the spec, then push. User-invoked.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/refactor-clean/SKILL.md">refactor-clean</a></td>
+<td>Refactor by moving ownership to one clean concept instead of layering compatibility sediment beside the problem.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/write-tests/SKILL.md">write-tests</a></td>
+<td>Write tests one tracer bullet at a time that pin real behavior — not implementation details, config values, or lucky samples.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/audit-tests/SKILL.md">audit-tests</a></td>
+<td>Map contracts to independent test proof, consolidate redundant coverage, and remove test-only machinery without losing regression protection.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/audit-performance/SKILL.md">audit-performance</a></td>
+<td>Find hot paths that amplify or repeat without progress, rank them by real failure risk, and prefer the smallest bounded fix that preserves healing.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/write-docs/SKILL.md">write-docs</a></td>
+<td>Write docs as a glossary of principles and pointers, never a mirror of the code that will rot.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/code-review/SKILL.md">code-review</a></td>
+<td>Audit a diff for stale names, dead references, needless complexity, and comments that narrate instead of explain — ending on a clean/not-clean verdict.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/audit-choices/SKILL.md">audit-choices</a></td>
+<td>Audit the choices an implementer made, not its diff — a pure, never-blocking audit whose ledger discloses the architecture and decisions made on the user's behalf, reviewed instead of the code.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/retro/SKILL.md">retro</a></td>
+<td>Conduct a coding-session retrospective and suggest improvements to the agent's environment, checks, guidance, and information access. User-invoked.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/eli5/SKILL.md">eli5</a></td>
+<td>Explain a spec or change in plain language without losing precision — the ELI5 register other skills borrow for standalone, walked-scenario explanations.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/review/SKILL.md">review</a></td>
+<td>Closeout a finished change as one pass — refactor-clean, then code-review, then write-docs — sequenced into a single verdict.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/codex/SKILL.md">codex</a></td>
+<td>Use the local Codex CLI as an independent second agent for review and (on explicit ask) delegated implementation.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/claude/SKILL.md">claude</a></td>
+<td>Use Claude Code (<code>claude -p</code>) as an independent second agent for consultation and (on explicit ask) delegated implementation.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/engineering/marketing-pages/SKILL.md">marketing-pages</a></td>
+<td>Rulebook for writing, updating, and auditing marketing pages by page class — campaign landers stay noindexed and unlinked with one CTA; everything else earns its sitemap entry, crawl-rail link, and canonical copy source.</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Visual review — never accept visuals on vibes</h3><a id="user-content-visual-review--never-accept-visuals-on-vibes" aria-label="Permalink: Visual review — never accept visuals on vibes" href="#visual-review--never-accept-visuals-on-vibes"></a><p></p>
+<markdown-accessiblity-table><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/visual/design-with-images/SKILL.md">design-with-images</a></td>
+<td>Explore generated visual options, preserve the selected target, and iterate real screenshots against it until the implemented design matches.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/visual/compare-screenshots/SKILL.md">compare-screenshots</a></td>
+<td>Compare captures against an approved design or the intended result; use telemetry to locate differences rather than treating a historical baseline as correct. Ships a reusable diff script that also measures a lone capture for flat, empty, or misframed content.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/visual/screenshot-critique/SKILL.md">screenshot-critique</a></td>
+<td>Use an unprimed subagent as a second set of eyes on visual work before accepting it; mandatory before declaring a reported visual bug fixed.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/visual/preview-shots/SKILL.md">preview-shots</a></td>
+<td>Open a curated set of image shots in one macOS Preview window for the user to eyeball.</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Authoring — keep the skills themselves sharp</h3><a id="user-content-authoring--keep-the-skills-themselves-sharp" aria-label="Permalink: Authoring — keep the skills themselves sharp" href="#authoring--keep-the-skills-themselves-sharp"></a><p></p>
+<markdown-accessiblity-table><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/authoring/write-skills/SKILL.md">write-skills</a></td>
+<td>Create or revise agent skills: triggers, leading words, progressive disclosure, and the failure modes to prune.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/authoring/audit-agents/SKILL.md">audit-agents</a></td>
+<td>Audit or rewrite AGENTS.md so it holds only lasting principles, with iteration speed at the core. Ships an example AGENTS.md that pairs with this pack.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/authoring/eval-skills/SKILL.md">eval-skills</a></td>
+<td>Eval a skill against golden cases — blind runs in fresh subagents, a separate judge, and gap-driven edits.</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto"></p><h3 tabindex="-1" dir="auto">Graphics</h3><a id="user-content-graphics" aria-label="Permalink: Graphics" href="#graphics"></a><p></p>
+<markdown-accessiblity-table><table>
+<thead>
+<tr>
+<th>Skill</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/graphics/renderer/SKILL.md">renderer</a></td>
+<td>Architecture rules for GPU rendering with TypeGPU/WebGPU — one frame orchestrator, single owners, a resource registry, depth and compositing contracts, and verification that looks at pixels.</td>
+</tr>
+<tr>
+<td><a href="/dzhng/skills/blob/main/skills/graphics/launch-video/SKILL.md">launch-video</a></td>
+<td>Direct a showreel-grade launch video in code — one visual concept grown from the project, picture and a synthesized score locked to one timing source, and a preview frame that survives social feeds.</td>
+</tr>
+</tbody>
+</table></markdown-accessiblity-table>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">License</h2><a id="user-content-license" aria-label="Permalink: License" href="#license"></a><p></p>
+<p dir="auto">MIT</p>
+<p dir="auto"></p><h2 tabindex="-1" dir="auto">Acknowledgements</h2><a id="user-content-acknowledgements" aria-label="Permalink: Acknowledgements" href="#acknowledgements"></a><p></p>
+<p dir="auto">Thanks to <a href="https://x.com/mattpocockuk" rel="nofollow">Matt Pocock</a> for the
+<a href="https://github.com/mattpocock/skills/tree/main/skills/engineering/retro">retro skill</a>,
+copied here with its writing-guide references pointed at this repo's <code>write-skills</code>.
+Thanks also to Matt and <a href="https://x.com/trq212" rel="nofollow">Thariq</a> for the <strong>fog of war</strong> and
+<strong>discovering the map</strong> concepts that helped shape these skills.</p>
+</article></div></div></article></body></html>

@@ -868,3 +868,15 @@ See how Netlify rebuilt Edge Functions on MicroVMs to deliver lower latency, gre
 Burnout is caused by a lack of believable motivation—not working too hard. Breaks won’t help. Engineering motivation will.
 [TODO]
 
+# GitHub - dzhng/skills: Reusable AI agent skills for software factories: explore ideas, write specs, implement, review, and run autonomous research. Works with Claude Code, Codex, and other skill-compatible agents.
+[https://github.com/dzhng/skills](https://github.com/dzhng/skills)
+![Reusable AI agent skills for software factories: explore ideas, write specs, implement, review, and run autonomous research. Works with Claude Code, Codex, and other skill-compatible agents. - dzhn...](https://opengraph.githubassets.com/7793fb39ebff16ff7b565a7062b900c00c02a50c4162606f7c47693381fec91b/dzhng/skills)
+Reusable AI agent skills for software factories: explore ideas, write specs, implement, review, and run autonomous research. Works with Claude Code, Codex, and other skill-compatible agents. - dzhn...
+[TODO]
+
+# 10 Hugging Face Models Worth Knowing in 2026 - KDnuggets
+[https://www.kdnuggets.com/10-hugging-face-models-worth-knowing-in-2026](https://www.kdnuggets.com/10-hugging-face-models-worth-knowing-in-2026)
+![](https://www.kdnuggets.com/wp-content/uploads/kdn-chugani-10-hugging-face-models-machine-learning-practitioners-year-feature.png)
+Explore 10 Hugging Face models used across text, vision, audio, and retrieval in 2026.
+[TODO]
+
