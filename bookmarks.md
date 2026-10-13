@@ -806,31 +806,29 @@ If someone asks you something, send your answer. Not the AI's.
 [https://www.zdnet.fr/actualites/pourquoi-le-remplacement-du-personnel-par-lia-se-retourne-contre-les-entreprises-et-5-facons-dont-les-dirigeants-avises-creent-une-veritable-valeur-ajoutee-500376.htm](https://www.zdnet.fr/actualites/pourquoi-le-remplacement-du-personnel-par-lia-se-retourne-contre-les-entreprises-et-5-facons-dont-les-dirigeants-avises-creent-une-veritable-valeur-ajoutee-500376.htm)
 ![](https://www.zdnet.fr/wp-content/uploads/zdnet/2026/08/purplepeople-gettyimages-2227030316.webp)
 Les trois quarts des entreprises ont constaté que les licenciements liés à l'IA coûtaient plus cher que ce qu'ils permettaient d'économiser, et pas moins de neuf entreprises sur dix y réfléchiraient à deux fois si elles pouvaient revenir en arrière.
-[TODO]
 
 # I dream of quieter computing | Henry From Online
 [https://henry.codes/writing/i-dream-of-quieter-computing/](https://henry.codes/writing/i-dream-of-quieter-computing/)
 ![](https://v1.screenshot.11ty.dev/https%3A%2F%2Fhenry.codes%2Fopengraph%2Fwriting%2Fi-dream-of-quieter-computing/opengraph)
 A quick note about future of computing and indieweb. It's about a 2 minute read.
-[TODO] [FAVORITE]
+[FAVORITE]
 
 # Faster blob copying in Azure Blob Storage
 [https://markheath.net/post/2026/7/24/fast-blob-copy-azure](https://markheath.net/post/2026/7/24/fast-blob-copy-azure)
 ![](https://markheath.net/images/sound_code_logo2.png)
 I generally try to avoid copying blobs in Azure and just reference a single copy, but there are some situations where you do need to make a copy. The…
-[TODO] [.net] [cloud] [blob]
+[.net] [cloud] [blob]
 
 # You could have invented PageRank - Pravesh Koirala
 [https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/](https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/)
 ![](data:image/svg+xml;base64,CiAgICAgICAgICAgIDxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiPgogICAgICAgICAgICAgIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjYTk5OTYwIi8+CiAgICAgICAgICAgICAgPHRleHQgeD0iMjAwIiB5PSIxNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExMCIgZm9udC13ZWlnaHQ9ImJvbGQiCiAgICAgICAgICAgICAgICAgICAgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UDwvdGV4dD4KICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgIA==)
 Picture this, the year is 1996. You find yourself frustrated with the incumbent search engines like AltaVista, which primarily does a content-based search (it'll give you an article on "Hotels for Chickens" if you search "Hotels" because the word matches). There's gotta be a better way, right? Well, in hindsight, of course. Sergey Brin and
-[TODO] [FAVORITE]
+[FAVORITE]
 
 # Optimistic vs Pessimistic Concurrency in .NET
 [https://antondevtips.com/blog/optimistic-vs-pessimistic-concurrency-in-dot-net](https://antondevtips.com/blog/optimistic-vs-pessimistic-concurrency-in-dot-net)
 ![](https://antondevtips.com/media/covers/dotnet/cover_dotnet_concurrency.png)
 Two users edit the same record and one update silently disappears. Learn how to implement optimistic and pessimistic concurrency in .NET with EF Core and PostgreSQL, and how to choose between them.
-[TODO]
 
 # Plan mode is dead
 [https://www.aymannadeem.com/artificial/intelligence,/developer/tools/2026/09/24/plan-mode-is-dead.html](https://www.aymannadeem.com/artificial/intelligence,/developer/tools/2026/09/24/plan-mode-is-dead.html)
@@ -842,13 +840,11 @@ Earlier this year, I believed planning was going to become the most important pa
 [https://www.ihatethefuture.com/2026/09/the-normalization-of-inexplicable.html?m=1](https://www.ihatethefuture.com/2026/09/the-normalization-of-inexplicable.html?m=1)
 ![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgWqOvF787cVQ7sqEe9MDHTU-hSCIot6pf5UrOqxmfAXhrwqcZvIIN4JWF9sQC5DYQ1qb7_9Ok7XuZGulQ9XH2sLSrjtwqGgJmP_jmzRDPJUBtnxolAij6heLf2oXP7sAHCG0aczxQzBV185kXeZbKvdvtz4_5Ext6EJvTpIr4hKA4pQJKhEp-Mg40H-w0/w1200-h630-p-k-no-nu/curtis_stupid-thing-sucks_1_door-blog.gif)
 In a recent episode of President Curtis , the President struggles with opening a door on two separate occasions. These doors don't work beca...
-[TODO]
 
 # Expected Goals
 [https://mikefisher.substack.com/p/expected-goals](https://mikefisher.substack.com/p/expected-goals)
 ![](https://substackcdn.com/image/fetch/$s_!itSv!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fbf4c99df-cf84-4f91-a7b1-59dc9c29137c_1536x1024.png)
 Why the scoreboard is a terrible teacher
-[TODO]
 
 # The Evaporation of Software Engineering (and the Rise of the Agentic Builder)
 [https://donnfelker.substack.com/p/the-evaporation-of-software-engineering?utm_source=multiple-personal-recommendations-email](https://donnfelker.substack.com/p/the-evaporation-of-software-engineering?utm_source=multiple-personal-recommendations-email)
