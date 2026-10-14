@@ -812,19 +812,19 @@ Les trois quarts des entreprises ont constaté que les licenciements liés à l'
 [https://henry.codes/writing/i-dream-of-quieter-computing/](https://henry.codes/writing/i-dream-of-quieter-computing/)
 ![](https://v1.screenshot.11ty.dev/https%3A%2F%2Fhenry.codes%2Fopengraph%2Fwriting%2Fi-dream-of-quieter-computing/opengraph)
 A quick note about future of computing and indieweb. It's about a 2 minute read.
-[TODO] [FAVORITE]
+[FAVORITE]
 
 # Faster blob copying in Azure Blob Storage
 [https://markheath.net/post/2026/7/24/fast-blob-copy-azure](https://markheath.net/post/2026/7/24/fast-blob-copy-azure)
 ![](https://markheath.net/images/sound_code_logo2.png)
 I generally try to avoid copying blobs in Azure and just reference a single copy, but there are some situations where you do need to make a copy. The…
-[TODO] [.net] [cloud] [blob]
+[.net] [cloud] [blob]
 
 # You could have invented PageRank - Pravesh Koirala
 [https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/](https://praveshkoirala.com/2026/08/26/you-could-have-invented-pagerank/)
 ![](data:image/svg+xml;base64,CiAgICAgICAgICAgIDxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiPgogICAgICAgICAgICAgIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjYTk5OTYwIi8+CiAgICAgICAgICAgICAgPHRleHQgeD0iMjAwIiB5PSIxNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExMCIgZm9udC13ZWlnaHQ9ImJvbGQiCiAgICAgICAgICAgICAgICAgICAgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UDwvdGV4dD4KICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgIA==)
 Picture this, the year is 1996. You find yourself frustrated with the incumbent search engines like AltaVista, which primarily does a content-based search (it'll give you an article on "Hotels for Chickens" if you search "Hotels" because the word matches). There's gotta be a better way, right? Well, in hindsight, of course. Sergey Brin and
-[TODO] [FAVORITE]
+[FAVORITE]
 
 # Optimistic vs Pessimistic Concurrency in .NET
 [https://antondevtips.com/blog/optimistic-vs-pessimistic-concurrency-in-dot-net](https://antondevtips.com/blog/optimistic-vs-pessimistic-concurrency-in-dot-net)
@@ -842,19 +842,16 @@ Earlier this year, I believed planning was going to become the most important pa
 [https://www.ihatethefuture.com/2026/09/the-normalization-of-inexplicable.html?m=1](https://www.ihatethefuture.com/2026/09/the-normalization-of-inexplicable.html?m=1)
 ![](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgWqOvF787cVQ7sqEe9MDHTU-hSCIot6pf5UrOqxmfAXhrwqcZvIIN4JWF9sQC5DYQ1qb7_9Ok7XuZGulQ9XH2sLSrjtwqGgJmP_jmzRDPJUBtnxolAij6heLf2oXP7sAHCG0aczxQzBV185kXeZbKvdvtz4_5Ext6EJvTpIr4hKA4pQJKhEp-Mg40H-w0/w1200-h630-p-k-no-nu/curtis_stupid-thing-sucks_1_door-blog.gif)
 In a recent episode of President Curtis , the President struggles with opening a door on two separate occasions. These doors don't work beca...
-[TODO]
 
 # Expected Goals
 [https://mikefisher.substack.com/p/expected-goals](https://mikefisher.substack.com/p/expected-goals)
 ![](https://substackcdn.com/image/fetch/$s_!itSv!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fbf4c99df-cf84-4f91-a7b1-59dc9c29137c_1536x1024.png)
 Why the scoreboard is a terrible teacher
-[TODO]
 
 # The Evaporation of Software Engineering (and the Rise of the Agentic Builder)
 [https://donnfelker.substack.com/p/the-evaporation-of-software-engineering?utm_source=multiple-personal-recommendations-email](https://donnfelker.substack.com/p/the-evaporation-of-software-engineering?utm_source=multiple-personal-recommendations-email)
 ![](https://substackcdn.com/image/fetch/$s_!zfHK!,w_1200,h_675,c_fill,f_jpg,q_auto:good,fl_progressive:steep,g_auto/https%3A%2F%2Fsubstack-post-media.s3.amazonaws.com%2Fpublic%2Fimages%2Fcb2310f6-8d88-4287-af85-a8fe14f6f378_1672x941.png)
 Your identity was built on a bottleneck.
-[TODO]
 
 # 5x faster Edge Functions: How we replaced v8 isolates with Firecracker MicroVMs
 [https://www.netlify.com/blog/edge-functions-firecracker-microvms/](https://www.netlify.com/blog/edge-functions-firecracker-microvms/)
