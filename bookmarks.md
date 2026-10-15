@@ -889,3 +889,9 @@ An experiment asks whether a behavioral harness can improve the reliability of c
 A mental model for building trust in coding agents through feedforward guides, feedback sensors, and iterative harness engineering.
 [TODO] [AI] [Harness] [software engineering]
 
+# Neural Networks Are Already Clean
+[https://already-clean.goodfire.com/](https://already-clean.goodfire.com/)
+![A city with connected neighborhoods beside a knot woven from the same buildings and streets.](https://already-clean.goodfire.com/assets/social/city-and-knot-20261015.png)
+A working hypothesis about neurons, generalization, and the ecology of circuits.
+[TODO] [AI] [Réseau de neurones]
+
