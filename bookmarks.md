@@ -2,7 +2,7 @@
 [https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest](https://stenbrinke.nl/blog/configuration-and-secret-management-in-dotnet/?utm_source=csharpdigest)
 ![](https://stenbrinke.nl/images/blog/configuration-and-secret-management-in-dotnet/dark/configuration-overview.webp)
 A handy pocketguide that covers everything a .NET developer needs to know about configuration and secret management!
-[Security] [C#]
+[Security] [C#] [FAVORITE] [TODO]
 
 # GitHub - sebastienros/jint: Javascript Interpreter for .NET
 [https://github.com/sebastienros/jint](https://github.com/sebastienros/jint)
