@@ -894,3 +894,9 @@ A working hypothesis about neurons, generalization, and the ecology of circuits.
 Key concepts & much deserved YAML ranting
 [TODO] [Docker] [Kubernetes]
 
+# Unlocking the Power of Sentence Embeddings with all-MiniLM-L6-v2
+[https://medium.com/@rahultiwari065/unlocking-the-power-of-sentence-embeddings-with-all-minilm-l6-v2-7d6589a5f0aa](https://medium.com/@rahultiwari065/unlocking-the-power-of-sentence-embeddings-with-all-minilm-l6-v2-7d6589a5f0aa)
+![Medium](https://miro.medium.com/v2/da:true/bc1f8416df0cad099e43cda2872716e5864f18a73bda2a7547ea082aca9b5632)
+Unlocking the Power of Sentence Embeddings with all-MiniLM-L6-v2 When working with natural language processing (NLP), one of the key challenges is representing the meaning of a sentence or a …
+[TODO]
+
