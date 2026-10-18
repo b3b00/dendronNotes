@@ -27,7 +27,7 @@ updated: 1765095403323
 * [x] lexer
 * [x] visitor
 * [x] entrypoint
-* [ ] align names paced and naming
+* [x] align names paced and naming
 * [ ] errors
 
 ## EBNF
@@ -46,4 +46,3 @@ updated: 1765095403323
 
 * [ ] left recursion detection
 * [ ] memoization
-

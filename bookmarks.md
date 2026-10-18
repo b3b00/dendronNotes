@@ -287,13 +287,6 @@ Apple Calculator leaks 32GB RAM. VS Code leaks 96GB. CrowdStrike crashes 8.5M co
 Debug Adapter Protocol client implementation for Neovim - mfussenegger/nvim-dap
 [.net] [Nvim]
 
-# Don't use MediatR by default on all .NET projects
-[https://goatreview.com/dont-use-mediatr-by-default-net-projects/?utm_source=newsletter.csharpdigest.net](https://goatreview.com/dont-use-mediatr-by-default-net-projects/?utm_source=newsletter.csharpdigest.net)
-![](https://goatreview.com/content/images/2024/12/pierrebelin_Reflecting_goat_with_a_bubble_next_to_it_containing_b6f74da8-953e-4d4f-97b9-d7afc10e0506.webp)
-The .NET ecosystem has witnessed a significant shift in recent years, with MediatR becoming almost synonymous with Clean Architecture implementations. This library, designed to implement the mediator pattern, has found its way into countless tutorials, templates, and starter kits, making it seem like an essential component of modern .NET Core applications.
-The appeal is understandable - MediatR provides an elegant solution for implementing the mediator pattern, facilitating communication betwee
-[.net]
-
 # Runtime Complexity of .NET Generic Collection
 [http://c-sharp-snippets.blogspot.com/2010/03/runtime-complexity-of-net-generic.html](http://c-sharp-snippets.blogspot.com/2010/03/runtime-complexity-of-net-generic.html)
 ![](data:image/svg+xml;base64,CiAgICAgICAgICAgIDxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiPgogICAgICAgICAgICAgIDxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjYTlhMzYwIi8+CiAgICAgICAgICAgICAgPHRleHQgeD0iMjAwIiB5PSIxNDgiIGZvbnQtZmFtaWx5PSJBcmlhbCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjExMCIgZm9udC13ZWlnaHQ9ImJvbGQiCiAgICAgICAgICAgICAgICAgICAgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg4KSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+QzwvdGV4dD4KICAgICAgICAgICAgPC9zdmc+CiAgICAgICAgICAgIA==)
@@ -894,4 +887,10 @@ A mental model for building trust in coding agents through feedforward guides, f
 ![A city with connected neighborhoods beside a knot woven from the same buildings and streets.](https://already-clean.goodfire.com/assets/social/city-and-knot-20261015.png)
 A working hypothesis about neurons, generalization, and the ecology of circuits.
 [TODO] [AI] [Réseau de neurones]
+
+# A skeptic's first contact with Kubernetes
+[https://blog.davidv.dev/posts/first-contact-with-k8s/](https://blog.davidv.dev/posts/first-contact-with-k8s/)
+![](https://blog.davidv.dev/images/logo.svg)
+Key concepts & much deserved YAML ranting
+[TODO] [Docker] [Kubernetes]
 
