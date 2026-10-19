@@ -884,7 +884,7 @@ A mental model for building trust in coding agents through feedforward guides, f
 
 # Neural Networks Are Already Clean
 [https://already-clean.goodfire.com/](https://already-clean.goodfire.com/)
-![A city with connected neighborhoods beside a knot woven from the same buildings and streets.](https://already-clean.goodfire.com/assets/social/city-and-knot-20261015.png)
+![](https://already-clean.goodfire.com/assets/social/city-and-knot-20261015.png)
 A working hypothesis about neurons, generalization, and the ecology of circuits.
 [TODO] [AI] [Réseau de neurones]
 
@@ -896,7 +896,19 @@ Key concepts & much deserved YAML ranting
 
 # Unlocking the Power of Sentence Embeddings with all-MiniLM-L6-v2
 [https://medium.com/@rahultiwari065/unlocking-the-power-of-sentence-embeddings-with-all-minilm-l6-v2-7d6589a5f0aa](https://medium.com/@rahultiwari065/unlocking-the-power-of-sentence-embeddings-with-all-minilm-l6-v2-7d6589a5f0aa)
-![Medium](https://miro.medium.com/v2/da:true/bc1f8416df0cad099e43cda2872716e5864f18a73bda2a7547ea082aca9b5632)
+![](https://miro.medium.com/v2/da:true/bc1f8416df0cad099e43cda2872716e5864f18a73bda2a7547ea082aca9b5632)
 Unlocking the Power of Sentence Embeddings with all-MiniLM-L6-v2 When working with natural language processing (NLP), one of the key challenges is representing the meaning of a sentence or a …
+[TODO]
+
+# The AI Bill Is the Cheap Part — Aviv Ben-Yosef
+[https://avivbenyosef.com/the-ai-bill-is-the-cheap-part/](https://avivbenyosef.com/the-ai-bill-is-the-cheap-part/)
+![](https://avivbenyosef.com/og/the-ai-bill-is-the-cheap-part.png)
+Does it feel like your team is experimenting nonstop and working hard, yet you’re not really moving faster? Is the board scrutinizing your AI costs…
+[TODO]
+
+# The Bedrock of Software Design | Alex Fedoseev
+[https://alex.draftist.io/blog/the-bedrock-of-software-design-ycqvcedsj](https://alex.draftist.io/blog/the-bedrock-of-software-design-ycqvcedsj)
+![](https://cdn.draftist.app/~/019b888b65d4799e9e93f23b7a38e688/content/images/019fb94358b972f08008e0584bb7d6bb.png?width=1200&quality=95)
+A simple concept that makes software easier to understand, harder to misuse, and safer to change.
 [TODO]
 
