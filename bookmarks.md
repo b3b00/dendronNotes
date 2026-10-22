@@ -912,3 +912,9 @@ Does it feel like your team is experimenting nonstop and working hard, yet you�
 A simple concept that makes software easier to understand, harder to misuse, and safer to change.
 [TODO]
 
+# AI says you’re right, formal methods say you’re wrong
+[https://stackoverflow.blog/2026/10/16/formal-methods-say-you-re-wrong/](https://stackoverflow.blog/2026/10/16/formal-methods-say-you-re-wrong/)
+![](https://cdn.stackoverflow.co/images/jo7n4k8s/production/e35a0c5eb319e7928c9ac0a2c2c782d29e644876-3120x1640.png?rect=0,1,3120,1638&w=1200&h=630&auto=format)
+Ryan is joined by Gabriela Moreira, CEO at Quint, about why formal specification languages like TLA+ are essential for catching system design flaws before writing code, how Quint brings developer-friendly syntax and executability to formal methods, and the ways trace validation and model-based testing can verify AI-generated code against real-world production data.
+[TODO]
+
